@@ -60,3 +60,6 @@ buck-out/
 
 # flow config
 *.flowconfig
+
+# gradle
+/android/gradle/wrapper
