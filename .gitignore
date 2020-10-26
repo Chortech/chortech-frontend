@@ -58,8 +58,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# flow config
-*.flowconfig
-
-# gradle
-android/gradle/wrapper/
+.vscode/
