@@ -5,23 +5,37 @@
  * @format
  * @flow strict-local
  */
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import React from 'react'
-import { Component } from 'react'
+import React from 'react';
+import { Component } from 'react';
 import { View, Text } from 'react-native';
-import SignUp from './app/components/SignUp'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
+
+import SignUp from './app/screens/SignUp';
+import Login from './app/screens/Login';
 
 library.add(fab, faCheckSquare, faUser)
 
-export default class App extends Component {
-  render() {
+const Stack = createStackNavigator();
+
+export default App = () => {
     return (
-      <>
-        <SignUp />
-      </>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Screen 
+            name="SignUp"
+            component={SignUp}
+            screenOptions={{ headerShown: false }}/>
+          <Stack.Screen name="Login" component={Login}/>
+        </Stack.Navigator>
+      </NavigationContainer>
     );
-  }
 };
+
+

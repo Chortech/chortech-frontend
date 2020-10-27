@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { FC } from "react";
 import { 
     View, 
     Text, 
     TouchableOpacity, 
     TextInput,
     Platform,
+    Button,
     StyleSheet ,
     StatusBar,
     ScrollView,
@@ -16,7 +17,7 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
-const SignUp = () => {
+export default SignUp = ({ navigation }) => {
   const [data, setData] = React.useState({
       email_phone: '',
       check_textInputChange: false,
@@ -26,7 +27,7 @@ const SignUp = () => {
     <View style={styles.container}>
       <StatusBar backgroundColor='#009387' barStyle="light-content"/>
       <View style={styles.header}>
-        <Text style={styles.text_header}>چُرتِک</Text>
+        <Text style={styles.text_header}>Chortech</Text>
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <ScrollView>
@@ -45,14 +46,13 @@ const SignUp = () => {
                 style={styles.textInput}
                 autoCapitalize="none"/>
           </View>
+          <Button title="Login" color={'green'} onPress={() => navigation.navigate('Login')}/>
+        </ScrollView>   
 
-        </ScrollView>        
       </Animatable.View>
     </View>
   );
 }
-
-export default SignUp;
 
 
 const styles = StyleSheet.create({
@@ -65,15 +65,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 20,
     },
-     text_header: {
+    text_header: {
         textAlign: 'center',
-        marginTop: 5,
         color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 40,
-        writingDirection: 'auto'
-    },
-     footer: {
+        fontSize: 50,
+        writingDirection: 'auto',
+        fontFamily: 'Alex',
+        
+      },
+    footer: {
         flex: Platform.OS === 'ios' ? 2 : 2,
         backgroundColor: '#fff',
         borderTopLeftRadius: 30,
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
         marginTop: 0,
         color: '#053751',
         padding: 10,
-        borderColor: 'green'
+        borderColor: 'green',
+        fontFamily: 'Dirooz'
     },
     action: {
         flexDirection: 'row',
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
-        backgroundColor: '#ebfcef',
+        backgroundColor: '#f2f2f2',
         paddingBottom: 5
     },
   });
