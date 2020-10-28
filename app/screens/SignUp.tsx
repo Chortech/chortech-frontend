@@ -42,7 +42,7 @@ export default SignUp = ({ navigation }) => {
                 autoCapitalize="none"/>
           </View>
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={ () => navigation.navigate('CodeVerification') }>
               <Text style={styles.buttonText}>ادامه و دریافت کد تایید</Text>
             </TouchableOpacity>
           </View>
