@@ -8,16 +8,18 @@ import { styles } from '../styles/ProfileStyles';
 
 const ProfileScreen = () => {
 
-    const { container, textStyle, imageViewStyle } = styles;
+    const { container, textStyle, userNameTextStyle, headerStyle, profileImageStyle } = styles;
 
     return (
     <View style={container}>
-        <View style={imageViewStyle}>
-            <Image source={require('../assets/profile-image-sample.png')}/>
+        <View style={headerStyle}>
+            <Image style={profileImageStyle} source={require('../assets/images/profile-image-sample.png')}/>
+            <Text style={userNameTextStyle}>Andres Walker</Text>
         </View>
-        <Text style={textStyle}>Username: </Text>
-        <Text style={textStyle}>Full name: </Text>
-        <Text style={textStyle}>Email: </Text>
+        <View>
+            <Text style={textStyle}>Full name: </Text>
+            <Text style={textStyle}>Email: </Text>
+        </View>
     </View>
     );
 };
