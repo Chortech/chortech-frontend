@@ -15,29 +15,60 @@ import {
 
 import * as Animatable from 'react-native-animatable';
 import { styles } from '../styles/CodeVerificationStyles';
+import { CountDown } from 'react-native-customizable-countdown';
+
 
 export default CodeVerification = ({ navigation }) => {
+  
   const [data, setData] = useState({
       verification_code: '',
       check_textInputChange: false,
   });
 
+  const[ref, setRef] = useState(null);
+
+  const resetTimer = () => { 
+    ref.resetCountDown();
+  }
+  
+
+
   return (  
     <View style={styles.container}>
       <StatusBar backgroundColor='#009387' barStyle="light-content"/>
       <View style={styles.header}>
-        <Text style={styles.text_header}>Chortech</Text>
+        <Text style={styles.textHeader}>Chortech</Text>
       </View>
       <Animatable.View animation="fadeInUpBig" duration={500} style={styles.footer}>
-          <View style={styles.action}>
+          <View style={styles.inputContainer}>
             <TextInput 
                 placeholder="لطفا کد فعال‌سازی را وارد کنید"
                 style={styles.textInput}
                 keyboardType='number-pad'/>
           </View>
-          <View style={styles.buttons}>
-            <TouchableOpacity style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>تایید</Text>
+          <View  style={styles.timerContainer}>
+            <CountDown
+                ref = { (ref) => { setRef(ref); }}
+                initialSeconds = {120}
+                digitFontSize={20}
+                labelFontSize = {20}
+                onTimeOut = {() => {}}
+                showHours={false}
+                showSeparator={true}
+                separatorStyle={styles.seperatorLabel}
+                minutesBackgroundStyle={styles.timerLabel}
+                secondsBackgroundStyle={styles.timerLabel}
+                width={'40%'}
+                height={40}/>
+            <View>
+              <TouchableOpacity onPress={resetTimer}>
+                <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
+              </TouchableOpacity>
+            </View> 
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.confirmButton}>
+              <Text style={styles.confirmButtonText}>تایید</Text>
             </TouchableOpacity>
           </View>
       </Animatable.View>

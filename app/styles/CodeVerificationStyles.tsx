@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 20,
     },
-    text_header: {
+    textHeader: {
         textAlign: 'center',
         color: '#fff',
         fontSize: 50,
@@ -25,10 +25,6 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 30
     },
-    text_footer: {
-        color: '#05375a',
-        fontSize: 18
-    },
     textInput: {
         flex: 5,
         marginTop: 0,
@@ -37,7 +33,7 @@ export const styles = StyleSheet.create({
         fontFamily: 'Dirooz',
         writingDirection: 'auto',
     },
-    action: {
+    inputContainer: {
         flexDirection: 'row',
         marginTop: 10,
         borderWidth: 1,
@@ -46,36 +42,46 @@ export const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
         paddingBottom: 5
     },
-    buttonContainer: {
+    confirmButton: {
         elevation: 10,
         backgroundColor: "#1AD927",
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 12,
     },
-    buttonText: {
+    confirmButtonText: {
         fontSize: 18,
         color: "#fff",
         alignSelf: "center",
         fontFamily: "IRANSansWeb_Bold",
         writingDirection: 'auto',
     },
-    buttons: {
+    buttonContainer: {
         flex: 5,
         width: '100%',
         marginTop: 30,
         justifyContent: 'flex-end',
     },
-    textSign: {
-        fontSize: 18,
-        fontFamily: 'IRANSansWeb_Bold'
+    buttonResend: {
+        fontSize: 14,
+        color: "#053751",
+        margin: 10,
+        alignSelf: "center",
+        fontFamily: "IRANSansWeb_Bold",
+        writingDirection: 'auto',
     },
-    textPrivate: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginTop: 20
+    timerContainer: { 
+        margin: 30, 
+        alignItems: 'center',
     },
-    color_textPrivate: {
-        color: 'grey'
-    }
+    timerLabel: { 
+        fontFamily: 'Alex',
+        borderWidth: 1, 
+        borderColor: '#1AD927', 
+        padding: 2,
+    },
+    seperatorLabel: { 
+        fontSize: 18, 
+        color: '#1AD927' 
+    },
   });

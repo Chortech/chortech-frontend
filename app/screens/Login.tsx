@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { 
     View, 
     Text, 
@@ -14,11 +14,11 @@ import {
 
 
 export default Login = ({ navigation }) => {  
-    return (
-      <View>
-        <Text>Login Page</Text>
-        <Button title="Sign up" color={'green'} onPress={() => navigation.navigate('SignUp')}/>
-      </View>
-    );
+
+  return (
+    <View>
+      <Button title="Sign up" color={'green'} onPress={() => navigation.navigate('SignUp')}/>
+    </View>
+  );
 };
 
