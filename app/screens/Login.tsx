@@ -36,13 +36,13 @@ export default Login = ({ navigation }) => {
                 style={styles.textInput}/>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.filledButton} onPress={ () => navigation.navigate('CodeVerification') }>
+            <TouchableOpacity style={styles.filledButton}>
               <Text style={styles.filledbuttonText}>ورود</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.outlinedButton} onPress={ () => navigation.navigate('CodeVerification') }>
+            <TouchableOpacity style={styles.outlinedButton} onPress={ () => navigation.navigate('SignUp') }>
               <Text style={styles.outlinedButtonText}>ثبت نام</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.outlinedButton} onPress={ () => navigation.navigate('CodeVerification') }>
+            <TouchableOpacity style={styles.outlinedButton}>
               <Text style={styles.outlinedButtonText}>قوانین حریم خصوصی</Text>
             </TouchableOpacity>
           </View>
