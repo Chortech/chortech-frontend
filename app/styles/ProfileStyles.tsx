@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
     },
     imageViewStyle: {
         backgroundColor: '#ffffff',
-        alignItem: 'center',
+        alignItems: 'center',
         height: 60,
         paddingTop: 15,
     },
