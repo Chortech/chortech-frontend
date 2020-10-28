@@ -20,6 +20,7 @@ import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import SignUp from './app/screens/SignUp';
 import Login from './app/screens/Login';
 import CodeVerification from "./app/screens/CodeVerification";
+import Profile from "./app/screens/Profile";
 
 library.add(fab, faCheckSquare, faUser)
 
@@ -32,6 +33,7 @@ export default App = () => {
           <Stack.Screen name="Login" component={Login}/>
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="CodeVerification" component={CodeVerification}/>
+          <Stack.Screen name="Profile" component={Profile}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
