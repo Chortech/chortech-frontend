@@ -36,7 +36,6 @@ export const styles = StyleSheet.create({
     },
     textInput: {
         flex: 5,
-        marginTop: 0,
         color: '#053751',
         padding: 10,
         fontFamily: 'Dirooz',
@@ -45,21 +44,39 @@ export const styles = StyleSheet.create({
     buttonContainer: {
         flex: 5,
         width: '100%',
-        marginTop: 30,
+        marginTop: 50,
         justifyContent: 'flex-end',
     },
-    verifyScreenButton: {
-        elevation: 10,
+    filledButton: {
+        elevation: 5,
         backgroundColor: "#1AD927",
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 12,
+        marginBottom: 10,
     },
-    verifyScreenButtonText: {
-        fontSize: 18,
-        color: "#fff",
-        alignSelf: "center",
-        fontFamily: "IRANSansWeb_Bold",
-        writingDirection: 'auto',
+    outlinedButton: {
+      elevation: 5,
+      backgroundColor: "#fff",
+      borderRadius: 5,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: '#1AD927',
+    },
+    filledbuttonText: {
+      fontSize: 18,
+      color: "#fff",
+      alignSelf: "center",
+      fontFamily: "IRANSansWeb_Bold",
+      writingDirection: 'auto',
+    },
+    outlinedButtonText: {
+      fontSize: 18,
+      color: '#1AD927',
+      alignSelf: "center",
+      fontFamily: "IRANSansWeb_Bold",
+      writingDirection: 'auto',
     },
   });

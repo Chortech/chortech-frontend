@@ -2,44 +2,48 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/ProfileStyles';
 
+import * as Animatable from 'react-native-animatable';
+
+
 const ProfileScreen = ({ navigation }) => {
 
     const {
         container,
-        textStyle,
-        userNameTextStyle,
-        headerStyle,
-        profileImageStyle,
-        infoStyle,
-        buttonStyle,
-        buttonTextStyle,
-        textContainer } = styles;
+        textInfo,
+        userNameText,
+        header,
+        profileImage,
+        infoContainer,
+        button,
+        buttonText,
+        textContainer,
+        buttonContainer,} = styles;
 
     return (
         <View style={container}>
-            <View style={headerStyle}>
-                <Image style={profileImageStyle} source={require('../assets/images/profile-image-sample.png')}/>
-                <Text style={userNameTextStyle}>Babak1999</Text>
+            <View style={header}>
+                <Image style={profileImage} source={require('../assets/images/profile-image-sample.png')}/>
+                <Text style={userNameText}>Babak1999</Text>
             </View>
-            <View style={infoStyle}>
+            <Animatable.View animation="slideInUp" duration={600} style={infoContainer}>
                 <View style={textContainer}>
-                    <Text style={textStyle}>نام و نام خانوادگی</Text>
+                    <Text style={textInfo}>نام و نام خانوادگی</Text>
                 </View>
                 <View style={textContainer}>
-                    <Text style={textStyle}>آدرس الکترونیک</Text>
+                    <Text style={textInfo}>آدرس الکترونیک</Text>
                 </View>
                 <View style={textContainer}>
-                    <Text style={textStyle}>شماره تلفن همراه</Text>
+                    <Text style={textInfo}>شماره تلفن همراه</Text>
                 </View>
-                <View style={{marginTop: 100}}>
-                    <TouchableOpacity style={buttonStyle}>
-                        <Text style={buttonTextStyle}>دوستان</Text>
+                <View style={buttonContainer}>
+                    <TouchableOpacity style={button}>
+                        <Text style={buttonText}>دوستان</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={buttonStyle}>
-                        <Text style={buttonTextStyle}>ویرایش اطلاعات</Text>
+                    <TouchableOpacity style={button}>
+                        <Text style={buttonText}>ویرایش اطلاعات</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Animatable.View>
         </View>
     );
 };
