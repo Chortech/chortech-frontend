@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         
       },
     footer: {
-        flex: Platform.OS === 'ios' ? 2 : 2,
+        flex: Platform.OS === 'ios' ? 3 : 3,
         backgroundColor: '#fff',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
@@ -79,5 +79,15 @@ export const styles = StyleSheet.create({
     },
     color_textPrivate: {
         color: 'grey'
-    }
+    },
+    privacy_text_container: {
+        width: '100%',
+        marginTop: 40,
+    },
+    privacy_text: {
+        color: 'green',
+        textAlign: 'center',
+        fontFamily: 'Dirooz',
+        fontSize: 18,
+    },
   });
