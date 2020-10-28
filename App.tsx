@@ -19,7 +19,6 @@ import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import SignUp from './app/screens/SignUp';
 import Login from './app/screens/Login';
-import CodeVerification from "./app/screens/CodeVerification";
 
 library.add(fab, faCheckSquare, faUser)
 
@@ -31,7 +30,6 @@ export default App = () => {
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login}/>
           <Stack.Screen name="SignUp" component={SignUp}/>
-          <Stack.Screen name="CodeVerification" component={CodeVerification}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

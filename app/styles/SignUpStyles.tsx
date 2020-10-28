@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#44e809'
+      backgroundColor: '#1AD927'
     },
     header: {
         flex: 1,
@@ -35,7 +35,6 @@ export const styles = StyleSheet.create({
         marginTop: 0,
         color: '#053751',
         padding: 10,
-        borderColor: 'green',
         fontFamily: 'Dirooz',
         writingDirection: 'auto',
     },
@@ -43,14 +42,14 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         borderWidth: 1,
-        borderColor: '#f2f2f2',
+        borderColor: '#1AD927',
         borderRadius: 5,
         backgroundColor: '#f2f2f2',
         paddingBottom: 5
     },
     buttonContainer: {
         elevation: 10,
-        backgroundColor: "#009688",
+        backgroundColor: "#1AD927",
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 12,
