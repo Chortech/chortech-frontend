@@ -57,7 +57,8 @@ export default SignUp = ({ navigation }) => {
                 secureTextEntry={data.secureTextEntry}/>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.verifyScreenButton} onPress={ () => navigation.navigate('CodeVerification') }>
+            <TouchableOpacity style={styles.verifyScreenButton} 
+              onPress={ () => navigation.navigate('CodeVerification', { nextScreen: 'Profile' }) }>
               <Text style={styles.verifyScreenButtonText}>ادامه و دریافت کد تایید</Text>
             </TouchableOpacity>
           </View>

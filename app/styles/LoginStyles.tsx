@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 3,
         backgroundColor: '#fff',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         paddingHorizontal: 20,
         paddingVertical: 30
     },
@@ -46,6 +46,12 @@ export const styles = StyleSheet.create({
       marginRight: 5,
       marginLeft: 15,
       alignSelf: 'center',
+    },
+    resetPasswordText: {
+      margin: 10,
+      textAlign: 'center',
+      fontFamily: 'IRANSansWeb_Bold',
+      color: '#1AD927',
     },
     buttonContainer: {
         flex: 5,

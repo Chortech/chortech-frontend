@@ -60,6 +60,11 @@ export default Login = ({ navigation }) => {
                 style={styles.textInput}
                 secureTextEntry={data.secureTextEntry}/>
           </View>
+          <View>
+            <TouchableOpacity onPress={ () => { navigation.navigate('CodeVerification', { nextScreen: 'ResetPassword' } ) }}>
+              <Text style={styles.resetPasswordText}>کلمه عبور خود را فراموش کرده‌اید؟</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.filledButton} onPress={ () => navigation.navigate('Profile') }>
               <Text style={styles.filledButtonText}>ورود</Text>

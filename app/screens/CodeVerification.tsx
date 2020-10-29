@@ -18,12 +18,14 @@ import { styles } from '../styles/CodeVerificationStyles';
 import { CountDown } from 'react-native-customizable-countdown';
 
 
-export default CodeVerification = ({ navigation }) => {
+export default CodeVerification = ({ route, navigation }) => {
   
   const [data, setData] = useState({
       verification_code: '',
       check_textInputChange: false,
   });
+
+  const { nextScreen } = route.params;
 
   const[ref, setRef] = useState(null);
 
@@ -65,7 +67,7 @@ export default CodeVerification = ({ navigation }) => {
             </View> 
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.confirmButton}>
+            <TouchableOpacity style={styles.confirmButton} onPress={ () => {navigation.navigate(nextScreen) }}>
               <Text style={styles.confirmButtonText}>تایید</Text>
             </TouchableOpacity>
           </View>

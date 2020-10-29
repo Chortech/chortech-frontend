@@ -26,8 +26,6 @@ export const styles = StyleSheet.create({
     },
     customInputContainer: {
       marginTop: 15,
-      marginRight: 10,
-      marginLeft: 10,
     },
     label: {
       color: '#053751',

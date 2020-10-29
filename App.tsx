@@ -22,6 +22,7 @@ import Login from './app/screens/Login';
 import CodeVerification from "./app/screens/CodeVerification";
 import Profile from "./app/screens/Profile";
 import EditProfile from "./app/screens/EditProfile";
+import ResetPassword from "./app/screens/ResetPassword";
 
 library.add(fab, fas);
 
@@ -36,6 +37,7 @@ export default App = () => {
           <Stack.Screen name="CodeVerification" component={CodeVerification}/>
           <Stack.Screen name="Profile" component={Profile}/>
           <Stack.Screen name="EditProfile" component={EditProfile}/>
+          <Stack.Screen name="ResetPassword" component={ResetPassword}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
