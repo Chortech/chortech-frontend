@@ -1,62 +1,79 @@
-/* eslint-disable prettier/prettier */
-
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        // adding flex is needed.
-        height: 800,
+        flex: 1,
+        // height: 800,
         backgroundColor: '#1AD927',
     },
-    headerStyle: {
+    header: {
+        flex: 2,
         alignItems: 'center',
-        paddingTop: 20,
+        paddingTop: 10,
     },
-    infoStyle: {
+    profileImage: {
+        height: 100,
+        width: 100,
+        marginTop: 10,
+        borderRadius: 50,
+    },
+    userNameText: {
+        fontSize: 20,
+        marginVertical: 10,
+        color: '#fff',
+        alignItems: 'center',
+        fontFamily: 'IRANSansWeb_Bold',
+    },
+    infoContainer: {
+        flex: 6,
         backgroundColor: '#fff',
-        height: 450,
         paddingHorizontal: 20,
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
     },
-    profileImageStyle: {
-        height: 150,
-        width: 150,
-        borderRadius: 75,
+    textWrapper: {
+        flexDirection: 'row',
     },
-    userNameTextStyle: {
-        fontSize: 20,
-        marginVertical: 15,
-        color: '#fff',
-        alignItems: 'center',
-        fontFamily: 'Dirooz',
+    textContainerRight: {
+        padding: 15,
+        borderBottomColor: '#EBE8E8',
+        borderBottomWidth: 1,
+        justifyContent: 'flex-start',
     },
-    textStyle: {
-        fontSize: 18,
+    textContainerLeft: {
+        flex: 5,
+        padding: 15,
+        borderBottomColor: '#EBE8E8',
+        borderBottomWidth: 1,
+        justifyContent: 'flex-end',
+    },
+    textInfo: {
+        fontSize: 12,
+        padding: 2,
         color: '#053751',
         writingDirection: 'auto',
-        fontFamily: 'Dirooz',
+        fontFamily: 'IRANSansWeb_Bold',
     },
-    buttonStyle: {
-        elevation: 2,
+    buttonContainer: { 
+        flex: 5,
+        justifyContent: 'flex-end',
+        margin: 20,
+    },
+    button: {
+        elevation: 1,
         backgroundColor: '#fff',
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#1AD927',
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 10,
         marginBottom: 15,
     },
-    buttonTextStyle: {
-        fontSize: 18,
+    buttonText: {
+        fontSize: 16,
         color: '#1AD927',
         alignSelf: 'center',
         fontFamily: 'IRANSansWeb_Bold',
         writingDirection: 'auto',
-    },
-    textContainer: {
-        padding: 20,
-        borderBottomColor: '#EBE8E8',
-        borderBottomWidth: 1,
     },
 });
