@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
         fontSize: 50,
         writingDirection: 'auto',
         fontFamily: 'Alex',
-      },
+    },
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 3,
         backgroundColor: '#fff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
         paddingHorizontal: 20,
         paddingVertical: 30
     },
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#1AD927',
     },
-    filledbuttonText: {
+    filledButtonText: {
       fontSize: 18,
       color: "#fff",
       alignSelf: "center",

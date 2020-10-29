@@ -7,21 +7,23 @@ import * as Animatable from 'react-native-animatable';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const[name, setName] = useState('بابک سفیدگر');
-    const[username, setUsername] = useState("babak-ssh");
-    const[email, setEmail] = useState("sample@example.com");
-    const[phone, setPhone] = useState("09123456789");
+    const [data, setData] = useState({
+        name: "بابک سفیدگر",
+        username: "babak-ssh",
+        email: "sample@example.com",
+        phone: "09123456789",
+    });
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image style={styles.profileImage} source={require('../assets/images/profile_picture_white.png')}/>
-                <Text style={styles.userNameText}>{name}</Text>
+                <Text style={styles.userNameText}>{data.name}</Text>
             </View>
             <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
                 <View style={styles.textWrapper}>
                     <View style={styles.textContainerLeft}>
-                        <Text style={styles.textInfo}>{username}</Text>
+                        <Text style={styles.textInfo}>{data.username}</Text>
                     </View>
                     <View style={styles.textContainerRight}>
                         <Text style={styles.textInfo}>نام کاربری</Text>
@@ -29,7 +31,7 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.textWrapper}>
                     <View style={styles.textContainerLeft}>
-                        <Text style={styles.textInfo}>{email}</Text>
+                        <Text style={styles.textInfo}>{data.email}</Text>
                     </View>
                     <View style={styles.textContainerRight}>
                         <Text style={styles.textInfo}>ایمیل</Text>
@@ -37,7 +39,7 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.textWrapper}>
                     <View style={styles.textContainerLeft}>
-                        <Text style={styles.textInfo}>{phone}</Text>
+                        <Text style={styles.textInfo}>{data.phone}</Text>
                     </View>
                     <View style={styles.textContainerRight}>
                         <Text style={styles.textInfo}>تلفن همراه</Text>

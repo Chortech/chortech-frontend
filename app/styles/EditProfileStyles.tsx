@@ -21,11 +21,13 @@ export const styles = StyleSheet.create({
         flex: 6,
         backgroundColor: '#fff',
         paddingHorizontal: 20,
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
     },
     customInputContainer: {
       marginTop: 15,
+      marginRight: 10,
+      marginLeft: 10,
     },
     label: {
       color: '#053751',
@@ -50,23 +52,17 @@ export const styles = StyleSheet.create({
       fontFamily: 'Dirooz',
       textAlign: 'right',
     },
+    toggleIcon: {
+      flex: 1,
+      marginRight: 5,
+      marginLeft: 15,
+      alignSelf: 'center',
+    },
 
-    // textContainer: {
-    //     padding: 15,
-    //     borderBottomColor: '#EBE8E8',
-    //     borderBottomWidth: 1,
-    // },
-    // textInfo: {
-    //     fontSize: 12,
-    //     padding: 2,
-    //     color: '#053751',
-    //     writingDirection: 'auto',
-    //     fontFamily: 'IRANSansWeb_Bold',
-    // },
     buttonContainer: { 
         flex: 4,
         justifyContent: 'flex-end',
-        margin: 20,
+        marginTop: 30,
     },
     filledButton: {
         elevation: 5,
