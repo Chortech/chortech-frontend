@@ -14,29 +14,38 @@ export const styles = StyleSheet.create({
     profileImage: {
         height: 100,
         width: 100,
+        marginTop: 10,
         borderRadius: 50,
-        borderWidth: 2,
-        borderColor: 'lightgreen',
     },
     userNameText: {
         fontSize: 20,
-        marginVertical: 15,
+        marginVertical: 10,
         color: '#fff',
         alignItems: 'center',
-        fontFamily: 'Alex',
+        fontFamily: 'IRANSansWeb_Bold',
     },
     infoContainer: {
         flex: 6,
         backgroundColor: '#fff',
-        height: 450,
         paddingHorizontal: 20,
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
     },
-    textContainer: {
+    textWrapper: {
+        flexDirection: 'row',
+    },
+    textContainerRight: {
         padding: 15,
         borderBottomColor: '#EBE8E8',
         borderBottomWidth: 1,
+        justifyContent: 'flex-start',
+    },
+    textContainerLeft: {
+        flex: 5,
+        padding: 15,
+        borderBottomColor: '#EBE8E8',
+        borderBottomWidth: 1,
+        justifyContent: 'flex-end',
     },
     textInfo: {
         fontSize: 12,
