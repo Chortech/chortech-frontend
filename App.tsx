@@ -16,12 +16,12 @@ import { View, Text } from 'react-native';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from "@fortawesome/free-solid-svg-icons";
-// import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import SignUp from './app/screens/SignUp';
 import Login from './app/screens/Login';
 import CodeVerification from "./app/screens/CodeVerification";
 import Profile from "./app/screens/Profile";
+import EditProfile from "./app/screens/EditProfile";
 
 library.add(fab, fas);
 
@@ -35,6 +35,7 @@ export default App = () => {
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="CodeVerification" component={CodeVerification}/>
           <Stack.Screen name="Profile" component={Profile}/>
+          <Stack.Screen name="EditProfile" component={EditProfile}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

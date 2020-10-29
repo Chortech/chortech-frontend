@@ -30,8 +30,6 @@ export default CodeVerification = ({ navigation }) => {
   const resetTimer = () => { 
     ref.resetCountDown();
   }
-  
-
 
   return (  
     <View style={styles.container}>

@@ -47,7 +47,7 @@ const ProfileScreen = ({ navigation }) => {
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>دوستان</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={ () => { navigation.navigate('EditProfile') }}>
                         <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
                     </TouchableOpacity>
                 </View>

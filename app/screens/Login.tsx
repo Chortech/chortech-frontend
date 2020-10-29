@@ -62,7 +62,7 @@ export default Login = ({ navigation }) => {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.filledButton} onPress={ () => navigation.navigate('Profile') }>
-              <Text style={styles.filledbuttonText}>ورود</Text>
+              <Text style={styles.filledButtonText}>ورود</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.outlinedButton} onPress={ () => navigation.navigate('SignUp') }>
               <Text style={styles.outlinedButtonText}>ثبت نام</Text>
