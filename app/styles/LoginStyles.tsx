@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
@@ -35,17 +35,23 @@ export const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     textInput: {
-        flex: 5,
+        flex: 10,
         color: '#053751',
         padding: 10,
         fontFamily: 'Dirooz',
-        writingDirection: 'auto',
+        textAlign: 'right',
+    },
+    toggleIcon: {
+      flex: 1,
+      marginRight: 5,
+      marginLeft: 15,
+      alignSelf: 'center',
     },
     buttonContainer: {
         flex: 5,
         width: '100%',
         marginTop: 50,
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
     },
     filledButton: {
         elevation: 5,

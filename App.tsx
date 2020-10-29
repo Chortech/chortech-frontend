@@ -15,14 +15,15 @@ import { View, Text } from 'react-native';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+// import { faCheckSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import SignUp from './app/screens/SignUp';
 import Login from './app/screens/Login';
 import CodeVerification from "./app/screens/CodeVerification";
 import Profile from "./app/screens/Profile";
 
-library.add(fab, faCheckSquare, faUser)
+library.add(fab, fas);
 
 const Stack = createStackNavigator();
 
