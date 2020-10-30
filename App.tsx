@@ -17,7 +17,6 @@ import ResetPassword from './app/screens/ResetPassword';
 import CreditCardList from './app/screens/CreditCardList';
 
 library.add(fab, fas);
-
 type RootStackParamList = {
 	Login: undefined;
 	SignUp: undefined;
