@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import CreditCard from '../components/CreditCard';
 
 type CreditCardListScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
 type CreditCardListScreenNavigationProp = StackNavigationProp<
@@ -14,38 +15,21 @@ const data = [
 		id: '1',
 		cardOwnerName: 'سینا',
 		cardNumber: '123456789',
+		bankName: 'بانک ملی',
 	},
 	{
 		id: '2',
 		cardOwnerName: 'نیما',
 		cardNumber: '123456789',
+		bankName: 'بانک ملی',
 	},
 	{
 		id: '3',
 		cardOwnerName: 'حسین',
 		cardNumber: '123456789',
+		bankName: 'بانک ملی',
 	},
 ];
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		marginTop: 10,
-	},
-	cardItem: {
-		backgroundColor: '#fff',
-		padding: 10,
-		marginVertical: 8,
-		marginHorizontal: 16,
-		borderWidth: 1,
-		borderColor: '#1AD927',
-	},
-	text: {
-		fontSize: 18,
-		color: '#000',
-		fontFamily: 'IRANSansWeb_Bold',
-	},
-});
 
 type Props = {
 	cardOwnerName: string;
@@ -54,20 +38,17 @@ type Props = {
 	route: CreditCardListScreenRouteProp;
 };
 
-const CreditCard = ({ cardOwnerName, cardNumber }: Props): void => (
-	<View style={styles.cardItem}>
-		<Text style={styles.text}>{cardOwnerName}</Text>
-		<Text style={styles.text}>{cardNumber}</Text>
-	</View>
-);
-
 const CreditCardList = ({ route, navigation }: Props): void => {
 	const renderCardItem = ({ item }: Props): void => (
-		<CreditCard name={item.cardOwnerName} cardNumber={item.cardNumber} />
+		<CreditCard
+			ownerName={item.cardOwnerName}
+			cardNumber={item.cardNumber}
+			bankName={item.bankName}
+		/>
 	);
 
 	return (
-		<View>
+		<View style={{ backgroundColor: '#fff' }}>
 			<FlatList
 				data={data}
 				renderItem={renderCardItem}

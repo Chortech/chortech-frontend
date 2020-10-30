@@ -91,7 +91,9 @@ const Login = ({ navigation }: Props): void => {
 						</TouchableOpacity>
 					</View>
 					<View style={styles.buttonContainer}>
-						<TouchableOpacity style={styles.filledButton}>
+						<TouchableOpacity
+							style={styles.filledButton}
+							onPress={(): void => navigation.navigate('CreditCardList')}>
 							<Text style={styles.filledButtonText}>ورود</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
