@@ -1,0 +1,27 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+        "react/jsx-indent": [2, "tab", { "checkAttributes": true, "indentLogicalExpressions": true}],
+        "react/jsx-indent-props": [2, "tab"],
+        "import/extensions": ["off", "never"],
+        "import/no-unresolved": "warn",
+        "react/jsx-closing-bracket-location": [1, {"selfClosing": "line-aligned", "nonEmpty": "after-props"}],
+        "no-unused-vars": "warn",
+        "global-require":"warn",
+        "multiline": "consistent", 
+        "singleline": "consistent" 
+    }
+}
