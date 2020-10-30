@@ -17,6 +17,8 @@ import * as Animatable from 'react-native-animatable';
 import { styles } from '../styles/LoginStyles';
 
 
+
+
 export default Login = ({ navigation }) => {  
 
   const [data, setData] = useState({
@@ -36,7 +38,7 @@ export default Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+      {/* <StatusBar backgroundColor='#009387' barStyle="light-content"/> */}
       <View style={styles.header}>
         <Text style={styles.textHeader}>Chortech</Text>
       </View>
@@ -66,7 +68,7 @@ export default Login = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.filledButton} onPress={ () => navigation.navigate('Profile') }>
+            <TouchableOpacity style={styles.filledButton}>
               <Text style={styles.filledButtonText}>ورود</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.outlinedButton} onPress={ () => navigation.navigate('SignUp') }>
