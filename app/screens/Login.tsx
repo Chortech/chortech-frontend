@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from '../styles/LoginStyles';
 
-type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
 type LoginScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CodeVerification'
@@ -81,9 +81,7 @@ const Login = ({ navigation }: Props): void => {
 					<View>
 						<TouchableOpacity
 							onPress={(): void => {
-								navigation.navigate('CodeVerification', {
-									nextScreen: 'ResetPassword',
-								});
+								navigation.navigate('CodeVerification', { nextScreen: 'ResetPassword' });
 							}}>
 							<Text style={styles.resetPasswordText}>
 								کلمه عبور خود را فراموش کرده‌اید؟

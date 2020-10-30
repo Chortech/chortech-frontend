@@ -3,26 +3,53 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
-        "airbnb",
-        "prettier"
+        "airbnb"
     ],
     "parser": "@typescript-eslint/parser",
     "plugins": [
         "react",
         "@typescript-eslint",
-        "import",
-        "prettier"
+        "import"
     ],
     "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
-        "react/jsx-indent": [2, "tab", { "checkAttributes": true, "indentLogicalExpressions": true}],
-        "react/jsx-indent-props": [2, "tab"],
-        "import/extensions": ["off", "never"],
-        "import/no-unresolved": 0,   
-        "react/jsx-closing-bracket-location": [1, {"selfClosing": "line-aligned", "nonEmpty": "after-props"}],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        ],
+        "react/jsx-indent": [
+            2,
+            "tab",
+            {
+                "checkAttributes": true,
+                "indentLogicalExpressions": true
+            }
+        ],
+        "react/jsx-indent-props": [
+            2,
+            "tab"
+        ],
+        "import/extensions": [
+            "off",
+            "never"
+        ],
+        "import/no-unresolved": 0,
+        "react/jsx-closing-bracket-location": [
+            1,
+            {
+                "selfClosing": "line-aligned",
+                "nonEmpty": "after-props"
+            }
+        ],
         "no-unused-vars": "warn",
-        "global-require":"warn",
-        "multiline": "consistent", 
+        "global-require": "warn",
+        "multiline": "consistent",
         "singleline": "consistent"
     }
 }

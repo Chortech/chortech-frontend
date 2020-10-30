@@ -12,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from '../styles/EditProfileStyles';
 
-type EditProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type EditProfileScreenRouteProp = RouteProp<RootStackParamList, 'EditProfile'>;
 type EditProfileScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CodeVerification'

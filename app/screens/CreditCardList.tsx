@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import CreditCard from '../components/CreditCard';
 
-type CreditCardListScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type CreditCardListScreenRouteProp = RouteProp<RootStackParamList, 'CreditCardList'>;
 type CreditCardListScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CreditCardList'

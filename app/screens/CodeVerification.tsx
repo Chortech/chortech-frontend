@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from '../styles/CodeVerificationStyles';
 
-type CodeVerificationScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type CodeVerificationScreenRouteProp = RouteProp<RootStackParamList, 'CodeVerification'>;
 type CodeVerificationScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CodeVerification'
@@ -31,7 +31,6 @@ const CodeVerification = ({ route, navigation }: Props): void => {
 	// });
 
 	const { nextScreen } = route.params;
-
 	const [ref, setRef] = useState(null);
 
 	const resetTimer = (): void => {
@@ -57,11 +56,11 @@ const CodeVerification = ({ route, navigation }: Props): void => {
 				</View>
 				<View style={styles.timerContainer}>
 					<CountDown
-						ref={setRef(ref)}
+						ref={(ref) => { setRef(ref); }}
 						initialSeconds={120}
 						digitFontSize={20}
 						labelFontSize={20}
-						onTimeOut={}
+						onTimeOut={ (): void => {} }
 						showHours={false}
 						showSeparator
 						separatorStyle={styles.seperatorLabel}

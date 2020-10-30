@@ -21,7 +21,7 @@ library.add(fab, fas);
 type RootStackParamList = {
 	Login: undefined;
 	SignUp: undefined;
-	CodeVerification: { nextScreen: string };
+	CodeVerification: undefined;
 	Profile: undefined;
 	EditProfile: undefined;
 	ResetPassword: undefined;
@@ -40,9 +40,7 @@ const App = (): void => {
 				<Stack.Screen name="SignUp" component={SignUp} />
 				<Stack.Screen
 					name="CodeVerification"
-					component={CodeVerification}
-					initialParams={{ nextScreen: 'Profile' }}
-				/>
+					component={CodeVerification} />
 				<Stack.Screen name="Profile" component={Profile} />
 				<Stack.Screen name="EditProfile" component={EditProfile} />
 				<Stack.Screen name="ResetPassword" component={ResetPassword} />

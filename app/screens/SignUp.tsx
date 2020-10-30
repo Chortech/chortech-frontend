@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from '../styles/SignUpStyles';
 
-type SignUpScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type SignUpScreenRouteProp = RouteProp<RootStackParamList, 'SignUp'>;
 type SignUpScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CodeVerification'

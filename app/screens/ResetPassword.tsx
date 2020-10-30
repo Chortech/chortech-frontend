@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from '../styles/ResetPasswordStyles';
 
-type ResetPasswordScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
+type ResetPasswordScreenRouteProp = RouteProp<RootStackParamList, 'ResetPassword'>;
 type ResetPasswordScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
 	'CodeVerification'
@@ -100,15 +100,6 @@ const ResetPassword = ({ navigation }: Props): void => {
 						<Text style={styles.confirmButtonText}>تایید</Text>
 					</TouchableOpacity>
 				</View>
-
-				{/* <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>تایید</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>انصراف</Text>
-                    </TouchableOpacity>
-                </View> */}
 			</Animatable.View>
 		</View>
 	);
