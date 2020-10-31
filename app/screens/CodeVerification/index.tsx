@@ -11,7 +11,7 @@ import * as Animatable from 'react-native-animatable';
 import { CountDown } from 'react-native-customizable-countdown';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { styles } from '../styles/CodeVerificationStyles';
+import { styles } from './styles';
 
 type CodeVerificationScreenRouteProp = RouteProp<RootStackParamList, 'CodeVerification'>;
 type CodeVerificationScreenNavigationProp = StackNavigationProp<

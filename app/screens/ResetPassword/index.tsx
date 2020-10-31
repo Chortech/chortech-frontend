@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { styles } from '../styles/ResetPasswordStyles';
+import { styles } from './styles';
 
 type ResetPasswordScreenRouteProp = RouteProp<RootStackParamList, 'ResetPassword'>;
 type ResetPasswordScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
-	'CodeVerification'
+	'ResetPassword'
 >;
 
 type Props = {

@@ -10,12 +10,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { styles } from '../styles/EditProfileStyles';
+import { styles } from './styles';
 
 type EditProfileScreenRouteProp = RouteProp<RootStackParamList, 'EditProfile'>;
 type EditProfileScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
-	'CodeVerification'
+	'EditProfile'
 >;
 
 type Props = {

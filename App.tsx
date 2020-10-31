@@ -8,15 +8,16 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
-import SignUp from './app/screens/SignUp';
-import Login from './app/screens/Login';
-import CodeVerification from './app/screens/CodeVerification';
-import Profile from './app/screens/Profile';
-import EditProfile from './app/screens/EditProfile';
-import ResetPassword from './app/screens/ResetPassword';
-import CreditCardList from './app/screens/CreditCardList';
+import SignUp from './app/screens/SignUp/index';
+import Login from './app/screens/Login/index';
+import CodeVerification from './app/screens/CodeVerification/index';
+import Profile from './app/screens/Profile/index';
+import EditProfile from './app/screens/EditProfile/index';
+import ResetPassword from './app/screens/ResetPassword/index';
+import CreditCardList from './app/screens/CreditCardList/index';
 
 library.add(fab, fas);
+
 type RootStackParamList = {
 	Login: undefined;
 	SignUp: undefined;

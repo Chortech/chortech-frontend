@@ -3,12 +3,12 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { styles } from '../styles/ProfileStyles';
+import { styles } from './styles';
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
 type ProfileScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
-	'CodeVerification'
+	'Profile'
 >;
 
 type Props = {
@@ -29,7 +29,7 @@ const ProfileScreen = ({ navigation }: Props): void => {
 			<View style={styles.header}>
 				<Image
 					style={styles.profileImage}
-					source={require('../assets/images/profile_picture_white.png')}
+					source={require('../../assets/images/profile_picture_white.png')}
 				/>
 				<Text style={styles.userNameText}>{data.name}</Text>
 			</View>

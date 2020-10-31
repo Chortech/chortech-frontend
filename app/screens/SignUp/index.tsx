@@ -11,12 +11,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { styles } from '../styles/SignUpStyles';
+import { styles } from './styles';
 
 type SignUpScreenRouteProp = RouteProp<RootStackParamList, 'SignUp'>;
 type SignUpScreenNavigationProp = StackNavigationProp<
 	RootStackParamList,
-	'CodeVerification'
+	'SignUp'
 >;
 
 type Props = {

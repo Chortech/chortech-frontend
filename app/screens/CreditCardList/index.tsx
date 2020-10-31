@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import CreditCard from '../components/CreditCard';
+import CreditCard from '../../components/CreditCard/CreditCard';
 
 type CreditCardListScreenRouteProp = RouteProp<RootStackParamList, 'CreditCardList'>;
 type CreditCardListScreenNavigationProp = StackNavigationProp<
