@@ -47,7 +47,7 @@ const App = (): void => {
 				<Stack.Screen name="EditProfile" component={EditProfile} />
 				<Stack.Screen name="ResetPassword" component={ResetPassword} />
 				<Stack.Screen name="CreditCardList" component={CreditCardList} />
-				<Stack.Screen name="FriendList" component={CreditCardList} />
+				<Stack.Screen name="FriendList" component={FriendList} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

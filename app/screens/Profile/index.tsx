@@ -62,7 +62,11 @@ const ProfileScreen = ({ navigation }: Props): void => {
 					</View>
 				</View>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.button}>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={(): void => {
+							navigation.navigate('FriendList');
+						}}>
 						<Text style={styles.buttonText}>دوستان</Text>
 					</TouchableOpacity>
 					<TouchableOpacity

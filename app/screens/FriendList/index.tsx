@@ -28,7 +28,7 @@ const FriendList = ({ navigation }: Props): void => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Text style={styles.textHeader}>ویرایش اطلاعات</Text>
+				<Text style={styles.textHeader}>دوستان</Text>
 			</View>
 			<Animatable.View
 				animation="slideInUp"
