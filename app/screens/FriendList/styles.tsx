@@ -39,8 +39,10 @@ export const styles = StyleSheet.create({
     friendImage: {
 		height: 50,
 		width: 50,
-		borderRadius: 50,
+		borderRadius: 25,
         padding: 10,
+        borderWidth: 2,
+        borderColor: '#1AD927'
 	},
     buttonContainer: {
 		flex: 5,

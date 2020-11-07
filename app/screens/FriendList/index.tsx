@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	View,
 	Text,
-	TextInput,
 	TouchableOpacity,
 	ScrollView,
 	FlatList,
@@ -52,7 +51,7 @@ const FriendList = ({ navigation }: Props): void => {
 								<View>
 									<TouchableOpacity style={styles.friendContainer}
 										onPress={(): void => {
-											navigation.navigate('Profile');
+											navigation.navigate('Friend');
 										}}>
 										<Image
 											style={styles.friendImage}
