@@ -5,6 +5,8 @@ import {
 	TextInput,
 	TouchableOpacity,
 	ScrollView,
+	FlatList,
+	Image,
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
@@ -25,6 +27,14 @@ type Props = {
 
 const FriendList = ({ navigation }: Props): void => {
 
+	const friends = [
+		{ name: 'Babak-SSH'},
+		{ name: 'Friend#2'},
+		{ name: 'Friend#3'},
+		{ name: 'Friend#4'},
+		{ name: 'Friend#5'},
+	]
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -35,6 +45,34 @@ const FriendList = ({ navigation }: Props): void => {
 				duration={600}
 				style={styles.infoContainer}>
 				<ScrollView showsVerticalScrollIndicator={false}>
+					<FlatList 
+						data={friends} 
+						renderItem={({ item }) => {	
+							return (
+								<View>
+									<TouchableOpacity style={styles.friendContainer}
+										onPress={(): void => {
+											navigation.navigate('Profile');
+										}}>
+										<Image
+											style={styles.friendImage}
+											source={require('../../assets/images/friend-image.jpg')}
+										/>
+										<Text style={styles.friendText}>{item.name}</Text>
+									</TouchableOpacity>
+								</View>	
+							)
+						}}
+					/>
+					<View style={styles.buttonContainer}>
+						<TouchableOpacity
+							style={styles.button}
+							onPress={(): void => {
+								navigation.navigate('Profile');
+							}}>
+							<Text style={styles.buttonText}>بازگشت</Text>
+						</TouchableOpacity>
+					</View>
 				</ScrollView>
 			</Animatable.View>
 		</View>
