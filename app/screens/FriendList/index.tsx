@@ -27,11 +27,11 @@ type Props = {
 const FriendList = ({ navigation }: Props): void => {
 
 	const friends = [
-		{ name: 'Babak-SSH'},
-		{ name: 'Friend#2'},
-		{ name: 'Friend#3'},
-		{ name: 'Friend#4'},
-		{ name: 'Friend#5'},
+		{ name: 'بابک سفیدگر'},
+		{ name: 'هژار آزیز'},
+		{ name: 'سینا شعبانی'},
+		{ name: 'نیما ابوالحسن بیگی'},
+		{ name: 'حسین مهرمحمدی'},
 	]
 
 	return (
@@ -53,11 +53,11 @@ const FriendList = ({ navigation }: Props): void => {
 										onPress={(): void => {
 											navigation.navigate('Friend');
 										}}>
+										<Text style={styles.friendText}>{item.name}</Text>
 										<Image
 											style={styles.friendImage}
 											source={require('../../assets/images/friend-image.jpg')}
 										/>
-										<Text style={styles.friendText}>{item.name}</Text>
 									</TouchableOpacity>
 								</View>	
 							)

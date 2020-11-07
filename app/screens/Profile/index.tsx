@@ -19,7 +19,6 @@ type Props = {
 const ProfileScreen = ({ navigation }: Props): void => {
 	const [data, setData] = useState({
 		name: 'بابک سفیدگر',
-		username: 'babak-ssh',
 		email: 'sample@example.com',
 		phone: '09123456789',
 	});
@@ -37,14 +36,6 @@ const ProfileScreen = ({ navigation }: Props): void => {
 				animation="slideInUp"
 				duration={600}
 				style={styles.infoContainer}>
-				<View style={styles.textWrapper}>
-					<View style={styles.textContainerLeft}>
-						<Text style={styles.textInfo}>{data.username}</Text>
-					</View>
-					<View style={styles.textContainerRight}>
-						<Text style={styles.textInfo}>نام کاربری</Text>
-					</View>
-				</View>
 				<View style={styles.textWrapper}>
 					<View style={styles.textContainerLeft}>
 						<Text style={styles.textInfo}>{data.email}</Text>

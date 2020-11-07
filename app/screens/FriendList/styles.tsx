@@ -35,6 +35,8 @@ export const styles = StyleSheet.create({
 		flex: 5,
 		padding: 10,
         marginTop: 10,
+        fontFamily: 'IRANSansWeb_Bold', 
+        fontSize: 12,
 	},
     friendImage: {
 		height: 50,
@@ -42,7 +44,7 @@ export const styles = StyleSheet.create({
 		borderRadius: 25,
         padding: 10,
         borderWidth: 2,
-        borderColor: '#1AD927'
+        borderColor: '#1AD927',
 	},
     buttonContainer: {
 		flex: 5,
