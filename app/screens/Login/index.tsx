@@ -6,38 +6,41 @@ import {
 	TextInput,
 	ScrollView,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { onChange } from 'react-native-reanimated';
+
 import { styles } from './styles';
+import * as loginActions from '../../store/actions/loginActions';
+import { ILoginState } from '../../models/reducers/login';
+import  NavigationService   from '../../navigation/navigationService';
 
-type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
-type LoginScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'Login'
->;
+interface IState {
+	loginReducer: ILoginState;
+  }
+  
+	const Login: React.FC = () => {
+		const id = useSelector((state: IState) => state.loginReducer.id);
+		const dispatch = useDispatch();
+		const onLogin = () => dispatch(loginActions.requestLogin('test', '1234'));
+		const onForgot = () => NavigationService.navigate('CodeVerification');
+		const onSignUp = () => NavigationService.navigate('SignUp')
 
-type Props = {
-	navigation: LoginScreenNavigationProp;
-	route: LoginScreenRouteProp;
-};
-
-const Login = ({ navigation }: Props): void => {
-	const [data, setData] = useState({
-		emailOrPhone: '',
-		password: '',
-		secureTextEntry: true,
-	});
-
-	const togglePassword = (): void => {
-		setData({
-			...data,
-			secureTextEntry: !data.secureTextEntry,
+		const [data, setData] = useState({
+			emailOrPhone: '',
+			password: '',
+			secureTextEntry: true,
 		});
-	};
-
+	
+		const togglePassword = (): void => {
+			setData({
+				...data,
+				secureTextEntry: !data.secureTextEntry,
+			});
+		};
+		
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -80,9 +83,7 @@ const Login = ({ navigation }: Props): void => {
 					</View>
 					<View>
 						<TouchableOpacity
-							onPress={(): void => {
-								navigation.navigate('CodeVerification', { nextScreen: 'ResetPassword' });
-							}}>
+							onPress={onForgot}>
 							<Text style={styles.resetPasswordText}>
 								کلمه عبور خود را فراموش کرده‌اید؟
 							</Text>
@@ -91,12 +92,12 @@ const Login = ({ navigation }: Props): void => {
 					<View style={styles.buttonContainer}>
 						<TouchableOpacity
 							style={styles.filledButton}
-							onPress={(): void => navigation.navigate('CreditCardList')}>
+							onPress={onLogin}>
 							<Text style={styles.filledButtonText}>ورود</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.outlinedButton}
-							onPress={(): void => navigation.navigate('SignUp')}>
+							onPress={onSignUp}>
 							<Text style={styles.outlinedButtonText}>ثبت نام</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.outlinedButton}>

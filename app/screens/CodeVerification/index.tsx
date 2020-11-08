@@ -6,37 +6,27 @@ import {
 	TextInput,
 	StatusBar,
 } from 'react-native';
-
 import * as Animatable from 'react-native-animatable';
 import { CountDown } from 'react-native-customizable-countdown';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+
+import  NavigationService   from '../../navigation/navigationService';
 import { styles } from './styles';
 
-type CodeVerificationScreenRouteProp = RouteProp<RootStackParamList, 'CodeVerification'>;
-type CodeVerificationScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'CodeVerification'
->;
 
-type Props = {
-	navigation: CodeVerificationScreenNavigationProp;
-	route: CodeVerificationScreenRouteProp;
-};
-
-const CodeVerification = ({ route, navigation }: Props): void => {
-	// const [data, setData] = useState({
-	// 	verificationCode: '',
-	// 	checkTextInputChange: false,
-	// });
-
-	const { nextScreen } = route.params;
+const CodeVerification: React.FC = () => {
+	const dispatch = useDispatch();
+	const onReset = () => NavigationService.navigate('ResetPassword');
+		
+	const [data, setData] = useState({
+		verificationCode: '',
+		checkTextInputChange: false,
+	});
 	const [ref, setRef] = useState(null);
-
 	const resetTimer = (): void => {
 		ref.resetCountDown();
 	};
-
+	
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -70,7 +60,7 @@ const CodeVerification = ({ route, navigation }: Props): void => {
 						height={40}
 					/>
 					<View>
-						<TouchableOpacity onPress={resetTimer}>
+						<TouchableOpacity /*onPress={resetTimer}*/>
 							<Text style={styles.buttonResend}>ارسال مجدد کد</Text>
 						</TouchableOpacity>
 					</View>
@@ -78,9 +68,7 @@ const CodeVerification = ({ route, navigation }: Props): void => {
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity
 						style={styles.confirmButton}
-						onPress={(): void => {
-							navigation.navigate(nextScreen);
-						}}>
+						onPress={onReset}>
 						<Text style={styles.confirmButtonText}>تایید</Text>
 					</TouchableOpacity>
 				</View>

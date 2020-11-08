@@ -3,22 +3,14 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+
+import  NavigationService   from '../../navigation/navigationService';
 import { styles } from './styles';
 
-type ResetPasswordScreenRouteProp = RouteProp<RootStackParamList, 'ResetPassword'>;
-type ResetPasswordScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'ResetPassword'
->;
 
-type Props = {
-	navigation: ResetPasswordScreenNavigationProp;
-	route: ResetPasswordScreenRouteProp;
-};
+const ResetPassword: React.FC = () => {
+	const resetToHome = () => NavigationService.resetTo('Login');
 
-const ResetPassword = ({ navigation }: Props): void => {
 	const [data, setData] = useState({
 		password: '12345678',
 		secureTextEntry: true,
@@ -96,7 +88,8 @@ const ResetPassword = ({ navigation }: Props): void => {
 					/>
 				</View>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.confirmButton}>
+					<TouchableOpacity style={styles.confirmButton}
+						onPress={resetToHome}>
 						<Text style={styles.confirmButtonText}>تایید</Text>
 					</TouchableOpacity>
 				</View>

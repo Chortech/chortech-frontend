@@ -9,22 +9,12 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import  NavigationService   from '../../navigation/navigationService';
 import { styles } from './styles';
 
-type SignUpScreenRouteProp = RouteProp<RootStackParamList, 'SignUp'>;
-type SignUpScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'SignUp'
->;
+const SignUp: React.FC = () => {
+	const onForgot = () => NavigationService.navigate('CodeVerification');
 
-type Props = {
-	navigation: SignUpScreenNavigationProp;
-	route: SignUpScreenRouteProp;
-};
-
-const SignUp = ({ navigation }: Props): void => {
 	const [data, setData] = useState({
 		emailOrPhone: '',
 		password: '',
@@ -79,9 +69,7 @@ const SignUp = ({ navigation }: Props): void => {
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity
 						style={styles.verifyScreenButton}
-						onPress={(): void =>
-							navigation.navigate('CodeVerification', { nextScreen: 'Profile' })
-						}>
+						onPress={onForgot}>
 						<Text style={styles.verifyScreenButtonText}>
 							ادامه و دریافت کد تایید
 						</Text>
