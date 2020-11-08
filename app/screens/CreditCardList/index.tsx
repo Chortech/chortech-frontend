@@ -1,14 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import CreditCard from '../../components/CreditCard/CreditCard';
-
-type CreditCardListScreenRouteProp = RouteProp<RootStackParamList, 'CreditCardList'>;
-type CreditCardListScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'CreditCardList'
->;
 
 const data = [
 	{
@@ -34,18 +26,17 @@ const data = [
 type Props = {
 	cardOwnerName: string;
 	cardNumber: string;
-	navigation: CreditCardListScreenNavigationProp;
-	route: CreditCardListScreenRouteProp;
+	bankName: string;
 };
 
-const CreditCardList = ({ route, navigation }: Props): void => {
-	const renderCardItem = ({ item }: Props): void => (
-		<CreditCard
-			ownerName={item.cardOwnerName}
-			cardNumber={item.cardNumber}
-			bankName={item.bankName}
-		/>
-	);
+const renderCardItem = ({ item }: Props): void => (
+	<CreditCard
+		ownerName={item.cardOwnerName}
+		cardNumber={item.cardNumber}
+		bankName={item.bankName}
+	/>
+);
+const CreditCardList: React.FC = () => {
 
 	return (
 		<View style={{ backgroundColor: '#fff' }}>
@@ -55,6 +46,7 @@ const CreditCardList = ({ route, navigation }: Props): void => {
 				keyExtractor={(item): void => item.id}
 			/>
 		</View>
+		<Text>تایید</Text>
 	);
 };
 
