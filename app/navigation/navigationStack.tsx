@@ -35,6 +35,13 @@ const AuthNavigator = () => {
         }}
       />
       <Stack.Screen
+        name="CodeVerification"
+        component={CodeVerification}
+        options={{
+          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+        }}
+      />
+      <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
         options={{
