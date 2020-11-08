@@ -67,9 +67,9 @@ const FriendList = ({ navigation }: Props): void => {
 						<TouchableOpacity
 							style={styles.button}
 							onPress={(): void => {
-								navigation.navigate('Profile');
+								navigation.navigate('InviteFriend');
 							}}>
-							<Text style={styles.buttonText}>بازگشت</Text>
+							<Text style={styles.buttonText}>دعوت از دوستان</Text>
 						</TouchableOpacity>
 					</View>
 				</ScrollView>

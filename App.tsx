@@ -17,6 +17,7 @@ import ResetPassword from './app/screens/ResetPassword/index';
 import CreditCardList from './app/screens/CreditCardList/index';
 import FriendList from './app/screens/FriendList/index';
 import Friend from './app/screens/Friend/index';
+import InviteFriend from './app/screens/InviteFriend/index';
 
 library.add(fab, fas);
 
@@ -30,6 +31,7 @@ type RootStackParamList = {
 	CreditCardList: undefined;
 	FriendList: undefined;
 	Friend: undefined;
+	InviteFriend: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -51,6 +53,7 @@ const App = (): void => {
 				<Stack.Screen name="CreditCardList" component={CreditCardList} />
 				<Stack.Screen name="FriendList" component={FriendList} />
 				<Stack.Screen name="Friend" component={Friend} />
+				<Stack.Screen name="InviteFriend" component={InviteFriend} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
