@@ -3,26 +3,19 @@ import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
-import { navigationRef } from './NavigationService';
+import { navigationRef } from './navigationService';
 
-import Login from 'app/screens/Login';
-import Home from 'app/screens/Home';
-import ForgotPassword from 'app/screens/ResetPassword';
+import Login from '../screens/Login';
+import Home from '../screens/Home';
+import ResetPassword from '../screens/ResetPassword';
+import CodeVerification from '../screens/CodeVerification';
 
 import { StatusBar } from 'react-native';
-import { ILoginState } from 'app/models/reducers/login';
+import { ILoginState } from '../models/reducers/login';
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
-
-// const homeOptions = {
-//   title: 'Home',
-//   headerTitleStyle: {
-//     fontWeight: 'bold',
-//   },
-//   headerRight: () => <ThemeController />,
-// };
 
 interface IState {
   loginReducer: ILoginState;
@@ -38,20 +31,14 @@ const AuthNavigator = () => {
         name="Login"
         component={Login}
         options={{
-          // When logging out, a pop animation feels intuitive
-          // You can remove this if you want the default 'push' animation
           animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-        //   headerRight: () => <ThemeController />,
         }}
       />
       <Stack.Screen
-        name="ForgotPassword"
-        component={ForgotPassword}
+        name="ResetPassword"
+        component={ResetPassword}
         options={{
-          // When logging out, a pop animation feels intuitive
-          // You can remove this if you want the default 'push' animation
           animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-        //   headerRight: () => <ThemeController />,
         }}
       />
     </AuthStack.Navigator>
@@ -85,8 +72,6 @@ const App: React.FC = () => {
             name="Login"
             component={AuthNavigator}
             options={{
-              // When logging out, a pop animation feels intuitive
-              // You can remove this if you want the default 'push' animation
               animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
             }}
           />
