@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
     infoContainer: {
         flex: 6,
         backgroundColor: '#fff',
-        paddingHorizontal: 20,
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
     },
@@ -33,12 +32,20 @@ export const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
         paddingBottom: 5,
     },
+    searchBar: {
+        backgroundColor: 'white',
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+        borderTopWidth: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EBE8E8',
+    },
     textInput: {
         flex: 10,
         color: '#053751',
-        padding: 10,
         fontFamily: 'Dirooz',
         textAlign: 'right',
+        backgroundColor: 'white',
     },
     buttonContainer: {
 		flex: 5,

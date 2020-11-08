@@ -40,17 +40,15 @@ const InviteFriend = ({ navigation }: Props): void => {
 				animation="slideInUp"
 				duration={1000}
 				style={styles.infoContainer}>
-                <View style={styles.inputContainer}>
-                    {/* <SearchBar
-                        placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-                        round
-                        searchIcon={{ size: 24 }}
-                        onChangeText={(text) => searchFilterFunction(text)}
-                        onClear={(text) => searchFilterFunction('')}
-                        // placeholder="Type Here..."
-                        value={data.emailOrPhone}
-                    /> */}
-                </View>
+                <SearchBar
+                    lightTheme
+                    searchIcon={{ size: 20 }}
+                    placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
+                    containerStyle={styles.searchBar}
+                    inputStyle={styles.textInput}
+                    leftIconContainerStyle={{backgroundColor: 'white'}}
+                    inputContainerStyle={{backgroundColor: 'white'}}
+                />
 			</Animatable.View>
 		</View>
 	);
