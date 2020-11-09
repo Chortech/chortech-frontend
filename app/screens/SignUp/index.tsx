@@ -7,7 +7,7 @@ import NavigationService from '../../navigation/navigationService';
 import { styles } from './styles';
 
 const SignUp: React.FC = () => {
-	const onVerify = () => NavigationService.navigate('CodeVerification');
+	const onVerify = () => NavigationService.navigate('CodeVerification', {parentScreen: "SignUp", userName: "babak-ssh", password: "1234"});
 
 	const [data, setData] = useState({
 		emailOrPhone: '',
