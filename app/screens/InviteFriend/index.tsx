@@ -48,6 +48,10 @@ const InviteFriend = ({ navigation }: Props): void => {
                     inputStyle={styles.textInput}
                     leftIconContainerStyle={{backgroundColor: 'white'}}
                     inputContainerStyle={{backgroundColor: 'white'}}
+                    onChangeText={(text) => 
+                    data.emailOrPhone = text}
+                    onClear={(text) => data.emailOrPhone = ''}
+                    value={data.emailOrPhone}
                 />
 			</Animatable.View>
 		</View>
