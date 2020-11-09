@@ -1,5 +1,5 @@
-import * as types from './types';
-import { ILoginResponse } from '../../models/api/login';
+import * as types from "./types";
+import { ILoginResponse } from "../../models/api/login";
 
 export function requestLogin(emailOrPhone: string, password: string) {
   return {

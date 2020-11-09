@@ -9,7 +9,7 @@
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "noImplicitAny": false,
+    "noImplicitAny": false
   },
   "exclude": [
     "node_modules",

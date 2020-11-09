@@ -4,21 +4,21 @@
  * un - username
  * pwd - password
  */
-import { put } from 'redux-saga/effects';
+import { put } from "redux-saga/effects";
 // import { delay } from 'redux-saga';
 
-import { Alert } from 'react-native';
+import { Alert } from "react-native";
 // import loginUser from 'app/services/loginUser';
-import * as loginActions from '../actions/loginActions';
+import * as loginActions from "../actions/loginActions";
 
 // Our worker Saga that logins the user
 export default function* loginAsync() {
-//   yield put(loginActions.enableLoader());
+  //   yield put(loginActions.enableLoader());
 
   //how to call api
   //const response = yield call(loginUser, action.username, action.password);
   //mock response
-  const response = { success: true, data: { id: 1 }, message: 'Success' };
+  const response = { success: true, data: { id: 1 }, message: "Success" };
 
   if (response.success) {
     yield put(loginActions.onLoginResponse(response.data));
@@ -30,7 +30,7 @@ export default function* loginAsync() {
     yield put(loginActions.loginFailed());
     // yield put(loginActions.disableLoader());
     setTimeout(() => {
-      Alert.alert('test_user', response.message);
+      Alert.alert("test_user", response.message);
     }, 200);
   }
 }

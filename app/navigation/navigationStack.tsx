@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { NavigationContainer, Theme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import * as React from "react";
+import { NavigationContainer, Theme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
 
-import { navigationRef } from './navigationService';
+import { navigationRef } from "./navigationService";
 
-import Login from '../screens/Login';
-import Home from '../screens/Home';
-import ResetPassword from '../screens/ResetPassword';
-import CodeVerification from '../screens/CodeVerification';
-import SignUp from '../screens/SignUp';
+import Login from "../screens/Login";
+import Home from "../screens/Home";
+import ResetPassword from "../screens/ResetPassword";
+import CodeVerification from "../screens/CodeVerification";
+import SignUp from "../screens/SignUp";
 
-import { StatusBar } from 'react-native';
-import { ILoginState } from '../models/reducers/login';
+import { StatusBar } from "react-native";
+import { ILoginState } from "../models/reducers/login";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -24,36 +24,36 @@ interface IState {
 
 const AuthNavigator = () => {
   const isLoggedIn = useSelector(
-    (state: IState) => state.loginReducer.isLoggedIn,
+    (state: IState) => state.loginReducer.isLoggedIn
   );
   return (
-    <AuthStack.Navigator>
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Login"
         component={Login}
         options={{
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
         }}
       />
       <Stack.Screen
         name="SignUp"
         component={SignUp}
         options={{
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
         }}
       />
       <Stack.Screen
         name="CodeVerification"
         component={CodeVerification}
         options={{
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
         }}
       />
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
         options={{
-          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
         }}
       />
     </AuthStack.Navigator>
@@ -67,9 +67,8 @@ const LoggedInNavigator = () => (
 );
 
 const App: React.FC = () => {
-  
   const isLoggedIn = useSelector(
-    (state: IState) => state.loginReducer.isLoggedIn,
+    (state: IState) => state.loginReducer.isLoggedIn
   );
 
   return (
@@ -90,7 +89,7 @@ const App: React.FC = () => {
             name="Login"
             component={AuthNavigator}
             options={{
-              animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+              animationTypeForReplace: isLoggedIn ? "push" : "pop",
               headerShown: false,
             }}
           />

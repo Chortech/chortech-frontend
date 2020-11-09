@@ -1,9 +1,9 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import { View } from "react-native";
+import { Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
 
-import * as loginActions from '../../store/actions/loginActions';
+import * as loginActions from "../../store/actions/loginActions";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();

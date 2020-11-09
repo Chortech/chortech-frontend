@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { styles } from './styles';
+import React from "react";
+import { View, Text } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import { styles } from "./styles";
 
 type Props = {
   ownerName: string;
@@ -11,8 +11,9 @@ type Props = {
 const CreditCard = ({ ownerName, cardNumber, bankName }: Props): void => {
   return (
     <LinearGradient
-      colors={['#28fc35', '#04d912']}
-      style={styles.cardContainer}>
+      colors={["#28fc35", "#04d912"]}
+      style={styles.cardContainer}
+    >
       <View style={styles.cardItem}>
         <Text style={styles.cardNumberText}>{cardNumber}</Text>
       </View>

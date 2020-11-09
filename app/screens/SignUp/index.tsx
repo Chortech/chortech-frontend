@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	TextInput,
-	StatusBar,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StatusBar } from 'react-native';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
-import  NavigationService   from '../../navigation/navigationService';
+import NavigationService from '../../navigation/navigationService';
 import { styles } from './styles';
 
 const SignUp: React.FC = () => {
-	const onForgot = () => NavigationService.navigate('CodeVerification');
+	const onVerify = () => NavigationService.navigate('CodeVerification');
 
 	const [data, setData] = useState({
 		emailOrPhone: '',
@@ -34,45 +28,23 @@ const SignUp: React.FC = () => {
 			<View style={styles.header}>
 				<Text style={styles.textHeader}>Chortech</Text>
 			</View>
-			<Animatable.View
-				animation="slideInUp"
-				duration={1000}
-				style={styles.footer}>
+			<Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
 				<View style={styles.inputContainer}>
-					<TextInput
-						placeholder="ایمیل یا شماره موبایل"
-						style={styles.textInput}
-					/>
+					<TextInput placeholder="ایمیل یا شماره موبایل" style={styles.textInput} />
 				</View>
 				<View style={styles.inputContainer}>
 					<TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
 						{data.secureTextEntry ? (
-							<FontAwesomeIcon
-								icon="eye-slash"
-								size={20}
-								style={{ color: 'red' }}
-							/>
+							<FontAwesomeIcon icon="eye-slash" size={20} style={{ color: 'red' }} />
 						) : (
-							<FontAwesomeIcon
-								icon="eye"
-								size={20}
-								style={{ color: '#1AD927' }}
-							/>
+							<FontAwesomeIcon icon="eye" size={20} style={{ color: '#1AD927' }} />
 						)}
 					</TouchableOpacity>
-					<TextInput
-						placeholder="رمز عبور"
-						style={styles.textInput}
-						secureTextEntry={data.secureTextEntry}
-					/>
+					<TextInput placeholder="رمز عبور" style={styles.textInput} secureTextEntry={data.secureTextEntry} />
 				</View>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity
-						style={styles.verifyScreenButton}
-						onPress={onForgot}>
-						<Text style={styles.verifyScreenButtonText}>
-							ادامه و دریافت کد تایید
-						</Text>
+					<TouchableOpacity style={styles.verifyScreenButton} onPress={onVerify}>
+						<Text style={styles.verifyScreenButtonText}>ادامه و دریافت کد تایید</Text>
 					</TouchableOpacity>
 				</View>
 			</Animatable.View>
