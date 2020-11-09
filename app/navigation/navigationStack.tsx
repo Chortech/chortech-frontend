@@ -27,7 +27,8 @@ const AuthNavigator = () => {
     (state: IState) => state.loginReducer.isLoggedIn
   );
   return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={Login}
@@ -61,7 +62,8 @@ const AuthNavigator = () => {
 };
 
 const LoggedInNavigator = () => (
-  <LoggedInStack.Navigator>
+  <LoggedInStack.Navigator
+  initialRouteName="Home">
     <Stack.Screen name="Home" component={Home} />
   </LoggedInStack.Navigator>
 );
