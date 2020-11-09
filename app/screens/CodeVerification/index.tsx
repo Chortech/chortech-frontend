@@ -1,3 +1,4 @@
+import { useNavigationState, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   View,
@@ -12,10 +13,23 @@ import { useDispatch, useSelector } from "react-redux";
 
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import * as loginActions from '../../store/actions/loginActions';
 
 const CodeVerification: React.FC = () => {
+  const parentScreen = useRoute().params["parentScreen"]
+  const userName = useRoute().params["userName"]
+  const password = useRoute().params["password"]
+  
   const dispatch = useDispatch();
-  const onNextScreen = () => NavigationService.navigate("ResetPassword");
+  const onNextScreen = () => {
+    if (parentScreen == "Login"){
+      NavigationService.navigate('ResetPassword');
+    }
+    else{
+     dispatch(loginActions.requestLogin(userName, password));
+    }
+  };
+
 
   const [data, setData] = useState({
     verificationCode: "",
