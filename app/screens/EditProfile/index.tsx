@@ -26,7 +26,6 @@ type Props = {
 const EditProfile = ({ navigation }: Props): void => {
 	const [data, setData] = useState({
 		name: 'بابک سفیدگر',
-		username: 'babak-ssh',
 		email: 'sample@example.com',
 		phone: '09123456789',
 		password: '12345678',
@@ -56,16 +55,6 @@ const EditProfile = ({ navigation }: Props): void => {
 							<TextInput
 								defaultValue={data.name}
 								placeholder="نام و نام خانوادگی"
-								style={styles.textInput}
-							/>
-						</View>
-					</View>
-					<View style={styles.customInputContainer}>
-						<Text style={styles.label}>نام کاربری</Text>
-						<View style={styles.inputContainer}>
-							<TextInput
-								defaultValue={data.username}
-								placeholder="نام کاربری"
 								style={styles.textInput}
 							/>
 						</View>

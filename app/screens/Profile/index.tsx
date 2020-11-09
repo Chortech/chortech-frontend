@@ -19,7 +19,6 @@ type Props = {
 const ProfileScreen = ({ navigation }: Props): void => {
 	const [data, setData] = useState({
 		name: 'بابک سفیدگر',
-		username: 'babak-ssh',
 		email: 'sample@example.com',
 		phone: '09123456789',
 	});
@@ -39,14 +38,6 @@ const ProfileScreen = ({ navigation }: Props): void => {
 				style={styles.infoContainer}>
 				<View style={styles.textWrapper}>
 					<View style={styles.textContainerLeft}>
-						<Text style={styles.textInfo}>{data.username}</Text>
-					</View>
-					<View style={styles.textContainerRight}>
-						<Text style={styles.textInfo}>نام کاربری</Text>
-					</View>
-				</View>
-				<View style={styles.textWrapper}>
-					<View style={styles.textContainerLeft}>
 						<Text style={styles.textInfo}>{data.email}</Text>
 					</View>
 					<View style={styles.textContainerRight}>
@@ -62,7 +53,11 @@ const ProfileScreen = ({ navigation }: Props): void => {
 					</View>
 				</View>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.button}>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={(): void => {
+							navigation.navigate('FriendList');
+						}}>
 						<Text style={styles.buttonText}>دوستان</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
