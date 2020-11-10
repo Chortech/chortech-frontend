@@ -10,6 +10,8 @@ import { styles } from './styles';
 import * as loginActions from '../../store/actions/loginActions';
 import { ILoginState } from '../../models/reducers/login';
 import NavigationService from '../../navigation/navigationService';
+import GraphQLApi from "../../api/graphQL/graphqlApi";
+
 
 interface IState {
 	loginReducer: ILoginState;
@@ -18,7 +20,7 @@ interface IState {
 const Login: React.FC = () => {
 	const id = useSelector((state: IState) => state.loginReducer.id);
 	const dispatch = useDispatch();
-	const onLogin = () => dispatch(loginActions.requestLogin('test', '1234'));
+	const onLogin = () => dispatch(loginActions.requestLogin('babak@example.com', '09123', '1234'));
 	const onForgot = () => NavigationService.navigate('AccountIdentification');
 	const onSignUp = () => NavigationService.navigate('SignUp');
 

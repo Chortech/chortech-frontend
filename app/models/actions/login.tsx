@@ -1,6 +1,7 @@
 export interface ILoginRequestState {
   type: String;
-  emailOrPhone: string;
+  email: string;
+  phone: string
   password: string;
 }
 

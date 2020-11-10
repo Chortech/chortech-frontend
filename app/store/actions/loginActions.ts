@@ -1,25 +1,34 @@
-import * as types from "./types";
-import { ILoginResponse } from "../../models/api/login";
+import * as types from './types';
+import { ILoginResponse } from '../../models/api/login';
+import GraphQLApi from '../../api/graphQL/graphqlApi';
 
-export function requestLogin(emailOrPhone: string, password: string) {
-  return {
-    type: types.LOGIN_REQUEST,
-    emailOrPhone,
-    password,
-  };
+interface IAction {
+	type: string;
+	payload?: any;
 }
 
-export function loginFailed() {
-  return {
-    type: types.LOGIN_FAILED,
-  };
+export function requestLogin(email: string, phone?: string, password: string): IAction {
+	return {
+		type: types.LOGIN_REQUEST,
+		payload: {
+			email,
+      phone,
+			password,
+		},
+	};
 }
 
-export function onLoginResponse(response: ILoginResponse) {
-  return {
-    type: types.LOGIN_RESPONSE,
-    response,
-  };
+export function loginFailed(): IAction {
+	return {
+		type: types.LOGIN_FAILED,
+	};
+}
+
+export function onLoginResponse(response: ILoginResponse): IAction {
+	return {
+		type: types.LOGIN_RESPONSE,
+		payload: response,
+	};
 }
 
 // export function enableLoader() {
@@ -34,8 +43,8 @@ export function onLoginResponse(response: ILoginResponse) {
 //   };
 // }
 
-export function logOut() {
-  return {
-    type: types.LOG_OUT,
-  };
+export function logOut(): IAction {
+	return {
+		type: types.LOG_OUT,
+	};
 }
