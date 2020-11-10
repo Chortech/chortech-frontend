@@ -19,7 +19,7 @@ const Login: React.FC = () => {
 	const id = useSelector((state: IState) => state.loginReducer.id);
 	const dispatch = useDispatch();
 	const onLogin = () => dispatch(loginActions.requestLogin('test', '1234'));
-	const onForgot = () => NavigationService.navigate('CodeVerification', {parentScreen: "Login"});
+	const onForgot = () => NavigationService.navigate('AccountIdentification');
 	const onSignUp = () => NavigationService.navigate('SignUp');
 
 	const [data, setData] = useState({
