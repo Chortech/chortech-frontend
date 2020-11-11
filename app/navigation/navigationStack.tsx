@@ -1,19 +1,19 @@
-import * as React from 'react';
-import { NavigationContainer, Theme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import * as React from "react";
+import { NavigationContainer, Theme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
 
-import { navigationRef } from './navigationService';
+import { navigationRef } from "./navigationService";
 
-import Login from '../screens/Login';
-import Home from '../screens/Home';
-import ResetPassword from '../screens/ResetPassword';
-import CodeVerification from '../screens/CodeVerification';
-import SignUp from '../screens/SignUp';
-import AccountIdentification from '../screens/AccountIdentification';
+import Login from "../screens/Login";
+import Home from "../screens/Home";
+import ResetPassword from "../screens/ResetPassword";
+import CodeVerification from "../screens/CodeVerification";
+import SignUp from "../screens/SignUp";
+import AccountIdentification from "../screens/AccountIdentification";
 
-import { StatusBar } from 'react-native';
-import { ILoginState } from '../models/reducers/login';
+import { StatusBar } from "react-native";
+import { ILoginState } from "../models/reducers/login";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -24,83 +24,85 @@ const LoggedInStack = createStackNavigator();
 // }
 
 const AuthNavigator = () => {
-	const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
-	return (
-		<AuthStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
-			<Stack.Screen
-				name="Login"
-				component={Login}
-				options={{
-					animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-				}}
-			/>
-			<Stack.Screen
-				name="SignUp"
-				component={SignUp}
-				options={{
-					animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-				}}
-			/>
-			<Stack.Screen
-				name="AccountIdentification"
-				component={AccountIdentification}
-				options={{
-					animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-				}}
-			/>
-			<Stack.Screen
-				name="CodeVerification"
-				component={CodeVerification}
-				options={{
-					animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-				}}
-			/>
-			<Stack.Screen
-				name="ResetPassword"
-				component={ResetPassword}
-				options={{
-					animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-				}}
-			/>
-		</AuthStack.Navigator>
-	);
+  const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
+  return (
+    <AuthStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
+        }}
+      />
+      <Stack.Screen
+        name="AccountIdentification"
+        component={AccountIdentification}
+        options={{
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
+        }}
+      />
+      <Stack.Screen
+        name="CodeVerification"
+        component={CodeVerification}
+        options={{
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
+        }}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
+        options={{
+          animationTypeForReplace: isLoggedIn ? "push" : "pop",
+        }}
+      />
+    </AuthStack.Navigator>
+  );
 };
 
 const LoggedInNavigator = () => (
-	<LoggedInStack.Navigator initialRouteName="Home">
-		<Stack.Screen name="Home" component={Home} />
-	</LoggedInStack.Navigator>
+  <LoggedInStack.Navigator initialRouteName="Home">
+    <Stack.Screen name="Home" component={Home} />
+  </LoggedInStack.Navigator>
 );
 
 const App: React.FC = () => {
-	const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
+  const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
 
-	return (
-		<NavigationContainer ref={navigationRef}>
-			<StatusBar />
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <StatusBar />
 
-			<Stack.Navigator>
-				{isLoggedIn ? (
-					<Stack.Screen
-						name="Home"
-						component={LoggedInNavigator}
-						options={{
-							headerShown: false,
-						}}
-					/>
-				) : (
-					<Stack.Screen
-						name="Login"
-						component={AuthNavigator}
-						options={{
-							animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
-							headerShown: false,
-						}}
-					/>
-				)}
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <Stack.Screen
+            name="Home"
+            component={LoggedInNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+        ) : (
+          <Stack.Screen
+            name="Login"
+            component={AuthNavigator}
+            options={{
+              animationTypeForReplace: isLoggedIn ? "push" : "pop",
+              headerShown: false,
+            }}
+          />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default App;
