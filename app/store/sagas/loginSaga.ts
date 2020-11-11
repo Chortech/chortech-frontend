@@ -9,11 +9,13 @@ import { put } from 'redux-saga/effects';
 
 import { Alert } from 'react-native';
 // import loginUser from 'app/services/loginUser';
+import { Action } from "../../models/actions/action";
+import { LoginRequest } from "../../models/requests/login";
 import * as loginActions from '../actions/loginActions';
 import { Api } from '../../services/api/graphQL/graphqlApi';
 
 // Our worker Saga that logins the user
-export default function* loginAsync(action) {
+export default function* loginAsync(action: Action<LoginRequest>) {
 	//   yield put(loginActions.enableLoader());
 	//how to call api
 	const { email, phone, password } = action.payload;

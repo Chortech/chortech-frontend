@@ -41,12 +41,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Dirooz",
     textAlign: "right",
   },
-  toggleIcon: {
-    flex: 1,
-    marginRight: 5,
-    marginLeft: 15,
-    alignSelf: "center",
-  },
   buttonContainer: {
     flex: 5,
     width: "100%",

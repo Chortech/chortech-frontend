@@ -1,6 +1,10 @@
 import * as React from "react";
-import { NavigationContainerRef, useNavigationState } from "@react-navigation/native";
+import {
+  NavigationContainerRef,
+  useNavigationState,
+} from "@react-navigation/native";
 import { State } from "react-native-paper/lib/typescript/src/components/TextInput/types";
+
 // NavigationContainer is referred here - Check NavigationStack
 export const navigationRef = React.createRef<NavigationContainerRef>();
 

@@ -1,34 +1,37 @@
-import * as types from './types';
-import { ILoginResponse } from '../../models/api/login';
-import GraphQLApi from '../../api/graphQL/graphqlApi';
+import * as types from "./types";
+import { Action } from "../../models/actions/action";
+import { LoginRequest } from "../../models/requests/login";
+import { LoginResponse } from "../../models/responses/login";
 
-interface IAction {
-	type: string;
-	payload?: any;
-}
-
-export function requestLogin(email: string, phone?: string, password: string): IAction {
-	return {
-		type: types.LOGIN_REQUEST,
-		payload: {
-			email,
+export function requestLogin(
+  email: string,
+  phone: string,
+  password: string
+): Action<LoginRequest> {
+  return {
+    type: types.LOGIN_REQUEST,
+    payload: {
+      email,
       phone,
-			password,
-		},
-	};
+      password,
+    },
+  };
 }
 
-export function loginFailed(): IAction {
-	return {
-		type: types.LOGIN_FAILED,
-	};
+export function loginFailed(): Action<any> {
+  return {
+    type: types.LOGIN_FAILED,
+    payload: {},
+  };
 }
 
-export function onLoginResponse(response: ILoginResponse): IAction {
-	return {
-		type: types.LOGIN_RESPONSE,
-		payload: response,
-	};
+export function onLoginResponse(
+  response: LoginResponse
+): Action<LoginResponse> {
+  return {
+    type: types.LOGIN_RESPONSE,
+    payload: response,
+  };
 }
 
 // export function enableLoader() {
@@ -43,8 +46,9 @@ export function onLoginResponse(response: ILoginResponse): IAction {
 //   };
 // }
 
-export function logOut(): IAction {
-	return {
-		type: types.LOG_OUT,
-	};
+export function logOut(): Action<any> {
+  return {
+    type: types.LOG_OUT,
+    payload: {},
+  };
 }

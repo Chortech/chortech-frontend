@@ -8,21 +8,21 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type InviteFriendScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "InviteFriend"
->;
-type InviteFriendScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "InviteFriend"
->;
+// type InviteFriendScreenRouteProp = RouteProp<
+//   RootStackParamList,
+//   "InviteFriend"
+// >;
+// type InviteFriendScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "InviteFriend"
+// >;
 
-type Props = {
-  navigation: InviteFriendScreenNavigationProp;
-  route: InviteFriendScreenRouteProp;
-};
+// type Props = {
+//   navigation: InviteFriendScreenNavigationProp;
+//   route: InviteFriendScreenRouteProp;
+// };
 
-const InviteFriend = ({ navigation }: Props): void => {
+const InviteFriend = (): JSX.Element => {
   const [data, setData] = useState({
     emailOrPhone: "",
     secureTextEntry: true,
@@ -47,7 +47,7 @@ const InviteFriend = ({ navigation }: Props): void => {
           leftIconContainerStyle={{ backgroundColor: "white" }}
           inputContainerStyle={{ backgroundColor: "white" }}
           onChangeText={(text) => (data.emailOrPhone = text)}
-          onClear={(text) => (data.emailOrPhone = "")}
+          onClear={() => (data.emailOrPhone = "")}
           value={data.emailOrPhone}
         />
       </Animatable.View>

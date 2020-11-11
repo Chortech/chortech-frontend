@@ -12,18 +12,18 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type EditProfileScreenRouteProp = RouteProp<RootStackParamList, "EditProfile">;
-type EditProfileScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "EditProfile"
->;
+// type EditProfileScreenRouteProp = RouteProp<RootStackParamList, "EditProfile">;
+// type EditProfileScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "EditProfile"
+// >;
 
-type Props = {
-  navigation: EditProfileScreenNavigationProp;
-  route: EditProfileScreenRouteProp;
-};
+// type Props = {
+//   navigation: EditProfileScreenNavigationProp;
+//   route: EditProfileScreenRouteProp;
+// };
 
-const EditProfile = ({ navigation }: Props): void => {
+const EditProfile = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     email: "sample@example.com",
@@ -115,9 +115,9 @@ const EditProfile = ({ navigation }: Props): void => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.outlinedButton}
-              onPress={(): void => {
-                navigation.goBack();
-              }}
+              // onPress={(): void => {
+              //   navigation.goBack();
+              // }}
             >
               <Text style={styles.outlinedButtonText}>انصراف</Text>
             </TouchableOpacity>

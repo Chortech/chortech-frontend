@@ -7,7 +7,7 @@ import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 
-const ResetPassword: React.FC = () => {
+const ResetPassword: React.FC = (): JSX.Element => {
   const resetToHome = () => NavigationService.resetTo("Login");
 
   const [data, setData] = useState({

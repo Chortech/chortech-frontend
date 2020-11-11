@@ -19,12 +19,12 @@ const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
 
-interface IState {
-	loginReducer: ILoginState;
-}
+// interface IState {
+// 	loginReducer: ILoginState;
+// }
 
 const AuthNavigator = () => {
-	const isLoggedIn = useSelector((state: IState) => state.loginReducer.isLoggedIn);
+	const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
 	return (
 		<AuthStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
 			<Stack.Screen
@@ -73,7 +73,7 @@ const LoggedInNavigator = () => (
 );
 
 const App: React.FC = () => {
-	const isLoggedIn = useSelector((state: IState) => state.loginReducer.isLoggedIn);
+	const isLoggedIn = useSelector((state: ILoginState) => state.isLoggedIn);
 
 	return (
 		<NavigationContainer ref={navigationRef}>

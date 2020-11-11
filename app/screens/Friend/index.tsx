@@ -13,18 +13,18 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type FriendScreenRouteProp = RouteProp<RootStackParamList, "Friend">;
-type FriendScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Friend"
->;
+// type FriendScreenRouteProp = RouteProp<RootStackParamList, "Friend">;
+// type FriendScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "Friend"
+// >;
 
-type Props = {
-  navigation: FriendScreenNavigationProp;
-  route: FriendScreenRouteProp;
-};
+// type Props = {
+//   navigation: FriendScreenNavigationProp;
+//   route: FriendScreenRouteProp;
+// };
 
-const Friend = ({ navigation }: Props): void => {
+const Friend = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     isFriend: 1,
@@ -44,8 +44,7 @@ const Friend = ({ navigation }: Props): void => {
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <View style={styles.textContainer}>
           {!data.doOwe ? (
             <Text style={styles.textInfo}>

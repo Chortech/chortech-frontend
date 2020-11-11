@@ -29,7 +29,7 @@ type Props = {
   bankName: string;
 };
 
-const renderCardItem = ({ item }: Props): void => (
+const renderCardItem: any = (item: Props): JSX.Element => (
   <CreditCard
     ownerName={item.cardOwnerName}
     cardNumber={item.cardNumber}
@@ -43,7 +43,7 @@ const CreditCardList: React.FC = () => {
         <FlatList
           data={data}
           renderItem={renderCardItem}
-          keyExtractor={(item): void => item.id}
+          keyExtractor={(item) => item.id}
         />
       </View>
       <Text>تایید</Text>

@@ -10,16 +10,18 @@ import { styles } from './styles';
 import * as loginActions from '../../store/actions/loginActions';
 
 const CodeVerification: React.FC = () => {
+	const route = useRoute();
 	const parentScreen = useRoute().params['parentScreen'];
 	const userName = useRoute().params['userName'];
 	const password = useRoute().params['password'];
+
 
 	const dispatch = useDispatch();
 	const onNextScreen = () => {
 		if (parentScreen == 'AccountIdentification') {
 			NavigationService.navigate('ResetPassword');
 		} else {
-			dispatch(loginActions.requestLogin(userName, password));
+			dispatch(loginActions.requestLogin(userName, '123', password));
 		}
 	};
 

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import * as loginActions from "../../store/actions/loginActions";
 
-const Home: React.FC = () => {
+const Home: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const onLogout = () => dispatch(loginActions.logOut());
 
