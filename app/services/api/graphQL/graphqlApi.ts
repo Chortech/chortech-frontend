@@ -2,8 +2,9 @@ import { request, GraphQLClient, gql } from "graphql-request";
 import { AuthApi } from "../../../models/api/auth";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
-import { USER_BY_EMAIL } from "./queries";
+import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
+import { InputType } from "../../../utils/inputTypes";
 
 class GraphQLApi implements AuthApi {
   endpoint: string = API_URL;
@@ -20,24 +21,42 @@ class GraphQLApi implements AuthApi {
   async login(
     email: string,
     phone: string,
-    password: string
+    password: string,
+    inputType: InputType
   ): Promise<LoginResponse> {
-    const data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
-    console.log(data.UserByEmail);
-    return {
-      id: data.UserByEmail._id.toString(),
-      token: {
-        access: "",
-        expires: 0,
-        created: 0,
-      },
+    let data: any;
+    let responsePassword: string = "";
+    let repsonse: LoginResponse = {
+      id: "-1",
+      success: false,
     };
+
+    if (inputType == InputType.Email) {
+      data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
+      responsePassword =
+        data.UserByEmail != null ? data.UserByEmail.password : responsePassword;
+      repsonse = {
+        id: data.UserByEmail != null ? data.UserByEmail._id.toString() : "-1",
+        success: password === responsePassword,
+      };
+    } else {
+      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      responsePassword =
+        data.UserByPhone != null ? data.UserByPhone.password : responsePassword;
+      repsonse = {
+        id: data.UserByPhone != null ? data.UserByPhone._id.toString() : "-1",
+        success: password === responsePassword,
+      };
+    }
+
+    return repsonse;
   }
 
   async signUp(
     email: string,
     phone: string,
-    password: string
+    password: string,
+    inputType: InputType
   ): Promise<SignUpResponse> {
     return {
       id: "1",
@@ -64,5 +83,3 @@ class GraphQLApi implements AuthApi {
 }
 
 export const Api = new GraphQLApi();
-
-console.log("abcd" + Api.endpoint);

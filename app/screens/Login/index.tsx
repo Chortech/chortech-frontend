@@ -5,23 +5,40 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { onChange } from "react-native-reanimated";
 
 import { styles } from "./styles";
 import * as loginActions from "../../store/actions/loginActions";
 import { ILoginState } from "../../models/reducers/login";
 import NavigationService from "../../navigation/navigationService";
+import { RegexValidator } from "../../utils/regexValidator";
+import { InputType } from "../../utils/inputTypes";
+
+interface IState {
+  loginReducer: ILoginState;
+}
 
 const Login: React.FC = (): JSX.Element => {
-  const id = useSelector((state: ILoginState) => state.id);
   const dispatch = useDispatch();
-  const onLogin = () =>
-    dispatch(loginActions.requestLogin("babak@example.com", "09123", "1234"));
+  const onLogin = () => {
+    if (
+      data.emailOrPhone != "" &&
+      data.validEmailOrPhone &&
+      data.validPassword
+    ) {
+      const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
+      const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
+      dispatch(
+        loginActions.requestLogin(email, phone, data.password, data.inputType)
+      );
+    } else {
+      ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
+    }
+  };
   const onForgot = () => NavigationService.navigate("AccountIdentification");
   const onSignUp = () => NavigationService.navigate("SignUp");
 
@@ -29,13 +46,41 @@ const Login: React.FC = (): JSX.Element => {
     emailOrPhone: "",
     password: "",
     secureTextEntry: true,
+    inputType: InputType.None,
+    validEmailOrPhone: true,
+    validPassword: true,
   });
+
+  const setEmailOrPhone = (text: string): void => {
+    const type = RegexValidator.validateEmailOrPhone(text);
+    setData({
+      ...data,
+      emailOrPhone: text,
+      validEmailOrPhone:
+        text == "" || type == InputType.Email || type == InputType.Phone,
+      inputType: type,
+    });
+  };
+
+  const setPassword = (text: string) => {
+    setData({
+      ...data,
+      password: text,
+      validPassword:
+        text == "" ||
+        RegexValidator.validatePassword(text) == InputType.Password,
+    });
+  };
 
   const togglePassword = (): void => {
     setData({
       ...data,
       secureTextEntry: !data.secureTextEntry,
     });
+  };
+
+  const showAlert = () => {
+    ToastAndroid.show("hello", ToastAndroid.SHORT);
   };
 
   return (
@@ -52,8 +97,17 @@ const Login: React.FC = (): JSX.Element => {
             <TextInput
               placeholder="ایمیل یا شماره موبایل"
               style={styles.textInput}
+              onChangeText={(text) => setEmailOrPhone(text)}
             />
           </View>
+          {!data.validEmailOrPhone ? (
+            <Animatable.Text
+              style={styles.validationText}
+              animation="fadeIn"
+              duration={500}>
+              ایمیل یا شماره موبایل وارد شده معتبر نیست
+            </Animatable.Text>
+          ) : null}
           <View style={styles.inputContainer}>
             <TouchableOpacity
               onPress={togglePassword}
@@ -76,8 +130,17 @@ const Login: React.FC = (): JSX.Element => {
               placeholder="رمز عبور"
               style={styles.textInput}
               secureTextEntry={data.secureTextEntry}
+              onChangeText={(text) => setPassword(text)}
             />
           </View>
+          {!data.validPassword ? (
+            <Animatable.Text
+              style={styles.validationText}
+              animation="fadeIn"
+              duration={500}>
+              رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+            </Animatable.Text>
+          ) : null}
           <View>
             <TouchableOpacity onPress={onForgot}>
               <Text style={styles.resetPasswordText}>
@@ -92,7 +155,7 @@ const Login: React.FC = (): JSX.Element => {
             <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
               <Text style={styles.outlinedButtonText}>ثبت نام</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.outlinedButton}>
+            <TouchableOpacity style={styles.outlinedButton} onPress={showAlert}>
               <Text style={styles.outlinedButtonText}>قوانین حریم خصوصی</Text>
             </TouchableOpacity>
           </View>

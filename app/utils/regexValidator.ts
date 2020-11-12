@@ -1,13 +1,6 @@
 import { getType } from "@reduxjs/toolkit";
 import { EmailRegex, PhoneRegex } from "./patterns";
-
-export enum InputType {
-  Email,
-  Phone,
-  Name,
-  Password,
-  None,
-}
+import { InputType } from "./inputTypes";
 
 export class RegexValidator {
   static validateEmailOrPhone(emailOrPhone: string): InputType {

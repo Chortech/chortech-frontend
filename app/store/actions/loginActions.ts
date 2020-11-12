@@ -2,11 +2,13 @@ import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
+import { InputType } from "../../utils/inputTypes";
 
 export function requestLogin(
   email: string,
   phone: string,
-  password: string
+  password: string,
+  inputType: InputType
 ): Action<LoginRequest> {
   return {
     type: types.LOGIN_REQUEST,
@@ -14,6 +16,7 @@ export function requestLogin(
       email,
       phone,
       password,
+      inputType,
     },
   };
 }

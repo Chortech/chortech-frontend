@@ -3,7 +3,6 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
-import { request, GraphQLClient, gql } from "graphql-request";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";

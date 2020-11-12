@@ -41,13 +41,13 @@ export const USER_BY_EMAIL = gql`
 `;
 
 export const USER_BY_PHONE = gql`
-	query GetUserByPhone($phoneNumber: String!) {
-		UserByPhone(phone: $$phoneNumber) {
-			_id
-			name
-			password
-			email
-			phone
-		}
-	}
+  query GetUserByPhone($phoneNumber: String!) {
+    UserByPhone(phone: $phoneNumber) {
+      _id
+      name
+      password
+      email
+      phone
+    }
+  }
 `;
