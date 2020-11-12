@@ -9,22 +9,9 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type FriendScreenRouteProp = RouteProp<RootStackParamList, "Friend">;
-type FriendScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Friend"
->;
 
-type Props = {
-  navigation: FriendScreenNavigationProp;
-  route: FriendScreenRouteProp;
-};
-
-// const Friend = ({ navigation }: Props): void => {
 const Friend: React.FC = () => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",

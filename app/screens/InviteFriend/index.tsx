@@ -4,25 +4,10 @@ import { SearchBar } from "react-native-elements";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type InviteFriendScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "InviteFriend"
->;
-type InviteFriendScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "InviteFriend"
->;
 
-type Props = {
-  navigation: InviteFriendScreenNavigationProp;
-  route: InviteFriendScreenRouteProp;
-};
-
-const InviteFriend = ({ navigation }: Props): void => {
+const InviteFriend: React.FC = () => {
   const [data, setData] = useState({
     emailOrPhone: "",
     secureTextEntry: true,

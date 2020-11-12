@@ -7,24 +7,14 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
+import NavigationService from '../../navigation/navigationService';
 
-type FriendListScreenRouteProp = RouteProp<RootStackParamList, "FriendList">;
-type FriendListScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "FriendList"
->;
 
-type Props = {
-  navigation: FriendListScreenNavigationProp;
-  route: FriendListScreenRouteProp;
-};
-
-const FriendList = ({ navigation }: Props): void => {
+const FriendList: React.FC = () => {
+  const onAddFriend = () => NavigationService.navigate('InviteFriend');
+  const onFriend = () => NavigationService.navigate('Friend');
   const friends = [
     { name: "بابک سفیدگر" },
     { name: "هژار آزیز" },
@@ -51,9 +41,7 @@ const FriendList = ({ navigation }: Props): void => {
                 <View>
                   <TouchableOpacity
                     style={styles.friendContainer}
-                    onPress={(): void => {
-                      navigation.navigate("Friend");
-                    }}
+                    onPress={onFriend}
                   >
                     <Text style={styles.friendText}>{item.name}</Text>
                     <Image
@@ -68,9 +56,7 @@ const FriendList = ({ navigation }: Props): void => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={(): void => {
-                navigation.navigate("InviteFriend");
-              }}
+              onPress={onAddFriend}
             >
               <Text style={styles.buttonText}>دعوت از دوستان</Text>
             </TouchableOpacity>
