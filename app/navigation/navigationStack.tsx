@@ -2,12 +2,12 @@ import * as React from "react";
 import { NavigationContainer, Theme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";
 
 import { navigationRef } from "./navigationService";
 
 import Login from "../screens/Login";
-import Home from "../screens/Home";
 import ResetPassword from "../screens/ResetPassword";
 import CodeVerification from "../screens/CodeVerification";
 import SignUp from "../screens/SignUp";
@@ -67,14 +67,30 @@ const AuthNavigator = () => {
 };
 
 const LoggedInNavigator = () => (
-  // <LoggedInStack.Navigator
-  // initialRouteName="Home">
-      <Tab.Navigator initialRouteName="GroupList">
+      <Tab.Navigator initialRouteName="GroupList"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused
+          } else if (route.name === 'Settings') {
+            iconName = focused 
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'darkgreen',
+        inactiveTintColor: 'gray',
+      }}
+      >
         <Tab.Screen name="FriendList" component={FriendList} />
         <Tab.Screen name="GroupList" component={GroupList}/>
         <Tab.Screen name="Group" component={Group}/>
       </Tab.Navigator>
-  // </LoggedInStack.Navigator>
 );
 
 const App: React.FC = () => {
