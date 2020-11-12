@@ -24,7 +24,7 @@ type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
 };
 
-const CodeVerification: React.FunctionComponent<Props> = ({ route }: Props) => {
+const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const { parentScreen, userName, password } = route.params;
 
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const CodeVerification: React.FunctionComponent<Props> = ({ route }: Props) => {
     checkTextInputChange: false,
   });
   const [ref, setRef] = useState(null);
-  const resetTimer = (): void => {
+  const resetTimer = (ref: any): void => {
     ref.resetCountDown();
   };
 
@@ -80,7 +80,7 @@ const CodeVerification: React.FunctionComponent<Props> = ({ route }: Props) => {
             height={40}
           />
           <View>
-            <TouchableOpacity onPress={resetTimer}>
+            <TouchableOpacity onPress={(ref) => resetTimer(ref)}>
               <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
             </TouchableOpacity>
           </View>

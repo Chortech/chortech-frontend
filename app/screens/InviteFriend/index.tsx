@@ -22,7 +22,7 @@ import { styles } from "./styles";
 //   route: InviteFriendScreenRouteProp;
 // };
 
-const InviteFriend = (): JSX.Element => {
+const InviteFriend: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     emailOrPhone: "",
     secureTextEntry: true,

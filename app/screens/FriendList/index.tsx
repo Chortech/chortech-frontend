@@ -24,7 +24,7 @@ import { styles } from "./styles";
 //   route: FriendListScreenRouteProp;
 // };
 
-const FriendList = (): JSX.Element => {
+const FriendList: React.FC = (): JSX.Element => {
   const friends = [
     { name: "بابک سفیدگر" },
     { name: "هژار آزیز" },

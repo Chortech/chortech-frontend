@@ -24,7 +24,7 @@ import { styles } from "./styles";
 //   route: FriendScreenRouteProp;
 // };
 
-const Friend = (): JSX.Element => {
+const Friend: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     isFriend: 1,

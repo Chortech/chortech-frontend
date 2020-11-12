@@ -23,7 +23,7 @@ import { styles } from "./styles";
 //   route: EditProfileScreenRouteProp;
 // };
 
-const EditProfile = (): JSX.Element => {
+const EditProfile: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     email: "sample@example.com",
@@ -47,8 +47,7 @@ const EditProfile = (): JSX.Element => {
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.customInputContainer}>
             <Text style={styles.label}>نام و نام خانوادگی</Text>
@@ -85,8 +84,7 @@ const EditProfile = (): JSX.Element => {
             <View style={styles.inputContainer}>
               <TouchableOpacity
                 onPress={togglePassword}
-                style={styles.toggleIcon}
-              >
+                style={styles.toggleIcon}>
                 {data.secureTextEntry ? (
                   <FontAwesomeIcon
                     icon="eye-slash"

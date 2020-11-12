@@ -17,10 +17,6 @@ import * as loginActions from "../../store/actions/loginActions";
 import { ILoginState } from "../../models/reducers/login";
 import NavigationService from "../../navigation/navigationService";
 
-interface IState {
-  loginReducer: ILoginState;
-}
-
 const Login: React.FC = (): JSX.Element => {
   const id = useSelector((state: ILoginState) => state.id);
   const dispatch = useDispatch();
