@@ -11,17 +11,23 @@ import Login from "../screens/Login";
 import ResetPassword from "../screens/ResetPassword";
 import CodeVerification from "../screens/CodeVerification";
 import SignUp from "../screens/SignUp";
-import GroupList from "../screens/GroupList"
+
 import FriendList from "../screens/FriendList"
+import Friend from "../screens/Friend"
+import InviteFriend from "../screens/InviteFriend"
+
+import GroupList from "../screens/GroupList"
 import Group from "../screens/Group"
+
 
 import { StatusBar } from "react-native";
 import { ILoginState } from "../models/reducers/login";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const LoggedInStack = createStackNavigator();
-const Tab = createMaterialTopTabNavigator();
+const LoggedInTab = createMaterialTopTabNavigator();
+const GroupStack = createStackNavigator();
+const FriendStack = createStackNavigator();
 
 interface IState {
   loginReducer: ILoginState;
@@ -67,8 +73,9 @@ const AuthNavigator = () => {
 };
 
 const LoggedInNavigator = () => (
-      <Tab.Navigator initialRouteName="GroupList"
+      <LoggedInTab.Navigator initialRouteName="GroupList" 
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -87,12 +94,28 @@ const LoggedInNavigator = () => (
         inactiveTintColor: 'gray',
       }}
       >
-        <Tab.Screen name="FriendList" component={FriendList} />
-        <Tab.Screen name="GroupList" component={GroupList}/>
-        <Tab.Screen name="Group" component={Group}/>
-      </Tab.Navigator>
+        <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
+        <LoggedInTab.Screen name="GroupList" component={GroupNavigator}/>
+        <LoggedInTab.Screen name="Group" component={Group}/>
+      </LoggedInTab.Navigator>
 );
 
+const GroupNavigator = () => (
+    <GroupStack.Navigator screenOptions={{ headerShown: false }}
+      initialRouteName="GroupList">
+        <LoggedInTab.Screen name="GroupList" component={GroupList}/>
+        <LoggedInTab.Screen name="Group" component={Group}/>
+    </GroupStack.Navigator>
+);
+
+const FriendNavigator = () => (
+    <FriendStack.Navigator screenOptions={{ headerShown: false }}
+      initialRouteName="FriendList">
+      <LoggedInTab.Screen name="FriendList" component={FriendList} />
+      <LoggedInTab.Screen name="Friend" component={Friend} />
+      <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
+    </FriendStack.Navigator>
+);
 const App: React.FC = () => {
   const isLoggedIn = useSelector(
     (state: IState) => state.loginReducer.isLoggedIn
