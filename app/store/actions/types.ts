@@ -8,3 +8,8 @@ export const LOGIN_RESPONSE = "LOGIN_RESPONSE";
 // export const LOGIN_LOADING_ENDED = 'LOGIN_LOADING_ENDED';
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOG_OUT = "LOG_OUT";
+
+//reset password
+export const IDENTIFY_REQUEST = "IDENTIFY_ACCOUNT";
+export const IDENTIFY_RESPONSE = "IDENTIFY_RESPONSE";
+export const IDENTIFY_FAIL = "IDENTIFY_FAIL";

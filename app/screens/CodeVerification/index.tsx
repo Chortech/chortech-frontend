@@ -19,20 +19,21 @@ import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as loginActions from "../../store/actions/loginActions";
+import { InputType } from "../../utils/inputTypes";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
-  const { parentScreen, userName, password } = route.params;
+  const { parentScreen } = route.params;
 
   const dispatch = useDispatch();
   const onNextScreen = () => {
     if (parentScreen == "AccountIdentification") {
       NavigationService.navigate("ResetPassword");
     } else {
-      dispatch(loginActions.requestLogin(userName, "123", password));
+      dispatch(loginActions.requestLogin("", "123", "", InputType.None));
     }
   };
 

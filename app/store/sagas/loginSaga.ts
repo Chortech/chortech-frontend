@@ -7,7 +7,7 @@
 import { put } from "redux-saga/effects";
 // import { delay } from 'redux-saga';
 
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 // import loginUser from 'app/services/loginUser';
 import { Action } from "../../models/actions/action";
 import { LoginRequest } from "../../models/requests/login";
@@ -37,6 +37,7 @@ export default function* loginAsync(action: Action<LoginRequest>) {
     yield put(loginActions.onLoginResponse(response));
   } else {
     console.error("failed");
+    ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
   }
 
   // const response = yield call(loginUser, action.username, action.password);

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavigationContainer, Theme } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
 

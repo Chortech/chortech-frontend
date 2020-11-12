@@ -16,8 +16,6 @@ const SignUp: React.FC = (): JSX.Element => {
   const onVerify = () =>
     NavigationService.navigate("CodeVerification", {
       parentScreen: "SignUp",
-      userName: "babak-ssh",
-      password: "1234",
     });
 
   const [data, setData] = useState({

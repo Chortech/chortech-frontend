@@ -3,8 +3,6 @@ export type RootStackParamList = {
   SignUp: undefined;
   CodeVerification: {
     parentScreen: string;
-    userName: string;
-    password: string;
   };
   Profile: undefined;
   EditProfile: undefined;

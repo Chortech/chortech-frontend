@@ -41,6 +41,12 @@ export const styles = StyleSheet.create({
     fontFamily: "Dirooz",
     textAlign: "right",
   },
+  validationText: {
+    color: "red",
+    padding: 5,
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+  },
   buttonContainer: {
     flex: 5,
     width: "100%",

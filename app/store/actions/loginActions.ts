@@ -21,19 +21,22 @@ export function requestLogin(
   };
 }
 
-export function loginFailed(): Action<any> {
-  return {
-    type: types.LOGIN_FAILED,
-    payload: {},
-  };
-}
-
 export function onLoginResponse(
   response: LoginResponse
 ): Action<LoginResponse> {
   return {
     type: types.LOGIN_RESPONSE,
     payload: response,
+  };
+}
+
+export function loginFailed(): Action<LoginResponse> {
+  return {
+    type: types.LOGIN_FAILED,
+    payload: {
+      id: "-1",
+      success: false,
+    },
   };
 }
 

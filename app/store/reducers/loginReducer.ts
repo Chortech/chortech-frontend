@@ -3,7 +3,6 @@
  */
 import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
-
 import { Action } from "../../models/actions/action";
 import { ILoginState } from "../../models/reducers/login";
 import { LoginRequest } from "../../models/requests/login";
@@ -41,7 +40,7 @@ export const loginReducer = createReducer(initialState, {
     return {
       ...state,
       isLoggedIn: false,
-      id: -1,
+      id: 0,
       email: "",
       phone: "",
       password: "",
@@ -49,8 +48,8 @@ export const loginReducer = createReducer(initialState, {
   },
   [types.LOG_OUT](state: ILoginState) {
     return {
-      ...state,
       isLoggedIn: false,
+      loading: false,
       id: 0,
       email: "",
       phone: "",

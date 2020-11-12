@@ -5,6 +5,7 @@ import { SignUpResponse } from "../../../models/responses/signUp";
 import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
+import { IdentifyAccountResponse } from "../../../models/responses/identify";
 
 class GraphQLApi implements AuthApi {
   endpoint: string = API_URL;
@@ -25,31 +26,37 @@ class GraphQLApi implements AuthApi {
     inputType: InputType
   ): Promise<LoginResponse> {
     let data: any;
-    let responsePassword: string = "";
-    let repsonse: LoginResponse = {
-      id: "-1",
-      success: false,
-    };
+    // let repsonse: LoginResponse = {
+    //   id: "-1",
+    //   success: false,
+    // };
 
     if (inputType == InputType.Email) {
       data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
-      responsePassword =
-        data.UserByEmail != null ? data.UserByEmail.password : responsePassword;
-      repsonse = {
-        id: data.UserByEmail != null ? data.UserByEmail._id.toString() : "-1",
-        success: password === responsePassword,
-      };
+      data = data.UserByEmail;
+      // responsePassword =
+      //   data.UserByEmail != null ? data.UserByEmail.password : responsePassword;
+      // repsonse = {
+      //   id: data.UserByEmail != null ? data.UserByEmail._id.toString() : "-1",
+      //   success: password === responsePassword,
+      // };
     } else {
       data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
-      responsePassword =
-        data.UserByPhone != null ? data.UserByPhone.password : responsePassword;
-      repsonse = {
-        id: data.UserByPhone != null ? data.UserByPhone._id.toString() : "-1",
-        success: password === responsePassword,
-      };
+      data = data.UserByPhone;
+      // responsePassword =
+      //   data.UserByPhone != null ? data.UserByPhone.password : responsePassword;
+      // repsonse = {
+      //   id: data.UserByPhone != null ? data.UserByPhone._id.toString() : "-1",
+      //   success: password === responsePassword,
+      // };
     }
 
-    return repsonse;
+    let responsePassword = data != null ? data.password : "";
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: password === responsePassword,
+    };
   }
 
   async signUp(
@@ -69,6 +76,30 @@ class GraphQLApi implements AuthApi {
     };
   }
 
+  async identifyAccount(
+    email: string,
+    phone: string,
+    inputType: InputType
+  ): Promise<IdentifyAccountResponse> {
+    let data: any;
+    // let response: IdentifyAccountResponse = {
+    //   id: "-1",
+    //   success: false,
+    // };
+
+    if (inputType == InputType.Email) {
+      data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
+      data = data.UserByEmail;
+    } else {
+      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      data = data.UserByPhone;
+    }
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+    };
+  }
   async verifyCode(email: string, phone: string, code: string): Promise<void> {}
 
   async resetPassword(
