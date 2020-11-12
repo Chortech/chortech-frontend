@@ -24,7 +24,8 @@ type Props = {
   route: FriendScreenRouteProp;
 };
 
-const Friend = ({ navigation }: Props): void => {
+// const Friend = ({ navigation }: Props): void => {
+const Friend: React.FC = () => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     isFriend: 1,
