@@ -1,6 +1,7 @@
 import * as React from "react";
 import { NavigationContainer, Theme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useSelector } from "react-redux";
 
 import { navigationRef } from "./navigationService";
@@ -10,6 +11,9 @@ import Home from "../screens/Home";
 import ResetPassword from "../screens/ResetPassword";
 import CodeVerification from "../screens/CodeVerification";
 import SignUp from "../screens/SignUp";
+import GroupList from "../screens/GroupList"
+import FriendList from "../screens/FriendList"
+import Group from "../screens/Group"
 
 import { StatusBar } from "react-native";
 import { ILoginState } from "../models/reducers/login";
@@ -17,6 +21,7 @@ import { ILoginState } from "../models/reducers/login";
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 interface IState {
   loginReducer: ILoginState;
@@ -62,10 +67,14 @@ const AuthNavigator = () => {
 };
 
 const LoggedInNavigator = () => (
-  <LoggedInStack.Navigator
-  initialRouteName="Home">
-    <Stack.Screen name="Home" component={Home} />
-  </LoggedInStack.Navigator>
+  // <LoggedInStack.Navigator
+  // initialRouteName="Home">
+      <Tab.Navigator initialRouteName="GroupList">
+        <Tab.Screen name="FriendList" component={FriendList} />
+        <Tab.Screen name="GroupList" component={GroupList}/>
+        <Tab.Screen name="Group" component={Group}/>
+      </Tab.Navigator>
+  // </LoggedInStack.Navigator>
 );
 
 const App: React.FC = () => {
@@ -80,7 +89,7 @@ const App: React.FC = () => {
       <Stack.Navigator>
         {isLoggedIn ? (
           <Stack.Screen
-            name="Home"
+            name="GroupList"
             component={LoggedInNavigator}
             options={{
               headerShown: false,
