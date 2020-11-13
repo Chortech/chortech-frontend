@@ -19,6 +19,9 @@ import InviteFriend from "../screens/InviteFriend"
 import GroupList from "../screens/GroupList"
 import Group from "../screens/Group"
 
+import Activity from "../screens/Activity"
+import ActivityList from "../screens/ActivityList"
+
 
 import { StatusBar } from "react-native";
 import { ILoginState } from "../models/reducers/login";
@@ -28,6 +31,7 @@ const AuthStack = createStackNavigator();
 const LoggedInTab = createMaterialTopTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
+const ActivityStack = createStackNavigator();
 
 interface IState {
   loginReducer: ILoginState;
@@ -79,9 +83,11 @@ const LoggedInNavigator = () => (
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'GROUPLIST') {
             iconName = focused
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'FRIENDLIST') {
+            iconName = focused 
+          } else if (route.name === 'ACTIVITY') {
             iconName = focused 
           }
 
@@ -96,16 +102,24 @@ const LoggedInNavigator = () => (
       >
         <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
         <LoggedInTab.Screen name="GroupList" component={GroupNavigator}/>
-        <LoggedInTab.Screen name="Group" component={Group}/>
+        <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator}/>
       </LoggedInTab.Navigator>
 );
 
 const GroupNavigator = () => (
-    <GroupStack.Navigator screenOptions={{ headerShown: false }}
-      initialRouteName="GroupList">
-        <LoggedInTab.Screen name="GroupList" component={GroupList}/>
-        <LoggedInTab.Screen name="Group" component={Group}/>
-    </GroupStack.Navigator>
+  <GroupStack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName="GroupList">
+      <LoggedInTab.Screen name="GroupList" component={GroupList}/>
+      <LoggedInTab.Screen name="Group" component={Group}/>
+  </GroupStack.Navigator>
+);
+
+const ActivityNavigator = () => (
+  <GroupStack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName="ActivityList">
+      <LoggedInTab.Screen name="ActivityList" component={ActivityList}/>
+      <LoggedInTab.Screen name="Activity" component={Activity}/>
+  </GroupStack.Navigator>
 );
 
 const FriendNavigator = () => (
