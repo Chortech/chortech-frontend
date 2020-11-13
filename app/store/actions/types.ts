@@ -13,3 +13,6 @@ export const LOG_OUT = "LOG_OUT";
 export const IDENTIFY_REQUEST = "IDENTIFY_ACCOUNT";
 export const IDENTIFY_RESPONSE = "IDENTIFY_RESPONSE";
 export const IDENTIFY_FAIL = "IDENTIFY_FAIL";
+
+//code verification
+export const GENERATE_CODE_REQUEST = "GENERATE_CODE_REQUEST";

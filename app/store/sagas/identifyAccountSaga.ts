@@ -27,6 +27,6 @@ export default function* identifyAccountAsync(
       parentScreen: "AccountIdentification",
     });
   } else {
-    ToastAndroid.show("اطلاعات وارد شده اشتباه می‌یاشد", ToastAndroid.SHORT);
+    ToastAndroid.show("اطلاعات وارد شده نادرست است", ToastAndroid.SHORT);
   }
 }

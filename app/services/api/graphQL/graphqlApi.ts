@@ -6,6 +6,7 @@ import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
+import { ToastAndroid } from "react-native";
 
 class GraphQLApi implements AuthApi {
   endpoint: string = API_URL;
@@ -108,7 +109,9 @@ class GraphQLApi implements AuthApi {
     password: string
   ): Promise<void> {}
 
-  async generateCode(email: string, phone: string): Promise<void> {}
+  generateCode(email: string, phone: string): string {
+    return "12345";
+  }
 
   async cancelCode(email: string, phone: string): Promise<void> {}
 }

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import * as Animatable from "react-native-animatable";
@@ -27,6 +28,8 @@ const AccountIdentification: React.FC = () => {
           data.inputType
         )
       );
+    } else {
+      ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }
   };
 
