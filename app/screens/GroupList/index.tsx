@@ -8,13 +8,18 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
+import { Button } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
+import { useDispatch } from 'react-redux';
 
+import * as loginActions from '../../store/actions/loginActions';
 import NavigationService from '../../navigation/navigationService';
 import styles from "./styles"
 
 const GroupList: React.FC = () => {
+  const dispatch = useDispatch();
   const onGroupSelect = () => NavigationService.navigate('Group');
+  const onLogout = () => dispatch(loginActions.logOut());
 
   const groups = [
     {id:1, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۱"},
@@ -58,6 +63,11 @@ const GroupList: React.FC = () => {
       }}/>
       </ScrollView>
       </Animatable.View>
+    </View>
+    <View>
+      <Button icon="logout" mode="outlined" onPress={onLogout}>
+        Logout
+      </Button>
     </View>
 </View>
 );
