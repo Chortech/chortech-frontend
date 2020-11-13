@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigationState, useRoute } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -14,8 +13,6 @@ import * as Animatable from "react-native-animatable";
 import styles from "./styles"
 
 const Group: React.FC = () => {
-  // const name = useRoute().params["name"];
-  // const image = useRoute().params["image"];
 
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
