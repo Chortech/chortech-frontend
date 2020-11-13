@@ -109,7 +109,7 @@ class GraphQLApi implements AuthApi {
     password: string
   ): Promise<void> {}
 
-  generateCode(email: string, phone: string): string {
+  generateCode(email: string, phone: string, inputType: InputType): string {
     return "12345";
   }
 
