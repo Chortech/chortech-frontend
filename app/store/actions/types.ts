@@ -9,10 +9,13 @@ export const LOGIN_RESPONSE = "LOGIN_RESPONSE";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOG_OUT = "LOG_OUT";
 
-//reset password
+//identify account
 export const IDENTIFY_REQUEST = "IDENTIFY_ACCOUNT";
 export const IDENTIFY_RESPONSE = "IDENTIFY_RESPONSE";
 export const IDENTIFY_FAIL = "IDENTIFY_FAIL";
 
 //code verification
 export const GENERATE_CODE_REQUEST = "GENERATE_CODE_REQUEST";
+
+//reset password
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
