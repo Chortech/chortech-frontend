@@ -1,8 +1,6 @@
 import { InputType } from "../../utils/inputTypes";
 
 export interface ResetPasswordRequest {
-  email: string;
-  phone: string;
+  id: string;
   password: string;
-  inputType: InputType;
 }

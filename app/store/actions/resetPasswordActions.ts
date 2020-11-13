@@ -5,18 +5,14 @@ import { InputType } from "../../utils/inputTypes";
 import * as types from "./types";
 
 export function requestResetPassword(
-  email: string,
-  phone: string,
-  password: string,
-  inputType: InputType
+  id: string,
+  password: string
 ): Action<ResetPasswordRequest> {
   return {
     type: types.RESET_PASSWORD_REQUEST,
     payload: {
-      email,
-      phone,
+      id,
       password,
-      inputType,
     },
   };
 }

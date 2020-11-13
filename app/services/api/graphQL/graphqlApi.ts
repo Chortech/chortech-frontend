@@ -3,10 +3,13 @@ import { AuthApi } from "../../../models/api/auth";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
+import { UPDATE_USER_PASSWORD } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
+import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
+import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 
 class GraphQLApi implements AuthApi {
   endpoint: string = API_URL;
@@ -103,17 +106,30 @@ class GraphQLApi implements AuthApi {
   }
   async verifyCode(email: string, phone: string, code: string): Promise<void> {}
 
-  async resetPassword(
-    email: string,
-    phone: string,
-    password: string
-  ): Promise<void> {}
-
   generateCode(email: string, phone: string, inputType: InputType): void {
     ToastAndroid.show("کد فعال‌سازی: ۱۲۳۴۵", ToastAndroid.LONG);
   }
 
   async cancelCode(email: string, phone: string): Promise<void> {}
+
+  async resetPassword(
+    id: string,
+    password: string
+  ): Promise<ResetPasswordResponse> {
+    let data = await this.client.request(UPDATE_USER_PASSWORD, {
+      userId: id,
+      password: password,
+    });
+    data = data.updateUser;
+
+    console.log(
+      "reset password response: " + JSON.stringify(data, undefined, 2)
+    );
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+    };
+  }
 }
 
 export const Api = new GraphQLApi();

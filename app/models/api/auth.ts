@@ -2,6 +2,7 @@ import { LoginResponse } from "../responses/login";
 import { SignUpResponse } from "../responses/signUp";
 import { InputType } from "../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../responses/identify";
+import { ResetPasswordResponse } from "../responses/resetPassword";
 
 export interface AuthApi {
   login(
@@ -22,7 +23,7 @@ export interface AuthApi {
     inputType: InputType
   ): Promise<IdentifyAccountResponse>;
   verifyCode(email: string, phone: string, code: string): Promise<void>;
-  resetPassword(email: string, phone: string, password: string): Promise<void>;
   generateCode(email: string, phone: string, inputType: InputType): void;
   cancelCode(email: string, phone: string): Promise<void>;
+  resetPassword(id: string, password: string): Promise<ResetPasswordResponse>;
 }

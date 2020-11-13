@@ -1,21 +1,85 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { RegexValidator } from "../../utils/regexValidator";
+import { InputType } from "../../utils/inputTypes";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { ILoginState } from "../../models/reducers/login";
+import * as resetPasswordActions from "../../store/actions/resetPasswordActions";
+import configureStore from "../../store/index";
+
+type IState = {
+  identifyAccountReducer: ILoginState;
+};
 
 const ResetPassword: React.FC = (): JSX.Element => {
-  const resetToHome = () => NavigationService.resetTo("Login");
+  const id = useStore().getState()["IdentifyAccountReducer"].id;
+  console.log("id: " + id);
+  // console.log(
+  //   "state: " +
+  //     JSON.stringify(
+  //       state.getState()["IdentifyAccountReducer"].id,
+  //       undefined,
+  //       2
+  //     )
+  // );
+  // const state = useSelector((state: IState) => state.resetPasswordReducer);
+  // console.log("state: " + state.id);
+  // const { id, email } = useSelector(
+  //   (state: IState) => state.identifyAccountReducer
+  // );
+  // console.log("reset email: " + email);
+  const dispatch = useDispatch();
+  const resetToHome = () => {
+    if (
+      data.password == data.confirmPassword &&
+      data.validPassword &&
+      data.validConfirmPassword
+    ) {
+      dispatch(resetPasswordActions.requestResetPassword(id, data.password));
+      console.log("navigate to login");
+    } else {
+      ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
+    }
+  };
 
   const [data, setData] = useState({
-    password: "12345678",
+    password: "",
+    validPassword: true,
     secureTextEntry: true,
-    confirmPassword: "12345678",
+    confirmPassword: "",
+    validConfirmPassword: true,
     confirmSecureTextEntry: true,
   });
+
+  const setPassword = (text: string): void => {
+    setData({
+      ...data,
+      password: text,
+      validPassword:
+        RegexValidator.validatePassword(text) === InputType.Password,
+    });
+  };
+
+  const setConfirmPassword = (text: string): void => {
+    setData({
+      ...data,
+      confirmPassword: text,
+      validConfirmPassword:
+        RegexValidator.validatePassword(text) === InputType.Password,
+    });
+  };
 
   const togglePassword = (): void => {
     setData({
@@ -39,8 +103,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <View style={styles.inputContainer}>
           <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
             {data.secureTextEntry ? (
@@ -61,13 +124,21 @@ const ResetPassword: React.FC = (): JSX.Element => {
             placeholder="رمز عبور جدید"
             secureTextEntry={data.secureTextEntry}
             style={styles.textInput}
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
+        {!data.validPassword ? (
+          <Animatable.Text
+            style={styles.validationText}
+            animation="fadeIn"
+            duration={500}>
+            رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+          </Animatable.Text>
+        ) : null}
         <View style={styles.inputContainer}>
           <TouchableOpacity
             onPress={toggleConfirmPassword}
-            style={styles.toggleIcon}
-          >
+            style={styles.toggleIcon}>
             {data.confirmSecureTextEntry ? (
               <FontAwesomeIcon
                 icon="eye-slash"
@@ -86,8 +157,17 @@ const ResetPassword: React.FC = (): JSX.Element => {
             placeholder="تکرار رمز عبور جدید"
             secureTextEntry={data.confirmSecureTextEntry}
             style={styles.textInput}
+            onChangeText={(text) => setConfirmPassword(text)}
           />
         </View>
+        {!data.validConfirmPassword ? (
+          <Animatable.Text
+            style={styles.validationText}
+            animation="fadeIn"
+            duration={500}>
+            رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+          </Animatable.Text>
+        ) : null}
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.confirmButton} onPress={resetToHome}>
             <Text style={styles.confirmButtonText}>تایید</Text>

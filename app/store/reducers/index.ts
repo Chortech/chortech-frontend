@@ -9,5 +9,6 @@ import * as resetPasswordReducer from "./resetPasswordReducer";
 export default Object.assign(
   loginReducer,
   IdentifyAccountReducer,
-  codeVerificationReducer
+  codeVerificationReducer,
+  resetPasswordReducer
 );
