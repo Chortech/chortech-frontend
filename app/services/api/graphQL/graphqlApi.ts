@@ -109,8 +109,8 @@ class GraphQLApi implements AuthApi {
     password: string
   ): Promise<void> {}
 
-  generateCode(email: string, phone: string, inputType: InputType): string {
-    return "12345";
+  generateCode(email: string, phone: string, inputType: InputType): void {
+    ToastAndroid.show("12345", ToastAndroid.LONG);
   }
 
   async cancelCode(email: string, phone: string): Promise<void> {}

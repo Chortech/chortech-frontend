@@ -8,10 +8,8 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   const { email, phone, inputType } = action.payload;
-  let response = 0;
   try {
-    response = yield Api.generateCode(email, phone, inputType);
-    ToastAndroid.show(`${response}`, ToastAndroid.LONG);
+    yield Api.generateCode(email, phone, inputType);
   } catch (error) {
     console.log("failed");
   }

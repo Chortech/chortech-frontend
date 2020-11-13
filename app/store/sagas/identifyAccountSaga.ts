@@ -1,9 +1,11 @@
 import { ToastAndroid } from "react-native";
+import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
 import { IdentifyAccountRequest } from "../../models/requests/identify";
 import { IdentifyAccountResponse } from "../../models/responses/identify";
 import { navigationRef } from "../../navigation/navigationService";
 import { Api } from "../../services/api/graphQL/graphqlApi";
+import * as codeVerificationActions from "../actions/codeVerificationActions";
 
 export default function* identifyAccountAsync(
   action: Action<IdentifyAccountRequest>
@@ -26,6 +28,9 @@ export default function* identifyAccountAsync(
     yield navigationRef.current?.navigate("CodeVerification", {
       parentScreen: "AccountIdentification",
     });
+    yield put(
+      codeVerificationActions.requestGenerateCode(email, phone, inputType)
+    );
   } else {
     ToastAndroid.show("اطلاعات وارد شده نادرست است", ToastAndroid.SHORT);
   }

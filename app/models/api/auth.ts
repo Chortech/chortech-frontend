@@ -23,6 +23,6 @@ export interface AuthApi {
   ): Promise<IdentifyAccountResponse>;
   verifyCode(email: string, phone: string, code: string): Promise<void>;
   resetPassword(email: string, phone: string, password: string): Promise<void>;
-  generateCode(email: string, phone: string, inputType: InputType): string;
+  generateCode(email: string, phone: string, inputType: InputType): void;
   cancelCode(email: string, phone: string): Promise<void>;
 }
