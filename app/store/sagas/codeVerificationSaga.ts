@@ -10,6 +10,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   const { email, phone, inputType } = action.payload;
   try {
     yield Api.generateCode(email, phone, inputType);
+    console.log("code generated");
   } catch (error) {
     console.log("failed");
   }

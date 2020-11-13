@@ -6,6 +6,7 @@ import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
 import { IdentifyAccountRequest } from "../../models/requests/identify";
 import { IdentifyAccountResponse } from "../../models/responses/identify";
+import { InputType } from "../../utils/inputTypes";
 
 const initialState: ILoginState = {
   isLoggedIn: false,
@@ -13,6 +14,7 @@ const initialState: ILoginState = {
   id: 0,
   email: "",
   phone: "",
+  inputType: InputType.None,
   password: "",
 };
 
@@ -25,6 +27,7 @@ export const IdentifyAccountReducer = createReducer(initialState, {
       ...state,
       email: action.payload.email,
       phone: action.payload.phone,
+      inputType: action.payload.inputType,
     };
   },
   [types.IDENTIFY_RESPONSE](
@@ -43,6 +46,10 @@ export const IdentifyAccountReducer = createReducer(initialState, {
     return {
       ...state,
       id: 0,
+      email: "",
+      phone: "",
+      inputType: InputType.None,
+      password: "",
     };
   },
 });

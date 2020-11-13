@@ -7,6 +7,7 @@ import { LoginResponse } from "../../models/responses/login";
 import { IdentifyAccountRequest } from "../../models/requests/identify";
 import { IdentifyAccountResponse } from "../../models/responses/identify";
 import { GenerateCodeRequest } from "../../models/requests/generateCode";
+import { InputType } from "../../utils/inputTypes";
 
 const initialState: ILoginState = {
   isLoggedIn: false,
@@ -14,6 +15,7 @@ const initialState: ILoginState = {
   id: 0,
   email: "",
   phone: "",
+  inputType: InputType.None,
   password: "",
 };
 
@@ -26,6 +28,7 @@ export const codeVerificationReducer = createReducer(initialState, {
       ...state,
       email: action.payload.email,
       phone: action.payload.phone,
+      inputType: action.payload.inputType,
     };
   },
 });

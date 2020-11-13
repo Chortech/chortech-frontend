@@ -7,6 +7,7 @@ import { Action } from "../../models/actions/action";
 import { ILoginState } from "../../models/reducers/login";
 import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
+import { InputType } from "../../utils/inputTypes";
 
 const initialState: ILoginState = {
   isLoggedIn: false,
@@ -14,6 +15,7 @@ const initialState: ILoginState = {
   id: 0,
   email: "",
   phone: "",
+  inputType: InputType.None,
   password: "",
 };
 
@@ -24,6 +26,7 @@ export const loginReducer = createReducer(initialState, {
       email: action.payload.email,
       phone: action.payload.phone,
       password: action.payload.password,
+      inputType: action.payload.inputType,
     };
   },
   //   [types.LOGIN_LOADING_ENDED](state: ILoginState) {
@@ -43,6 +46,7 @@ export const loginReducer = createReducer(initialState, {
       id: 0,
       email: "",
       phone: "",
+      inputType: InputType.None,
       password: "",
     };
   },
@@ -53,6 +57,7 @@ export const loginReducer = createReducer(initialState, {
       id: 0,
       email: "",
       phone: "",
+      inputType: InputType.None,
       password: "",
     };
   },

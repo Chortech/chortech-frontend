@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   TextInput,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
@@ -19,31 +20,57 @@ import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as loginActions from "../../store/actions/loginActions";
+import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
 import { InputType } from "../../utils/inputTypes";
+import { ILoginState } from "../../models/reducers/login";
+import { validate } from "graphql";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
 };
 
+type IState = {
+  codeVerificationReducer: ILoginState;
+};
+
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const { parentScreen } = route.params;
-
+  const { phone, email, password, inputType } = useSelector(
+    (state: IState) => state.codeVerificationReducer
+  );
+  const [ref, setRef] = useState(null);
+  const [data, setData] = useState({
+    verificationCode: "",
+    validCode: false,
+  });
   const dispatch = useDispatch();
+  console.log("ref: " + ref);
+
   const onNextScreen = () => {
-    if (parentScreen == "AccountIdentification") {
-      NavigationService.navigate("ResetPassword");
+    if (data.validCode) {
+      if (parentScreen == "AccountIdentification") {
+        NavigationService.navigate("ResetPassword");
+      } else {
+        // dispatch(loginActions.requestLogin("", "123", "", InputType.None));
+      }
     } else {
-      dispatch(loginActions.requestLogin("", "123", "", InputType.None));
+      ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
     }
   };
 
-  const [data, setData] = useState({
-    verificationCode: "",
-    checkTextInputChange: false,
-  });
-  const [ref, setRef] = useState(null);
-  const resetTimer = (ref: any): void => {
-    ref.resetCountDown();
+  const regenerateCode = (ref: any): void => {
+    dispatch(
+      codeVerificationActions.requestGenerateCode(email, phone, inputType)
+    );
+    // ref.resetCountDown();
+  };
+  console.log("valid code: " + data.validCode);
+
+  const setCode = (code: string): void => {
+    setData({
+      verificationCode: code,
+      validCode: code == "12345",
+    });
   };
 
   return (
@@ -61,6 +88,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
             placeholder="لطفا کد فعال‌سازی را وارد کنید"
             style={styles.textInput}
             keyboardType="number-pad"
+            onChangeText={(text) => setCode(text)}
           />
         </View>
         <View style={styles.timerContainer}>
@@ -81,7 +109,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
             height={40}
           />
           <View>
-            <TouchableOpacity onPress={(ref) => resetTimer(ref)}>
+            <TouchableOpacity onPress={(ref) => regenerateCode(ref)}>
               <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
             </TouchableOpacity>
           </View>
