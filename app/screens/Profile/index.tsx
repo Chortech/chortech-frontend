@@ -16,7 +16,7 @@ import { styles } from "./styles";
 //   route: ProfileScreenRouteProp;
 // };
 
-const ProfileScreen = (): JSX.Element => {
+const Profile: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     email: "sample@example.com",
@@ -76,4 +76,4 @@ const ProfileScreen = (): JSX.Element => {
   );
 };
 
-export default ProfileScreen;
+export default Profile;

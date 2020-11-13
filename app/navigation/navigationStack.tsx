@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
@@ -97,11 +97,11 @@ const LoggedInNavigator = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === "گروه‌ها") {
+        if (route.name === "GROUPLIST") {
           iconName = focused;
-        } else if (route.name === "دوستان") {
+        } else if (route.name === "FRIENDS") {
           iconName = focused;
-        } else if (route.name === "فعالیت‌ها") {
+        } else if (route.name === "ACTIVITY") {
           iconName = focused;
         }
 
@@ -116,7 +116,6 @@ const LoggedInNavigator = () => (
     <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
     <LoggedInTab.Screen name="GroupList" component={GroupNavigator} />
     <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} />
-    <LoggedInTab.Screen name="Profile" component={ProfileNavigator} />
   </LoggedInTab.Navigator>
 );
 
@@ -145,17 +144,19 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="FriendList" component={FriendList} />
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
+    <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Screen name="EditProfile" component={EditProfile} />
   </FriendStack.Navigator>
 );
 
-const ProfileNavigator = () => (
-  <ProfileStack.Navigator
-    screenOptions={{ headerShown: false }}
-    initialRouteName="Profile">
-    {/* <LoggedInTab.Screen name="Profile" component={Profile} /> */}
-    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
-  </ProfileStack.Navigator>
-);
+// const ProfileNavigator = () => (
+//   <ProfileStack.Navigator
+//     screenOptions={{ headerShown: false }}
+//     initialRouteName="Profile">
+//     <Stack.Screen name="Profile" component={Profile} />
+//     <Stack.Screen name="EditProfile" component={EditProfile} />
+//   </ProfileStack.Navigator>
+// );
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector(
@@ -171,7 +172,7 @@ const App: React.FC = () => {
       <StatusBar />
 
       <Stack.Navigator>
-        {isLoggedIn && isSignUpLoggedIn ? (
+        {isLoggedIn ? (
           <Stack.Screen
             name="GroupList"
             component={LoggedInNavigator}
