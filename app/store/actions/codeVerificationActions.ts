@@ -1,10 +1,6 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
 import { InputType } from "../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../../models/responses/identify";
-import { IdentifyAccountRequest } from "../../models/requests/identify";
 import { GenerateCodeRequest } from "../../models/requests/generateCode";
 
 export function requestGenerateCode(
@@ -21,4 +17,3 @@ export function requestGenerateCode(
     },
   };
 }
-
