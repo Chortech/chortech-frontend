@@ -14,12 +14,12 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as loginActions from "../../store/actions/loginActions";
+import * as signUpActions from "../../store/actions/signUpActions";
 import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
 import { InputType } from "../../utils/inputTypes";
 import { ILoginState } from "../../models/reducers/login";
@@ -34,6 +34,7 @@ type IState = {
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
+  const state = useStore().getState()["signUpReducer"];
   const { parentScreen } = route.params;
   const { phone, email, password, inputType } = useSelector(
     (state: IState) => state.codeVerificationReducer
@@ -51,7 +52,11 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
       if (parentScreen == "AccountIdentification") {
         NavigationService.navigate("ResetPassword");
       } else {
-        // dispatch(loginActions.requestLogin("", "123", "", InputType.None));
+        console.log(state.id + " ");
+        // dispatch(
+        //   signUpActions.onSignUpResponse({ id: state.id, success: true })
+        // );
+        // NavigationService.navigate("Home");
       }
     } else {
       ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
@@ -69,7 +74,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const setCode = (code: string): void => {
     setData({
       verificationCode: code,
-      validCode: code == "12345",
+      validCode: code === "12345",
     });
   };
 

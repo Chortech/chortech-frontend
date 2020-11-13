@@ -12,6 +12,7 @@ export const LOG_OUT = "LOG_OUT";
 //sign up
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 export const SIGNUP_RESPONSE = "SIGNUP_RESPONSE";
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAIL = "SIGNUP_FAIL";
 
 //identify account

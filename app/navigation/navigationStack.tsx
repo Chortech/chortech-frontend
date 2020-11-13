@@ -21,6 +21,7 @@ const LoggedInStack = createStackNavigator();
 
 interface IState {
   loginReducer: ILoginState;
+  signUpReducer: ILoginState;
 }
 
 const AuthNavigator = () => {
@@ -81,12 +82,16 @@ const App: React.FC = () => {
     (state: IState) => state.loginReducer.isLoggedIn
   );
 
+  const isSignUpLoggedIn = useSelector(
+    (state: IState) => state.signUpReducer.isLoggedIn
+  );
+
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
 
       <Stack.Navigator>
-        {isLoggedIn ? (
+        {isLoggedIn && isSignUpLoggedIn ? (
           <Stack.Screen
             name="Home"
             component={LoggedInNavigator}

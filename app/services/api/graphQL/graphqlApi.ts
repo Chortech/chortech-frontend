@@ -77,8 +77,10 @@ class GraphQLApi implements AuthApi {
     });
     data = data.createUser;
 
+    // console.log("signup id: " + data.createUser);
+
     return {
-      id: data != null ? data._id : "-1",
+      id: data != null ? data._id.toString() : "-1",
       success: data != null,
     };
   }

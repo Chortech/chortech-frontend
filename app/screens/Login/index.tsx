@@ -25,11 +25,12 @@ interface IState {
 const Login: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const onLogin = () => {
-    if (
-      data.emailOrPhone != "" &&
-      data.validEmailOrPhone &&
-      data.validPassword
-    ) {
+    if (data.emailOrPhone == "" || data.password == "") {
+      ToastAndroid.show(
+        "لطفا همه‌ی مقادیر ورودی را پُر کنید",
+        ToastAndroid.SHORT
+      );
+    } else if (data.validEmailOrPhone && data.validPassword) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
