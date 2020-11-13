@@ -22,6 +22,8 @@ import Group from "../screens/Group"
 import Activity from "../screens/Activity"
 import ActivityList from "../screens/ActivityList"
 
+import Profile from "../screens/Profile"
+import EditProfile from "../screens/EditProfile"
 
 import { StatusBar } from "react-native";
 import { ILoginState } from "../models/reducers/login";
@@ -32,6 +34,7 @@ const LoggedInTab = createMaterialTopTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 interface IState {
   loginReducer: ILoginState;
@@ -103,6 +106,7 @@ const LoggedInNavigator = () => (
         <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
         <LoggedInTab.Screen name="GroupList" component={GroupNavigator}/>
         <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator}/>
+        <LoggedInTab.Screen name="Profile" component={ProfileNavigator}/>
       </LoggedInTab.Navigator>
 );
 
@@ -115,11 +119,11 @@ const GroupNavigator = () => (
 );
 
 const ActivityNavigator = () => (
-  <GroupStack.Navigator screenOptions={{ headerShown: false }}
+  <ActivityStack.Navigator screenOptions={{ headerShown: false }}
     initialRouteName="ActivityList">
       <LoggedInTab.Screen name="ActivityList" component={ActivityList}/>
       <LoggedInTab.Screen name="Activity" component={Activity}/>
-  </GroupStack.Navigator>
+  </ActivityStack.Navigator>
 );
 
 const FriendNavigator = () => (
@@ -130,6 +134,15 @@ const FriendNavigator = () => (
       <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
     </FriendStack.Navigator>
 );
+
+const ProfileNavigator = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName="Profile">
+      <LoggedInTab.Screen name="Profile" component={Profile}/>
+      <LoggedInTab.Screen name="EditProfile" component={EditProfile}/>
+  </ProfileStack.Navigator>
+);
+
 const App: React.FC = () => {
   const isLoggedIn = useSelector(
     (state: IState) => state.loginReducer.isLoggedIn

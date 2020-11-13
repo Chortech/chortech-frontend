@@ -20,24 +20,29 @@ const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const onGroupSelect = () => NavigationService.navigate('Group');
   const onLogout = () => dispatch(loginActions.logOut());
+  const onProfile = () => NavigationService.navigate('Profile');
 
   const groups = [
-    {id:1, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۱"},
-    {id:2, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۲"},
-    {id:3, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۳"},
-    {id:4, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۴"},
-    {id:5, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۵"},
-    {id:6, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۶"},
-    {id:7, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۷"},
-    {id:8, image: "../../assets/images/friend-image.jpg", name:"گروه دوستان ۸"},
+    {id:1, name:"گروه دوستان ۱"},
+    {id:2, name:"گروه دوستان ۲"},
+    {id:3, name:"گروه دوستان ۳"},
+    {id:4, name:"گروه دوستان ۴"},
+    {id:5, name:"گروه دوستان ۵"},
+    {id:6, name:"گروه دوستان ۶"},
+    {id:7, name:"گروه دوستان ۷"},
+    {id:8, name:"گروه دوستان ۸"},
   ];
 
   return (
     <View style={styles.container}>
     <View style={styles.header}>
       <View style={styles.headerContent}>
-          <Image style={styles.avatar} source={require("../../assets/images/friend-image.jpg")}/>
-          <Text style={styles.name}>گروه دوستان ۷</Text>
+          <TouchableOpacity
+            onPress={onProfile}
+          >
+            <Image style={styles.avatar} source={require("../../assets/images/friend-image.jpg")}/>
+          </TouchableOpacity>
+          <Text style={styles.name}>بابک سفیدگر</Text>
       </View>
     </View>
 
@@ -51,11 +56,11 @@ const GroupList: React.FC = () => {
       <FlatList 
         style={styles.container} 
         data={groups}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return (
             <TouchableOpacity onPress={onGroupSelect}>
               <View style={styles.box}>
-                <Image style={styles.image} source={require("../../assets/images/friend-image.jpg")}/>
+                <Image style={styles.image} source={require("../../assets/images/group-image.jpg")}/>
                  <Text style={styles.username}>{item.name}</Text>
               </View>
             </TouchableOpacity>

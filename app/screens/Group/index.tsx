@@ -32,10 +32,10 @@ const Group: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
       <Image
-          style={styles.friendImage}
-          source={require("../../assets/images/friend-image.jpg")}
+          style={styles.image}
+          source={require("../../assets/images/group-image.jpg")}
         />
-        <Text style={styles.userNameText}>{data.name}</Text>
+        <Text style={styles.text}>{data.name}</Text>
       </View>
       <Animatable.View
         animation="slideInUp"
@@ -49,25 +49,18 @@ const Group: React.FC = () => {
               return (
                 <View>
                   <TouchableOpacity
-                    style={styles.friendContainer}
+                    style={styles.groupContainer}
                   >
-                    <Text style={styles.friendText}>{item.name}</Text>
+                    <Text style={styles.groupText}>{item.name}</Text>
                     <Image
-                      style={styles.friendImage}
-                      source={require("../../assets/images/friend-image.jpg")}
+                      style={styles.image}
+                      source={require("../../assets/images/category-image.jpg")}
                     />
                   </TouchableOpacity>
                 </View>
               );
             }}
           />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>دعوت از دوستان</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </Animatable.View>
     </View>
