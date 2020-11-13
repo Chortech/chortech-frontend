@@ -12,6 +12,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
     yield Api.generateCode(email, phone, inputType);
     console.log("code generated");
   } catch (error) {
-    console.log("failed");
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

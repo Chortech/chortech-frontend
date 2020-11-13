@@ -14,6 +14,7 @@ export const ADD_USER = gql`
       name
       email
       phone
+      password
     }
   }
 `;

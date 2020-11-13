@@ -9,10 +9,6 @@ import { navigationRef } from "../../navigation/navigationService";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import * as resetPasswordActions from "../actions/resetPasswordActions";
 
-type IState = {
-  identifyAccountReducer: ILoginState;
-};
-
 export default function* resetPasswordAsync(
   action: Action<ResetPasswordRequest>
 ) {
@@ -25,16 +21,19 @@ export default function* resetPasswordAsync(
   try {
     response = yield Api.resetPassword(id, password);
   } catch (error) {
-    console.log("reset password error: " + error);
-    ToastAndroid.show(error.message, ToastAndroid.SHORT);
+    console.log("reset password error: " + JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
+  console.log("reset password response: " + response);
   if (response.success) {
     yield put(resetPasswordActions.onResetPasswordResponse(response));
-    yield navigationRef.current?.navigate("Login");
+    yield navigationRef.current?.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
   } else {
-    console.log("error reset password");
     yield put(resetPasswordActions.onResetPasswordFailed());
-    ToastAndroid.show("خطا در تغییر رمز عبور", ToastAndroid.SHORT);
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

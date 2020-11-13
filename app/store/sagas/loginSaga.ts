@@ -36,7 +36,6 @@ export default function* loginAsync(action: Action<LoginRequest>) {
     console.log("success");
     yield put(loginActions.onLoginResponse(response));
   } else {
-    // console.error("failed");
     yield put(loginActions.loginFailed());
     ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
   }

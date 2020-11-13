@@ -19,13 +19,15 @@ export default function* identifyAccountAsync(
 
   try {
     response = yield Api.identifyAccount(email, phone, inputType);
-    console.log("data: " + JSON.stringify(response, undefined, 2));
+    console.log(
+      "identify accout response: " + JSON.stringify(response, undefined, 2)
+    );
   } catch (error) {
     console.error(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   if (response.success) {
-    console.log("success");
     yield put(identifyAccountActions.onIdentifyAccountResponse(response));
     yield navigationRef.current?.navigate("CodeVerification", {
       parentScreen: "AccountIdentification",

@@ -3,7 +3,7 @@ import { AuthApi } from "../../../models/api/auth";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
-import { UPDATE_USER_PASSWORD } from "./mutations";
+import { UPDATE_USER_PASSWORD, ADD_USER } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
@@ -64,19 +64,22 @@ class GraphQLApi implements AuthApi {
   }
 
   async signUp(
+    name: string,
     email: string,
     phone: string,
-    password: string,
-    inputType: InputType
+    password: string
   ): Promise<SignUpResponse> {
+    let data = await this.client.request(ADD_USER, {
+      name: name,
+      password: password,
+      email: email,
+      phone: phone,
+    });
+    data = data.createUser;
+
     return {
-      id: "1",
-      name: "",
-      token: {
-        access: "",
-        expires: 0,
-        created: 0,
-      },
+      id: data != null ? data._id : "-1",
+      success: data != null,
     };
   }
 
