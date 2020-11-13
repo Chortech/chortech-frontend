@@ -1,24 +1,42 @@
 import * as types from "./types";
-import { ILoginResponse } from "../../models/api/login";
+import { Action } from "../../models/actions/action";
+import { LoginRequest } from "../../models/requests/login";
+import { LoginResponse } from "../../models/responses/login";
+import { InputType } from "../../utils/inputTypes";
 
-export function requestLogin(emailOrPhone: string, password: string) {
+export function requestLogin(
+  email: string,
+  phone: string,
+  password: string,
+  inputType: InputType
+): Action<LoginRequest> {
   return {
     type: types.LOGIN_REQUEST,
-    emailOrPhone,
-    password,
+    payload: {
+      email,
+      phone,
+      password,
+      inputType,
+    },
   };
 }
 
-export function loginFailed() {
-  return {
-    type: types.LOGIN_FAILED,
-  };
-}
-
-export function onLoginResponse(response: ILoginResponse) {
+export function onLoginResponse(
+  response: LoginResponse
+): Action<LoginResponse> {
   return {
     type: types.LOGIN_RESPONSE,
-    response,
+    payload: response,
+  };
+}
+
+export function loginFailed(): Action<LoginResponse> {
+  return {
+    type: types.LOGIN_FAILED,
+    payload: {
+      id: "-1",
+      success: false,
+    },
   };
 }
 
@@ -34,8 +52,9 @@ export function onLoginResponse(response: ILoginResponse) {
 //   };
 // }
 
-export function logOut() {
+export function logOut(): Action<any> {
   return {
     type: types.LOG_OUT,
+    payload: {},
   };
 }

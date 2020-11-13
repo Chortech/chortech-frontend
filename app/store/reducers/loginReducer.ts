@@ -3,34 +3,40 @@
  */
 import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
-
+import { Action } from "../../models/actions/action";
 import { ILoginState } from "../../models/reducers/login";
-import {
-  ILoginRequestState,
-  ILoginResponseState,
-} from "../../models/actions/login";
+import { LoginRequest } from "../../models/requests/login";
+import { LoginResponse } from "../../models/responses/login";
+import { InputType } from "../../utils/inputTypes";
+
 const initialState: ILoginState = {
   isLoggedIn: false,
-  id: 0,
-  emailOrPhone: "",
+  loading: false,
+  id: "-1",
+  name: "",
+  email: "",
+  phone: "",
+  inputType: InputType.None,
   password: "",
 };
 
 export const loginReducer = createReducer(initialState, {
-  [types.LOGIN_REQUEST](state: ILoginState, action: ILoginRequestState) {
+  [types.LOGIN_REQUEST](state: ILoginState, action: Action<LoginRequest>) {
     return {
       ...state,
-      emailOrPhone: action.emailOrPhone,
-      password: action.password,
+      email: action.payload.email,
+      phone: action.payload.phone,
+      password: action.payload.password,
+      inputType: action.payload.inputType,
     };
   },
   //   [types.LOGIN_LOADING_ENDED](state: ILoginState) {
   //     return { ...state };
   //   },
-  [types.LOGIN_RESPONSE](state: ILoginState, action: ILoginResponseState) {
+  [types.LOGIN_RESPONSE](state: ILoginState, action: Action<LoginResponse>) {
     return {
       ...state,
-      id: action.response.id,
+      id: action.payload.id,
       isLoggedIn: true,
     };
   },
@@ -38,12 +44,22 @@ export const loginReducer = createReducer(initialState, {
     return {
       ...state,
       isLoggedIn: false,
+      id: "-1",
+      email: "",
+      phone: "",
+      inputType: InputType.None,
+      password: "",
     };
   },
   [types.LOG_OUT](state: ILoginState) {
     return {
-      ...state,
       isLoggedIn: false,
+      loading: false,
+      id: "-1",
+      email: "",
+      phone: "",
+      inputType: InputType.None,
+      password: "",
     };
   },
 });

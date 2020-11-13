@@ -6,14 +6,18 @@ import { styles } from "./styles";
 type Props = {
   ownerName: string;
   cardNumber: string;
+  bankName: string;
 };
 
-const CreditCard = ({ ownerName, cardNumber, bankName }: Props): void => {
+const CreditCard: React.FunctionComponent<Props> = ({
+  ownerName,
+  cardNumber,
+  bankName,
+}: Props): JSX.Element => {
   return (
     <LinearGradient
       colors={["#28fc35", "#04d912"]}
-      style={styles.cardContainer}
-    >
+      style={styles.cardContainer}>
       <View style={styles.cardItem}>
         <Text style={styles.cardNumberText}>{cardNumber}</Text>
       </View>

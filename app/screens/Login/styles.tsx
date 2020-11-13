@@ -47,6 +47,12 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: "center",
   },
+  validationText: {
+    color: "red",
+    padding: 5,
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+  },
   resetPasswordText: {
     margin: 10,
     textAlign: "center",

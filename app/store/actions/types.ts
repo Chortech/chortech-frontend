@@ -8,3 +8,22 @@ export const LOGIN_RESPONSE = "LOGIN_RESPONSE";
 // export const LOGIN_LOADING_ENDED = 'LOGIN_LOADING_ENDED';
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOG_OUT = "LOG_OUT";
+
+//sign up
+export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+export const SIGNUP_RESPONSE = "SIGNUP_RESPONSE";
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_FAIL = "SIGNUP_FAIL";
+
+//identify account
+export const IDENTIFY_REQUEST = "IDENTIFY_ACCOUNT";
+export const IDENTIFY_RESPONSE = "IDENTIFY_RESPONSE";
+export const IDENTIFY_FAIL = "IDENTIFY_FAIL";
+
+//code verification
+export const GENERATE_CODE_REQUEST = "GENERATE_CODE_REQUEST";
+
+//reset password
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_RESPONSE = "RESET_PASSWORD_RESPONSE";
+export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";

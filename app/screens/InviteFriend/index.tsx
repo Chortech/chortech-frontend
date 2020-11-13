@@ -6,8 +6,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 
+// type InviteFriendScreenRouteProp = RouteProp<
+//   RootStackParamList,
+//   "InviteFriend"
+// >;
+// type InviteFriendScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "InviteFriend"
+// >;
 
-const InviteFriend: React.FC = () => {
+// type Props = {
+//   navigation: InviteFriendScreenNavigationProp;
+//   route: InviteFriendScreenRouteProp;
+// };
+
+const InviteFriend: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     emailOrPhone: "",
     secureTextEntry: true,
@@ -21,8 +34,7 @@ const InviteFriend: React.FC = () => {
       <Animatable.View
         animation="slideInUp"
         duration={1000}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <SearchBar
           lightTheme
           searchIcon={{ size: 20 }}
@@ -32,7 +44,7 @@ const InviteFriend: React.FC = () => {
           leftIconContainerStyle={{ backgroundColor: "white" }}
           inputContainerStyle={{ backgroundColor: "white" }}
           onChangeText={(text) => (data.emailOrPhone = text)}
-          onClear={(text) => (data.emailOrPhone = "")}
+          onClear={() => (data.emailOrPhone = "")}
           value={data.emailOrPhone}
         />
       </Animatable.View>

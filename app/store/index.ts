@@ -29,7 +29,7 @@ const enhancers = [applyMiddleware(sagaMiddleware)];
 const persistConfig: any = { enhancers };
 const store = createStore(reducers, undefined, compose(...enhancers));
 const persistor = persistStore(store, persistConfig, () => {
-  console.log("Test", store.getState());
+  console.log("state: ", store.getState());
 });
 const configureStore = () => {
   return { persistor, store };

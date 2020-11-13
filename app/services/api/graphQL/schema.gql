@@ -1,0 +1,13 @@
+type User {
+	name: String
+	password: String!
+	email: String @unique
+	phone: String @unique
+}
+
+type Query {
+	Users: [User]!
+	UsersByName(name: String!): [User]!
+	UserByEmail(email: String!): User
+	UserByPhone(phone: String!): User
+}

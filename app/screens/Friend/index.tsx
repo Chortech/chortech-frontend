@@ -11,8 +11,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 
+// type FriendScreenRouteProp = RouteProp<RootStackParamList, "Friend">;
+// type FriendScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "Friend"
+// >;
 
-const Friend: React.FC = () => {
+// type Props = {
+//   navigation: FriendScreenNavigationProp;
+//   route: FriendScreenRouteProp;
+// };
+
+const Friend: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     isFriend: 1,
@@ -32,8 +42,7 @@ const Friend: React.FC = () => {
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <View style={styles.textContainer}>
           {!data.doOwe ? (
             <Text style={styles.textInfo}>

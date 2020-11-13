@@ -5,18 +5,18 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
-type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
-type ProfileScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Profile"
->;
+// type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
+// type ProfileScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   "Profile"
+// >;
 
-type Props = {
-  navigation: ProfileScreenNavigationProp;
-  route: ProfileScreenRouteProp;
-};
+// type Props = {
+//   navigation: ProfileScreenNavigationProp;
+//   route: ProfileScreenRouteProp;
+// };
 
-const ProfileScreen = ({ navigation }: Props): void => {
+const ProfileScreen = (): JSX.Element => {
   const [data, setData] = useState({
     name: "بابک سفیدگر",
     email: "sample@example.com",
@@ -56,17 +56,17 @@ const ProfileScreen = ({ navigation }: Props): void => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={(): void => {
-              navigation.navigate("FriendList");
-            }}
+            // onPress={(): void => {
+            //   navigation.navigate("FriendList");
+            // }}
           >
             <Text style={styles.buttonText}>دوستان</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={(): void => {
-              navigation.navigate("EditProfile");
-            }}
+            // onPress={(): void => {
+            //   navigation.navigate("EditProfile");
+            // }}
           >
             <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
           </TouchableOpacity>
