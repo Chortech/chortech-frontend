@@ -9,6 +9,11 @@ export const LOGIN_RESPONSE = "LOGIN_RESPONSE";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOG_OUT = "LOG_OUT";
 
+//sign up
+export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+export const SIGNUP_RESPONSE = "SIGNUP_RESPONSE";
+export const SIGNUP_FAIL = "SIGNUP_FAIL";
+
 //identify account
 export const IDENTIFY_REQUEST = "IDENTIFY_ACCOUNT";
 export const IDENTIFY_RESPONSE = "IDENTIFY_RESPONSE";

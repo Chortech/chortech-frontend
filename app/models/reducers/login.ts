@@ -4,6 +4,7 @@ export interface ILoginState {
   loading: boolean;
   isLoggedIn: boolean;
   id: number;
+  name: string;
   email: string;
   phone: string;
   inputType: InputType;

@@ -19,6 +19,7 @@ const SignUp: React.FC = (): JSX.Element => {
     });
 
   const [data, setData] = useState({
+    name: "",
     emailOrPhone: "",
     password: "",
     secureTextEntry: true,
@@ -41,6 +42,12 @@ const SignUp: React.FC = (): JSX.Element => {
         animation="slideInUp"
         duration={1000}
         style={styles.footer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="نام و نام خانوادگی"
+            style={styles.textInput}
+          />
+        </View>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="ایمیل یا شماره موبایل"
