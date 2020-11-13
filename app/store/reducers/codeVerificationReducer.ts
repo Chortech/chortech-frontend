@@ -12,11 +12,12 @@ import { InputType } from "../../utils/inputTypes";
 const initialState: ILoginState = {
   isLoggedIn: false,
   loading: false,
-  id: 0,
+  id: "-1",
+  name: "",
   email: "",
   phone: "",
-  inputType: InputType.None,
   password: "",
+  inputType: InputType.None,
 };
 
 export const codeVerificationReducer = createReducer(initialState, {

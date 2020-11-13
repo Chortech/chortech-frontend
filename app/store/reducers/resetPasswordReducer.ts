@@ -9,7 +9,8 @@ import * as types from "../actions/types";
 const initialState: ILoginState = {
   isLoggedIn: false,
   loading: false,
-  id: 0,
+  id: "-1",
+  name: "",
   email: "",
   phone: "",
   inputType: InputType.None,
@@ -42,7 +43,7 @@ export const resetPasswordReducer = createReducer(initialState, {
   ) {
     return {
       ...state,
-      id: 0,
+      id: "-1",
       password: action.payload.password,
     };
   },

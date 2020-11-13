@@ -11,11 +11,12 @@ import { InputType } from "../../utils/inputTypes";
 const initialState: ILoginState = {
   isLoggedIn: false,
   loading: false,
-  id: 0,
+  id: "-1",
+  name: "",
   email: "",
   phone: "",
-  inputType: InputType.None,
   password: "",
+  inputType: InputType.None,
 };
 
 export const IdentifyAccountReducer = createReducer(initialState, {
@@ -45,7 +46,7 @@ export const IdentifyAccountReducer = createReducer(initialState, {
   ) {
     return {
       ...state,
-      id: 0,
+      id: "-1",
       email: "",
       phone: "",
       inputType: InputType.None,

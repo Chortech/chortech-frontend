@@ -3,7 +3,7 @@ import { InputType } from "../../utils/inputTypes";
 export interface ILoginState {
   loading: boolean;
   isLoggedIn: boolean;
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string;
