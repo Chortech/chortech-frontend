@@ -29,3 +29,13 @@ export function onResetPasswordResponse(
     payload: response,
   };
 }
+
+export function onResetPasswordFailed(): Action<ResetPasswordResponse> {
+  return {
+    type: types.RESET_PASSWORD_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
