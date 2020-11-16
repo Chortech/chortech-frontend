@@ -52,11 +52,9 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
       if (parentScreen == "AccountIdentification") {
         NavigationService.navigate("ResetPassword");
       } else {
-        // console.log(state.id + " ");
         dispatch(
           signUpActions.onSignUpResponse({ id: state.id, success: true })
         );
-        // NavigationService.navigate("GroupList");
       }
     } else {
       ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
