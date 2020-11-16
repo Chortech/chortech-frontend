@@ -12,7 +12,7 @@ import { Button } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
 import { useDispatch } from 'react-redux';
 
-import * as loginActions from '../../store/actions/loginActions';
+import * as loginActions from '../../store/actions/authActions';
 import NavigationService from '../../navigation/navigationService';
 import styles from "./styles"
 

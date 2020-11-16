@@ -1,8 +1,13 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
+import { InputType } from "../../utils/inputTypes";
+
 import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
-import { InputType } from "../../utils/inputTypes";
+
+import { SignUpRequest } from "../../models/requests/signUp";
+import { SignUpResponse } from "../../models/responses/signUp";
+
 
 export function requestLogin(
   email: string,
@@ -40,21 +45,48 @@ export function loginFailed(): Action<LoginResponse> {
   };
 }
 
-// export function enableLoader() {
-//   return {
-//     type: types.LOGIN_ENABLE_LOADER,
-//   };
-// }
-
-// export function disableLoader() {
-//   return {
-//     type: types.LOGIN_DISABLE_LOADER,
-//   };
-// }
-
 export function logOut(): Action<any> {
   return {
     type: types.LOG_OUT,
     payload: {},
   };
 }
+
+export function requestSignUp(
+    name: string,
+    email: string,
+    phone: string,
+    password: string,
+    inputType: InputType
+  ): Action<SignUpRequest> {
+    return {
+      type: types.SIGNUP_REQUEST,
+      payload: {
+        name,
+        email,
+        phone,
+        password,
+        inputType,
+      },
+    };
+  }
+  
+  export function onSignUpResponse(
+    response: SignUpResponse
+  ): Action<SignUpResponse> {
+    return {
+      type: types.SIGNUP_RESPONSE,
+      payload: response,
+    };
+  }
+  
+  export function onSignUpFail(): Action<SignUpResponse> {
+    return {
+      type: types.SIGNUP_FAIL,
+      payload: {
+        id: "-1",
+        success: false,
+      },
+    };
+  }
+  

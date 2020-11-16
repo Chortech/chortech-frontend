@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 
 import { styles } from "./styles";
-import * as loginActions from "../../store/actions/loginActions";
+import * as loginActions from "../../store/actions/authActions";
 import { ILoginState } from "../../models/reducers/login";
 import NavigationService from "../../navigation/navigationService";
 import { RegexValidator } from "../../utils/regexValidator";

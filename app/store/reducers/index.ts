@@ -2,15 +2,14 @@
  * combines all th existing reducers
  */
 import * as IdentifyAccountReducer from "./identifyAccountReducer";
-import * as loginReducer from "./loginReducer";
+import * as authReducer from "./authReducer";
 import * as codeVerificationReducer from "./codeVerificationReducer";
 import * as resetPasswordReducer from "./resetPasswordReducer";
-import * as signUpReducer from "./signUpReducer";
+// import * as signUpReducer from "./signUpReducer";
 
 export default Object.assign(
-  loginReducer,
+  authReducer,
   IdentifyAccountReducer,
   codeVerificationReducer,
-  resetPasswordReducer,
-  signUpReducer
+  resetPasswordReducer
 );

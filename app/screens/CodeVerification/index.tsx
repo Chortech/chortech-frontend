@@ -19,7 +19,7 @@ import { RootStackParamList } from "../../navigation/rootStackParams";
 
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as signUpActions from "../../store/actions/signUpActions";
+import * as signUpActions from "../../store/actions/authActions";
 import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
 import { InputType } from "../../utils/inputTypes";
 import { ILoginState } from "../../models/reducers/login";
@@ -34,7 +34,7 @@ type IState = {
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
-  const state = useStore().getState()["signUpReducer"];
+  const state = useStore().getState()["authReducer"];
   const { parentScreen } = route.params;
   const { phone, email, password, inputType } = useSelector(
     (state: IState) => state.codeVerificationReducer
@@ -52,11 +52,11 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
       if (parentScreen == "AccountIdentification") {
         NavigationService.navigate("ResetPassword");
       } else {
-        console.log(state.id + " ");
-        // dispatch(
-        //   signUpActions.onSignUpResponse({ id: state.id, success: true })
-        // );
-        // NavigationService.navigate("Home");
+        // console.log(state.id + " ");
+        dispatch(
+          signUpActions.onSignUpResponse({ id: state.id, success: true })
+        );
+        // NavigationService.navigate("GroupList");
       }
     } else {
       ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);

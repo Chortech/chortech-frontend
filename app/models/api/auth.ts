@@ -16,6 +16,7 @@ export interface AuthApi {
     email: string,
     phone: string,
     password: string,
+    inputType: InputType,
   ): Promise<SignUpResponse>;
   identifyAccount(
     email: string,

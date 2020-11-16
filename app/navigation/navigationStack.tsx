@@ -38,13 +38,12 @@ const ActivityStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
 interface IState {
-  loginReducer: ILoginState;
-  signUpReducer: ILoginState;
+  authReducer: ILoginState;
 }
 
 const AuthNavigator = () => {
   const isLoggedIn = useSelector(
-    (state: IState) => state.loginReducer.isLoggedIn
+    (state: IState) => state.authReducer.isLoggedIn
   );
   return (
     <AuthStack.Navigator
@@ -160,19 +159,19 @@ const FriendNavigator = () => (
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector(
-    (state: IState) => state.loginReducer.isLoggedIn
+    (state: IState) => state.authReducer.isLoggedIn
   );
 
-  const isSignUpLoggedIn = useSelector(
-    (state: IState) => state.signUpReducer.isLoggedIn
-  );
+  // const isSignUpLoggedIn = useSelector(
+  //   (state: IState) => state.signUpReducer.isLoggedIn
+  // );
 
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
 
       <Stack.Navigator>
-        {isLoggedIn ? (
+        {(isLoggedIn) ? (
           <Stack.Screen
             name="GroupList"
             component={LoggedInNavigator}

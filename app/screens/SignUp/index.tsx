@@ -14,7 +14,7 @@ import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import * as signUpActions from "../../store/actions/signUpActions";
+import * as signUpActions from "../../store/actions/authActions";
 
 const SignUp: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
@@ -41,11 +41,11 @@ const SignUp: React.FC = (): JSX.Element => {
       const email =
         data.inputType == InputType.Email
           ? data.emailOrPhone
-          : `${generateRandomString()}`;
+          : "";
       const phone =
         data.inputType == InputType.Phone
           ? data.emailOrPhone
-          : `${Math.random() * 10}`;
+          : "";
       dispatch(
         signUpActions.requestSignUp(
           data.name,

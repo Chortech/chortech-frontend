@@ -67,17 +67,16 @@ class GraphQLApi implements AuthApi {
     name: string,
     email: string,
     phone: string,
-    password: string
+    password: string,
+    inputType: InputType,
   ): Promise<SignUpResponse> {
     let data = await this.client.request(ADD_USER, {
       name: name,
       password: password,
-      email: email,
-      phone: phone,
+      email: inputType == InputType.Email ? email : null,
+      phone: inputType == InputType.Phone ? phone : null,
     });
     data = data.createUser;
-
-    // console.log("signup id: " + data.createUser);
 
     return {
       id: data != null ? data._id.toString() : "-1",
