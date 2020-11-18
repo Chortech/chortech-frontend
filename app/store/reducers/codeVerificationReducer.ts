@@ -32,4 +32,16 @@ export const codeVerificationReducer = createReducer(initialState, {
       inputType: action.payload.inputType,
     };
   },
+  [types.LOADING_ENABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
+    };
+  },
 });
