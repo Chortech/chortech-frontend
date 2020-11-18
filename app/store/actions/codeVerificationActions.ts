@@ -30,4 +30,4 @@ export function onLoadingDisable(): Action<any> {
     type: types.LOADING_DISABLED,
     payload: {},
   };
-
+}
