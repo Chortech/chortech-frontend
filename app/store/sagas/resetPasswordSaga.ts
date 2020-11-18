@@ -12,6 +12,7 @@ import * as resetPasswordActions from "../actions/resetPasswordActions";
 export default function* resetPasswordAsync(
   action: Action<ResetPasswordRequest>
 ) {
+  yield put(resetPasswordActions.onLoadingEnable());
   const { id, password } = action.payload;
   let response: ResetPasswordResponse = {
     id: "-1",
@@ -24,6 +25,8 @@ export default function* resetPasswordAsync(
     console.log("reset password error: " + JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
+
+  yield put(resetPasswordActions.onLoadingDisable());
 
   console.log("reset password response: " + response);
   if (response.success) {
