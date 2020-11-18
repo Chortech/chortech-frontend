@@ -8,7 +8,6 @@ import { LoginResponse } from "../../models/responses/login";
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
 
-
 export function requestLogin(
   email: string,
   phone: string,
@@ -53,40 +52,53 @@ export function logOut(): Action<any> {
 }
 
 export function requestSignUp(
-    name: string,
-    email: string,
-    phone: string,
-    password: string,
-    inputType: InputType
-  ): Action<SignUpRequest> {
-    return {
-      type: types.SIGNUP_REQUEST,
-      payload: {
-        name,
-        email,
-        phone,
-        password,
-        inputType,
-      },
-    };
-  }
-  
-  export function onSignUpResponse(
-    response: SignUpResponse
-  ): Action<SignUpResponse> {
-    return {
-      type: types.SIGNUP_RESPONSE,
-      payload: response,
-    };
-  }
-  
-  export function onSignUpFail(): Action<SignUpResponse> {
-    return {
-      type: types.SIGNUP_FAIL,
-      payload: {
-        id: "-1",
-        success: false,
-      },
-    };
-  }
-  
+  name: string,
+  email: string,
+  phone: string,
+  password: string,
+  inputType: InputType
+): Action<SignUpRequest> {
+  return {
+    type: types.SIGNUP_REQUEST,
+    payload: {
+      name,
+      email,
+      phone,
+      password,
+      inputType,
+    },
+  };
+}
+
+export function onSignUpResponse(
+  response: SignUpResponse
+): Action<SignUpResponse> {
+  return {
+    type: types.SIGNUP_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onSignUpFail(): Action<SignUpResponse> {
+  return {
+    type: types.SIGNUP_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
+export function onLoadingEnable(): Action<any> {
+  return {
+    type: types.LOADING_ENABLED,
+    payload: {},
+  };
+}
+
+export function onLoadingDisable(): Action<any> {
+  return {
+    type: types.LOADING_DISABLED,
+    payload: {},
+  };
+}
