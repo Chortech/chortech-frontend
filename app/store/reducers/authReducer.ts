@@ -124,6 +124,6 @@ export const authReducer = createReducer(initialState, {
 //       };
 //     },
 //   });
-  
+
 // export default {loginReducer, signUpReducer}
 // export default authReducer;

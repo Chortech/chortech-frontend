@@ -25,21 +25,6 @@ type IState = {
 
 const ResetPassword: React.FC = (): JSX.Element => {
   const id = useStore().getState()["IdentifyAccountReducer"].id;
-  console.log("id: " + id);
-  // console.log(
-  //   "state: " +
-  //     JSON.stringify(
-  //       state.getState()["IdentifyAccountReducer"].id,
-  //       undefined,
-  //       2
-  //     )
-  // );
-  // const state = useSelector((state: IState) => state.resetPasswordReducer);
-  // console.log("state: " + state.id);
-  // const { id, email } = useSelector(
-  //   (state: IState) => state.identifyAccountReducer
-  // );
-  // console.log("reset email: " + email);
   const dispatch = useDispatch();
   const resetToHome = () => {
     if (
@@ -48,7 +33,6 @@ const ResetPassword: React.FC = (): JSX.Element => {
       data.validConfirmPassword
     ) {
       dispatch(resetPasswordActions.requestResetPassword(id, data.password));
-      console.log("navigate to login");
     } else {
       ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
     }

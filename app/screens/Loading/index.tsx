@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { styles } from "./styles";
 
 const LoadingIndicator: React.FunctionComponent = () => {
   return (
-    <View>
-      <ActivityIndicator />
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#1AD927" />
     </View>
   );
 };

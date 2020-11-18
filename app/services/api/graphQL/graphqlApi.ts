@@ -30,29 +30,12 @@ class GraphQLApi implements AuthApi {
     inputType: InputType
   ): Promise<LoginResponse> {
     let data: any;
-    // let repsonse: LoginResponse = {
-    //   id: "-1",
-    //   success: false,
-    // };
-
     if (inputType == InputType.Email) {
       data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
       data = data.UserByEmail;
-      // responsePassword =
-      //   data.UserByEmail != null ? data.UserByEmail.password : responsePassword;
-      // repsonse = {
-      //   id: data.UserByEmail != null ? data.UserByEmail._id.toString() : "-1",
-      //   success: password === responsePassword,
-      // };
     } else {
       data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
       data = data.UserByPhone;
-      // responsePassword =
-      //   data.UserByPhone != null ? data.UserByPhone.password : responsePassword;
-      // repsonse = {
-      //   id: data.UserByPhone != null ? data.UserByPhone._id.toString() : "-1",
-      //   success: password === responsePassword,
-      // };
     }
 
     let responsePassword = data != null ? data.password : "";
@@ -68,7 +51,7 @@ class GraphQLApi implements AuthApi {
     email: string,
     phone: string,
     password: string,
-    inputType: InputType,
+    inputType: InputType
   ): Promise<SignUpResponse> {
     let data = await this.client.request(ADD_USER, {
       name: name,
@@ -90,10 +73,6 @@ class GraphQLApi implements AuthApi {
     inputType: InputType
   ): Promise<IdentifyAccountResponse> {
     let data: any;
-    // let response: IdentifyAccountResponse = {
-    //   id: "-1",
-    //   success: false,
-    // };
 
     if (inputType == InputType.Email) {
       data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
@@ -126,9 +105,6 @@ class GraphQLApi implements AuthApi {
     });
     data = data.updateUser;
 
-    console.log(
-      "reset password response: " + JSON.stringify(data, undefined, 2)
-    );
     return {
       id: data != null ? data._id.toString() : "-1",
       success: data != null,

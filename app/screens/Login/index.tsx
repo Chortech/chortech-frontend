@@ -80,10 +80,6 @@ const Login: React.FC = (): JSX.Element => {
     });
   };
 
-  const showAlert = () => {
-    ToastAndroid.show("hello", ToastAndroid.SHORT);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -156,7 +152,7 @@ const Login: React.FC = (): JSX.Element => {
             <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
               <Text style={styles.outlinedButtonText}>ثبت نام</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.outlinedButton} onPress={showAlert}>
+            <TouchableOpacity style={styles.outlinedButton}>
               <Text style={styles.outlinedButtonText}>قوانین حریم خصوصی</Text>
             </TouchableOpacity>
           </View>

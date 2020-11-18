@@ -45,7 +45,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     validCode: false,
   });
   const dispatch = useDispatch();
-  console.log("ref: " + ref);
 
   const onNextScreen = () => {
     if (data.validCode) {
@@ -67,7 +66,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     );
     // ref.resetCountDown();
   };
-  console.log("valid code: " + data.validCode);
 
   const setCode = (code: string): void => {
     setData({
