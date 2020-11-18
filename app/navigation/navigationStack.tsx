@@ -28,6 +28,7 @@ import EditProfile from "../screens/EditProfile";
 
 import { StatusBar } from "react-native";
 import { ILoginState } from "../models/reducers/login";
+import LoadingIndicator from "../screens/Loading";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -36,6 +37,7 @@ const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const LoadingStack = createStackNavigator();
 
 interface IState {
   authReducer: ILoginState;
@@ -148,6 +150,12 @@ const FriendNavigator = () => (
   </FriendStack.Navigator>
 );
 
+const LoadingNavigator: any = () => {
+  <LoadingStack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Loading" component={LoadingIndicator} />
+  </LoadingStack.Navigator>;
+};
+
 // const ProfileNavigator = () => (
 //   <ProfileStack.Navigator
 //     screenOptions={{ headerShown: false }}
@@ -158,8 +166,8 @@ const FriendNavigator = () => (
 // );
 
 const App: React.FC = () => {
-  const isLoggedIn = useSelector(
-    (state: IState) => state.authReducer.isLoggedIn
+  const { isLoggedIn, loading } = useSelector(
+    (state: IState) => state.authReducer
   );
 
   // const isSignUpLoggedIn = useSelector(
@@ -171,7 +179,9 @@ const App: React.FC = () => {
       <StatusBar />
 
       <Stack.Navigator>
-        {(isLoggedIn) ? (
+        {loading ? (
+          <Stack.Screen name="Loading" component={LoadingNavigator} />
+        ) : isLoggedIn ? (
           <Stack.Screen
             name="GroupList"
             component={LoggedInNavigator}
