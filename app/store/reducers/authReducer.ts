@@ -92,38 +92,16 @@ export const authReducer = createReducer(initialState, {
       inputType: InputType.None,
     };
   },
+  [types.LOADING_ENABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
+    };
+  },
 });
-
-// const signUpReducer = createReducer(initialState, {
-//     [types.SIGNUP_REQUEST](state: ILoginState, action: Action<SignUpRequest>) {
-//       return {
-//         ...state,
-//         name: action.payload.name,
-//         email: action.payload.email,
-//         phone: action.payload.phone,
-//         password: action.payload.password,
-//         inputType: action.payload.inputType,
-//       };
-//     },
-//     [types.SIGNUP_RESPONSE](state: ILoginState, action: Action<SignUpResponse>) {
-//       return {
-//         ...state,
-//         id: action.payload.id,
-//         isLoggedIn: true,
-//       };
-//     },
-//     [types.SIGNUP_FAIL](state: ILoginState, action: Action<SignUpResponse>) {
-//       return {
-//         ...state,
-//         id: "-1",
-//         name: "",
-//         email: "",
-//         phone: "",
-//         password: "",
-//         inputType: InputType.None,
-//       };
-//     },
-//   });
-
-// export default {loginReducer, signUpReducer}
-// export default authReducer;
