@@ -40,6 +40,7 @@ export function* loginAsync(action: Action<LoginRequest>) {
 }
 
 export function* signUpAsync(action: Action<SignUpRequest>) {
+  yield put(authActions.onLoadingEnable());
   const { name, email, phone, password, inputType } = action.payload;
   let response: LoginResponse = {
     id: "-1",
@@ -53,8 +54,9 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
     console.log(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(authActions.onLoadingDisable());
+
   if (response.success) {
-    // yield put(signUpActions.onSignUpResponse(response));
     yield navigationRef.current?.navigate("CodeVerification", {
       parentScreen: "SignUp",
     });
