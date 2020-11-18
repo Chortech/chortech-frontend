@@ -47,4 +47,16 @@ export const resetPasswordReducer = createReducer(initialState, {
       password: action.payload.password,
     };
   },
+  [types.LOADING_ENABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: ILoginState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
+    };
+  },
 });
