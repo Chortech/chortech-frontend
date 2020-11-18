@@ -150,12 +150,6 @@ const FriendNavigator = () => (
   </FriendStack.Navigator>
 );
 
-const LoadingNavigator: any = () => {
-  <LoadingStack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Loading" component={LoadingIndicator} />
-  </LoadingStack.Navigator>;
-};
-
 // const ProfileNavigator = () => (
 //   <ProfileStack.Navigator
 //     screenOptions={{ headerShown: false }}
@@ -170,17 +164,19 @@ const App: React.FC = () => {
     (state: IState) => state.authReducer
   );
 
-  // const isSignUpLoggedIn = useSelector(
-  //   (state: IState) => state.signUpReducer.isLoggedIn
-  // );
-
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
 
       <Stack.Navigator>
         {loading ? (
-          <Stack.Screen name="Loading" component={LoadingNavigator} />
+          <Stack.Screen
+            name="Loading"
+            component={LoadingIndicator}
+            options={{
+              headerShown: false,
+            }}
+          />
         ) : isLoggedIn ? (
           <Stack.Screen
             name="GroupList"

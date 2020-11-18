@@ -14,6 +14,7 @@ import { SignUpResponse } from "../../models/responses/signUp";
 import { InputType } from "../../utils/inputTypes";
 
 export function* loginAsync(action: Action<LoginRequest>) {
+  yield put(authActions.onLoadingEnable());
   const { email, phone, password, inputType } = action.payload;
   let response: LoginResponse = {
     id: "-1",
@@ -26,6 +27,8 @@ export function* loginAsync(action: Action<LoginRequest>) {
   } catch (error) {
     console.error(JSON.stringify(error, undefined, 2));
   }
+
+  yield put(authActions.onLoadingDisable());
 
   if (response.success) {
     console.log("success");
