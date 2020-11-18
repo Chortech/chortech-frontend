@@ -11,6 +11,7 @@ import * as identifyAccountActions from "../actions/identifyAccountActions";
 export default function* identifyAccountAsync(
   action: Action<IdentifyAccountRequest>
 ) {
+  yield put(identifyAccountActions.onLoadingEnable());
   const { email, phone, inputType } = action.payload;
   let response: IdentifyAccountResponse = {
     id: "-1",
@@ -26,6 +27,8 @@ export default function* identifyAccountAsync(
     console.error(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
+
+  yield put(identifyAccountActions.onLoadingDisable());
 
   if (response.success) {
     yield put(identifyAccountActions.onIdentifyAccountResponse(response));
