@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 
 const LoadingIndicator = () => {
   return (
-    <View style={[styles.container, styles.horizontal]}>
+    <Animatable.View
+      animation="fadeIn"
+      duration={500}
+      style={[styles.container, styles.horizontal]}>
       <ActivityIndicator size="large" color="#1AD927" />
-    </View>
+    </Animatable.View>
   );
 };
 
