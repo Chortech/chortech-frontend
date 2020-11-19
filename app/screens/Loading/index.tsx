@@ -13,5 +13,4 @@ const LoadingIndicator = () => {
     </Animatable.View>
   );
 };
-
 export default LoadingIndicator;
