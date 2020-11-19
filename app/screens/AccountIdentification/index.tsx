@@ -7,15 +7,24 @@ import {
   StatusBar,
   ToastAndroid,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
 
 import * as identifyAccountActions from "../../store/actions/identifyAccountActions";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
+import { ILoginState } from "../../models/reducers/login";
+import LoadingIndicator from "../Loading";
+
+interface IState {
+  IdentifyAccountReducer: ILoginState;
+}
 
 const AccountIdentification: React.FC = () => {
+  const { loading } = useSelector(
+    (state: IState) => state.IdentifyAccountReducer
+  );
   const dispatch = useDispatch();
   const onVerify = () => {
     if (data.emailOrPhone != "" && data.validEmailOrPhone) {
@@ -51,41 +60,47 @@ const AccountIdentification: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>Chortech</Text>
-      </View>
-      <Animatable.View
-        animation="slideInUp"
-        duration={1000}
-        style={styles.footer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="ایمیل یا شماره موبایل"
-            style={styles.textInput}
-            onChangeText={(text) => setEmailOrPhone(text)}
-          />
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <StatusBar backgroundColor="#009387" barStyle="light-content" />
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>Chortech</Text>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            duration={1000}
+            style={styles.footer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="ایمیل یا شماره موبایل"
+                style={styles.textInput}
+                onChangeText={(text) => setEmailOrPhone(text)}
+              />
+            </View>
+            {!data.validEmailOrPhone ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                ایمیل یا شماره موبایل وارد شده معتبر نیست
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.verifyScreenButton}
+                onPress={onVerify}>
+                <Text style={styles.verifyScreenButtonText}>
+                  ادامه و دریافت کد تایید
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-        {!data.validEmailOrPhone ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            ایمیل یا شماره موبایل وارد شده معتبر نیست
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.verifyScreenButton}
-            onPress={onVerify}>
-            <Text style={styles.verifyScreenButtonText}>
-              ادامه و دریافت کد تایید
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
-    </View>
+      )}
+    </>
   );
 };
 

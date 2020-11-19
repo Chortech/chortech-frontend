@@ -24,6 +24,7 @@ import * as codeVerificationActions from "../../store/actions/codeVerificationAc
 import { InputType } from "../../utils/inputTypes";
 import { ILoginState } from "../../models/reducers/login";
 import { validate } from "graphql";
+import LoadingIndicator from "../Loading";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -36,7 +37,7 @@ type IState = {
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const state = useStore().getState()["authReducer"];
   const { parentScreen } = route.params;
-  const { phone, email, password, inputType } = useSelector(
+  const { phone, email, password, inputType, loading } = useSelector(
     (state: IState) => state.codeVerificationReducer
   );
   const [ref, setRef] = useState(null);
@@ -60,11 +61,11 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     }
   };
 
-  const regenerateCode = (ref: any): void => {
+  const regenerateCode = (): void => {
     dispatch(
       codeVerificationActions.requestGenerateCode(email, phone, inputType)
     );
-    // ref.resetCountDown();
+    ref.resetCountDown();
   };
 
   const setCode = (code: string): void => {
@@ -75,53 +76,61 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>Chortech</Text>
-      </View>
-      <Animatable.View
-        animation="fadeInUpBig"
-        duration={500}
-        style={styles.footer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="لطفا کد فعال‌سازی را وارد کنید"
-            style={styles.textInput}
-            keyboardType="number-pad"
-            onChangeText={(text) => setCode(text)}
-          />
-        </View>
-        <View style={styles.timerContainer}>
-          <CountDown
-            ref={(ref) => {
-              setRef(ref);
-            }}
-            initialSeconds={120}
-            digitFontSize={20}
-            labelFontSize={20}
-            onTimeOut={(): void => {}}
-            showHours={false}
-            showSeparator
-            separatorStyle={styles.seperatorLabel}
-            minutesBackgroundStyle={styles.timerLabel}
-            secondsBackgroundStyle={styles.timerLabel}
-            width="40%"
-            height={40}
-          />
-          <View>
-            <TouchableOpacity onPress={(ref) => regenerateCode(ref)}>
-              <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
-            </TouchableOpacity>
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <StatusBar backgroundColor="#009387" barStyle="light-content" />
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>Chortech</Text>
           </View>
+          <Animatable.View
+            animation="fadeInUpBig"
+            duration={500}
+            style={styles.footer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="لطفا کد فعال‌سازی را وارد کنید"
+                style={styles.textInput}
+                keyboardType="number-pad"
+                onChangeText={(text) => setCode(text)}
+              />
+            </View>
+            <View style={styles.timerContainer}>
+              <CountDown
+                ref={(ref) => {
+                  setRef(ref);
+                }}
+                initialSeconds={120}
+                digitFontSize={20}
+                labelFontSize={20}
+                onTimeOut={(): void => {}}
+                showHours={false}
+                showSeparator
+                separatorStyle={styles.seperatorLabel}
+                minutesBackgroundStyle={styles.timerLabel}
+                secondsBackgroundStyle={styles.timerLabel}
+                width="40%"
+                height={40}
+              />
+              <View>
+                <TouchableOpacity onPress={regenerateCode}>
+                  <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={onNextScreen}>
+                <Text style={styles.confirmButtonText}>تایید</Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>
-            <Text style={styles.confirmButtonText}>تایید</Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
-    </View>
+      )}
+    </>
   );
 };
 

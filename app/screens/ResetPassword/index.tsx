@@ -18,13 +18,17 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { ILoginState } from "../../models/reducers/login";
 import * as resetPasswordActions from "../../store/actions/resetPasswordActions";
 import configureStore from "../../store/index";
+import LoadingIndicator from "../Loading";
 
 type IState = {
-  identifyAccountReducer: ILoginState;
+  resetPasswordReducer: ILoginState;
 };
 
 const ResetPassword: React.FC = (): JSX.Element => {
   const id = useStore().getState()["IdentifyAccountReducer"].id;
+  const { loading } = useSelector(
+    (state: IState) => state.resetPasswordReducer
+  );
   const dispatch = useDispatch();
   const resetToHome = () => {
     if (
@@ -80,85 +84,95 @@ const ResetPassword: React.FC = (): JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>بازیابی کلمه عبور</Text>
-      </View>
-      <Animatable.View
-        animation="slideInUp"
-        duration={600}
-        style={styles.infoContainer}>
-        <View style={styles.inputContainer}>
-          <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
-            {data.secureTextEntry ? (
-              <FontAwesomeIcon
-                icon="eye-slash"
-                size={20}
-                style={{ color: "red" }}
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>بازیابی کلمه عبور</Text>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            duration={600}
+            style={styles.infoContainer}>
+            <View style={styles.inputContainer}>
+              <TouchableOpacity
+                onPress={togglePassword}
+                style={styles.toggleIcon}>
+                {data.secureTextEntry ? (
+                  <FontAwesomeIcon
+                    icon="eye-slash"
+                    size={20}
+                    style={{ color: "red" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon="eye"
+                    size={20}
+                    style={{ color: "#1AD927" }}
+                  />
+                )}
+              </TouchableOpacity>
+              <TextInput
+                placeholder="رمز عبور جدید"
+                secureTextEntry={data.secureTextEntry}
+                style={styles.textInput}
+                onChangeText={(text) => setPassword(text)}
               />
-            ) : (
-              <FontAwesomeIcon
-                icon="eye"
-                size={20}
-                style={{ color: "#1AD927" }}
+            </View>
+            {!data.validPassword ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.inputContainer}>
+              <TouchableOpacity
+                onPress={toggleConfirmPassword}
+                style={styles.toggleIcon}>
+                {data.confirmSecureTextEntry ? (
+                  <FontAwesomeIcon
+                    icon="eye-slash"
+                    size={20}
+                    style={{ color: "red" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon="eye"
+                    size={20}
+                    style={{ color: "#1AD927" }}
+                  />
+                )}
+              </TouchableOpacity>
+              <TextInput
+                placeholder="تکرار رمز عبور جدید"
+                secureTextEntry={data.confirmSecureTextEntry}
+                style={styles.textInput}
+                onChangeText={(text) => setConfirmPassword(text)}
               />
-            )}
-          </TouchableOpacity>
-          <TextInput
-            placeholder="رمز عبور جدید"
-            secureTextEntry={data.secureTextEntry}
-            style={styles.textInput}
-            onChangeText={(text) => setPassword(text)}
-          />
+            </View>
+            {!data.validConfirmPassword ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={resetToHome}>
+                <Text style={styles.confirmButtonText}>تایید</Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-        {!data.validPassword ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.inputContainer}>
-          <TouchableOpacity
-            onPress={toggleConfirmPassword}
-            style={styles.toggleIcon}>
-            {data.confirmSecureTextEntry ? (
-              <FontAwesomeIcon
-                icon="eye-slash"
-                size={20}
-                style={{ color: "red" }}
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon="eye"
-                size={20}
-                style={{ color: "#1AD927" }}
-              />
-            )}
-          </TouchableOpacity>
-          <TextInput
-            placeholder="تکرار رمز عبور جدید"
-            secureTextEntry={data.confirmSecureTextEntry}
-            style={styles.textInput}
-            onChangeText={(text) => setConfirmPassword(text)}
-          />
-        </View>
-        {!data.validConfirmPassword ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.confirmButton} onPress={resetToHome}>
-            <Text style={styles.confirmButtonText}>تایید</Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
-    </View>
+      )}
+    </>
   );
 };
 

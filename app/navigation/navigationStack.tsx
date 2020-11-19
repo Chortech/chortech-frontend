@@ -160,24 +160,14 @@ const FriendNavigator = () => (
 // );
 
 const App: React.FC = () => {
-  const { isLoggedIn, loading } = useSelector(
-    (state: IState) => state.authReducer
-  );
+  const { isLoggedIn } = useSelector((state: IState) => state.authReducer);
 
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
 
       <Stack.Navigator>
-        {loading ? (
-          <Stack.Screen
-            name="Loading"
-            component={LoadingIndicator}
-            options={{
-              headerShown: false,
-            }}
-          />
-        ) : isLoggedIn ? (
+        {isLoggedIn ? (
           <Stack.Screen
             name="GroupList"
             component={LoggedInNavigator}

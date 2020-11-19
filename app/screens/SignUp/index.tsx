@@ -7,7 +7,7 @@ import {
   StatusBar,
   ToastAndroid,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 
@@ -15,8 +15,15 @@ import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import * as signUpActions from "../../store/actions/authActions";
+import { ILoginState } from "../../models/reducers/login";
+import LoadingIndicator from "../Loading";
+
+interface IState {
+  authReducer: ILoginState;
+}
 
 const SignUp: React.FC = (): JSX.Element => {
+  const { loading } = useSelector((state: IState) => state.authReducer);
   const [data, setData] = useState({
     name: "",
     emailOrPhone: "",
@@ -38,14 +45,8 @@ const SignUp: React.FC = (): JSX.Element => {
     } else if (data.name && data.emailOrPhone && data.password) {
       const generateRandomString = (length = 10) =>
         Math.random().toString(20).substr(2, length);
-      const email =
-        data.inputType == InputType.Email
-          ? data.emailOrPhone
-          : "";
-      const phone =
-        data.inputType == InputType.Phone
-          ? data.emailOrPhone
-          : "";
+      const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
+      const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
         signUpActions.requestSignUp(
           data.name,
@@ -97,87 +98,95 @@ const SignUp: React.FC = (): JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>Chortech</Text>
-      </View>
-      <Animatable.View
-        animation="slideInUp"
-        duration={1000}
-        style={styles.footer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="نام و نام خانوادگی"
-            style={styles.textInput}
-            onChangeText={(text) => setName(text)}
-          />
-        </View>
-        {!data.validName ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            نام و نام خانوادگی باید حداقل دارای ۶ کاراکتر باشد
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="ایمیل یا شماره موبایل"
-            style={styles.textInput}
-            onChangeText={(text) => setEmailOrPhone(text)}
-          />
-        </View>
-        {!data.validEmailOrPhone ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            ایمیل یا شماره موبایل وارد شده معتبر نیست
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.inputContainer}>
-          <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
-            {data.secureTextEntry ? (
-              <FontAwesomeIcon
-                icon="eye-slash"
-                size={20}
-                style={{ color: "red" }}
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <StatusBar backgroundColor="#009387" barStyle="light-content" />
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>Chortech</Text>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            duration={1000}
+            style={styles.footer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="نام و نام خانوادگی"
+                style={styles.textInput}
+                onChangeText={(text) => setName(text)}
               />
-            ) : (
-              <FontAwesomeIcon
-                icon="eye"
-                size={20}
-                style={{ color: "#1AD927" }}
+            </View>
+            {!data.validName ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                نام و نام خانوادگی باید حداقل دارای ۶ کاراکتر باشد
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="ایمیل یا شماره موبایل"
+                style={styles.textInput}
+                onChangeText={(text) => setEmailOrPhone(text)}
               />
-            )}
-          </TouchableOpacity>
-          <TextInput
-            placeholder="رمز عبور"
-            style={styles.textInput}
-            secureTextEntry={data.secureTextEntry}
-            onChangeText={(text) => setPassword(text)}
-          />
+            </View>
+            {!data.validEmailOrPhone ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                ایمیل یا شماره موبایل وارد شده معتبر نیست
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.inputContainer}>
+              <TouchableOpacity
+                onPress={togglePassword}
+                style={styles.toggleIcon}>
+                {data.secureTextEntry ? (
+                  <FontAwesomeIcon
+                    icon="eye-slash"
+                    size={20}
+                    style={{ color: "red" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon="eye"
+                    size={20}
+                    style={{ color: "#1AD927" }}
+                  />
+                )}
+              </TouchableOpacity>
+              <TextInput
+                placeholder="رمز عبور"
+                style={styles.textInput}
+                secureTextEntry={data.secureTextEntry}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
+            {!data.validPassword ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.verifyScreenButton}
+                onPress={onVerify}>
+                <Text style={styles.verifyScreenButtonText}>
+                  ادامه و دریافت کد تایید
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-        {!data.validPassword ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.verifyScreenButton}
-            onPress={onVerify}>
-            <Text style={styles.verifyScreenButtonText}>
-              ادامه و دریافت کد تایید
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
-    </View>
+      )}
+    </>
   );
 };
 
