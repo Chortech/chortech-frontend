@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     name:{
       fontSize:20,
       color:"#FFFFFF",
+      fontFamily: "IRANSansWeb_Bold",
       fontWeight:'600',
     },
     box: {
