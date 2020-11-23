@@ -10,16 +10,12 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
-import { useDispatch } from 'react-redux';
 
-import * as loginActions from '../../store/actions/authActions';
 import NavigationService from '../../navigation/navigationService';
 import styles from "./styles"
 
 const GroupList: React.FC = () => {
-  const dispatch = useDispatch();
   const onGroupSelect = () => NavigationService.navigate('Group');
-  const onLogout = () => dispatch(loginActions.logOut());
   const onProfile = () => NavigationService.navigate('Profile');
 
   const groups = [
