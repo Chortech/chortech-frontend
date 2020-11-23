@@ -26,6 +26,13 @@ const InviteFriend: React.FC = (): JSX.Element => {
     secureTextEntry: true,
   });
 
+  const setQueryText = (text: string) => {
+    setData({
+      ...data,
+      emailOrPhone: text,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -36,14 +43,15 @@ const InviteFriend: React.FC = (): JSX.Element => {
         duration={1000}
         style={styles.infoContainer}>
         <SearchBar
-          lightTheme
+          lightTheme={false}
           searchIcon={{ size: 20 }}
           placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
           containerStyle={styles.searchBar}
+          round={true}
           inputStyle={styles.textInput}
           leftIconContainerStyle={{ backgroundColor: "white" }}
           inputContainerStyle={{ backgroundColor: "white" }}
-          onChangeText={(text) => (data.emailOrPhone = text)}
+          onChangeText={(text) => setQueryText(text)}
           onClear={() => (data.emailOrPhone = "")}
           value={data.emailOrPhone}
         />
