@@ -35,7 +35,6 @@ const GroupList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-    <View style={styles.header}>
       <View style={styles.headerContent}>
           <TouchableOpacity
             onPress={onProfile}
@@ -44,38 +43,29 @@ const GroupList: React.FC = () => {
           </TouchableOpacity>
           <Text style={styles.name}>بابک سفیدگر</Text>
       </View>
-    </View>
 
-    <View style={styles.body}>
-    <Animatable.View
+      <Animatable.View
         animation="slideInUp"
         duration={600}
         style={styles.infoContainer}
-      >
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <FlatList 
-        style={styles.container} 
-        data={groups}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity onPress={onGroupSelect}>
-              <View style={styles.box}>
-                <Image style={styles.image} source={require("../../assets/images/group-image.jpg")}/>
-                 <Text style={styles.username}>{item.name}</Text>
-              </View>
-            </TouchableOpacity>
-          )
-      }}/>
-      </ScrollView>
+        >
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <FlatList 
+          data={groups}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity onPress={onGroupSelect}>
+                <View style={styles.box}>
+                  <Text style={styles.groupName}>{item.name}</Text>
+                  <Image style={styles.image} source={require("../../assets/images/group-image.jpg")}/>
+                </View>
+              </TouchableOpacity>
+            )
+        }}/>
+        </ScrollView>
       </Animatable.View>
-    </View>
-    <View>
-      <Button icon="logout" mode="outlined" onPress={onLogout}>
-        Logout
-      </Button>
-    </View>
-</View>
-);
-}
+  </View>
+  );
+};
 
 export default GroupList;
