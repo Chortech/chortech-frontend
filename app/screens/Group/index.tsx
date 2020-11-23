@@ -32,7 +32,7 @@ const Group: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
       <Image
-          style={styles.image}
+          style={styles.groupImage}
           source={require("../../assets/images/group-image.jpg")}
         />
         <Text style={styles.text}>{data.name}</Text>
@@ -53,7 +53,7 @@ const Group: React.FC = () => {
                   >
                     <Text style={styles.groupText}>{item.name}</Text>
                     <Image
-                      style={styles.image}
+                      style={styles.activityImage}
                       source={require("../../assets/images/category-image.jpg")}
                     />
                   </TouchableOpacity>
