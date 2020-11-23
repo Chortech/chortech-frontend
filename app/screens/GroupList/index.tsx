@@ -17,6 +17,7 @@ import styles from "./styles"
 const GroupList: React.FC = () => {
   const onGroupSelect = () => NavigationService.navigate('Group');
   const onProfile = () => NavigationService.navigate('Profile');
+  const onAddGroup = () => NavigationService.navigate('AddGroup');
 
   const groups = [
     {id:1, name:"گروه دوستان ۱"},
@@ -54,7 +55,7 @@ const GroupList: React.FC = () => {
             )
         }}/>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={onAddGroup}>
               <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>

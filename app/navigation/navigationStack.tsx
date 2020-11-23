@@ -19,6 +19,7 @@ import InviteFriend from "../screens/InviteFriend";
 
 import GroupList from "../screens/GroupList";
 import Group from "../screens/Group";
+import AddGroup from "../screens/AddGroup";
 
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
@@ -126,6 +127,7 @@ const GroupNavigator = () => (
     initialRouteName="GroupList">
     <LoggedInTab.Screen name="GroupList" component={GroupList} />
     <LoggedInTab.Screen name="Group" component={Group} />
+    <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
   </GroupStack.Navigator>
 );
 
