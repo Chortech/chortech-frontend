@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput } from "react-native";
 import { SearchBar } from "react-native-elements";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -13,28 +13,48 @@ const InviteFriend: React.FC = (): JSX.Element => {
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>Chortech</Text>
-      </View>
-      <Animatable.View
+    <Animatable.View style={styles.container}
         animation="slideInUp"
-        duration={1000}
-        style={styles.infoContainer}>
-        <SearchBar
-          lightTheme
-          searchIcon={{ size: 20 }}
-          placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-          containerStyle={styles.searchBar}
-          inputStyle={styles.textInput}
-          leftIconContainerStyle={{ backgroundColor: "white" }}
-          inputContainerStyle={{ backgroundColor: "white" }}
-          onChangeText={(text) => (data.emailOrPhone = text)}
-          onClear={() => (data.emailOrPhone = "")}
-          value={data.emailOrPhone}
-        />
-      </Animatable.View>
-    </View>
+        duration={1000}>
+        <View style={styles.header}
+            animation="slideInUp"
+            duration={1000}>
+            {/* <Image
+            style={styles.groupImage}
+            source={require("../../assets/images/group-image.jpg")}
+            /> */}
+            <View style={styles.groupNameContainer}>
+                <TextInput
+                    placeholder="نام گروه"
+                    placeholderTextColor="#A4A4A4"
+                    style={styles.textHeader}
+                />
+            </View>
+        </View>
+        <View
+            style={styles.infoContainer}>
+            <SearchBar
+            lightTheme
+            searchIcon={{ size: 20 }}
+            placeholder="دوستانی که می‌خواهید اضافه کنید را پیدا کنید"
+            containerStyle={styles.searchBar}
+            inputStyle={styles.textInput}
+            leftIconContainerStyle={{ backgroundColor: "white" }}
+            inputContainerStyle={{ backgroundColor: "white" }}
+            onChangeText={(text) => (data.emailOrPhone = text)}
+            onClear={() => (data.emailOrPhone = "")}
+            value={data.emailOrPhone}
+            />
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.addButton}>
+                    <Text style={styles.addButtonText}>ایجاد گروه</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.removeButton}>
+                    <Text style={styles.removeButtonText}>انصراف</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </Animatable.View>
   );
 };
 
