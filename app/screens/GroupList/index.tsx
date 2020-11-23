@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
-import { Button } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
 
 import NavigationService from '../../navigation/navigationService';
