@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     width: 100,
     borderRadius: 50,
     padding: 10,
-    borderWidth: 2,
+    borderWidth: 4,
     borderColor: "#fff",
   },
   activityImage: {

@@ -31,7 +31,7 @@ const Group: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <Image
+        <Image
           style={styles.groupImage}
           source={require("../../assets/images/group-image.jpg")}
         />
