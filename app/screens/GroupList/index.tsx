@@ -26,11 +26,6 @@ const GroupList: React.FC = () => {
     {id:1, name:"گروه دوستان ۱"},
     {id:2, name:"گروه دوستان ۲"},
     {id:3, name:"گروه دوستان ۳"},
-    {id:4, name:"گروه دوستان ۴"},
-    {id:5, name:"گروه دوستان ۵"},
-    {id:6, name:"گروه دوستان ۶"},
-    {id:7, name:"گروه دوستان ۷"},
-    {id:8, name:"گروه دوستان ۸"},
   ];
 
   return (
@@ -62,6 +57,12 @@ const GroupList: React.FC = () => {
               </TouchableOpacity>
             )
         }}/>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
+              <Text style={styles.plus}>+</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </Animatable.View>
   </View>

@@ -56,7 +56,38 @@ const styles = StyleSheet.create({
       marginTop: 10,
       fontFamily: "IRANSansWeb_Bold",
       fontSize: 12,
-    }
-  });
+    },
+  buttonContainer: {
+    flex: 5,
+    justifyContent: "flex-end",
+    marginTop: 50,
+  },
+  button: {
+    elevation: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#1AD927",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#1AD927",
+    alignSelf: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    writingDirection: "auto",
+  },
+  plus: {
+    marginLeft: 10,
+    fontSize: 30,
+    color: "#1AD927",
+    alignSelf: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    writingDirection: "auto",
+  },
+});
 
 export default styles;
