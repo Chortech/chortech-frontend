@@ -33,26 +33,30 @@ const InviteFriend: React.FC = (): JSX.Element => {
     });
   };
 
+  const clearText = () => {
+    setData({
+      ...data,
+      emailOrPhone: "",
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.textHeader}>Chortech</Text>
-      </View>
       <Animatable.View
         animation="slideInUp"
-        duration={1000}
+        duration={500}
         style={styles.infoContainer}>
         <SearchBar
-          lightTheme={false}
-          searchIcon={{ size: 20 }}
+          lightTheme
+          searchIcon={{ size: 20, color: "#1AD927" }}
           placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
           containerStyle={styles.searchBar}
           round={true}
-          inputStyle={styles.textInput}
+          inputStyle={styles.searchInput}
           leftIconContainerStyle={{ backgroundColor: "white" }}
-          inputContainerStyle={{ backgroundColor: "white" }}
+          inputContainerStyle={styles.searchInputContainer}
           onChangeText={(text) => setQueryText(text)}
-          onClear={() => (data.emailOrPhone = "")}
+          onClear={() => clearText()}
           value={data.emailOrPhone}
         />
       </Animatable.View>

@@ -20,8 +20,6 @@ export const styles = StyleSheet.create({
   infoContainer: {
     flex: 6,
     backgroundColor: "#fff",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
   },
   inputContainer: {
     flexDirection: "row",
@@ -34,11 +32,6 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: "white",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    borderTopWidth: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EBE8E8",
   },
   textInput: {
     flex: 10,
@@ -47,5 +40,17 @@ export const styles = StyleSheet.create({
     textAlign: "right",
     backgroundColor: "white",
     justifyContent: "center",
+  },
+  searchInput: {
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 14,
+    textAlign: "right",
+    color: "#053751",
+    justifyContent: "center",
+  },
+  searchInputContainer: {
+    fontFamily: "Dirooz",
+    textAlign: "right",
+    backgroundColor: "white",
   },
 });
