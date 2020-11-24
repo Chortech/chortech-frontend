@@ -11,6 +11,7 @@ import {
 import ActionButton from 'react-native-action-button';
 import * as Animatable from "react-native-animatable";
 
+import NavigationService from '../../navigation/navigationService';
 import styles from "./styles"
 
 const Group: React.FC = () => {
@@ -19,7 +20,7 @@ const Group: React.FC = () => {
     name: "گروه دوستان ۱",
   });
 
-  // const onAddActivity = () => NavigationService.navigate('AddActivity');
+  const onAddExpense = () => NavigationService.navigate('AddExpense');
 
   const expenses = [
     {id:1, image: "../../assets/images/friend-image.jpg", name:"کالای ۱"},
@@ -69,7 +70,7 @@ const Group: React.FC = () => {
         <ActionButton
           buttonColor="#1AD927"
           position="left"
-          // onPress={onAddActivity}
+          onPress={onAddExpense}
         />
       </Animatable.View>
     </View>

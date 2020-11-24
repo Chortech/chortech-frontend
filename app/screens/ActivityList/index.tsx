@@ -5,8 +5,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from 'react-native';
+import ActionButton from 'react-native-action-button';
 import * as Animatable from "react-native-animatable";
 
 import NavigationService from '../../navigation/navigationService';
@@ -14,6 +15,8 @@ import styles from "./styles"
 
 const ActivityList: React.FC = () => {
   const onActivitySelect = () => NavigationService.navigate('Activity');
+  const onAddExpense = () => NavigationService.navigate('AddExpense');
+  
   const expenses = [
     {id:1, image: "../../assets/images/friend-image.jpg", name:"کالای ۱"},
     {id:2, image: "../../assets/images/friend-image.jpg", name:"کالای ۲"},
@@ -57,6 +60,11 @@ const ActivityList: React.FC = () => {
             }}
           />
         </ScrollView>
+        <ActionButton
+          buttonColor="#1AD927"
+          position="left"
+          onPress={onAddExpense}
+        />
       </Animatable.View>
     </View>
   );

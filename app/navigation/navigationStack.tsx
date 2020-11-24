@@ -23,6 +23,7 @@ import AddGroup from "../screens/AddGroup";
 
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
+import AddExpense from "../screens/AddExpense";
 
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
@@ -137,6 +138,7 @@ const ActivityNavigator = () => (
     initialRouteName="ActivityList">
     <LoggedInTab.Screen name="ActivityList" component={ActivityList} />
     <LoggedInTab.Screen name="Activity" component={Activity} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </ActivityStack.Navigator>
 );
 
