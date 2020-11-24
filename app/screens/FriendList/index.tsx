@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Image,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
@@ -21,9 +20,16 @@ const FriendList: React.FC = (): JSX.Element => {
     { name: "سینا شعبانی" },
     { name: "نیما ابوالحسن بیگی" },
     { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
+    { name: "حسین مهرمحمدی" },
   ];
 
-  const renderItem = ({ item }) => (
+  const renderFriendItem = ({ item }) => (
     <FriendItem
       onPressFriendItem={onFriend}
       Name={item.name}
@@ -40,14 +46,17 @@ const FriendList: React.FC = (): JSX.Element => {
         animation="slideInUp"
         duration={600}
         style={styles.infoContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <FlatList data={friends} renderItem={renderItem} />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-              <Text style={styles.buttonText}>دعوت از دوستان</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <FlatList
+          data={friends}
+          renderItem={renderFriendItem}
+          ListFooterComponent={
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={onAddFriend}>
+                <Text style={styles.buttonText}>دعوت از دوستان</Text>
+              </TouchableOpacity>
+            </View>
+          }
+        />
       </Animatable.View>
     </View>
   );
