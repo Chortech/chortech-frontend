@@ -2,16 +2,18 @@ import { request, GraphQLClient, gql } from "graphql-request";
 import { AuthApi } from "../../../models/api/auth";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
-import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
-import { UPDATE_USER_PASSWORD, ADD_USER } from "./mutations";
+import * as queries from "./queries";
+import * as mutations from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
+import { FriendsApi } from "../../../models/api/friend";
+import { FriendsResponse } from "../../../models/responses/getFriends";
 
-class GraphQLApi implements AuthApi {
+class GraphQLApi implements AuthApi, FriendsApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -23,6 +25,24 @@ class GraphQLApi implements AuthApi {
     });
   }
 
+  async getUserFriends(userId: string): Promise<FriendsResponse> {
+    let data: any = await this.client.request(queries.USER_FRIENDS, {
+      userId: userId,
+    });
+    data = data.findUserByID;
+    const result = data != null;
+    const id = result ? data._id.toString() : "-1";
+    const friends = result ? data.friends.data : [];
+
+    console.log("friends data: \n" + JSON.stringify(data, undefined, 2));
+
+    return {
+      success: result,
+      userId: id,
+      friends: friends,
+    };
+  }
+
   async login(
     email: string,
     phone: string,
@@ -31,10 +51,14 @@ class GraphQLApi implements AuthApi {
   ): Promise<LoginResponse> {
     let data: any;
     if (inputType == InputType.Email) {
-      data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
+      data = await this.client.request(queries.USER_BY_EMAIL, {
+        emailTxt: email,
+      });
       data = data.UserByEmail;
     } else {
-      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      data = await this.client.request(queries.USER_BY_PHONE, {
+        phoneNumber: phone,
+      });
       data = data.UserByPhone;
     }
 
@@ -53,7 +77,7 @@ class GraphQLApi implements AuthApi {
     password: string,
     inputType: InputType
   ): Promise<SignUpResponse> {
-    let data = await this.client.request(ADD_USER, {
+    let data = await this.client.request(mutations.ADD_USER, {
       name: name,
       password: password,
       email: inputType == InputType.Email ? email : null,
@@ -75,10 +99,14 @@ class GraphQLApi implements AuthApi {
     let data: any;
 
     if (inputType == InputType.Email) {
-      data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
+      data = await this.client.request(queries.USER_BY_EMAIL, {
+        emailTxt: email,
+      });
       data = data.UserByEmail;
     } else {
-      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      data = await this.client.request(queries.USER_BY_PHONE, {
+        phoneNumber: phone,
+      });
       data = data.UserByPhone;
     }
 
@@ -99,7 +127,7 @@ class GraphQLApi implements AuthApi {
     id: string,
     password: string
   ): Promise<ResetPasswordResponse> {
-    let data = await this.client.request(UPDATE_USER_PASSWORD, {
+    let data = await this.client.request(mutations.UPDATE_USER_PASSWORD, {
       userId: id,
       password: password,
     });
