@@ -8,20 +8,9 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
+import NavigationService from '../../navigation/navigationService';
 import { styles } from "./styles";
 
-// type EditProfileScreenRouteProp = RouteProp<RootStackParamList, "EditProfile">;
-// type EditProfileScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   "EditProfile"
-// >;
-
-// type Props = {
-//   navigation: EditProfileScreenNavigationProp;
-//   route: EditProfileScreenRouteProp;
-// };
 
 const EditProfile: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
@@ -38,6 +27,24 @@ const EditProfile: React.FC = (): JSX.Element => {
       secureTextEntry: !data.secureTextEntry,
     });
   };
+
+  // const confirm = () => {
+  //     if (data.activityName == "") {
+  //         ToastAndroid.show(
+  //             "لطفا نام فعالیت را وارد کنید.",
+  //             ToastAndroid.SHORT
+  //         );
+  //     } else if (data.expenseAmount == "") {
+  //         ToastAndroid.show(
+  //             "لطفا مبلغ را وارد کنید.",
+  //             ToastAndroid.SHORT
+  //         );
+  //     } else {
+  //         NavigationService.navigate('Profile');    
+  //     }
+  // };    
+
+  const cancel = () => NavigationService.navigate('Profile');
 
   return (
     <View style={styles.container}>
@@ -108,14 +115,15 @@ const EditProfile: React.FC = (): JSX.Element => {
             </View>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.filledButton}>
+            <TouchableOpacity 
+              style={styles.filledButton}
+              onPress={cancel}
+            >
               <Text style={styles.filledButtonText}>تایید</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.outlinedButton}
-              // onPress={(): void => {
-              //   navigation.goBack();
-              // }}
+              onPress={cancel}
             >
               <Text style={styles.outlinedButtonText}>انصراف</Text>
             </TouchableOpacity>

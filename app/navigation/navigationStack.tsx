@@ -38,7 +38,6 @@ const LoggedInTab = createMaterialTopTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
 const LoadingStack = createStackNavigator();
 
 interface IState {
@@ -149,19 +148,10 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="FriendList" component={FriendList} />
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
-    <Stack.Screen name="Profile" component={Profile} />
-    <Stack.Screen name="EditProfile" component={EditProfile} />
+    <LoggedInTab.Screen name="Profile" component={Profile} />
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
   </FriendStack.Navigator>
 );
-
-// const ProfileNavigator = () => (
-//   <ProfileStack.Navigator
-//     screenOptions={{ headerShown: false }}
-//     initialRouteName="Profile">
-//     <Stack.Screen name="Profile" component={Profile} />
-//     <Stack.Screen name="EditProfile" component={EditProfile} />
-//   </ProfileStack.Navigator>
-// );
 
 const App: React.FC = () => {
   const { isLoggedIn } = useSelector((state: IState) => state.authReducer);

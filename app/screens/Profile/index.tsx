@@ -1,20 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
+import NavigationService from '../../navigation/navigationService';
 import { styles } from "./styles";
-
-// type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
-// type ProfileScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   "Profile"
-// >;
-
-// type Props = {
-//   navigation: ProfileScreenNavigationProp;
-//   route: ProfileScreenRouteProp;
-// };
 
 const Profile: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
@@ -22,6 +10,9 @@ const Profile: React.FC = (): JSX.Element => {
     email: "sample@example.com",
     phone: "09123456789",
   });
+
+  const onFriendList = () => NavigationService.navigate('FriendList');
+  const onEditProfile = () => NavigationService.navigate('EditProfile');
 
   return (
     <View style={styles.container}>
@@ -56,17 +47,13 @@ const Profile: React.FC = (): JSX.Element => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            // onPress={(): void => {
-            //   navigation.navigate("FriendList");
-            // }}
+            onPress={onFriendList}
           >
             <Text style={styles.buttonText}>دوستان</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            // onPress={(): void => {
-            //   navigation.navigate("EditProfile");
-            // }}
+            onPress={onEditProfile}
           >
             <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
           </TouchableOpacity>
