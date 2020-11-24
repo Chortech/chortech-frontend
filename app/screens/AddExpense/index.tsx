@@ -6,40 +6,53 @@ import * as Animatable from "react-native-animatable";
 import NavigationService from '../../navigation/navigationService';
 import { styles } from "./styles";
 
-const AddActivity: React.FC = (): JSX.Element => {
+const AddExpense: React.FC = (): JSX.Element => {
     const confirm = () => {
-        if (data.groupName == "") {
+        if (data.activityName == "") {
             ToastAndroid.show(
-                "لطفا نام گروه را وارد کنید.",
+                "لطفا نام فعالیت را وارد کنید.",
+                ToastAndroid.SHORT
+            );
+        } else if (data.expenseAmount == "") {
+            ToastAndroid.show(
+                "لطفا مبلغ را وارد کنید.",
                 ToastAndroid.SHORT
             );
         } else {
-            NavigationService.navigate('GroupList');
+            NavigationService.navigate('GroupList');    
         }
     };    
 
     const cancel = () => NavigationService.navigate('GroupList');
 
-    const setGroupName = (text: string) => {
+    const setActivityName = (text: string) => {
         setData({
         ...data,
-        groupName: text,
+        activityName: text,
+        });
+    };
+
+    const setExpenseAmount = (text: string) => {
+        setData({
+        ...data,
+        expenseAmount: text,
         });
     };
 
     const [data, setData] = useState({
-        groupName: "",
+        activityName: "",
+        expenseAmount: "",
     });
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.groupNameContainer}>
+                <View style={styles.expenseNameContainer}>
                     <TextInput
                         placeholder="نام فعالیت"
                         placeholderTextColor="#A4A4A4"
                         style={styles.textHeader}
-                        onChangeText={(text) => setGroupName(text)}
+                        onChangeText={(text) => setActivityName(text)}
                     />
                 </View>
             </View>
@@ -48,13 +61,20 @@ const AddActivity: React.FC = (): JSX.Element => {
                 duration={1000}
                 style={styles.infoContainer}>
                 <SearchBar
-                lightTheme
-                searchIcon={{ size: 20 }}
-                placeholder="دوستانی که در این هزینه سهیم هستند را اضافه کنید"
-                containerStyle={styles.searchBar}
-                inputStyle={styles.textInput}
-                leftIconContainerStyle={{ backgroundColor: "white" }}
-                inputContainerStyle={{ backgroundColor: "white" }}
+                    lightTheme
+                    searchIcon={{ size: 20 }}
+                    placeholder="افراد مشترک در هزینه را اضافه کنید"
+                    containerStyle={styles.searchBar}
+                    inputStyle={styles.textInput}
+                    leftIconContainerStyle={{ backgroundColor: "white" }}
+                    inputContainerStyle={{ backgroundColor: "white" }}
+                />
+                <TextInput
+                    placeholder="مبلغ"
+                    placeholderTextColor="#A4A4A4"
+                    style={styles.expenseContainer}
+                    keyboardType="numeric"
+                    onChangeText={(text) => setExpenseAmount(text)}
                 />
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.addButton} onPress={confirm}>
@@ -69,4 +89,4 @@ const AddActivity: React.FC = (): JSX.Element => {
     );
 };
 
-export default AddActivity;
+export default AddExpense;
