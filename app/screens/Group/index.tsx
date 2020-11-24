@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
+import ActionButton from 'react-native-action-button';
 import * as Animatable from "react-native-animatable";
 
 import styles from "./styles"
@@ -17,6 +18,9 @@ const Group: React.FC = () => {
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
   });
+
+  // const onAddActivity = () => NavigationService.navigate('AddActivity');
+
   const expenses = [
     {id:1, image: "../../assets/images/friend-image.jpg", name:"کالای ۱"},
     {id:2, image: "../../assets/images/friend-image.jpg", name:"کالای ۲"},
@@ -62,10 +66,14 @@ const Group: React.FC = () => {
             }}
           />
         </ScrollView>
+        <ActionButton
+          buttonColor="#1AD927"
+          position="left"
+          // onPress={onAddActivity}
+        />
       </Animatable.View>
     </View>
   );
 };
-
 
 export default Group;
