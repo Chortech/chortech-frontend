@@ -31,3 +31,6 @@ export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
 //loading types
 export const LOADING_ENABLED = "LOADING_ENABLED";
 export const LOADING_DISABLED = "LOADING_DISABLED";
+
+//friend types
+export const USER_FRIENDS_REQUEST = "USER_FRIENDS_REQUEST";
