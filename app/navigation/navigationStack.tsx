@@ -115,8 +115,12 @@ const LoggedInNavigator = () => (
       activeTintColor: "#1AD927",
       inactiveTintColor: "#A4A4A4",
       labelStyle: {
-					fontSize: 18,
+				fontSize: 18,
 			},
+      tabStyle: {
+        borderBottomColor: "#1AD927",
+        borderBottomWidth: 2,
+      },
     }}>
     <LoggedInTab.Screen name="دوستان" component={FriendNavigator} />
     <LoggedInTab.Screen name="گروه‌ها" component={GroupNavigator} />
