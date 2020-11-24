@@ -112,4 +112,11 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
   },
+  validationText: {
+    color: "red",
+    padding: 5,
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+    textAlign: "center",
+  },
 });

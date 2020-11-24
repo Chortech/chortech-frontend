@@ -14,11 +14,11 @@ const AddGroup: React.FC = (): JSX.Element => {
                 ToastAndroid.SHORT
             );
         } else {
-            NavigationService.navigate('GroupList');
+            NavigationService.goBack();
         }
     };    
 
-    const cancel = () => NavigationService.navigate('GroupList');
+    const cancel = () => NavigationService.goBack();
 
     const setGroupName = (text: string) => {
         setData({

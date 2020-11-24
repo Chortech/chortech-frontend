@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, ToastAndroid } from "react-native";
 import { SearchBar } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
-
+import { RegexValidator } from "../../utils/regexValidator";
 import NavigationService from '../../navigation/navigationService';
 import { styles } from "./styles";
 
-const AddExpense: React.FC = (): JSX.Element => {
+const AddExpense: React.FC = (): JSX.Element => {    
+    
+    const [data, setData] = useState({
+        activityName: "",
+        expenseAmount: "",
+        isValidExpenseAmount: true,
+    });
+
     const confirm = () => {
         if (data.activityName == "") {
             ToastAndroid.show(
@@ -18,12 +25,16 @@ const AddExpense: React.FC = (): JSX.Element => {
                 "لطفا مبلغ را وارد کنید.",
                 ToastAndroid.SHORT
             );
-        } else {
-            NavigationService.navigate('GroupList');    
+        } else if (data.isValidExpenseAmount) {
+            ToastAndroid.show(
+                "فعالیت با موفقیت اضافه شد.",
+                ToastAndroid.SHORT
+            );
+            NavigationService.goBack();   
         }
     };    
 
-    const cancel = () => NavigationService.navigate('GroupList');
+    const cancel = () => NavigationService.goBack();
 
     const setActivityName = (text: string) => {
         setData({
@@ -36,13 +47,9 @@ const AddExpense: React.FC = (): JSX.Element => {
         setData({
         ...data,
         expenseAmount: text,
+        isValidExpenseAmount: RegexValidator.validateExpenseAmount(text) == true,
         });
     };
-
-    const [data, setData] = useState({
-        activityName: "",
-        expenseAmount: "",
-    });
 
     return (
         <View style={styles.container}>
@@ -70,12 +77,20 @@ const AddExpense: React.FC = (): JSX.Element => {
                     inputContainerStyle={{ backgroundColor: "white" }}
                 />
                 <TextInput
-                    placeholder="مبلغ"
+                    placeholder="مبلغ (تومان)"
                     placeholderTextColor="#A4A4A4"
                     style={styles.expenseContainer}
                     keyboardType="numeric"
                     onChangeText={(text) => setExpenseAmount(text)}
                 />
+                {!data.isValidExpenseAmount ? (
+                <Animatable.Text
+                    style={styles.validationText}
+                    animation="fadeIn"
+                    duration={500}>
+                        مبلغ باید به صورت یک عدد حداکثر ده رقمی باشد.
+                </Animatable.Text>
+                ) : null}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.addButton} onPress={confirm}>
                         <Text style={styles.addButtonText}>ایجاد هزینه</Text>

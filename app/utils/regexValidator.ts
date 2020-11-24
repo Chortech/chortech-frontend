@@ -1,5 +1,5 @@
 import { getType } from "@reduxjs/toolkit";
-import { EmailRegex, PhoneRegex } from "./patterns";
+import { EmailRegex, PhoneRegex, AmountRegex } from "./patterns";
 import { InputType } from "./inputTypes";
 
 export class RegexValidator {
@@ -21,5 +21,9 @@ export class RegexValidator {
     return password.length >= 8 && password.length <= 16
       ? InputType.Password
       : InputType.None;
+  }
+
+  static validateExpenseAmount(amount: string) {
+    return AmountRegex.test(amount);
   }
 }
