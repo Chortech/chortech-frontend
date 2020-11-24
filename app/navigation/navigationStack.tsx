@@ -2,6 +2,8 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
@@ -32,7 +34,7 @@ import LoadingIndicator from "../screens/Loading";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const LoggedInTab = createMaterialTopTabNavigator();
+const LoggedInTab = createMaterialBottomTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
@@ -92,6 +94,9 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
+    activeColor="#f0edf6"
+    inactiveColor="#3e2465"
+    barStyle={{ backgroundColor: '#1AD927' }}
     initialRouteName="GroupList"
     screenOptions={({ route }) => ({
       headerShown: false,
@@ -109,14 +114,28 @@ const LoggedInNavigator = () => (
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-    })}
-    tabBarOptions={{
-      activeTintColor: "darkgreen",
-      inactiveTintColor: "gray",
-    }}>
-    <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
-    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} />
-    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} />
+    })}>
+    <LoggedInTab.Screen name="FriendList" component={FriendNavigator}        
+     options={{
+          tabBarLabel: 'Friends',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="nature-people" color={color} size={26} />
+          ),
+        }}/>
+    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} 
+    options={{
+      tabBarLabel: 'GroupList',
+      tabBarIcon: ({ color }) => (
+        <MaterialCommunityIcons name="home-group" color={color} size={26} />
+      ),
+    }}/>
+    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} 
+    options={{
+      tabBarLabel: 'ActivityList',
+      tabBarIcon: ({ color }) => (
+        <MaterialCommunityIcons name="cart" color={color} size={26} />
+      ),
+    }}/>
   </LoggedInTab.Navigator>
 );
 

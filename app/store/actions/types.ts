@@ -5,6 +5,7 @@ export const LOGIN_DISABLE_LOADER = "LOGIN_DISABLE_LOADER";
 // login
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_RESPONSE = "LOGIN_RESPONSE";
+
 // export const LOGIN_LOADING_ENDED = 'LOGIN_LOADING_ENDED';
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOG_OUT = "LOG_OUT";
@@ -31,3 +32,6 @@ export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
 //loading types
 export const LOADING_ENABLED = "LOADING_ENABLED";
 export const LOADING_DISABLED = "LOADING_DISABLED";
+
+//group
+export const ADD_GROUP_REQUEST = "ADD_GROUP_REQUEST";

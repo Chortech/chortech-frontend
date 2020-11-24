@@ -1272,6 +1272,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
   integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
 
+"@react-navigation/bottom-tabs@^5.11.2":
+  version "5.11.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.11.2.tgz#5b541612fcecdea2a5024a4028da35e4a727bde6"
+  integrity sha512-7+hH00N9Ze74VcX8uYWVyXFXZ0Fwid+lG+SSLtmnJjk1Y6oIQpQ17EPqKO0UZlKKjhsvMlAnL5fdgFtoqnSjcA==
+  dependencies:
+    color "^3.1.3"
+    react-native-iphone-x-helper "^1.3.0"
+
 "@react-navigation/core@^3.7.9":
   version "3.7.9"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.7.9.tgz#3f7ba0fcb6c8d74a77a057382af198d84c7c4e3b"
@@ -1292,6 +1300,11 @@
     nanoid "^3.1.15"
     query-string "^6.13.6"
     react-is "^16.13.0"
+
+"@react-navigation/material-bottom-tabs@^5.3.10":
+  version "5.3.10"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-bottom-tabs/-/material-bottom-tabs-5.3.10.tgz#046b6aecd18c4b71114148afbfc9a5a9ac264275"
+  integrity sha512-XngPas8XAjR2QuFzzED1qoaxAM69gLPqC69xTkqSWeUYbsorX+kgl7z3AZocDglp4bLylYIVOa+fBHhfhUjqqQ==
 
 "@react-navigation/material-top-tabs@^5.3.9":
   version "5.3.9"
@@ -7393,10 +7406,10 @@ react-native-linear-gradient@^2.5.6:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
 
-react-native-paper@^4.2.0:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.3.1.tgz#2c230a29b077fe0a89c2d192c22f91f300311b27"
-  integrity sha512-3UYPtTJrRZz0OJFFZcD/Nzd7oIUBSiZkavLtPch+FzOSGEezvL0nV9P2VPvGHjFidel0VmDAMptX95UY3qSzPw==
+react-native-paper@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.4.1.tgz#b2fb7c0889fd15d52d6fd5c27df13075104ef911"
+  integrity sha512-c2+0XsTg6aAwyJNwumtZLPuFw72/kYyFS2vXDzWZddx5OYF052DbPPUhX4SVom2jxVaI1y9izx88RO5c4hGJEA==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.5"
     color "^3.1.2"

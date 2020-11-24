@@ -1,9 +1,10 @@
 import { request, GraphQLClient, gql } from "graphql-request";
 import { AuthApi } from "../../../models/api/auth";
+import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
-import { UPDATE_USER_PASSWORD, ADD_USER } from "./mutations";
+import { UPDATE_USER_PASSWORD, ADD_USER, ADD_Group } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
@@ -11,7 +12,7 @@ import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 
-class GraphQLApi implements AuthApi {
+class GraphQLApi implements AuthApi,GroupApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -23,6 +24,7 @@ class GraphQLApi implements AuthApi {
     });
   }
 
+//#region auth
   async login(
     email: string,
     phone: string,
@@ -110,6 +112,26 @@ class GraphQLApi implements AuthApi {
       success: data != null,
     };
   }
-}
+//#endregion auth
+//#region group
+async addGroup(
+  name: string,
+  creator: number,
+  members: Array<number>,
+): Promise<SignUpResponse> {
+  console.log("here!")
+  let data = await this.client.request(ADD_Group, {
+    name: name,
+    creator: creator,
+    members: members,
+  });
+  data = data.createGroup;
 
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+  };
+}
+//#endregion group
+}
 export const Api = new GraphQLApi();
