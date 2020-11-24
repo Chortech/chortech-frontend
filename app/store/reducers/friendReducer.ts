@@ -43,4 +43,16 @@ export const friendReducer = createReducer(initialState, {
       friends: action.payload.friends,
     };
   },
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
+    };
+  },
 });
