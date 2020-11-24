@@ -14,6 +14,13 @@ export const USERS_QUERY = gql`
   }
 `;
 
+export const USER_BY_ID = gql`
+  query getUserById($userId: ID!) {
+    _id
+    name
+  }
+`;
+
 export const USER_FRIENDS = gql`
   query userById($userId: ID!) {
     findUserByID(id: $userId) {
