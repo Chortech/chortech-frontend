@@ -8,4 +8,5 @@ export interface IUserState {
   credit: number;
   balance: number;
   friends: Array<Friend>;
+  groups: Array<Group>;
 }
