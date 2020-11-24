@@ -93,17 +93,17 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    initialRouteName="GroupList"
+    initialRouteName="گروه‌ها"
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === "GROUPLIST") {
+        if (route.name === "گروه‌ها") {
           iconName = focused;
-        } else if (route.name === "FRIENDS") {
+        } else if (route.name === "دوستان") {
           iconName = focused;
-        } else if (route.name === "ACTIVITY") {
+        } else if (route.name === "فعالیت‌ها") {
           iconName = focused;
         }
 
@@ -112,12 +112,15 @@ const LoggedInNavigator = () => (
       },
     })}
     tabBarOptions={{
-      activeTintColor: "darkgreen",
-      inactiveTintColor: "gray",
+      activeTintColor: "#1AD927",
+      inactiveTintColor: "#A4A4A4",
+      labelStyle: {
+					fontSize: 18,
+			},
     }}>
-    <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
-    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} />
-    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} />
+    <LoggedInTab.Screen name="دوستان" component={FriendNavigator} />
+    <LoggedInTab.Screen name="گروه‌ها" component={GroupNavigator} />
+    <LoggedInTab.Screen name="فعالیت‌ها" component={ActivityNavigator} />
   </LoggedInTab.Navigator>
 );
 
