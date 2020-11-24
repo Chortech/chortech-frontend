@@ -24,3 +24,17 @@ export function onUserFriendsResponse(
     },
   };
 }
+
+export function onLoadingEnable(): Action<any> {
+  return {
+    type: types.LOADING_ENABLED,
+    payload: {},
+  };
+}
+
+export function onLoadingDisable(): Action<any> {
+  return {
+    type: types.LOADING_DISABLED,
+    payload: {},
+  };
+}
