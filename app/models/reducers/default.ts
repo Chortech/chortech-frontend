@@ -9,4 +9,5 @@ export interface IUserState {
   balance: number;
   friends: Array<Friend>;
   groups: Array<Group>;
+  activities: Array<Activity>;
 }
