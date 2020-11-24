@@ -6,4 +6,14 @@ export interface GroupApi {
     creator: number,
     members: Array<number>,
   ): Promise<SignUpResponse>;
+  updateGroup(
+    groupId: number,
+    name: string,
+    creator: number,
+    members: Array<number>,
+  ): Promise<SignUpResponse>;
+  // deleteGroup(
+  //   id: number,
+  //   name: string,
+  // ): Promise<SignUpResponse>;
 }

@@ -11,6 +11,7 @@ import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
+import { UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
 
 class GraphQLApi implements AuthApi,GroupApi {
   endpoint: string = API_URL;
@@ -126,6 +127,27 @@ async addGroup(
     members: members,
   });
   data = data.createGroup;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+  };
+}
+
+async updateGroup(
+  groupId: number,
+  name: string,
+  creator: number,
+  members: Array<number>,
+): Promise<SignUpResponse> {
+  console.log("here!")
+  let data = await this.client.request(UPDATE_GROUP_REQUEST, {
+    groupId: groupId,
+    name: name,
+    creator: creator,
+    members: members,
+  });
+  data = data.updateGroup;
 
   return {
     id: data != null ? data._id.toString() : "-1",

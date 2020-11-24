@@ -20,5 +20,6 @@ export default function* watch() {
     takeLatest(types.RESET_PASSWORD_REQUEST, resetPasswordSaga),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
     takeLatest(types.ADD_GROUP_REQUEST, groupSaga.addGroupAsync),
+    takeLatest(types.UPDATE_GROUP_REQUEST, groupSaga.updateGroupAsync),
   ]);
 }

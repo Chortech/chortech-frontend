@@ -1,7 +1,7 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 
-import { AddGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest } from "../../models/requests/group";
 
 export function addGroup(
     name: string,
@@ -17,3 +17,33 @@ export function addGroup(
     },
   };
 }
+
+export function updateGroup(
+  groupId: number,
+  name: string,
+  creator: number,
+  members: Array<number>,
+  ): Action<UpdateGroupRequest> {
+    return {
+      type: types.UPDATE_GROUP_REQUEST,
+      payload: {
+        groupId,
+        name,
+        creator,
+        members,
+      },
+    };
+  }
+
+  // export function deleteGroup(
+  //   groupId: number,
+  //   name: string,
+  // ): Action<deleteGroup> {
+  // return {
+  //   type: types.ADD_GROUP_REQUEST,
+  //   payload: {
+  //     groupId,
+  //     name,
+  //   },
+  // };
+  // }

@@ -119,8 +119,6 @@ export const DELETE_GROUP = gql`
     deleteGroup(id: $groupId) {
       _id
       name
-      creator
-      members
     }
   }
 `;

@@ -4,7 +4,7 @@ import * as types from "../actions/types";
 import { Action } from "../../models/actions/action";
 import { IDefaultState } from "../../models/reducers/default";
 
-import { AddGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest } from "../../models/requests/group";
 
 
 const initialState: IDefaultState = {
@@ -22,5 +22,14 @@ export const groupReducer = createReducer(initialState, {
       creator: action.payload.creator,
       members: action.payload.members,
     };
-  }
+  },
+  [types.UPDATE_GROUP_REQUEST](state: IDefaultState, action: Action<UpdateGroupRequest>) {
+    return {
+      ...state,
+      groupId: action.payload.groupId,
+      name: action.payload.name,
+      creator: action.payload.creator,
+      members: action.payload.members,
+    };
+  },
 });
