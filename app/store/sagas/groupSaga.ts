@@ -6,7 +6,7 @@ import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 
 import { LoginResponse } from "../../models/responses/login";
-import { AddGroupRequest, UpdateGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest } from "../../models/requests/group";
 
 export function* addGroupAsync(action: Action<AddGroupRequest>) {
   const { name, creator, members } = action.payload;
@@ -50,3 +50,23 @@ export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
   }
 }
   
+export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
+  const { groupId } = action.payload;
+  let response: LoginResponse = {
+    id: "-1",
+    success: false,
+  };
+
+  try {
+    response = yield Api.deleteGroup(groupId);
+    console.log("add group reponse: " + response);
+  } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
+  }
+
+  if (response.success) {
+  console.log("should i do something here!!!")
+  } else {
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}

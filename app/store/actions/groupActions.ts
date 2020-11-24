@@ -1,7 +1,7 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 
-import { AddGroupRequest, UpdateGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest } from "../../models/requests/group";
 
 export function addGroup(
     name: string,
@@ -35,15 +35,14 @@ export function updateGroup(
     };
   }
 
-  // export function deleteGroup(
-  //   groupId: number,
-  //   name: string,
-  // ): Action<deleteGroup> {
-  // return {
-  //   type: types.ADD_GROUP_REQUEST,
-  //   payload: {
-  //     groupId,
-  //     name,
-  //   },
-  // };
-  // }
+export function deleteGroup(
+  groupId: number,
+  name: string,
+): Action<DeleteGroupRequest> {
+return {
+  type: types.DELETE_GTOUP_REQUEST,
+  payload: {
+    groupId,
+  },
+};
+}

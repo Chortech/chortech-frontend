@@ -11,7 +11,7 @@ import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
-import { UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
+import { DELETE_GTOUP_REQUEST, UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
 
 class GraphQLApi implements AuthApi,GroupApi {
   endpoint: string = API_URL;
@@ -140,7 +140,6 @@ async updateGroup(
   creator: number,
   members: Array<number>,
 ): Promise<SignUpResponse> {
-  console.log("here!")
   let data = await this.client.request(UPDATE_GROUP_REQUEST, {
     groupId: groupId,
     name: name,
@@ -148,6 +147,19 @@ async updateGroup(
     members: members,
   });
   data = data.updateGroup;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+  };
+}
+async deleteGroup(
+  groupId: number,
+): Promise<SignUpResponse> {
+  let data = await this.client.request(DELETE_GTOUP_REQUEST, {
+    groupId: groupId,
+  });
+  data = data.deleteGroup;
 
   return {
     id: data != null ? data._id.toString() : "-1",

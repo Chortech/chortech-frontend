@@ -10,3 +10,7 @@ export interface UpdateGroupRequest {
   creator: number;
   members: Array<number>;
 }
+
+export interface DeleteGroupRequest {
+  groupId: number;
+}
