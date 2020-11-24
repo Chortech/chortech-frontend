@@ -3,7 +3,7 @@ import { StyleSheet, Platform } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: "white",
   },
   header: {
     flex: 2,
@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Alex",
   },
   infoContainer: {
-    flex: 6,
     backgroundColor: "#fff",
   },
   inputContainer: {

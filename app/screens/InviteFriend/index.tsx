@@ -5,6 +5,7 @@ import { SearchBar } from "react-native-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
+import { FlatList } from "react-native-gesture-handler";
 
 // type InviteFriendScreenRouteProp = RouteProp<
 //   RootStackParamList,
@@ -20,13 +21,31 @@ import { styles } from "./styles";
 //   route: InviteFriendScreenRouteProp;
 // };
 
+const names = [
+  { key: "1", title: "hello" },
+  { key: "2", title: "hi" },
+  { key: "3", title: "salam" },
+  { key: "4", title: "good" },
+  { key: "5", title: "abcd" },
+];
+
+type Props = {
+  id: string;
+  title: string;
+};
+
+const Item: any = ({ title }) => (
+  <View>
+    <Text>{title}</Text>
+  </View>
+);
+
 const InviteFriend: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
     emailOrPhone: "",
-    secureTextEntry: true,
   });
 
-  const setQueryText = (text: string) => {
+  const searchQuery = (text: string) => {
     setData({
       ...data,
       emailOrPhone: text,
@@ -39,6 +58,8 @@ const InviteFriend: React.FC = (): JSX.Element => {
       emailOrPhone: "",
     });
   };
+
+  const renderItems: any = ({ item }) => <Item title={item.title} />;
 
   return (
     <View style={styles.container}>
@@ -55,7 +76,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
           inputStyle={styles.searchInput}
           leftIconContainerStyle={{ backgroundColor: "white" }}
           inputContainerStyle={styles.searchInputContainer}
-          onChangeText={(text) => setQueryText(text)}
+          onChangeText={searchQuery}
           onClear={() => clearText()}
           value={data.emailOrPhone}
         />
