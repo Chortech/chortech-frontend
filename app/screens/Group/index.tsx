@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -9,11 +11,22 @@ import {
   FlatList
 } from 'react-native';
 import * as Animatable from "react-native-animatable";
-
+  
 import styles from "./styles"
-
+import { useDispatch, useSelector, useStore } from "react-redux";
+import * as groupActions from "../../store/actions/groupActions";
+  
 const Group: React.FC = () => {
-
+  const dispatch = useDispatch();
+  const id = useStore().getState()["IdentifyAccountReducer"].id;
+  const name = useStore().getState()["IdentifyAccountReducer"].name;
+  const onActivitySelect = () =>
+  dispatch(
+    groupActions.addGroup(
+      "test-2",
+      "282980045327172103",
+      ["282980045327172103"],
+  ));
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
   });
@@ -27,14 +40,16 @@ const Group: React.FC = () => {
     {id:7, image: "../../assets/images/friend-image.jpg", name:"کالای ۷"},
     {id:8, image: "../../assets/images/friend-image.jpg", name:"کالای ۸"},
   ];
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity onPress={onActivitySelect}>
       <Image
           style={styles.image}
           source={require("../../assets/images/group-image.jpg")}
         />
+        </TouchableOpacity>
         <Text style={styles.text}>{data.name}</Text>
       </View>
       <Animatable.View
@@ -66,6 +81,7 @@ const Group: React.FC = () => {
     </View>
   );
 };
-
-
+  
+  
 export default Group;
+

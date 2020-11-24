@@ -63,11 +63,12 @@ export const DELETE_USER = gql`
 export const ADD_Group = gql`
   mutation addGroup(
     $name: String,
-    $creator: ID!, 
-    $members: [ID!]
+    $creator: ID, 
+    $members: [ID]
   ){
     createGroup(
-      data: {name: $name, creator: {connect: $creator}, 
+      data: {name: $name
+      creator: {connect: $creator} 
       members: {connect: $members}}
     ) {
       _id
@@ -88,7 +89,7 @@ export const ADD_Group = gql`
 
 export const UPDATE_GROUP = gql`
   mutation updateGroup(
-    $groupId: ID!
+    $groupId: ID!,
     $name: String,
     $creator: ID!, 
     $members: [ID!]

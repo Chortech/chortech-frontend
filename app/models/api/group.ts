@@ -3,16 +3,16 @@ import { SignUpResponse } from "../responses/signUp";
 export interface GroupApi {
   addGroup(
     name: string,
-    creator: number,
-    members: Array<number>,
+    creator: string,
+    members: Array<string>,
   ): Promise<SignUpResponse>;
   updateGroup(
-    groupId: number,
+    groupId: string,
     name: string,
-    creator: number,
-    members: Array<number>,
+    creator: string,
+    members: Array<string>,
   ): Promise<SignUpResponse>;
   deleteGroup(
-    groupId: number,
+    groupId: string,
   ): Promise<SignUpResponse>;
 }

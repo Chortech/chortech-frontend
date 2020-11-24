@@ -1,16 +1,20 @@
 export interface AddGroupRequest {
   name: string;
-  creator: number;
-  members: Array<number>;
+  creator: string;
+  members: Array<string>;
 }
 
 export interface UpdateGroupRequest {
-  groupId: number;
+  groupId: string;
   name: string;
-  creator: number;
-  members: Array<number>;
+  creator: string;
+  members: Array<string>;
 }
 
 export interface DeleteGroupRequest {
-  groupId: number;
+  groupId: string;
+}
+
+export interface GetGroupByIdRequest {
+  groupId: string;
 }

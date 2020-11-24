@@ -37,7 +37,7 @@ class GraphQLApi implements AuthApi,GroupApi {
       data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
       data = data.UserByEmail;
     } else {
-      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      data = await this.client.request(USER_BY_PHONE, { phonestring: phone });
       data = data.UserByPhone;
     }
 
@@ -117,17 +117,19 @@ class GraphQLApi implements AuthApi,GroupApi {
 //#region group
 async addGroup(
   name: string,
-  creator: number,
-  members: Array<number>,
+  creator: string,
+  members: Array<string>,
 ): Promise<SignUpResponse> {
-  console.log("here!")
+  console.log(creator)
+  console.log(members)
   let data = await this.client.request(ADD_Group, {
     name: name,
     creator: creator,
     members: members,
   });
+  console.log(data)
   data = data.createGroup;
-
+  console.log(data)
   return {
     id: data != null ? data._id.toString() : "-1",
     success: data != null,
@@ -135,10 +137,10 @@ async addGroup(
 }
 
 async updateGroup(
-  groupId: number,
+  groupId: string,
   name: string,
-  creator: number,
-  members: Array<number>,
+  creator: string,
+  members: Array<string>,
 ): Promise<SignUpResponse> {
   let data = await this.client.request(UPDATE_GROUP_REQUEST, {
     groupId: groupId,
@@ -154,7 +156,7 @@ async updateGroup(
   };
 }
 async deleteGroup(
-  groupId: number,
+  groupId: string,
 ): Promise<SignUpResponse> {
   let data = await this.client.request(DELETE_GTOUP_REQUEST, {
     groupId: groupId,

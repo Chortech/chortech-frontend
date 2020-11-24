@@ -5,8 +5,8 @@ import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest } from "../../m
 
 export function addGroup(
     name: string,
-    creator: number,
-    members: Array<number>,
+    creator: string,
+    members: Array<string>,
 ): Action<AddGroupRequest> {
   return {
     type: types.ADD_GROUP_REQUEST,
@@ -19,10 +19,10 @@ export function addGroup(
 }
 
 export function updateGroup(
-  groupId: number,
+  groupId: string,
   name: string,
-  creator: number,
-  members: Array<number>,
+  creator: string,
+  members: Array<string>,
   ): Action<UpdateGroupRequest> {
     return {
       type: types.UPDATE_GROUP_REQUEST,
@@ -36,7 +36,7 @@ export function updateGroup(
   }
 
 export function deleteGroup(
-  groupId: number,
+  groupId: string,
   name: string,
 ): Action<DeleteGroupRequest> {
 return {
