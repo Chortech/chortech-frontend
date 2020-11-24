@@ -10,6 +10,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
+import FriendItem from "../../components/FriendItem/index";
 
 const FriendList: React.FC = (): JSX.Element => {
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -22,6 +23,14 @@ const FriendList: React.FC = (): JSX.Element => {
     { name: "حسین مهرمحمدی" },
   ];
 
+  const renderItem = ({ item }) => (
+    <FriendItem
+      onPressFriendItem={onFriend}
+      Name={item.name}
+      ImageUrl={require("../../assets/images/friend-image.jpg")}
+    />
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -32,24 +41,7 @@ const FriendList: React.FC = (): JSX.Element => {
         duration={600}
         style={styles.infoContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <FlatList
-            data={friends}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    style={styles.friendContainer}
-                    onPress={onFriend}>
-                    <Text style={styles.friendText}>{item.name}</Text>
-                    <Image
-                      style={styles.friendImage}
-                      source={require("../../assets/images/friend-image.jpg")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
+          <FlatList data={friends} renderItem={renderItem} />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onAddFriend}>
               <Text style={styles.buttonText}>دعوت از دوستان</Text>
