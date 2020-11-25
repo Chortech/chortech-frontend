@@ -10,31 +10,42 @@ import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
-import { useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { ILoginState } from "../../models/reducers/login";
 import { Friend } from "../../models/other/Friend";
-import { Api } from "../../services/api/graphQL/graphqlApi";
-import { FriendsResponse } from "../../models/responses/getFriends";
+import * as friendActions from "../../store/actions/friendActions";
+import { IUserState } from "../../models/reducers/default";
+
+type IState = {
+  friendReducer: IUserState;
+};
 
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const dispatch = useDispatch();
+  const { loading, friends } = useSelector(
+    (state: IState) => state.friendReducer
+  );
+  console.log("friend list: " + JSON.stringify(friends));
   const [refreshing, setRefreshing] = useState(false);
-  const [fetchedFriends, setFriends] = useState<Array<Friend>>([]);
+  const [fetchedFriends, setFriends] = useState<Array<Friend>>(friends);
   console.log(
     "fetched friends: " + JSON.stringify(fetchedFriends, undefined, 2)
   );
 
   console.log("logged in user: " + loggedInUser);
   const fetchFriends = (): void => {
-    try {
-      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-        if (data.success) {
-          setFriends(data.friends);
-        }
-      });
-    } catch (error) {
-      console.log(JSON.stringify(error, undefined, 2));
-    }
+    // try {
+    //   Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+    //     if (data.success) {
+    //       setFriends(data.friends);
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log(JSON.stringify(error, undefined, 2));
+    // }
+    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    setFriends(friends);
   };
 
   useEffect(() => {

@@ -28,17 +28,6 @@ export function* userFriendsSaga(action: Action<FriendsRequest>) {
   yield put(friendActions.onLoadingDisable());
 
   if (response.success) {
-    let fetchedFriends: Array<Friend> = [];
-    response.friends.forEach((element) => {
-      let friend: Friend = {
-        id: element._id.toString(),
-        friendId: element.friendId,
-        friendName: element.friendName,
-      };
-      fetchedFriends.push(friend);
-      console.log("friend: " + JSON.stringify(friend, undefined, 2));
-    });
-    response.friends = fetchedFriends;
     console.log("friends: " + JSON.stringify(response.friends, undefined, 1));
     yield put(friendActions.onUserFriendsResponse(response));
   } else {
