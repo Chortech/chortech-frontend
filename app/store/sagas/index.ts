@@ -7,6 +7,7 @@ import * as authSaga from "./authSaga";
 import identifyAccountSaga from "./identifyAccountSaga";
 import { generateCodeAsync } from "./codeVerificationSaga";
 import resetPasswordSaga from "./resetPasswordSaga";
+import { userFriendsSaga } from "./friendSaga";
 
 export default function* watch() {
   yield all([
@@ -15,5 +16,6 @@ export default function* watch() {
     takeLatest(types.GENERATE_CODE_REQUEST, generateCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, resetPasswordSaga),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
+    takeLatest(types.USER_FRIENDS_REQUEST, userFriendsSaga),
   ]);
 }

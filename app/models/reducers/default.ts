@@ -1,3 +1,7 @@
+import { Activity } from "../other/Activity";
+import { Friend } from "../other/Friend";
+import { Group } from "../other/Group";
+
 export interface IUserState {
   loading: boolean;
   id: string;

@@ -7,7 +7,6 @@ export interface LoginRequest {
   inputType: InputType;
 }
 
-
 // export interface LoginRequest {
 //   email: string;
 //   phone: string;

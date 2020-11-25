@@ -1,8 +1,4 @@
-import {
-  RouteProp,
-  useNavigationState,
-  useRoute,
-} from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   View,
@@ -15,15 +11,13 @@ import {
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { RootStackParamList } from "../../navigation/rootStackParams";
 
+import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as signUpActions from "../../store/actions/authActions";
 import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
-import { InputType } from "../../utils/inputTypes";
 import { ILoginState } from "../../models/reducers/login";
-import { validate } from "graphql";
 import LoadingIndicator from "../Loading";
 
 type Props = {
