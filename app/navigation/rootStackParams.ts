@@ -8,4 +8,9 @@ export type RootStackParamList = {
   EditProfile: undefined;
   ResetPassword: undefined;
   CreditCardList: undefined;
+  Friend: {
+    friendId: string;
+    friendName: string;
+    ImageUrl: string;
+  };
 };

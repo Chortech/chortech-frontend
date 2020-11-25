@@ -15,6 +15,8 @@ import { ILoginState } from "../../models/reducers/login";
 import { Friend } from "../../models/other/Friend";
 import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
+import { FriendsResponse } from "../../models/responses/getFriends";
+import { Api } from "../../services/api/graphQL/graphqlApi";
 
 type IState = {
   friendReducer: IUserState;
@@ -35,16 +37,16 @@ const FriendList: React.FC = (): JSX.Element => {
 
   console.log("logged in user: " + loggedInUser);
   const fetchFriends = (): void => {
-    // try {
-    //   Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-    //     if (data.success) {
-    //       setFriends(data.friends);
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log(JSON.stringify(error, undefined, 2));
-    // }
-    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    try {
+      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+        if (data.success) {
+          setFriends(data.friends);
+        }
+      });
+    } catch (error) {
+      console.log(JSON.stringify(error, undefined, 2));
+    }
+    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
     setFriends(friends);
   };
 
@@ -53,7 +55,8 @@ const FriendList: React.FC = (): JSX.Element => {
   }, []);
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
-  const onFriend = () => NavigationService.navigate("Friend");
+  const onFriend = (id: string, name: string) =>
+    NavigationService.navigate("Friend", { friendId: id, friendName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchFriends();
@@ -62,7 +65,7 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={onFriend}
+      onPressFriendItem={() => onFriend(item.friendId, item.friendName)}
       Name={item.friendName}
       ImageUrl={require("../../assets/images/friend-image.jpg")}
     />
