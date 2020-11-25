@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1AD927",
   },
   header: {
-    flex: 2,
+    flex: 3,
     alignItems: "center",
     paddingTop: 10,
   },
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   infoContainer: {
-    flex: 6,
+    flex: 8,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     borderTopRightRadius: 30,

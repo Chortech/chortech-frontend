@@ -21,9 +21,11 @@ import InviteFriend from "../screens/InviteFriend";
 
 import GroupList from "../screens/GroupList";
 import Group from "../screens/Group";
+import AddGroup from "../screens/AddGroup";
 
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
+import AddExpense from "../screens/AddExpense";
 
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
@@ -38,7 +40,6 @@ const LoggedInTab = createMaterialBottomTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
 const LoadingStack = createStackNavigator();
 
 interface IState {
@@ -97,39 +98,49 @@ const LoggedInNavigator = () => (
     activeColor="#f0edf6"
     inactiveColor="#3e2465"
     barStyle={{ backgroundColor: '#1AD927' }}
-    initialRouteName="GroupList"
+    initialRouteName="گروه‌ها"
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === "GROUPLIST") {
+        if (route.name === "گروه‌ها") {
           iconName = focused;
-        } else if (route.name === "FRIENDS") {
+        } else if (route.name === "دوستان") {
           iconName = focused;
-        } else if (route.name === "ACTIVITY") {
+        } else if (route.name === "فعالیت‌ها") {
           iconName = focused;
         }
 
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
+      tabBarOptions={{
+      activeTintColor: "#1AD927",
+      inactiveTintColor: "#A4A4A4",
+      labelStyle: {
+				fontSize: 18,
+			},
+      tabStyle: {
+        borderBottomColor: "#1AD927",
+        borderBottomWidth: 2,
+      },
     })}>
-    <LoggedInTab.Screen name="FriendList" component={FriendNavigator}        
+    <LoggedInTab.Screen  name="دوستان" component={FriendNavigator}        
      options={{
           tabBarLabel: 'Friends',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="nature-people" color={color} size={26} />
           ),
         }}/>
-    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} 
+    <LoggedInTab.Screen name="گروه‌ها" component={GroupNavigator} 
     options={{
       tabBarLabel: 'GroupList',
       tabBarIcon: ({ color }) => (
         <MaterialCommunityIcons name="home-group" color={color} size={26} />
       ),
     }}/>
-    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} 
+    <LoggedInTab.Screen name="فعالیت‌ها" component={ActivityNavigator} 
     options={{
       tabBarLabel: 'ActivityList',
       tabBarIcon: ({ color }) => (
@@ -145,6 +156,7 @@ const GroupNavigator = () => (
     initialRouteName="GroupList">
     <LoggedInTab.Screen name="GroupList" component={GroupList} />
     <LoggedInTab.Screen name="Group" component={Group} />
+    <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
   </GroupStack.Navigator>
 );
 
@@ -154,6 +166,7 @@ const ActivityNavigator = () => (
     initialRouteName="ActivityList">
     <LoggedInTab.Screen name="ActivityList" component={ActivityList} />
     <LoggedInTab.Screen name="Activity" component={Activity} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </ActivityStack.Navigator>
 );
 
@@ -164,19 +177,10 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="FriendList" component={FriendList} />
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
-    <Stack.Screen name="Profile" component={Profile} />
-    <Stack.Screen name="EditProfile" component={EditProfile} />
+    <LoggedInTab.Screen name="Profile" component={Profile} />
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
   </FriendStack.Navigator>
 );
-
-// const ProfileNavigator = () => (
-//   <ProfileStack.Navigator
-//     screenOptions={{ headerShown: false }}
-//     initialRouteName="Profile">
-//     <Stack.Screen name="Profile" component={Profile} />
-//     <Stack.Screen name="EditProfile" component={EditProfile} />
-//   </ProfileStack.Navigator>
-// );
 
 const App: React.FC = () => {
   const { isLoggedIn } = useSelector((state: IState) => state.authReducer);
