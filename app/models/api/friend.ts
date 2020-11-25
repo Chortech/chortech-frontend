@@ -1,5 +1,6 @@
 import { InputType } from "../../utils/inputTypes";
 import { AddFriendResponse } from "../responses/addFriend";
+import { DeleteFriendResponse } from "../responses/deleteFriend";
 import { FriendsResponse } from "../responses/getFriends";
 import { UserByFilterResponse } from "../responses/userByFilter";
 
@@ -14,4 +15,5 @@ export interface FriendsApi {
     friendName: string,
     userId: string
   ): Promise<AddFriendResponse>;
+  deleteFriend(id: string): Promise<DeleteFriendResponse>;
 }

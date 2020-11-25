@@ -37,16 +37,16 @@ const FriendList: React.FC = (): JSX.Element => {
 
   console.log("logged in user: " + loggedInUser);
   const fetchFriends = (): void => {
-    // try {
-    //   Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-    //     if (data.success) {
-    //       setFriends(data.friends);
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log(JSON.stringify(error, undefined, 2));
-    // }
-    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    try {
+      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+        if (data.success) {
+          setFriends(data.friends);
+        }
+      });
+    } catch (error) {
+      console.log(JSON.stringify(error, undefined, 2));
+    }
+    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
     setFriends(friends);
   };
 
