@@ -10,3 +10,17 @@ export function fetchUserRequest(id: string): Action<FetchUserRequest> {
     },
   };
 }
+
+export function onLoadingEnable(): Action<any> {
+  return {
+    type: types.LOADING_ENABLED,
+    payload: {},
+  };
+}
+
+export function onLoadingDisable(): Action<any> {
+  return {
+    type: types.LOADING_DISABLED,
+    payload: {},
+  };
+}

@@ -28,4 +28,16 @@ export const userReducer = createReducer(initialState, {
       id: action.payload.id,
     };
   },
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
+    };
+  },
 });
