@@ -17,10 +17,12 @@ const SearchedUserItem = (props: Props) => {
       <TouchableOpacity onPress={props.onPress}>
         <FontAwesomeIcon
           icon="plus-circle"
-          size={20}
-          style={{ color: "#1AD927" }}
+          size={30}
+          style={styles.plusIconStyle}
         />
       </TouchableOpacity>
     </View>
   );
 };
+
+export default SearchedUserItem;

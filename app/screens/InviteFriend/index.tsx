@@ -18,6 +18,7 @@ import { Friend } from "../../models/other/Friend";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import { UserByFilterResponse } from "../../models/responses/userByFilter";
+import SearchedUserItem from "../../components/SearchedUserItem";
 
 const InviteFriend: React.FC = (): JSX.Element => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
@@ -43,6 +44,14 @@ const InviteFriend: React.FC = (): JSX.Element => {
     }
   };
 
+  const renderSelectedItems: any = ({ item }) => (
+    <SearchedUserItem
+      id={item.id}
+      name={item.name}
+      onPress={() => console.log("press")}
+    />
+  );
+
   return (
     <View style={styles.container}>
       <Animatable.View
@@ -59,6 +68,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
           onIconPress={onPressSearchButton}
         />
       </Animatable.View>
+      <FlatList data={fetchedUsers} renderItem={renderSelectedItems} />
     </View>
   );
 };
