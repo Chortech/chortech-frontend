@@ -35,11 +35,6 @@ const ActivityList: React.FC = () => {
         animation="slideInUp"
         duration={600}
         style={styles.infoContainer}>
-        <TouchableOpacity
-          style={{ padding: 10, backgroundColor: "gray" }}
-          onPress={() => NavigationService.navigate("Profile")}>
-          <Text>Profile</Text>
-        </TouchableOpacity>
         <ScrollView showsVerticalScrollIndicator={false}>
           <FlatList
             data={expenses}
