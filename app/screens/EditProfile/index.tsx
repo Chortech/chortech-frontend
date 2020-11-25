@@ -8,8 +8,6 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
 
 // type EditProfileScreenRouteProp = RouteProp<RootStackParamList, "EditProfile">;

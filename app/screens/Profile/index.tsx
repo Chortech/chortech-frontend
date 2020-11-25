@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
 import { styles } from "./styles";
-
-// type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
-// type ProfileScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   "Profile"
-// >;
-
-// type Props = {
-//   navigation: ProfileScreenNavigationProp;
-//   route: ProfileScreenRouteProp;
-// };
 
 const Profile: React.FC = (): JSX.Element => {
   const [data, setData] = useState({
@@ -35,8 +22,7 @@ const Profile: React.FC = (): JSX.Element => {
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-      >
+        style={styles.infoContainer}>
         <View style={styles.textWrapper}>
           <View style={styles.textContainerLeft}>
             <Text style={styles.textInfo}>{data.email}</Text>

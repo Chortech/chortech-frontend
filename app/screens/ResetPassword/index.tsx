@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useState } from "react";
 import {
   View,
@@ -10,14 +9,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 
-import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { ILoginState } from "../../models/reducers/login";
 import * as resetPasswordActions from "../../store/actions/resetPasswordActions";
-import configureStore from "../../store/index";
 import LoadingIndicator from "../Loading";
 
 type IState = {

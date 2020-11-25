@@ -1,23 +1,13 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-  GestureResponderEvent,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
+import { View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Searchbar } from "react-native-paper";
 import { styles } from "./styles";
 import { FlatList } from "react-native-gesture-handler";
 import { InputType } from "../../utils/inputTypes";
 import { RegexValidator } from "../../utils/regexValidator";
-import { Friend } from "../../models/other/Friend";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
-import { UserByFilterResponse } from "../../models/responses/userByFilter";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { ILoginState } from "../../models/reducers/login";
 import { useStore } from "react-redux";

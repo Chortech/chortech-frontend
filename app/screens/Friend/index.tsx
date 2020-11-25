@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Image,
-} from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 

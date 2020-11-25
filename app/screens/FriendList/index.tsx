@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
   FlatList,
   RefreshControl,
 } from "react-native";
@@ -11,28 +10,16 @@ import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import { IUserState } from "../../models/reducers/default";
-import LoadingIndicator from "../Loading";
+import { useStore } from "react-redux";
 import { ILoginState } from "../../models/reducers/login";
 import { Friend } from "../../models/other/Friend";
-import * as friendActions from "../../store/actions/friendActions";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { FriendsResponse } from "../../models/responses/getFriends";
 
-type IState = {
-  friendReducer: IUserState;
-};
-
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-  const dispatch = useDispatch();
-  const { loading, friends } = useSelector(
-    (state: IState) => state.friendReducer
-  );
-
   const [refreshing, setRefreshing] = useState(false);
-  const [fetchedFriends, setFriends] = useState<Array<Friend>>(friends);
+  const [fetchedFriends, setFriends] = useState<Array<Friend>>([]);
   console.log(
     "fetched friends: " + JSON.stringify(fetchedFriends, undefined, 2)
   );
@@ -56,7 +43,7 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onFriend = () => NavigationService.navigate("Friend");
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchFriends();
     setRefreshing(false);
