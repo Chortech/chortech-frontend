@@ -2,6 +2,7 @@ import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
 import { FetchUserRequest } from "../../models/requests/getUser";
+import { UpdateUserRequest } from "../../models/requests/updateUser";
 import { FetchUserResponse } from "../../models/responses/getUser";
 import * as types from "../actions/types";
 
@@ -34,7 +35,40 @@ export const userReducer = createReducer(initialState, {
     action: Action<FetchUserResponse>
   ) {
     return {
-      ...state,
+      id: action.payload.user?.id,
+      name: action.payload.user?.name,
+      password: action.payload.user?.password,
+      email: action.payload.user?.email,
+      phone: action.payload.user?.phone,
+      credit: action.payload.user?.credit,
+      balance: action.payload.user?.balance,
+      friends: action.payload.user?.friends,
+      groups: action.payload.user?.groups,
+      activities: action.payload.user?.activities,
+    };
+  },
+  [types.UPDATE_USER_REQUEST](
+    state: IUserState,
+    action: Action<UpdateUserRequest>
+  ) {
+    return {
+      id: action.payload.user?.id,
+      name: action.payload.user?.name,
+      password: action.payload.user?.password,
+      email: action.payload.user?.email,
+      phone: action.payload.user?.phone,
+      credit: action.payload.user?.credit,
+      balance: action.payload.user?.balance,
+      friends: action.payload.user?.friends,
+      groups: action.payload.user?.groups,
+      activities: action.payload.user?.activities,
+    };
+  },
+  [types.UPDATE_USER_RESPONSE](
+    state: IUserState,
+    action: Action<UpdateUserRequest>
+  ) {
+    return {
       id: action.payload.user?.id,
       name: action.payload.user?.name,
       password: action.payload.user?.password,
