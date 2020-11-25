@@ -4,14 +4,14 @@ import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import { DefaultResponse } from "../../../models/responses/default"
-import { USER_BY_EMAIL, USER_BY_PHONE, GET_GROUP_BY_ID } from "./queries";
+import { USER_BY_EMAIL, USER_BY_PHONE, GET_GROUP_BY_ID, USER_GROUPS } from "./queries";
 import { UPDATE_USER_PASSWORD, ADD_USER, ADD_Group } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
-import { DELETE_GTOUP_REQUEST, UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
+import { DELETE_GTOUP_REQUEST, GET_USER_GROUPS, UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
 
 class GraphQLApi implements AuthApi,GroupApi {
   endpoint: string = API_URL;
@@ -182,6 +182,22 @@ async getGroupById(
   });
   data = JSON.parse(JSON.stringify(data));
   data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
+}
+
+async getUserGroups(
+  userId: string,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(USER_GROUPS, {
+    userId: userId,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findUserByID;
 
   return {
     id: data != null ? data._id.toString() : "-1",

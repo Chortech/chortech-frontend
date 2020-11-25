@@ -1,21 +1,24 @@
-import { SignUpResponse } from "../responses/signUp";
+import { DefaultResponse } from "../responses/default";
 
 export interface GroupApi {
   addGroup(
     name: string,
     creator: string,
     members: Array<string>,
-  ): Promise<SignUpResponse>;
+  ): Promise<DefaultResponse>;
   updateGroup(
     groupId: string,
     name: string,
     creator: string,
     members: Array<string>,
-  ): Promise<SignUpResponse>;
+  ): Promise<DefaultResponse>;
   deleteGroup(
     groupId: string,
-  ): Promise<SignUpResponse>;
+  ): Promise<DefaultResponse>;
   getGroupById(
     groupId: string,
-  ): Promise<SignUpResponse>;
+  ): Promise<DefaultResponse>;
+  getUserGroups(
+    userId: string,
+  ): Promise<DefaultResponse>;
 }

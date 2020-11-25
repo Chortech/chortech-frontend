@@ -70,3 +70,27 @@ query findGroup ($groupId: ID!) {
   }
 }
 `;
+
+export const USER_GROUPS = gql`
+query userById($userId: ID!) {
+  findUserByID(id: $userId) {
+    _id
+    groups {
+      data {
+        _id
+        name
+        creator{
+          _id
+          name
+        }
+        members {
+          data {
+            _id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+`;

@@ -1,5 +1,3 @@
-import { UPDATE_GROUP } from "../../services/api/graphQL/mutations";
-
 // loaders
 export const LOGIN_ENABLE_LOADER = "LOGIN_ENABLE_LOADER";
 export const LOGIN_DISABLE_LOADER = "LOGIN_DISABLE_LOADER";
@@ -40,3 +38,4 @@ export const ADD_GROUP_REQUEST = "ADD_GROUP_REQUEST";
 export const UPDATE_GROUP_REQUEST = "UPDATE_GROUP_REQUEST";
 export const DELETE_GTOUP_REQUEST = "DELETE_GTOUP_REQUEST";
 export const GET_GROUP_BY_ID = "GET_GROUP_BY_ID";
+export const GET_USER_GROUPS = "GET_USER_GROUPS";

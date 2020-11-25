@@ -18,3 +18,7 @@ export interface DeleteGroupRequest {
 export interface GetGroupByIdRequest {
   groupId: string;
 }
+
+export interface GetUserGroupsRequest {
+  userId: string;
+}

@@ -1,7 +1,7 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
 
 export function addGroup(
     name: string,
@@ -53,6 +53,17 @@ return {
   type: types.GET_GROUP_BY_ID,
   payload: {
     groupId,
+  },
+};
+}
+
+export function getUserGroups(
+  userId: string,
+): Action<GetUserGroupsRequest> {
+return {
+  type: types.GET_USER_GROUPS,
+  payload: {
+    userId,
   },
 };
 }

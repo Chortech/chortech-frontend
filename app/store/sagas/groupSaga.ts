@@ -5,14 +5,15 @@ import { Alert, ToastAndroid } from "react-native";
 import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 
-import { LoginResponse } from "../../models/responses/login";
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest } from "../../models/requests/group";
+import { DefaultResponse } from "../../models/responses/default";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
 
 export function* addGroupAsync(action: Action<AddGroupRequest>) {
   const { name, creator, members } = action.payload;
-  let response: LoginResponse = {
+  let response: DefaultResponse = {
     id: "-1",
     success: false,
+    data:null,
   };
 
   try {
@@ -31,9 +32,10 @@ export function* addGroupAsync(action: Action<AddGroupRequest>) {
 
 export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
   const { groupId, name, creator, members } = action.payload;
-  let response: LoginResponse = {
+  let response: DefaultResponse = {
     id: "-1",
     success: false,
+    data:null,
   };
 
   try {
@@ -52,9 +54,10 @@ export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
   
 export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
   const { groupId } = action.payload;
-  let response: LoginResponse = {
+  let response: DefaultResponse = {
     id: "-1",
     success: false,
+    data:null,
   };
 
   try {
@@ -73,9 +76,10 @@ export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
 
 export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
   const { groupId } = action.payload;
-  let response: LoginResponse = {
+  let response: DefaultResponse = {
     id: "-1",
     success: false,
+    data:null,
   };
 
   try {
@@ -87,6 +91,28 @@ export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
 
   if (response.success) {
   console.log("saga: group added")
+  } else {
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
+  const { userId } = action.payload;
+  let response: DefaultResponse = {
+    id: "-1",
+    success: false,
+    data:null,
+  };
+
+  try {
+    response = yield Api.getUserGroups(userId);
+    console.log("get group reponse: " + JSON.stringify(response));
+  } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
+  }
+
+  if (response.success) {
+    console.log("saga: get groups")
   } else {
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
