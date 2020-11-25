@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { SearchBar } from "react-native-elements";
-
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { CheckBox, SearchBar } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import { FlatList } from "react-native-gesture-handler";
+import { InputType } from "../../utils/inputTypes";
+import { RegexValidator } from "../../utils/regexValidator";
+import { Friend } from "../../models/other/Friend";
 
 // type InviteFriendScreenRouteProp = RouteProp<
 //   RootStackParamList,
@@ -21,24 +22,35 @@ import { FlatList } from "react-native-gesture-handler";
 //   route: InviteFriendScreenRouteProp;
 // };
 
+type Props = {
+  id: string;
+  name: string;
+};
+
+const SelectedItem = (props: Props) => (
+  <View>
+    <Text>{props.name}</Text>
+  </View>
+);
+
 const InviteFriend: React.FC = (): JSX.Element => {
-  const [data, setData] = useState({
-    emailOrPhone: "",
-  });
+  const [emailOrPhone, setEmailOrPhone] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState<Array<Friend>>([]);
 
   const searchQuery = (text: string) => {
-    setData({
-      ...data,
-      emailOrPhone: text,
-    });
+    const type = RegexValidator.validateEmailOrPhone(text);
+    setEmailOrPhone(text);
+    if (type == InputType.Email || type == InputType.Phone) {
+    }
   };
 
   const clearText = () => {
-    setData({
-      ...data,
-      emailOrPhone: "",
-    });
+    setEmailOrPhone("");
   };
+
+  const renderSelectedItems: any = ({ item }) => (
+    <SelectedItem id={item.friendId} name={item.friendName} />
+  );
 
   return (
     <View style={styles.container}>
@@ -57,9 +69,20 @@ const InviteFriend: React.FC = (): JSX.Element => {
           inputContainerStyle={styles.searchInputContainer}
           onChangeText={searchQuery}
           onClear={() => clearText()}
-          value={data.emailOrPhone}
+          value={emailOrPhone}
         />
       </Animatable.View>
+      <FlatList
+        data={selectedUsers}
+        renderItem={renderSelectedItems}
+        ListFooterComponent={
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>تایید</Text>
+            </TouchableOpacity>
+          </View>
+        }
+      />
     </View>
   );
 };

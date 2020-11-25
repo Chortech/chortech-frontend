@@ -52,4 +52,26 @@ export const styles = StyleSheet.create({
     textAlign: "right",
     backgroundColor: "white",
   },
+  buttonContainer: {
+    flex: 5,
+    justifyContent: "flex-end",
+    margin: 20,
+  },
+  button: {
+    elevation: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#1AD927",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#1AD927",
+    alignSelf: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    writingDirection: "auto",
+  },
 });
