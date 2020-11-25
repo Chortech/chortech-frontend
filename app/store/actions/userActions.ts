@@ -1,5 +1,6 @@
 import { Action } from "../../models/actions/action";
 import { FetchUserRequest } from "../../models/requests/getUser";
+import { FetchUserResponse } from "../../models/responses/getUser";
 import * as types from "./types";
 
 export function fetchUserRequest(id: string): Action<FetchUserRequest> {
@@ -7,6 +8,18 @@ export function fetchUserRequest(id: string): Action<FetchUserRequest> {
     type: types.FETCH_USER_REQUEST,
     payload: {
       id: id,
+    },
+  };
+}
+
+export function fetchUserResponse(
+  response: FetchUserResponse
+): Action<FetchUserResponse> {
+  return {
+    type: types.FETCH_USER_RESPONSE,
+    payload: {
+      success: response.success,
+      user: response.user,
     },
   };
 }
