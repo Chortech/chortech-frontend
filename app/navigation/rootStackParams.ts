@@ -9,7 +9,7 @@ export type RootStackParamList = {
   ResetPassword: undefined;
   CreditCardList: undefined;
   Friend: {
-    friendId: string;
+    id: string;
     friendName: string;
     ImageUrl: string;
   };

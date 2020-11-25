@@ -10,8 +10,7 @@ type Props = {
 };
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
-  const { friendId, friendName } = route.params;
-  console.log("data: " + friendName + " id: " + friendId);
+  const { id, friendName } = route.params;
 
   return (
     <View style={styles.container}>

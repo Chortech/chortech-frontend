@@ -37,16 +37,16 @@ const FriendList: React.FC = (): JSX.Element => {
 
   console.log("logged in user: " + loggedInUser);
   const fetchFriends = (): void => {
-    try {
-      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-        if (data.success) {
-          setFriends(data.friends);
-        }
-      });
-    } catch (error) {
-      console.log(JSON.stringify(error, undefined, 2));
-    }
-    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    // try {
+    //   Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+    //     if (data.success) {
+    //       setFriends(data.friends);
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log(JSON.stringify(error, undefined, 2));
+    // }
+    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
     setFriends(friends);
   };
 
@@ -56,7 +56,7 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onFriend = (id: string, name: string) =>
-    NavigationService.navigate("Friend", { friendId: id, friendName: name });
+    NavigationService.navigate("Friend", { id: id, friendName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchFriends();
@@ -65,7 +65,7 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={() => onFriend(item.friendId, item.friendName)}
+      onPressFriendItem={() => onFriend(item.id, item.friendName)}
       Name={item.friendName}
       ImageUrl={require("../../assets/images/friend-image.jpg")}
     />
