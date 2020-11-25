@@ -57,3 +57,23 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const ADD_FRIEND = gql`
+  mutation addFriend($friendId: ID!, $friendName: String, $userId: ID) {
+    createFriend(
+      data: {
+        friendId: $friendId
+        friendName: $friendName
+        user: { connect: $userId }
+      }
+    ) {
+      _id
+      friendId
+      friendName
+      user {
+        _id
+        name
+      }
+    }
+  }
+`;
