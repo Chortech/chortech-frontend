@@ -19,8 +19,11 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import { UserByFilterResponse } from "../../models/responses/userByFilter";
 import SearchedUserItem from "../../components/SearchedUserItem";
+import { ILoginState } from "../../models/reducers/login";
+import { useStore } from "react-redux";
 
 const InviteFriend: React.FC = (): JSX.Element => {
+  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);
   const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
@@ -31,16 +34,31 @@ const InviteFriend: React.FC = (): JSX.Element => {
     setInputType(type);
   };
 
-  console.log(JSON.stringify(fetchedUsers, undefined, 2));
+  console.log("logged in user: " + JSON.stringify(loggedInUser, undefined, 2));
+  console.log("fetched user: " + JSON.stringify(fetchedUsers, undefined, 2));
 
   const onPressSearchButton = (): void => {
     if (inputType == InputType.Email || inputType == InputType.Phone) {
       Api.getFilteredUser(emailOrPhone, inputType).then((data) => {
-        if (fetchedUsers.length > 0) {
-          setFetchedUsers([]);
+        if (data.success) {
+          if (fetchedUsers.length > 0) {
+            setFetchedUsers([]);
+          }
+          setFetchedUsers([data.user]);
         }
-        setFetchedUsers([data.user]);
       });
+    }
+  };
+
+  const onPressAddFriend = (): void => {
+    let user = fetchedUsers[0];
+    try {
+      Api.addFriend(user.id, user.name, loggedInUser.id).then((data) =>
+        console.log(JSON.stringify(data, undefined, 2))
+      );
+      setFetchedUsers([]);
+    } catch (error) {
+      console.log(JSON.stringify(error, undefined, 2));
     }
   };
 
@@ -48,7 +66,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
     <SearchedUserItem
       id={item.id}
       name={item.name}
-      onPress={() => console.log("press")}
+      onPress={onPressAddFriend}
     />
   );
 

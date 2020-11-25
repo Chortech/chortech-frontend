@@ -17,6 +17,8 @@ import LoadingIndicator from "../Loading";
 import { ILoginState } from "../../models/reducers/login";
 import { Friend } from "../../models/other/Friend";
 import * as friendActions from "../../store/actions/friendActions";
+import { Api } from "../../services/api/graphQL/graphqlApi";
+import { FriendsResponse } from "../../models/responses/getFriends";
 
 type IState = {
   friendReducer: IUserState;
@@ -35,23 +37,30 @@ const FriendList: React.FC = (): JSX.Element => {
     "fetched friends: " + JSON.stringify(fetchedFriends, undefined, 2)
   );
 
-  console.log("logged in user id: " + loggedInUser.id);
+  console.log("logged in user: " + loggedInUser);
+  const fetchFriends = (): void => {
+    try {
+      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+        if (data.success) {
+          setFriends(data.friends);
+        }
+      });
+    } catch (error) {
+      console.log(JSON.stringify(error, undefined, 2));
+    }
+  };
 
   useEffect(() => {
-    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
-    setFriends(friends);
-  }, [refreshing]);
+    fetchFriends();
+  }, []);
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onFriend = () => NavigationService.navigate("Friend");
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
-      dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
-      setFriends(friends);
-    }, 500);
+    fetchFriends();
     setRefreshing(false);
-  }, [refreshing]);
+  }, []);
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem

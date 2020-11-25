@@ -12,7 +12,7 @@ type User {
 
 type Friend {
   user: User
-  friendId: Long
+  friendId: ID
   friendName: String
 }
 
