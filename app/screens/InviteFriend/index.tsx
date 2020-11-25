@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { CheckBox, SearchBar } from "react-native-elements";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  GestureResponderEvent,
+} from "react-native";
+import { CheckBox } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
+import { Searchbar } from "react-native-paper";
 import { styles } from "./styles";
 import { FlatList } from "react-native-gesture-handler";
 import { InputType } from "../../utils/inputTypes";
 import { RegexValidator } from "../../utils/regexValidator";
 import { Friend } from "../../models/other/Friend";
+import { Api } from "../../services/api/graphQL/graphqlApi";
+import { User } from "../../models/other/User";
+import { UserByFilterResponse } from "../../models/responses/userByFilter";
 
 // type InviteFriendScreenRouteProp = RouteProp<
 //   RootStackParamList,
@@ -22,35 +33,29 @@ import { Friend } from "../../models/other/Friend";
 //   route: InviteFriendScreenRouteProp;
 // };
 
-type Props = {
-  id: string;
-  name: string;
-};
-
-const SelectedItem = (props: Props) => (
-  <View>
-    <Text>{props.name}</Text>
-  </View>
-);
-
 const InviteFriend: React.FC = (): JSX.Element => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState<Array<Friend>>([]);
+  const [inputType, setInputType] = useState(InputType.None);
+  const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
 
-  const searchQuery = (text: string) => {
+  const onChangeSearchQuery = (text: string) => {
     const type = RegexValidator.validateEmailOrPhone(text);
     setEmailOrPhone(text);
-    if (type == InputType.Email || type == InputType.Phone) {
+    setInputType(type);
+  };
+
+  console.log(JSON.stringify(fetchedUsers, undefined, 2));
+
+  const onPressSearchButton = (): void => {
+    if (inputType == InputType.Email || inputType == InputType.Phone) {
+      Api.getFilteredUser(emailOrPhone, inputType).then((data) => {
+        if (fetchedUsers.length > 0) {
+          setFetchedUsers([]);
+        }
+        setFetchedUsers([data.user]);
+      });
     }
   };
-
-  const clearText = () => {
-    setEmailOrPhone("");
-  };
-
-  const renderSelectedItems: any = ({ item }) => (
-    <SelectedItem id={item.friendId} name={item.friendName} />
-  );
 
   return (
     <View style={styles.container}>
@@ -58,31 +63,16 @@ const InviteFriend: React.FC = (): JSX.Element => {
         animation="slideInUp"
         duration={500}
         style={styles.infoContainer}>
-        <SearchBar
-          lightTheme
-          searchIcon={{ size: 20, color: "#1AD927" }}
+        <Searchbar
           placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-          containerStyle={styles.searchBar}
-          round={true}
+          style={styles.searchBar}
           inputStyle={styles.searchInput}
-          leftIconContainerStyle={{ backgroundColor: "white" }}
-          inputContainerStyle={styles.searchInputContainer}
-          onChangeText={searchQuery}
-          onClear={() => clearText()}
+          onChangeText={onChangeSearchQuery}
           value={emailOrPhone}
+          iconColor="#1AD927"
+          onIconPress={onPressSearchButton}
         />
       </Animatable.View>
-      <FlatList
-        data={selectedUsers}
-        renderItem={renderSelectedItems}
-        ListFooterComponent={
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>تایید</Text>
-            </TouchableOpacity>
-          </View>
-        }
-      />
     </View>
   );
 };

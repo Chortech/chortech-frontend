@@ -31,6 +31,10 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: "white",
+    margin: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#1AD927",
   },
   textInput: {
     flex: 10,
@@ -42,15 +46,10 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     fontFamily: "IRANSansWeb_Bold",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "right",
     color: "#053751",
     justifyContent: "center",
-  },
-  searchInputContainer: {
-    fontFamily: "Dirooz",
-    textAlign: "right",
-    backgroundColor: "white",
   },
   buttonContainer: {
     flex: 5,
