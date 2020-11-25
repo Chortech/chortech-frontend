@@ -115,7 +115,8 @@ const LoggedInNavigator = () => (
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarOptions={{
+    })}
+    tabBarOptions={{
       activeTintColor: "#1AD927",
       inactiveTintColor: "#A4A4A4",
       labelStyle: {
@@ -125,7 +126,7 @@ const LoggedInNavigator = () => (
         borderBottomColor: "#1AD927",
         borderBottomWidth: 2,
       },
-    })}>
+    }}>
     <LoggedInTab.Screen  name="دوستان" component={FriendNavigator}        
      options={{
           tabBarLabel: 'Friends',
