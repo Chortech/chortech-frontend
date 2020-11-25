@@ -12,6 +12,8 @@ import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 import { FriendsApi } from "../../../models/api/friend";
 import { FriendsResponse } from "../../../models/responses/getFriends";
+import { Friend } from "../../../models/other/Friend";
+import { FriendsRequest } from "../../../models/requests/getFriends";
 
 class GraphQLApi implements AuthApi, FriendsApi {
   endpoint: string = API_URL;
@@ -32,14 +34,14 @@ class GraphQLApi implements AuthApi, FriendsApi {
     data = data.findUserByID;
     const result = data != null;
     const id = result ? data._id.toString() : "-1";
-    const friends = result ? data.friends.data : [];
+    const friendsIds = result ? data.friends.data : [];
 
     console.log("friends data: \n" + JSON.stringify(data, undefined, 2));
 
     return {
       success: result,
       userId: id,
-      friends: friends,
+      friends: friendsIds,
     };
   }
 

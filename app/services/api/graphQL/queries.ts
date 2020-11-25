@@ -24,6 +24,7 @@ export const USER_BY_ID = gql`
 export const USER_FRIENDS = gql`
   query userById($userId: ID!) {
     findUserByID(id: $userId) {
+      _id
       friends {
         data {
           friendId

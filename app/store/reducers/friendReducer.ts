@@ -7,16 +7,13 @@ import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
 import * as types from "../actions/types";
 
-const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-console.log(JSON.stringify(loggedInUser, undefined, 2));
-
 const initialState: IUserState = {
   loading: false,
-  id: loggedInUser.id,
-  name: loggedInUser.name,
-  password: loggedInUser.password,
-  email: loggedInUser.email,
-  phone: loggedInUser.phone,
+  id: "-1",
+  name: "",
+  password: "",
+  email: "",
+  phone: "",
   credit: 0,
   balance: 0,
   friends: [],

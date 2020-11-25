@@ -1,4 +1,4 @@
-type Group = {
+export type Group = {
   id: string;
   name: string;
   creatorId: string;

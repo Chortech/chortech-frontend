@@ -1,4 +1,7 @@
-type User = {
+import { Friend } from "./Friend";
+import { Group } from "./Group";
+
+export type User = {
   id: string;
   name: string;
   password: string;
