@@ -14,10 +14,66 @@ export const USERS_QUERY = gql`
   }
 `;
 
+export const COMPLETE_USER_BY_ID = gql`
+  query getUserById($userId: ID!) {
+    findUserByID(id: $userId) {
+      _id
+      name
+      password
+      email
+      credit
+      balance
+      friends {
+        data {
+          _id
+          friendId
+          friendName
+        }
+      }
+      groups {
+        data {
+          _id
+          name
+        }
+      }
+      activities {
+        data {
+          type
+          expense {
+            description
+            category
+            totalPrice
+            participants {
+              data {
+                _id
+                user {
+                  name
+                }
+                share
+              }
+            }
+          }
+          debt {
+            description
+            debt
+            creditor {
+              _id
+              name
+            }
+            category
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const USER_BY_ID = gql`
   query getUserById($userId: ID!) {
-    _id
-    name
+    findUserByID(id: $userId) {
+      _id
+      name
+    }
   }
 `;
 

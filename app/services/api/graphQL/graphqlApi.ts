@@ -18,8 +18,10 @@ import { UserByFilterResponse } from "../../../models/responses/userByFilter";
 import { User } from "../../../models/other/User";
 import { AddFriendResponse } from "../../../models/responses/addFriend";
 import { DeleteFriendResponse } from "../../../models/responses/deleteFriend";
+import { UserApi } from "../../../models/api/user";
+import { FetchUserResponse } from "../../../models/responses/getUser";
 
-class GraphQLApi implements AuthApi, FriendsApi {
+class GraphQLApi implements AuthApi, FriendsApi, UserApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -29,6 +31,34 @@ class GraphQLApi implements AuthApi, FriendsApi {
         authorization: `Bearer ${API_KEY}`,
       },
     });
+  }
+
+  async getUser(id: string): Promise<FetchUserResponse> {
+    let data: any = await this.client.request(queries.COMPLETE_USER_BY_ID, {
+      userId: id,
+    });
+    data = data.findUserByID;
+    let successful: boolean = data != null;
+    let user: User | undefined | null = undefined;
+    if (successful) {
+      user = {
+        id: data._id.toString(),
+        name: data.name,
+        password: data.password,
+        email: data.email,
+        phone: data.phone,
+        credit: data.credit,
+        balance: data.balance,
+        friends: data.friends,
+        groups: data.groups,
+        activities: data.activities,
+      };
+    }
+
+    return {
+      success: successful,
+      user: user,
+    };
   }
 
   async getUserFriends(userId: string): Promise<FriendsResponse> {
