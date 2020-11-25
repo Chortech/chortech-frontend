@@ -5,6 +5,7 @@ import { IUserState } from "../../models/reducers/default";
 import { ILoginState } from "../../models/reducers/login";
 import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
 import { FriendsRequest } from "../../models/requests/getFriends";
+import { DeleteFriendResponse } from "../../models/responses/deleteFriend";
 import { FriendsResponse } from "../../models/responses/getFriends";
 import * as types from "../actions/types";
 
@@ -44,6 +45,14 @@ export const friendReducer = createReducer(initialState, {
   [types.DELETE_USER_FRIEND_REQUEST](
     state: IUserState,
     action: Action<DeleteFriendRequest>
+  ) {
+    return {
+      ...state,
+    };
+  },
+  [types.DELETE_USER_FRIEND_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteFriendResponse>
   ) {
     return {
       ...state,
