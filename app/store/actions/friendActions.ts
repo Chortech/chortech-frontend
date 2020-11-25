@@ -28,31 +28,6 @@ export function onUserFriendsResponse(
   };
 }
 
-export function onUserByFilterRequest(
-  emailOrPhone: string,
-  inputType: InputType
-): Action<UserByFilterRequest> {
-  return {
-    type: types.USER_BY_FILTER_REQUEST,
-    payload: {
-      emailOrPhone: emailOrPhone,
-      inputType: inputType,
-    },
-  };
-}
-
-export function onUserByFilterResponse(
-  response: UserByFilterResponse
-): Action<UserByFilterResponse> {
-  return {
-    type: types.USER_BY_FILTER_RESPONSE,
-    payload: {
-      success: response.success,
-      user: response.user,
-    },
-  };
-}
-
 export function onLoadingEnable(): Action<any> {
   return {
     type: types.LOADING_ENABLED,
