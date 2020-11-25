@@ -25,41 +25,24 @@ type IState = {
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { loading, friends } = useSelector(
-    (state: IState) => state.friendReducer
-  );
-  console.log("friend list: " + JSON.stringify(friends));
+  const { friends } = useSelector((state: IState) => state.friendReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [fetchedFriends, setFriends] = useState<Array<Friend>>(friends);
-  console.log(
-    "fetched friends: " + JSON.stringify(fetchedFriends, undefined, 2)
-  );
-
-  console.log("logged in user: " + loggedInUser);
-  const fetchFriends = (): void => {
-    try {
-      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-        if (data.success) {
-          setFriends(data.friends);
-        }
-      });
-    } catch (error) {
-      console.log(JSON.stringify(error, undefined, 2));
-    }
-    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
-    setFriends(friends);
-  };
-
   useEffect(() => {
     fetchFriends();
   }, []);
+
+  const fetchFriends = (): void => {
+    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+  };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onFriend = (id: string, name: string) =>
     NavigationService.navigate("Friend", { id: id, friendName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchFriends();
+    setTimeout(() => {
+      fetchFriends();
+    }, 200);
     setRefreshing(false);
   }, []);
 
@@ -85,17 +68,15 @@ const FriendList: React.FC = (): JSX.Element => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            data={fetchedFriends}
+            data={friends}
             renderItem={renderFriendItem}
-            ListFooterComponent={
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-                  <Text style={styles.buttonText}>دعوت از دوستان</Text>
-                </TouchableOpacity>
-              </View>
-            }
           />
         </Animatable.View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={onAddFriend}>
+            <Text style={styles.buttonText}>دعوت از دوستان</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );

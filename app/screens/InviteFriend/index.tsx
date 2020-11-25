@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Searchbar } from "react-native-paper";
 import { styles } from "./styles";
@@ -35,8 +35,15 @@ const InviteFriend: React.FC = (): JSX.Element => {
             setFetchedUsers([]);
           }
           setFetchedUsers([data.user]);
+        } else {
+          ToastAndroid.show(
+            "کاربر با این مشخصات وجود ندارد",
+            ToastAndroid.SHORT
+          );
         }
       });
+    } else {
+      ToastAndroid.show("اطلاعات وارد شده نامعتبر است", ToastAndroid.SHORT);
     }
   };
 

@@ -13,7 +13,6 @@ type Props = {
 const SearchedUserItem = (props: Props) => {
   return (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{props.name}</Text>
       <TouchableOpacity onPress={props.onPress}>
         <FontAwesomeIcon
           icon="plus-circle"
@@ -21,6 +20,7 @@ const SearchedUserItem = (props: Props) => {
           style={styles.plusIconStyle}
         />
       </TouchableOpacity>
+      <Text style={styles.itemText}>{props.name}</Text>
     </View>
   );
 };
