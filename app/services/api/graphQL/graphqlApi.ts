@@ -20,6 +20,7 @@ import { AddFriendResponse } from "../../../models/responses/addFriend";
 import { DeleteFriendResponse } from "../../../models/responses/deleteFriend";
 import { UserApi } from "../../../models/api/user";
 import { FetchUserResponse } from "../../../models/responses/getUser";
+import { UpdateUserResponse } from "../../../models/responses/updateUser";
 
 class GraphQLApi implements AuthApi, FriendsApi, UserApi {
   endpoint: string = API_URL;
@@ -58,6 +59,37 @@ class GraphQLApi implements AuthApi, FriendsApi, UserApi {
     return {
       success: successful,
       user: user,
+    };
+  }
+
+  async updateUser(user: User): Promise<UpdateUserResponse> {
+    let data: any = await this.client.request(mutations.UPDATE_USER, {
+      userId: user.id,
+      name: user.name,
+      password: user.password,
+      email: user.email,
+      phone: user.phone,
+    });
+    data = data.updateUser;
+    let successful: boolean = data != null;
+    let updatedUser: User | undefined | null = undefined;
+    if (successful) {
+      updatedUser = {
+        id: data._id.toString(),
+        name: data.name,
+        password: data.password,
+        email: data.email,
+        phone: data.phone,
+        credit: data.credit,
+        balance: data.balance,
+        friends: data.friends,
+        groups: data.groups,
+        activities: data.activities,
+      };
+    }
+    return {
+      success: successful,
+      user: updatedUser,
     };
   }
 

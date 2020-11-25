@@ -33,6 +33,7 @@ export const UPDATE_USER = gql`
     ) {
       _id
       name
+      password
       email
       phone
     }
