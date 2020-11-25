@@ -14,6 +14,8 @@ import { FriendsApi } from "../../../models/api/friend";
 import { FriendsResponse } from "../../../models/responses/getFriends";
 import { Friend } from "../../../models/other/Friend";
 import { FriendsRequest } from "../../../models/requests/getFriends";
+import { UserByFilterResponse } from "../../../models/responses/userByFilter";
+import { User } from "../../../models/other/User";
 
 class GraphQLApi implements AuthApi, FriendsApi {
   endpoint: string = API_URL;
@@ -40,6 +42,49 @@ class GraphQLApi implements AuthApi, FriendsApi {
       success: result,
       userId: id,
       friends: friends,
+    };
+  }
+
+  async getFilteredUser(
+    emailOrPhone: string,
+    inputType: InputType
+  ): Promise<UserByFilterResponse> {
+    let data: any;
+    if (inputType == InputType.Email) {
+      data = await this.client.request(queries.USER_BY_EMAIL, {
+        emailTxt: emailOrPhone,
+      });
+      data = data.UserByEmail;
+    } else {
+      data = await this.client.request(queries.USER_BY_PHONE, {
+        phoneNumber: emailOrPhone,
+      });
+      data = data.UserByPhone;
+    }
+    let successful: boolean = data != null;
+    let fetchedUser: User = {
+      id: "-1",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      credit: 0,
+      balance: 0,
+      friends: [],
+      groups: [],
+      activities: [],
+    };
+    if (successful) {
+      fetchedUser = {
+        ...fetchedUser,
+        id: data._id.toString(),
+        name: data.name,
+      };
+    }
+
+    return {
+      success: successful,
+      user: fetchedUser,
     };
   }
 

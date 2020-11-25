@@ -1,6 +1,6 @@
 import { InputType } from "../../utils/inputTypes";
 
-export interface FilteredUsersRequest {
+export interface UserByFilterRequest {
   emailOrPhone: string;
   inputType: InputType;
 }
