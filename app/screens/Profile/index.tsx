@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { useStore } from "react-redux";
+import { ILoginState } from "../../models/reducers/login";
 import { styles } from "./styles";
 
 const Profile: React.FC = (): JSX.Element => {
+  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  console.log(JSON.stringify(loggedInUser));
   const [data, setData] = useState({
-    name: "بابک سفیدگر",
-    email: "sample@example.com",
-    phone: "09123456789",
+    name: loggedInUser.name == "" ? "-" : loggedInUser.name,
+    email: loggedInUser.email == "" ? "-" : loggedInUser.email,
+    phone: loggedInUser.phone == "" ? "-" : loggedInUser.phone,
   });
 
   return (
