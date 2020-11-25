@@ -2,9 +2,6 @@ import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
-import { InputType } from "../../utils/inputTypes";
-import { UserByFilterRequest } from "../../models/requests/userByFilter";
-import { UserByFilterResponse } from "../../models/responses/userByFilter";
 
 export function onUserFriendsRequest(userId: string): Action<FriendsRequest> {
   return {
