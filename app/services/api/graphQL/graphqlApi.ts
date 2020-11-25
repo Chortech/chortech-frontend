@@ -3,14 +3,14 @@ import { AuthApi } from "../../../models/api/auth";
 import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
-import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
+import { DefaultResponse } from "../../../models/responses/default"
+import { USER_BY_EMAIL, USER_BY_PHONE, GET_GROUP_BY_ID } from "./queries";
 import { UPDATE_USER_PASSWORD, ADD_USER, ADD_Group } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
-import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 import { DELETE_GTOUP_REQUEST, UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
 
 class GraphQLApi implements AuthApi,GroupApi {
@@ -119,7 +119,7 @@ async addGroup(
   name: string,
   creator: string,
   members: Array<string>,
-): Promise<SignUpResponse> {
+): Promise<DefaultResponse> {
   console.log(creator)
   console.log(members)
   let data = await this.client.request(ADD_Group, {
@@ -127,12 +127,13 @@ async addGroup(
     creator: creator,
     members: members,
   });
-  console.log(data)
-  data = data.createGroup;
-  console.log(data)
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
   return {
     id: data != null ? data._id.toString() : "-1",
     success: data != null,
+    data: data,
   };
 }
 
@@ -141,31 +142,51 @@ async updateGroup(
   name: string,
   creator: string,
   members: Array<string>,
-): Promise<SignUpResponse> {
+): Promise<DefaultResponse> {
   let data = await this.client.request(UPDATE_GROUP_REQUEST, {
     groupId: groupId,
     name: name,
     creator: creator,
     members: members,
   });
-  data = data.updateGroup;
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
 
   return {
     id: data != null ? data._id.toString() : "-1",
     success: data != null,
+    data: data,
   };
 }
 async deleteGroup(
   groupId: string,
-): Promise<SignUpResponse> {
+): Promise<DefaultResponse> {
   let data = await this.client.request(DELETE_GTOUP_REQUEST, {
     groupId: groupId,
   });
-  data = data.deleteGroup;
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
 
   return {
     id: data != null ? data._id.toString() : "-1",
     success: data != null,
+    data: data,
+  };
+}
+
+async getGroupById(
+  groupId: string,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(GET_GROUP_BY_ID, {
+    groupId: groupId,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
   };
 }
 //#endregion group

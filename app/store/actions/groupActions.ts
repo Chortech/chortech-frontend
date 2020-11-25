@@ -1,7 +1,7 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest } from "../../models/requests/group";
 
 export function addGroup(
     name: string,
@@ -37,10 +37,20 @@ export function updateGroup(
 
 export function deleteGroup(
   groupId: string,
-  name: string,
-): Action<DeleteGroupRequest> {
+  ): Action<DeleteGroupRequest> {
+  return {
+    type: types.DELETE_GTOUP_REQUEST,
+    payload: {
+      groupId,
+    },
+  };
+  }
+
+export function getGroupById(
+  groupId: string,
+): Action<GetGroupByIdRequest> {
 return {
-  type: types.DELETE_GTOUP_REQUEST,
+  type: types.GET_GROUP_BY_ID,
   payload: {
     groupId,
   },

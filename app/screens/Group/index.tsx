@@ -22,11 +22,10 @@ const Group: React.FC = () => {
   const name = useStore().getState()["IdentifyAccountReducer"].name;
   const onActivitySelect = () =>
   dispatch(
-    groupActions.addGroup(
-      "test-2",
-      "282980045327172103",
-      ["282980045327172103"],
+    groupActions.getGroupById(
+      "282982717535027719"
   ));
+  
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
   });

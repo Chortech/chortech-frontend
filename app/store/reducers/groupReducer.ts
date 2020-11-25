@@ -4,7 +4,7 @@ import * as types from "../actions/types";
 import { Action } from "../../models/actions/action";
 import { IDefaultState } from "../../models/reducers/default";
 
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest } from "../../models/requests/group";
 
 
 const initialState: IDefaultState = {
@@ -33,6 +33,12 @@ export const groupReducer = createReducer(initialState, {
     };
   },
   [types.DELETE_GTOUP_REQUEST](state: IDefaultState, action: Action<DeleteGroupRequest>) {
+    return {
+      ...state,
+      groupId: action.payload.groupId,
+    };
+  },
+  [types.GET_GROUP_BY_ID](state: IDefaultState, action: Action<GetGroupByIdRequest>) {
     return {
       ...state,
       groupId: action.payload.groupId,

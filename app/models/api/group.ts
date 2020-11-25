@@ -15,4 +15,7 @@ export interface GroupApi {
   deleteGroup(
     groupId: string,
   ): Promise<SignUpResponse>;
+  getGroupById(
+    groupId: string,
+  ): Promise<SignUpResponse>;
 }

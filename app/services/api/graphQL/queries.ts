@@ -51,3 +51,22 @@ export const USER_BY_PHONE = gql`
     }
   }
 `;
+
+export const GET_GROUP_BY_ID = gql`
+query findGroup ($groupId: ID!) {
+  findGroupByID(id: $groupId) {
+    _id
+    name
+      creator{
+        _id
+        name
+      }
+      members {
+        data {
+          _id
+          name
+        }
+      }
+  }
+}
+`;
