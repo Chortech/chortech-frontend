@@ -6,6 +6,7 @@ import { IUserState } from "../../models/reducers/default";
 import { ILoginState } from "../../models/reducers/login";
 import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
+import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 
 type IState = {
@@ -22,6 +23,8 @@ const Profile: React.FC = (): JSX.Element => {
   const fetchUser = () => {
     dispatch(userActions.onFetchUserRequest(loggedInUser.id));
   };
+  const onPressFriendsList = () => NavigationService.navigate("FriendList");
+  const onPressEditProfile = () => NavigationService.navigate("EditProfile");
 
   useEffect(() => {
     fetchUser();
@@ -69,18 +72,12 @@ const Profile: React.FC = (): JSX.Element => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                // onPress={(): void => {
-                //   navigation.navigate("FriendList");
-                // }}
-              >
+                onPress={onPressFriendsList}>
                 <Text style={styles.buttonText}>دوستان</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.button}
-                // onPress={(): void => {
-                //   navigation.navigate("EditProfile");
-                // }}
-              >
+                onPress={onPressEditProfile}>
                 <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
               </TouchableOpacity>
             </View>
