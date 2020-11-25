@@ -2,6 +2,7 @@ import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
+import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
 
 export function onUserFriendsRequest(userId: string): Action<FriendsRequest> {
   return {
@@ -21,6 +22,15 @@ export function onUserFriendsResponse(
       success: response.success,
       userId: response.userId,
       friends: response.friends,
+    },
+  };
+}
+
+export function onDeleteFriend(id: string): Action<DeleteFriendRequest> {
+  return {
+    type: types.DELETE_USER_FRIEND_REQUEST,
+    payload: {
+      id: id,
     },
   };
 }
