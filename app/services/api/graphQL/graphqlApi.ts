@@ -17,6 +17,7 @@ import { FriendsRequest } from "../../../models/requests/getFriends";
 import { UserByFilterResponse } from "../../../models/responses/userByFilter";
 import { User } from "../../../models/other/User";
 import { AddFriendResponse } from "../../../models/responses/addFriend";
+import { DeleteFriendResponse } from "../../../models/responses/deleteFriend";
 
 class GraphQLApi implements AuthApi, FriendsApi {
   endpoint: string = API_URL;
@@ -128,6 +129,20 @@ class GraphQLApi implements AuthApi, FriendsApi {
     return {
       success: successful,
       friend: fetchedFriend,
+    };
+  }
+
+  async deleteFriend(id: string): Promise<DeleteFriendResponse> {
+    let data: any = await this.client.request(mutations.DELETE_FRIEND, {
+      id: id,
+    });
+    data = data.deleteFriend;
+    let successful: boolean = data != null;
+    let deleteId: string = successful ? data._id.toString() : "-1";
+
+    return {
+      success: successful,
+      id: deleteId,
     };
   }
 
