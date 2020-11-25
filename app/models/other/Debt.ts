@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export type Debt = {
   id: string;
   description: string;

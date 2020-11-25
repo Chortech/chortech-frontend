@@ -1,3 +1,5 @@
+import { Participant } from "./Participant";
+
 export type Expense = {
   id: string;
   description: string;

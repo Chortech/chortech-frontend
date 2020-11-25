@@ -27,7 +27,9 @@ export const USER_FRIENDS = gql`
       _id
       friends {
         data {
+          _id
           friendId
+          friendName
         }
       }
     }

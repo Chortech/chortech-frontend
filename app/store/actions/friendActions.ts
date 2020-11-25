@@ -18,7 +18,7 @@ export function onUserFriendsResponse(
   return {
     type: types.USER_FRIENDS_RESPONSE,
     payload: {
-      relationId: response.relationId,
+      success: response.success,
       userId: response.userId,
       friends: response.friends,
     },

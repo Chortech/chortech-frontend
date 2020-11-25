@@ -34,14 +34,12 @@ class GraphQLApi implements AuthApi, FriendsApi {
     data = data.findUserByID;
     const result = data != null;
     const id = result ? data._id.toString() : "-1";
-    const friendsIds = result ? data.friends.data : [];
-
-    console.log("friends data: \n" + JSON.stringify(data, undefined, 2));
+    const friends = result ? data.friends.data : [];
 
     return {
       success: result,
       userId: id,
-      friends: friendsIds,
+      friends: friends,
     };
   }
 
