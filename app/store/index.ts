@@ -9,11 +9,11 @@ import rootReducers from "./reducers";
 import { LOG_OUT } from "./actions/types";
 
 const config = {
-  key: "root",
+  key: 'root',
   storage: AsyncStorage,
   // blacklist and whitelist should be in config
   debug: true, //to get logging
-  blacklist:['groupReducer'],
+  whitelist:['authReducer'],
 };
 
 // const middleware: object[] = [];
@@ -29,7 +29,7 @@ const reducers = persistCombineReducers(config, rootReducers);
 const enhancers = [applyMiddleware(sagaMiddleware, createLogger())];
 // const initialState = {};
 const persistConfig: any = { enhancers };
-const store = createStore(reducers, { _persist: { version: 1, rehydrated: false } }, compose(...enhancers));
+const store = createStore(reducers, undefined, compose(...enhancers));
 const persistor = persistStore(store, persistConfig, () => {
   // console.log("state: ", store.getState());
 });
