@@ -2,6 +2,8 @@ import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
+import { InputType } from "../../utils/inputTypes";
+import { UserByFilterRequest } from "../../models/requests/userByFilter";
 
 export function onUserFriendsRequest(userId: string): Action<FriendsRequest> {
   return {
@@ -21,6 +23,19 @@ export function onUserFriendsResponse(
       success: response.success,
       userId: response.userId,
       friends: response.friends,
+    },
+  };
+}
+
+export function onUserByFilterRequest(
+  emailOrPhone: string,
+  inputType: InputType
+): Action<UserByFilterRequest> {
+  return {
+    type: types.USER_BY_FILTER_REQUEST,
+    payload: {
+      emailOrPhone: emailOrPhone,
+      inputType: inputType,
     },
   };
 }
