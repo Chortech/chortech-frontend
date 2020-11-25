@@ -55,6 +55,7 @@ export const authReducer = createReducer(initialState, {
   },
   [types.LOG_OUT](state: ILoginState) {
     return {
+      ...state,
       isLoggedIn: false,
       loading: false,
       id: "-1",

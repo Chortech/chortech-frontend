@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -12,10 +14,18 @@ import ActionButton from 'react-native-action-button';
 import * as Animatable from "react-native-animatable";
 
 import NavigationService from '../../navigation/navigationService';
+
 import styles from "./styles"
-
+import { useDispatch, useSelector, useStore } from "react-redux";
+import * as groupActions from "../../store/actions/groupActions";
+  
 const Group: React.FC = () => {
-
+  const dispatch = useDispatch();
+  const id = useStore().getState()["IdentifyAccountReducer"].id;
+  const name = useStore().getState()["IdentifyAccountReducer"].name;
+  const onActivitySelect = () =>
+  dispatch(groupActions.getUserGroups("282980702594531845"));
+  
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
   });
@@ -32,7 +42,7 @@ const Group: React.FC = () => {
     {id:7, image: "../../assets/images/friend-image.jpg", name:"کالای ۷"},
     {id:8, image: "../../assets/images/friend-image.jpg", name:"کالای ۸"},
   ];
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -76,5 +86,6 @@ const Group: React.FC = () => {
     </View>
   );
 };
-
+  
+  
 export default Group;

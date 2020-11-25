@@ -1,17 +1,19 @@
 import { request, GraphQLClient, gql } from "graphql-request";
 import { AuthApi } from "../../../models/api/auth";
+import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
-import { USER_BY_EMAIL, USER_BY_PHONE } from "./queries";
-import { UPDATE_USER_PASSWORD, ADD_USER } from "./mutations";
+import { DefaultResponse } from "../../../models/responses/default"
+import { USER_BY_EMAIL, USER_BY_PHONE, GET_GROUP_BY_ID, USER_GROUPS } from "./queries";
+import { UPDATE_USER_PASSWORD, ADD_USER, ADD_Group } from "./mutations";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
-import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
+import { DELETE_GTOUP_REQUEST, GET_USER_GROUPS, UPDATE_GROUP_REQUEST } from "../../../store/actions/types";
 
-class GraphQLApi implements AuthApi {
+class GraphQLApi implements AuthApi,GroupApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -23,6 +25,7 @@ class GraphQLApi implements AuthApi {
     });
   }
 
+//#region auth
   async login(
     email: string,
     phone: string,
@@ -34,7 +37,7 @@ class GraphQLApi implements AuthApi {
       data = await this.client.request(USER_BY_EMAIL, { emailTxt: email });
       data = data.UserByEmail;
     } else {
-      data = await this.client.request(USER_BY_PHONE, { phoneNumber: phone });
+      data = await this.client.request(USER_BY_PHONE, { phonestring: phone });
       data = data.UserByPhone;
     }
 
@@ -110,6 +113,98 @@ class GraphQLApi implements AuthApi {
       success: data != null,
     };
   }
+//#endregion auth
+//#region group
+async addGroup(
+  name: string,
+  creator: string,
+  members: Array<string>,
+): Promise<DefaultResponse> {
+  console.log(creator)
+  console.log(members)
+  let data = await this.client.request(ADD_Group, {
+    name: name,
+    creator: creator,
+    members: members,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
 }
 
+async updateGroup(
+  groupId: string,
+  name: string,
+  creator: string,
+  members: Array<string>,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(UPDATE_GROUP_REQUEST, {
+    groupId: groupId,
+    name: name,
+    creator: creator,
+    members: members,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
+}
+async deleteGroup(
+  groupId: string,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(DELETE_GTOUP_REQUEST, {
+    groupId: groupId,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
+}
+
+async getGroupById(
+  groupId: string,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(GET_GROUP_BY_ID, {
+    groupId: groupId,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findGroupByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
+}
+
+async getUserGroups(
+  userId: string,
+): Promise<DefaultResponse> {
+  let data = await this.client.request(USER_GROUPS, {
+    userId: userId,
+  });
+  data = JSON.parse(JSON.stringify(data));
+  data = data.findUserByID;
+
+  return {
+    id: data != null ? data._id.toString() : "-1",
+    success: data != null,
+    data: data,
+  };
+}
+//#endregion group
+}
 export const Api = new GraphQLApi();
