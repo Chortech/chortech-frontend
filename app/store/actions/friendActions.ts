@@ -3,6 +3,7 @@ import { Action } from "../../models/actions/action";
 import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
 import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
+import { DeleteFriendResponse } from "../../models/responses/deleteFriend";
 
 export function onUserFriendsRequest(userId: string): Action<FriendsRequest> {
   return {
@@ -26,11 +27,23 @@ export function onUserFriendsResponse(
   };
 }
 
-export function onDeleteFriend(id: string): Action<DeleteFriendRequest> {
+export function onDeleteFriendRequest(id: string): Action<DeleteFriendRequest> {
   return {
     type: types.DELETE_USER_FRIEND_REQUEST,
     payload: {
       id: id,
+    },
+  };
+}
+
+export function onDeleteFriendResponse(
+  response: DeleteFriendResponse
+): Action<DeleteFriendResponse> {
+  return {
+    type: types.DELETE_USER_FRIEND_RESPONSE,
+    payload: {
+      success: response.success,
+      id: response.id,
     },
   };
 }

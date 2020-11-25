@@ -3,6 +3,7 @@ import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
 import { ILoginState } from "../../models/reducers/login";
+import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
 import { FriendsRequest } from "../../models/requests/getFriends";
 import { FriendsResponse } from "../../models/responses/getFriends";
 import * as types from "../actions/types";
@@ -38,6 +39,14 @@ export const friendReducer = createReducer(initialState, {
     return {
       ...state,
       friends: action.payload.friends,
+    };
+  },
+  [types.DELETE_USER_FRIEND_REQUEST](
+    state: IUserState,
+    action: Action<DeleteFriendRequest>
+  ) {
+    return {
+      ...state,
     };
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
