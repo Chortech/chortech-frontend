@@ -19,20 +19,6 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import { UserByFilterResponse } from "../../models/responses/userByFilter";
 
-// type InviteFriendScreenRouteProp = RouteProp<
-//   RootStackParamList,
-//   "InviteFriend"
-// >;
-// type InviteFriendScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   "InviteFriend"
-// >;
-
-// type Props = {
-//   navigation: InviteFriendScreenNavigationProp;
-//   route: InviteFriendScreenRouteProp;
-// };
-
 const InviteFriend: React.FC = (): JSX.Element => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);

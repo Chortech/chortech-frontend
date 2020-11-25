@@ -16,6 +16,7 @@ import { Friend } from "../../../models/other/Friend";
 import { FriendsRequest } from "../../../models/requests/getFriends";
 import { UserByFilterResponse } from "../../../models/responses/userByFilter";
 import { User } from "../../../models/other/User";
+import { AddFriendResponse } from "../../../models/responses/addFriend";
 
 class GraphQLApi implements AuthApi, FriendsApi {
   endpoint: string = API_URL;
@@ -85,6 +86,37 @@ class GraphQLApi implements AuthApi, FriendsApi {
     return {
       success: successful,
       user: fetchedUser,
+    };
+  }
+
+  async addFriend(
+    friendId: string,
+    friendName: string,
+    userId: string
+  ): Promise<AddFriendResponse> {
+    let data: any = await this.client.request(mutations.ADD_FRIEND, {
+      friendId: friendId,
+      friendName: friendName,
+      userId: userId,
+    });
+    data = data.createFriend;
+    let successful: boolean = data != null;
+    let fetchedFriend: Friend = {
+      id: "-1",
+      friendId: "-1",
+      friendName: "",
+    };
+    if (successful) {
+      fetchedFriend = {
+        id: data._id.toString(),
+        friendId: data.friendId,
+        friendName: data.friendName,
+      };
+    }
+
+    return {
+      success: successful,
+      friend: fetchedFriend,
     };
   }
 
