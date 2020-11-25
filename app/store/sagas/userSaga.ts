@@ -21,6 +21,8 @@ export function* fetchUserAsync(action: Action<FetchUserRequest>) {
     console.log(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(userActions.onLoadingDisable());
+
   if (response.success) {
     yield put(userActions.onFetchUserResponse(response));
   } else {

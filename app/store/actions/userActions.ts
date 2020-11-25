@@ -3,7 +3,7 @@ import { FetchUserRequest } from "../../models/requests/getUser";
 import { FetchUserResponse } from "../../models/responses/getUser";
 import * as types from "./types";
 
-export function fetchUserRequest(id: string): Action<FetchUserRequest> {
+export function onFetchUserRequest(id: string): Action<FetchUserRequest> {
   return {
     type: types.FETCH_USER_REQUEST,
     payload: {
@@ -12,7 +12,7 @@ export function fetchUserRequest(id: string): Action<FetchUserRequest> {
   };
 }
 
-export function fetchUserResponse(
+export function onFetchUserResponse(
   response: FetchUserResponse
 ): Action<FetchUserResponse> {
   return {

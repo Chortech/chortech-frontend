@@ -11,14 +11,15 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
   },
   profileImage: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
     marginTop: 10,
     borderRadius: 50,
   },
   userNameText: {
     fontSize: 20,
     marginVertical: 10,
+    padding: 5,
     color: "#fff",
     alignItems: "center",
     fontFamily: "IRANSansWeb_Bold",
