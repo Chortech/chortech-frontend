@@ -20,5 +20,6 @@ export default function* watch() {
     takeLatest(types.USER_FRIENDS_REQUEST, friendSaga.userFriendsSaga),
     takeLatest(types.DELETE_USER_FRIEND_REQUEST, friendSaga.deleteUserFriend),
     takeLatest(types.FETCH_USER_REQUEST, userSaga.fetchUserAsync),
+    takeLatest(types.UPDATE_USER_REQUEST, userSaga.updateUserAsync),
   ]);
 }
