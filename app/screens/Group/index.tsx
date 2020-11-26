@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -20,11 +18,6 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import * as groupActions from "../../store/actions/groupActions";
   
 const Group: React.FC = () => {
-  const dispatch = useDispatch();
-  const id = useStore().getState()["IdentifyAccountReducer"].id;
-  const name = useStore().getState()["IdentifyAccountReducer"].name;
-  const onActivitySelect = () =>
-  dispatch(groupActions.getUserGroups("282980702594531845"));
   
   const [data, setData] = useState({
     name: "گروه دوستان ۱",
@@ -52,7 +45,7 @@ const Group: React.FC = () => {
         />
         <Text style={styles.text}>{data.name}</Text>
       </View>
-      <Animatable.View
+      {/* <Animatable.View
         animation="slideInUp"
         duration={600}
         style={styles.infoContainer}
@@ -82,7 +75,7 @@ const Group: React.FC = () => {
           position="left"
           onPress={onAddExpense}
         />
-      </Animatable.View>
+      </Animatable.View> */}
     </View>
   );
 };

@@ -6,7 +6,10 @@ import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 
 import { DefaultResponse } from "../../models/responses/default";
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
+import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest,
+   GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
+import { GetUserGroupsResponse } from "../../models/responses/group";
+import * as groupActions from "../actions/groupActions"
 
 export function* addGroupAsync(action: Action<AddGroupRequest>) {
   const { name, creator, members } = action.payload;
@@ -98,10 +101,10 @@ export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
 
 export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
   const { userId } = action.payload;
-  let response: DefaultResponse = {
-    id: "-1",
+  let response: GetUserGroupsResponse = {
+    userId: "-1",
     success: false,
-    data:null,
+    groups: null,
   };
 
   try {
@@ -112,6 +115,7 @@ export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
   }
 
   if (response.success) {
+    yield put(groupActions.getUserGroupsResponse(response))
     console.log("saga: get groups")
   } else {
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);

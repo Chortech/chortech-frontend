@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { useDispatch, useSelector, useStore } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,19 +7,56 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  RefreshControl,
 } from 'react-native';
 import * as Animatable from "react-native-animatable";
 
+import GroupItem from "../../components/GroupItem/index";
 import NavigationService from '../../navigation/navigationService';
+import { ILoginState } from "../../models/reducers/login";
+import * as groupActions from "../../store/actions/groupActions";
+import { IUserState } from "../../models/reducers/default";
 import styles from "./styles"
 
+type IState = {
+  groupReducer: IUserState;
+};
+
 const GroupList: React.FC = () => {
+  const dispatch = useDispatch();
+  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const { groups } = useSelector((state: IState) => state.groupReducer);
+  const [refreshing, setRefreshing] = useState(false);
   const onGroupSelect = () => NavigationService.navigate('Group');
   const onProfile = () => NavigationService.navigate('Profile');
   const onAddGroup = () => NavigationService.navigate('AddGroup');
+  const fetchGroups = (): void => {
+    dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
+  };
+  useEffect(() => {
+    fetchGroups
+  }, []);
 
-  const groups = [
+  const onGroup = (id: string, name: string) =>
+    NavigationService.navigate("Group", { id: id, name: name });
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchGroups();
+    }, 200);
+    setRefreshing(false);
+  }, []);
+
+  const renderGroupItem: any = ({ item }) => (
+    <GroupItem
+      onPressGroupItem={() => onGroup(item.id, item.name)}
+      Name={item.name}
+      ImageUrl={require("../../assets/images/friend-image.jpg")}
+    />
+  );
+
+  const groupsData = [
     {id:1, name:"گروه دوستان ۱"},
     {id:2, name:"گروه دوستان ۲"},
     {id:3, name:"گروه دوستان ۳"},
@@ -40,27 +78,20 @@ const GroupList: React.FC = () => {
         duration={600}
         style={styles.infoContainer}
         >
-        <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
           data={groups}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={onGroupSelect}>
-                <View style={styles.box}>
-                  <Text style={styles.groupName}>{item.name}</Text>
-                  <Image style={styles.image} source={require("../../assets/images/group-image.jpg")}/>
-                </View>
-              </TouchableOpacity>
-            )
-        }}/>
-          <View style={styles.buttonContainer}>
+          renderItem={( renderGroupItem )}
+        />
+      </Animatable.View>
+      <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onAddGroup}>
               <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
               <Text style={styles.plus}>+</Text>
             </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </Animatable.View>
+      </View>
   </View>
   );
 };

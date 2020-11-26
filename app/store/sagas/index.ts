@@ -28,6 +28,6 @@ export default function* watch() {
     takeLatest(types.UPDATE_GROUP_REQUEST, groupSaga.updateGroupAsync),
     takeLatest(types.DELETE_GTOUP_REQUEST, groupSaga.deleteGroupAsync),
     takeLatest(types.GET_GROUP_BY_ID, groupSaga.getGroupByIdAsync),
-    takeLatest(types.GET_USER_GROUPS, groupSaga.getUserGroups),
+    takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.getUserGroups),
   ]);
 }

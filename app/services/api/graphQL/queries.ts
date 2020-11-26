@@ -149,7 +149,7 @@ export const GET_GROUP_BY_ID = gql`
   }
 `;
 
-export const USER_GROUPS = gql`
+export const GET_USER_GROUPS = gql`
   query userById($userId: ID!) {
     findUserByID(id: $userId) {
       _id
