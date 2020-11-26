@@ -16,6 +16,7 @@ import GroupItem from "../../components/GroupItem/index";
 import NavigationService from '../../navigation/navigationService';
 import { ILoginState } from "../../models/reducers/login";
 import * as groupActions from "../../store/actions/groupActions";
+import * as userActions from "../../store/actions/userActions"
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles"
 
@@ -26,11 +27,13 @@ type IState = {
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const User: ILoginState = useStore().getState()["userReducer"];
+  dispatch(userActions.onFetchUserRequest(loggedInUser.id));
   const { groups } = useSelector((state: IState) => state.groupReducer);
   const [refreshing, setRefreshing] = useState(false);
   const onProfile = () => NavigationService.navigate('Profile');
   const onAddGroup = () => NavigationService.navigate('AddGroup');
-  const userName = loggedInUser.name;
+  const userName = User.name;
   console.log(userName);
   const fetchGroups = (): void => {
     dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
