@@ -129,21 +129,21 @@ const LoggedInNavigator = () => (
     }}>
     <LoggedInTab.Screen  name="دوستان" component={FriendNavigator}        
      options={{
-          tabBarLabel: 'Friends',
+          tabBarLabel: 'دوستان',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="nature-people" color={color} size={26} />
           ),
         }}/>
     <LoggedInTab.Screen name="گروه‌ها" component={GroupNavigator} 
     options={{
-      tabBarLabel: 'GroupList',
+      tabBarLabel: 'گروه‌ها',
       tabBarIcon: ({ color }) => (
         <MaterialCommunityIcons name="home-group" color={color} size={26} />
       ),
     }}/>
     <LoggedInTab.Screen name="فعالیت‌ها" component={ActivityNavigator} 
     options={{
-      tabBarLabel: 'ActivityList',
+      tabBarLabel: 'فعالیت‌ها',
       tabBarIcon: ({ color }) => (
         <MaterialCommunityIcons name="cart" color={color} size={26} />
       ),
