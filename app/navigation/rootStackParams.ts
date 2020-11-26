@@ -13,4 +13,9 @@ export type RootStackParamList = {
     friendName: string;
     ImageUrl: string;
   };
+  Group: {
+    id: string;
+    groupName: string;
+    ImageUrl: string;
+  }
 };

@@ -11,6 +11,7 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/group";
+import { GetUserGroupsResponse } from "../../models/responses/group";
 
 const initialState: IUserState = {
   loading: false,
@@ -59,12 +60,22 @@ export const groupReducer = createReducer(initialState, {
       ...state,
     };
   },
-  [types.GET_USER_GROUPS](
+  [types.GET_USER_GROUPS_REQUEST](
     state: IUserState,
     action: Action<GetUserGroupsRequest>
   ) {
     return {
       ...state,
+      userId: action.payload.userId,
+    };
+  },
+  [types.GET_USER_GROUPS_RESPONSE](
+    state: IUserState,
+    action: Action<GetUserGroupsResponse>
+  ) {
+    return {
+      ...state,
+      groups: action.payload.groups,
     };
   },
 });

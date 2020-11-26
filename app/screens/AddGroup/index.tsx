@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, ToastAndroid } from "react-native";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { SearchBar } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 
 import NavigationService from '../../navigation/navigationService';
+import { ILoginState } from "../../models/reducers/login";
+import { Api } from "../../services/api/graphQL/graphqlApi";
 import { styles } from "./styles";
 
 const AddGroup: React.FC = (): JSX.Element => {
+    const loggedInUser: ILoginState = useStore().getState()["authReducer"];
     const confirm = () => {
+        console.log(data.groupName);
+        Api.addGroup(data.groupName, loggedInUser.id, [loggedInUser.id])
         if (data.groupName == "") {
             ToastAndroid.show(
                 "لطفا نام گروه را وارد کنید.",

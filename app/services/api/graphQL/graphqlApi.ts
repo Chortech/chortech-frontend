@@ -5,7 +5,7 @@ import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import * as queries from "./queries";
 import * as mutations from "./mutations";
-import { DefaultResponse } from "../../../models/responses/default";
+import { addGroupResponse, deleteGroupResponse, getGroupByIdResponse, GetUserGroupsResponse, updateGroupResponse,  } from "../../../models/responses/group";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
@@ -18,6 +18,7 @@ import { Expense } from "../../../models/other/Expense";
 import { FriendsApi } from "../../../models/api/friend";
 import { FriendsResponse } from "../../../models/responses/getFriends";
 import { Friend } from "../../../models/other/Friend";
+import { Group } from "../../../models/other/Group";
 import { FriendsRequest } from "../../../models/requests/getFriends";
 import { UserByFilterResponse } from "../../../models/responses/userByFilter";
 import { User } from "../../../models/other/User";
@@ -28,7 +29,8 @@ import { FetchUserResponse } from "../../../models/responses/getUser";
 import { UpdateUserResponse } from "../../../models/responses/updateUser";
 import {
   DELETE_GTOUP_REQUEST,
-  GET_USER_GROUPS,
+  GET_USER_GROUPS_REQUEST,
+  GET_USER_GROUPS_RESPONSE,
   UPDATE_GROUP_REQUEST,
 } from "../../../store/actions/types";
 import { AddActivityResponse } from "../../../models/responses/addActivityResponse";
@@ -456,9 +458,7 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<DefaultResponse> {
-    console.log(creator);
-    console.log(members);
+  ): Promise<addGroupResponse> {
     let data = await this.client.request(mutations.ADD_Group, {
       name: name,
       creator: creator,
@@ -470,7 +470,6 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     return {
       id: data != null ? data._id.toString() : "-1",
       success: data != null,
-      data: data,
     };
   }
 
@@ -479,7 +478,7 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<DefaultResponse> {
+  ): Promise<updateGroupResponse> {
     let data = await this.client.request(UPDATE_GROUP_REQUEST, {
       groupId: groupId,
       name: name,
@@ -492,10 +491,9 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     return {
       id: data != null ? data._id.toString() : "-1",
       success: data != null,
-      data: data,
     };
   }
-  async deleteGroup(groupId: string): Promise<DefaultResponse> {
+  async deleteGroup(groupId: string): Promise<deleteGroupResponse> {
     let data = await this.client.request(DELETE_GTOUP_REQUEST, {
       groupId: groupId,
     });
@@ -505,11 +503,10 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     return {
       id: data != null ? data._id.toString() : "-1",
       success: data != null,
-      data: data,
     };
   }
 
-  async getGroupById(groupId: string): Promise<DefaultResponse> {
+  async getGroupById(groupId: string): Promise<getGroupByIdResponse> {
     let data = await this.client.request(queries.GET_GROUP_BY_ID, {
       groupId: groupId,
     });
@@ -519,21 +516,35 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     return {
       id: data != null ? data._id.toString() : "-1",
       success: data != null,
-      data: data,
+      group: data.group,
     };
   }
 
-  async getUserGroups(userId: string): Promise<DefaultResponse> {
-    let data = await this.client.request(queries.USER_GROUPS, {
+  async getUserGroups(userId: string): Promise<GetUserGroupsResponse> {
+    let data = await this.client.request(queries.GET_USER_GROUPS, {
       userId: userId,
     });
     data = JSON.parse(JSON.stringify(data));
     data = data.findUserByID;
-
+    const successful = data != null;
+    const id = successful ? data._id.toString() : "-1";
+    let groups: Array<Group> = [];
+    if (successful) {
+      let group: Group;
+      data.groups.data.forEach((element: any) => {
+        group = {
+          id: element._id.toString(),
+          name: element.name,
+          creatorId: element.creatorId,
+          membersIds: element.membersIds,
+        };
+        groups.push(group);
+      });
+    }
     return {
-      id: data != null ? data._id.toString() : "-1",
+      userId: data != null ? data._id.toString() : "-1",
       success: data != null,
-      data: data,
+      groups: groups,
     };
   }
 

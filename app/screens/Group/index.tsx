@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -12,25 +10,34 @@ import {
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import * as Animatable from "react-native-animatable";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigation/rootStackParams";
+import LoadingIndicator from "../Loading";
 
 import NavigationService from '../../navigation/navigationService';
+import { IUserState } from "../../models/reducers/default";
 
 import styles from "./styles"
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as groupActions from "../../store/actions/groupActions";
   
-const Group: React.FC = () => {
+type Props = {
+  route: RouteProp<RootStackParamList, "Group">;
+};
+
+type IState = {
+  groupReducer: IUserState;
+};
+
+const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const { id, groupName } = route.params;
+  const { loading } = useSelector((state: IState) => state.groupReducer);
   const dispatch = useDispatch();
-  const id = useStore().getState()["IdentifyAccountReducer"].id;
-  const name = useStore().getState()["IdentifyAccountReducer"].name;
-  const onActivitySelect = () =>
-  dispatch(groupActions.getUserGroups("282980702594531845"));
-  
-  const [data, setData] = useState({
-    name: "گروه دوستان ۱",
-  });
 
   const onAddExpense = () => NavigationService.navigate('AddExpense');
+  const onPressDeleteGroup = () => {
+    dispatch(groupActions.deleteGroup(id));
+  };
 
   const expenses = [
     {id:1, image: "../../assets/images/friend-image.jpg", name:"کالای ۱"},
@@ -44,20 +51,23 @@ const Group: React.FC = () => {
   ];
   
   return (
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) :
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
           style={styles.groupImage}
           source={require("../../assets/images/group-image.jpg")}
         />
-        <Text style={styles.text}>{data.name}</Text>
+        <Text style={styles.text}>{groupName}</Text>
       </View>
-      <Animatable.View
+       <Animatable.View
         animation="slideInUp"
         duration={600}
         style={styles.infoContainer}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
           <FlatList
             data={expenses}
             renderItem={({ item }) => {
@@ -76,7 +86,6 @@ const Group: React.FC = () => {
               );
             }}
           />
-        </ScrollView>
         <ActionButton
           buttonColor="#1AD927"
           position="left"
@@ -84,6 +93,8 @@ const Group: React.FC = () => {
         />
       </Animatable.View>
     </View>
+    }
+    </>
   );
 };
   

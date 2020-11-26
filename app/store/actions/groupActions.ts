@@ -1,5 +1,6 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
+import { GetUserGroupsResponse } from "../../models/responses/group";
 
 import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest, GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
 
@@ -57,13 +58,26 @@ return {
 };
 }
 
-export function getUserGroups(
-  userId: string,
+export function getUserGroupsRequest(
+  userId: string
 ): Action<GetUserGroupsRequest> {
 return {
-  type: types.GET_USER_GROUPS,
+  type: types.GET_USER_GROUPS_REQUEST,
   payload: {
-    userId,
+    userId: userId,
+  },
+};
+}
+
+export function getUserGroupsResponse(
+  response: GetUserGroupsResponse,
+): Action<GetUserGroupsResponse> {
+return {
+  type: types.GET_USER_GROUPS_RESPONSE,
+  payload: {
+    userId: response.userId,
+    success: response.success,
+    groups: response.groups,
   },
 };
 }
