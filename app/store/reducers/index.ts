@@ -7,11 +7,17 @@ import * as codeVerificationReducer from "./codeVerificationReducer";
 import * as resetPasswordReducer from "./resetPasswordReducer";
 import * as activityReducer from "./activityReducer";
 // import * as signUpReducer from "./signUpReducer";
+import * as friendReducer from "./friendReducer";
+import * as userReducer from "./userReducer";
+import * as groupReducer from "./groupReducer";
 
 export default Object.assign(
   authReducer,
   IdentifyAccountReducer,
   codeVerificationReducer,
   resetPasswordReducer,
-  activityReducer
+  activityReducer,
+  friendReducer,
+  userReducer,
+  groupReducer
 );

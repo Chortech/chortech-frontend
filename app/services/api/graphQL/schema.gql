@@ -12,8 +12,8 @@ type User {
 
 type Friend {
   user: User
-  userId: Long
-  name: String
+  friendId: ID
+  friendName: String
 }
 
 type Group {

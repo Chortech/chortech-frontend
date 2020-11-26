@@ -1,10 +1,8 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-
 import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
-
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
 

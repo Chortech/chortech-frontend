@@ -1,3 +1,4 @@
+import { Activity } from "./Activity";
 import { Friend } from "./Friend";
 import { Group } from "./Group";
 
@@ -11,4 +12,5 @@ export type User = {
   balance: number;
   friends: Array<Friend>;
   groups: Array<Group>;
+  activities: Array<Activity>;
 };

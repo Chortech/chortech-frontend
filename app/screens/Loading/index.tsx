@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import React from "react";
+import { ActivityIndicator } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 

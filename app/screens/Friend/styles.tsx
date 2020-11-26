@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
   header: {
     flex: 3,
     alignItems: "center",
-    paddingTop: 10,
+    padding: 5,
   },
   friendImage: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
     marginTop: 10,
     borderRadius: 50,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: "#fff",
   },
   userNameText: {
