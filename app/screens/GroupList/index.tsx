@@ -31,6 +31,7 @@ const GroupList: React.FC = () => {
   const onProfile = () => NavigationService.navigate('Profile');
   const onAddGroup = () => NavigationService.navigate('AddGroup');
   const userName = loggedInUser.name;
+  console.log(userName);
   const fetchGroups = (): void => {
     dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
   };
@@ -59,9 +60,7 @@ const GroupList: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
-          <TouchableOpacity
-            onPress={onProfile}
-          >
+          <TouchableOpacity onPress={onProfile}>
             <Image style={styles.avatar} source={require("../../assets/images/friend-image.jpg")}/>
           </TouchableOpacity>
           <Text style={styles.name}>{userName}</Text>

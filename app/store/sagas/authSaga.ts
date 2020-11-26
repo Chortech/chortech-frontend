@@ -19,6 +19,7 @@ export function* loginAsync(action: Action<LoginRequest>) {
   let response: LoginResponse = {
     id: "-1",
     success: false,
+    name: "",
   };
 
   try {
