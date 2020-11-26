@@ -30,6 +30,7 @@ const GroupList: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const onProfile = () => NavigationService.navigate('Profile');
   const onAddGroup = () => NavigationService.navigate('AddGroup');
+  const userName = loggedInUser.name;
   const fetchGroups = (): void => {
     dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
   };
@@ -38,7 +39,7 @@ const GroupList: React.FC = () => {
   }, []);
 
   const onGroup = (id: string, name: string) =>
-    NavigationService.navigate("Group", { id: id, name: name });
+  NavigationService.navigate("Group", { id: id, groupName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -63,7 +64,7 @@ const GroupList: React.FC = () => {
           >
             <Image style={styles.avatar} source={require("../../assets/images/friend-image.jpg")}/>
           </TouchableOpacity>
-          <Text style={styles.name}>بابک سفیدگر</Text>
+          <Text style={styles.name}>{userName}</Text>
       </View>
 
       <Animatable.View
