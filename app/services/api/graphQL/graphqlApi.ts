@@ -10,8 +10,11 @@ import { IdentifyAccountResponse } from "../../../models/responses/identify";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
 import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
+import { ActivityApi } from "../../../models/api/activity";
+import { Debt } from "../../../models/other/Debt";
+import { Expense } from "../../../models/other/Expense";
 
-class GraphQLApi implements AuthApi {
+class GraphQLApi implements AuthApi, ActivityApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -21,6 +24,14 @@ class GraphQLApi implements AuthApi {
         authorization: `Bearer ${API_KEY}`,
       },
     });
+  }
+  async addActivity(
+    id: string, 
+    type: string, 
+    expense?: Expense, 
+    debt?: Debt
+  ) {
+    
   }
 
   async login(
