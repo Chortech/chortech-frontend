@@ -31,6 +31,11 @@ import {
   GET_USER_GROUPS,
   UPDATE_GROUP_REQUEST,
 } from "../../../store/actions/types";
+import { AddActivityResponse } from "../../../models/responses/addActivityResponse";
+import { AddExpenseResponse } from "../../../models/responses/addExpenseResponse";
+import { Participant } from "../../../models/other/Participant";
+import { AddParticipantResponse } from "../../../models/responses/addParticipantResponse";
+import { AddDebtResponse } from "../../../models/responses/addDebtResponse";
 
 class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
   endpoint: string = API_URL;
@@ -43,13 +48,136 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
       },
     });
   }
+
   async addActivity(
-    id: string, 
+    userId: string, 
     type: string, 
-    expense?: Expense, 
-    debt?: Debt
-  ) {
-    
+    groupId?: string,
+    expenseId?: string, 
+    debtId?: string,
+  ): Promise<AddActivityResponse> {
+    let data: any;
+    if (groupId != null && groupId != undefined) {
+      if (type == "Debt") {
+          if (debtId != null && debtId != undefined) {
+            data = await this.client.request(mutations.ADD_GROUP_DEBT_ACTIVITY, {
+              userId: userId,
+              type: type,
+              groupId: groupId,
+              debtId: debtId,
+            });
+          } 
+      } else {
+          data = await this.client.request(mutations.ADD_GROUP_EXPENSE_ACTIVITY, {
+            userId: userId,
+            type: type,
+            groupId: groupId,
+            expenseId: expenseId,
+          });
+      }
+    } else {
+        if (type == "Debt") {
+          if (debtId != null && debtId != undefined) {
+            data = await this.client.request(mutations.ADD_NON_GROUP_DEBT_ACTIVITY, {
+              userId: userId,
+              type: type,
+              debtId: debtId,
+            });
+          }
+        } else {
+          data = await this.client.request(mutations.ADD_NON_GROUP_EXPENSE_ACTIVITY, {
+            userId: userId,
+            type: type,
+            expenseId: expenseId,
+          });
+        }
+    }
+    data = data.createActivity;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+
+    if (successful) {
+      id = data._id.toString();
+    }
+
+    return {
+      success: successful,
+      id: id,
+    }
+  }
+
+  async addExpense(
+    description: string,
+    category: string,
+    totalPrice: string,
+  ): Promise<AddExpenseResponse> {
+    let data: any = await this.client.request(mutations.ADD_EXPENSE, {
+      description: description,
+      category: category,
+      totalPrice: totalPrice,
+    });
+    data = data.createExpense;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+
+    if (successful) {
+      id = data._id.toString();
+    }
+
+    return {
+      success: successful,
+      id: id,
+    };
+  }
+
+  async addDebt(
+    description: string,
+    category: string,
+    debt: number,
+    creditorId: string,
+  ): Promise<AddDebtResponse> {
+    let data: any = await this.client.request(mutations.ADD_DEBT, {
+      description: description,
+      category: category,
+      debt: debt,
+      creditorId: creditorId,
+    });
+    data = data.createDebt;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+
+    if (successful) {
+      id = data._id.toString();
+    }
+
+    return {
+      success: successful,
+      id: id,
+    };
+  }
+
+  async addParticipant(
+    expenseId: string,
+    userId: string,
+    share: number,
+  ): Promise<AddParticipantResponse> {
+    let data: any = await this.client.request(mutations.ADD_PARTICIPANT, {
+      expenseId: expenseId,
+      userId: userId,
+      share: share,
+    });
+    data = data.createParticipant;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+
+    if (successful) {
+      id = data._id.toString();
+    }
+
+    return {
+      success: successful,
+      id: id,
+    };
   }
 
   async getUser(id: string): Promise<FetchUserResponse> {
@@ -408,6 +536,9 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
       data: data,
     };
   }
+
+  // async addParticipant()
+
   //#endregion group
 }
 export const Api = new GraphQLApi();
