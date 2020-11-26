@@ -3,4 +3,5 @@ export type Group = {
   name: string;
   creatorId: string;
   membersIds: Array<string>;
+  activitiesIds: Array<string>;
 };
