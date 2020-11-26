@@ -151,4 +151,253 @@ export const DELETE_GROUP = gql`
     }
   }
 `;
+
+export const ADD_PARTICIPANT = gql`
+mutation addParticipant($userId: ID!, $expenseId: ID!, $share: Int) {
+  createParticipant(
+    data: {
+      user: { connect: $userId }
+      expense: { connect: $expenseId }
+      share: $share
+  }
+  )
+}
+`;
+
+export const ADD_NON_GROUP_EXPENSE_ACTIVITY = gql`
+mutation addActivity(
+  $userId: ID!
+  $type: String
+  $expenseId: ID
+) {
+  createActivity(
+    data: {
+    user: { connect: $userId }
+        type: $type
+        expense: { connect: $expenseId }
+  }
+  ) {
+    _id
+    type
+    expense {
+      _id
+      description
+      category
+      totalPrice
+      participants {
+        data {
+          _id
+          user {
+            _id
+            name
+          }
+        }
+      }
+    }
+    debt {
+      _id
+      description
+      category
+      debt
+      creditor {
+        _id
+        name
+      }
+    }
+  }
+}
+`;
+
+export const ADD_GROUP_DEBT_ACTIVITY = gql`
+mutation addActivity(
+  $userId: ID!
+  $type: String
+  $groupId: ID
+  $debtId: ID
+) {
+  createActivity(
+    data: {
+    user: { connect: $userId }
+        type: $type
+        group: { connect: $groupId }
+        debt: { connect: $debtId }
+  }
+  ) {
+    _id
+    type
+    group {
+      _id
+      name
+    }
+    expense {
+      _id
+      description
+      category
+      totalPrice
+      participants {
+        data {
+          _id
+          user {
+            _id
+            name
+          }
+        }
+      }
+    }
+    debt {
+      _id
+      description
+      category
+      debt
+      creditor {
+        _id
+        name
+      }
+    }
+  }
+}
+`;
+
+export const ADD_GROUP_EXPENSE_ACTIVITY = gql`
+mutation addActivity(
+  $userId: ID!
+  $type: String
+  $groupId: ID
+  $expenseId: ID
+) {
+  createActivity(
+    data: {
+    user: { connect: $userId }
+        type: $type
+        group: { connect: $groupId }
+        expense: { connect: $expenseId }
+  }
+  ) {
+    _id
+    type
+    group {
+      _id
+      name
+    }
+    expense {
+      _id
+      description
+      category
+      totalPrice
+      participants {
+        data {
+          _id
+          user {
+            _id
+            name
+          }
+        }
+      }
+    }
+    debt {
+      _id
+      description
+      category
+      debt
+      creditor {
+        _id
+        name
+      }
+    }
+  }
+}
+`;
+
+export const ADD_NON_GROUP_DEBT_ACTIVITY = gql`
+mutation addActivity(
+  $userId: ID!
+  $type: String
+  $debtId: ID
+) {
+  createActivity(
+    data: {
+    user: { connect: $userId }
+        type: $type
+        debt: { connect: $debtId }
+  }
+  ) {
+    _id
+    type
+    group {
+      _id
+      name
+    }
+    expense {
+      _id
+      description
+      category
+      totalPrice
+      participants {
+        data {
+          _id
+          user {
+            _id
+            name
+          }
+        }
+      }
+    }
+    debt {
+      _id
+      description
+      category
+      debt
+      creditor {
+        _id
+        name
+      }
+    }
+  }
+}
+`;
+
+export const ADD_EXPENSE = gql`
+mutation addExpense(
+  $description: String
+  $category: String
+  $totalPrice: Int
+) {
+  createExpense(
+    data: {
+      description: $description
+      category: $category
+      totalPrice: $totalPrice
+  }
+  ) {
+    _id
+  }
+}
+`;
+
+export const ADD_DEBT = gql`
+mutation addDebt(
+    $description: String
+    $category: String
+    $debt: Int
+    $creditorId: ID
+) {
+  createDebt(
+    data: {
+      description: $description
+      category: $category
+      debt: $debt
+      creditor: { connect: $creditorId }
+  }
+  ) {
+    _id
+    description
+    category
+    debt
+    creditor {
+      _id
+      name
+    }
+  }
+}
+`;
 //#endregion group
