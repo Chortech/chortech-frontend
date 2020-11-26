@@ -19,12 +19,14 @@ type Friend {
 type Group {
   name: String
   creator: User
+  activities: [Activity] @relation
   members: [User] @relation
 }
 
 type Activity {
   user: User @relation(name: "user_activities")
   type: String
+  group: Group
   expense: Expense
   debt: Debt
 }
