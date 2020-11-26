@@ -28,7 +28,6 @@ const GroupList: React.FC = () => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
   const { groups } = useSelector((state: IState) => state.groupReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const onGroupSelect = () => NavigationService.navigate('Group');
   const onProfile = () => NavigationService.navigate('Profile');
   const onAddGroup = () => NavigationService.navigate('AddGroup');
   const fetchGroups = (): void => {
@@ -55,12 +54,6 @@ const GroupList: React.FC = () => {
       ImageUrl={require("../../assets/images/friend-image.jpg")}
     />
   );
-
-  const groupsData = [
-    {id:1, name:"گروه دوستان ۱"},
-    {id:2, name:"گروه دوستان ۲"},
-    {id:3, name:"گروه دوستان ۳"},
-  ];
 
   return (
     <View style={styles.container}>
