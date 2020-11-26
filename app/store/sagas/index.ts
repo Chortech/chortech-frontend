@@ -3,14 +3,13 @@
  */
 import { takeLatest, all } from "redux-saga/effects";
 import * as types from "../actions/types";
-
 import * as authSaga from "./authSaga";
 import identifyAccountSaga from "./identifyAccountSaga";
 import { generateCodeAsync } from "./codeVerificationSaga";
 import resetPasswordSaga from "./resetPasswordSaga";
 import * as friendSaga from "./friendSaga";
 import * as userSaga from "./userSaga";
-
+import * as activitySaga from "./activitySaga";
 import * as groupSaga from "./groupSaga";
 
 export default function* watch() {
@@ -29,5 +28,9 @@ export default function* watch() {
     takeLatest(types.DELETE_GTOUP_REQUEST, groupSaga.deleteGroupAsync),
     takeLatest(types.GET_GROUP_BY_ID, groupSaga.getGroupByIdAsync),
     takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.getUserGroups),
+    takeLatest(types.ADD_ACTIVITY_REQUEST, activitySaga.addActivityAsync),
+    takeLatest(types.ADD_EXPENSE_REQUEST, activitySaga.addExpenseAsync),
+    takeLatest(types.ADD_DEBT_REQUEST, activitySaga.addDebtAsync),
+    takeLatest(types.ADD_PARTICIPANT_REQUEST, activitySaga.addParticipantAsync),
   ]);
 }
