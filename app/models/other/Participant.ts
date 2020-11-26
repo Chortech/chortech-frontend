@@ -1,9 +1,6 @@
-import { Expense } from "./Expense";
-import { User } from "./User";
-
 export type Participant = {
   id: string;
-  expense: Expense;
-  user: User;
+  expenseId: string;
+  userId: string;
   share: number;
 };
