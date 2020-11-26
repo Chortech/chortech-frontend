@@ -1,5 +1,6 @@
 import { gql } from "graphql-request";
 
+//#region user
 export const ADD_USER = gql`
   mutation addUser(
     $name: String
@@ -74,6 +75,60 @@ export const ADD_FRIEND = gql`
       user {
         _id
         name
+      }`;
+//#endregion user
+//#region group
+export const ADD_Group = gql`
+  mutation addGroup($name: String, $creator: ID, $members: [ID]) {
+    createGroup(
+      data: {
+        name: $name
+        creator: { connect: $creator }
+        members: { connect: $members }
+      }
+    ) {
+      _id
+      name
+      creator {
+        _id
+        name
+      }
+      members {
+        data {
+          _id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_GROUP = gql`
+  mutation updateGroup(
+    $groupId: ID!
+    $name: String
+    $creator: ID!
+    $members: [ID!]
+  ) {
+    updateGroup(
+      id: $groupId
+      data: {
+        name: $name
+        creator: { connect: $creator }
+        members: { connect: $members }
+      }
+    ) {
+      _id
+      name
+      creator {
+        _id
+        name
+      }
+      members {
+        data {
+          _id
+          name
+        }
       }
     }
   }
@@ -86,3 +141,14 @@ export const DELETE_FRIEND = gql`
     }
   }
 `;
+export const DELETE_GROUP = gql`
+  mutation deleteUser($groupId: ID!) {
+    deleteGroup(id: $groupId) {
+      _id
+      name
+      creator
+      members
+    }
+  }
+`;
+//#endregion group

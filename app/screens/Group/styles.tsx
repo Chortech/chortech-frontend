@@ -38,7 +38,15 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
     fontSize: 12,
   },
-  image: {
+  groupImage: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    padding: 10,
+    borderWidth: 4,
+    borderColor: "#fff",
+  },
+  activityImage: {
     height: 50,
     width: 50,
     borderRadius: 25,

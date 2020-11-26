@@ -7,6 +7,7 @@ import * as codeVerificationReducer from "./codeVerificationReducer";
 import * as resetPasswordReducer from "./resetPasswordReducer";
 import * as friendReducer from "./friendReducer";
 import * as userReducer from "./userReducer";
+import * as groupReducer from "./groupReducer";
 
 export default Object.assign(
   authReducer,
@@ -14,5 +15,6 @@ export default Object.assign(
   codeVerificationReducer,
   resetPasswordReducer,
   friendReducer,
-  userReducer
+  userReducer,
+  groupReducer
 );

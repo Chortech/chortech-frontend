@@ -9,9 +9,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
+import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
-import NavigationService from "../../navigation/navigationService";
 import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 
@@ -71,6 +71,23 @@ const EditProfile: React.FC = (): JSX.Element => {
   const togglePassword = (): void => {
     setSecureTextEntry(!secureTextEntry);
   };
+  // const confirm = () => {
+  //     if (data.activityName == "") {
+  //         ToastAndroid.show(
+  //             "لطفا نام فعالیت را وارد کنید.",
+  //             ToastAndroid.SHORT
+  //         );
+  //     } else if (data.expenseAmount == "") {
+  //         ToastAndroid.show(
+  //             "لطفا مبلغ را وارد کنید.",
+  //             ToastAndroid.SHORT
+  //         );
+  //     } else {
+  //         NavigationService.navigate('Profile');
+  //     }
+  // };
+
+  const cancel = () => NavigationService.goBack();
 
   return (
     <>

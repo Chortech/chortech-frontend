@@ -1,9 +1,11 @@
 import { request, GraphQLClient, gql } from "graphql-request";
 import { AuthApi } from "../../../models/api/auth";
+import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import * as queries from "./queries";
 import * as mutations from "./mutations";
+import { DefaultResponse } from "../../../models/responses/default";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
@@ -21,8 +23,13 @@ import { DeleteFriendResponse } from "../../../models/responses/deleteFriend";
 import { UserApi } from "../../../models/api/user";
 import { FetchUserResponse } from "../../../models/responses/getUser";
 import { UpdateUserResponse } from "../../../models/responses/updateUser";
+import {
+  DELETE_GTOUP_REQUEST,
+  GET_USER_GROUPS,
+  UPDATE_GROUP_REQUEST,
+} from "../../../store/actions/types";
 
-class GraphQLApi implements AuthApi, FriendsApi, UserApi {
+class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -208,6 +215,7 @@ class GraphQLApi implements AuthApi, FriendsApi, UserApi {
     };
   }
 
+  //#region auth
   async login(
     email: string,
     phone: string,
@@ -303,6 +311,92 @@ class GraphQLApi implements AuthApi, FriendsApi, UserApi {
       success: data != null,
     };
   }
-}
+  //#endregion auth
+  //#region group
+  async addGroup(
+    name: string,
+    creator: string,
+    members: Array<string>
+  ): Promise<DefaultResponse> {
+    console.log(creator);
+    console.log(members);
+    let data = await this.client.request(mutations.ADD_Group, {
+      name: name,
+      creator: creator,
+      members: members,
+    });
+    data = JSON.parse(JSON.stringify(data));
+    data = data.findGroupByID;
 
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+      data: data,
+    };
+  }
+
+  async updateGroup(
+    groupId: string,
+    name: string,
+    creator: string,
+    members: Array<string>
+  ): Promise<DefaultResponse> {
+    let data = await this.client.request(UPDATE_GROUP_REQUEST, {
+      groupId: groupId,
+      name: name,
+      creator: creator,
+      members: members,
+    });
+    data = JSON.parse(JSON.stringify(data));
+    data = data.findGroupByID;
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+      data: data,
+    };
+  }
+  async deleteGroup(groupId: string): Promise<DefaultResponse> {
+    let data = await this.client.request(DELETE_GTOUP_REQUEST, {
+      groupId: groupId,
+    });
+    data = JSON.parse(JSON.stringify(data));
+    data = data.findGroupByID;
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+      data: data,
+    };
+  }
+
+  async getGroupById(groupId: string): Promise<DefaultResponse> {
+    let data = await this.client.request(queries.GET_GROUP_BY_ID, {
+      groupId: groupId,
+    });
+    data = JSON.parse(JSON.stringify(data));
+    data = data.findGroupByID;
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+      data: data,
+    };
+  }
+
+  async getUserGroups(userId: string): Promise<DefaultResponse> {
+    let data = await this.client.request(queries.USER_GROUPS, {
+      userId: userId,
+    });
+    data = JSON.parse(JSON.stringify(data));
+    data = data.findUserByID;
+
+    return {
+      id: data != null ? data._id.toString() : "-1",
+      success: data != null,
+      data: data,
+    };
+  }
+  //#endregion group
+}
 export const Api = new GraphQLApi();
