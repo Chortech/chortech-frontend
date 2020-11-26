@@ -16,5 +16,6 @@ export default function* watch() {
     takeLatest(types.GENERATE_CODE_REQUEST, generateCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, resetPasswordSaga),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
+    // takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
   ]);
 }
