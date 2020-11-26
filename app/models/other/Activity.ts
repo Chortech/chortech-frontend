@@ -1,9 +1,10 @@
-import { Debt } from "./Debt";
-import { Expense } from "./Expense";
+import { Group } from "./Group";
 
 export type Activity = {
   id: string;
+  userId: string;
   type: string;
-  expense?: Expense;
-  debt?: Debt;
+  groupId?: string;
+  expenseId?: string;
+  debtId?: string;
 };
