@@ -13,13 +13,26 @@ import * as Animatable from "react-native-animatable";
 import { RegexValidator } from "../../utils/regexValidator";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
+import * as activityActions from "../../store/actions/activityActions";
+import { Api } from "../../services/api/graphQL/graphqlApi";
+import { ILoginState } from "../../models/reducers/login";
+
+type IState = {
+  activityReducer: IUserState;
+};
 
 const AddExpense: React.FC = (): JSX.Element => {
+  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
   const [data, setData] = useState({
     activityName: "",
     expenseAmount: "",
     isValidExpenseAmount: true,
   });
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: IState) => state.activityReducer);
 
   const confirm = () => {
     if (data.activityName == "") {
@@ -27,6 +40,26 @@ const AddExpense: React.FC = (): JSX.Element => {
     } else if (data.expenseAmount == "") {
       ToastAndroid.show("لطفا مبلغ را وارد کنید.", ToastAndroid.SHORT);
     } else if (data.isValidExpenseAmount) {
+      // dispatch(
+      //   activityActions.requestAddExpense(
+      //     "description",
+      //     "میوه",
+      //     data.expenseAmount
+      //   )
+      // );
+      try {
+        let expenseId: string = "-1";
+        Api.addExpense("description", "میوه", data.expenseAmount).then(
+          (data) => (expenseId = data.id)
+        );
+        Api.addActivity(
+          loggedInUser.id,
+          "expense",
+          undefined,
+          expenseId,
+          undefined
+        );
+      } catch (error) {}
       ToastAndroid.show("فعالیت با موفقیت اضافه شد.", ToastAndroid.SHORT);
       NavigationService.goBack();
     }
@@ -50,55 +83,61 @@ const AddExpense: React.FC = (): JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.expenseNameContainer}>
-          <TextInput
-            placeholder="نام فعالیت"
-            placeholderTextColor="#A4A4A4"
-            style={styles.textHeader}
-            onChangeText={(text) => setActivityName(text)}
-          />
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.expenseNameContainer}>
+              <TextInput
+                placeholder="نام فعالیت"
+                placeholderTextColor="#A4A4A4"
+                style={styles.textHeader}
+                onChangeText={(text) => setActivityName(text)}
+              />
+            </View>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            duration={1000}
+            style={styles.infoContainer}>
+            <SearchBar
+              lightTheme
+              searchIcon={{ size: 20 }}
+              placeholder="افراد مشترک در هزینه را اضافه کنید"
+              containerStyle={styles.searchBar}
+              inputStyle={styles.textInput}
+              leftIconContainerStyle={{ backgroundColor: "white" }}
+              inputContainerStyle={{ backgroundColor: "white" }}
+            />
+            <TextInput
+              placeholder="مبلغ (تومان)"
+              placeholderTextColor="#A4A4A4"
+              style={styles.expenseContainer}
+              keyboardType="numeric"
+              onChangeText={(text) => setExpenseAmount(text)}
+            />
+            {!data.isValidExpenseAmount ? (
+              <Animatable.Text
+                style={styles.validationText}
+                animation="fadeIn"
+                duration={500}>
+                مبلغ باید به صورت یک عدد حداکثر ده رقمی باشد.
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.addButton} onPress={confirm}>
+                <Text style={styles.addButtonText}>ایجاد هزینه</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.removeButton} onPress={cancel}>
+                <Text style={styles.removeButtonText}>انصراف</Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-      </View>
-      <Animatable.View
-        animation="slideInUp"
-        duration={1000}
-        style={styles.infoContainer}>
-        <SearchBar
-          lightTheme
-          searchIcon={{ size: 20 }}
-          placeholder="افراد مشترک در هزینه را اضافه کنید"
-          containerStyle={styles.searchBar}
-          inputStyle={styles.textInput}
-          leftIconContainerStyle={{ backgroundColor: "white" }}
-          inputContainerStyle={{ backgroundColor: "white" }}
-        />
-        <TextInput
-          placeholder="مبلغ (تومان)"
-          placeholderTextColor="#A4A4A4"
-          style={styles.expenseContainer}
-          keyboardType="numeric"
-          onChangeText={(text) => setExpenseAmount(text)}
-        />
-        {!data.isValidExpenseAmount ? (
-          <Animatable.Text
-            style={styles.validationText}
-            animation="fadeIn"
-            duration={500}>
-            مبلغ باید به صورت یک عدد حداکثر ده رقمی باشد.
-          </Animatable.Text>
-        ) : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.addButton} onPress={confirm}>
-            <Text style={styles.addButtonText}>ایجاد هزینه</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-            <Text style={styles.removeButtonText}>انصراف</Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
-    </View>
+      )}
+    </>
   );
 };
 

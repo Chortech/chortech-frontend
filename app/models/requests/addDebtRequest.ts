@@ -1,6 +1,6 @@
 export interface AddDebtRequest {
-    description: String;
-    category: String;
-    debt: number;
-    creditorId: string;
+  description: string;
+  category: string;
+  debt: number;
+  creditorId: string;
 }

@@ -32,5 +32,12 @@ export default function* watch() {
     takeLatest(types.ADD_EXPENSE_REQUEST, activitySaga.addExpenseAsync),
     takeLatest(types.ADD_DEBT_REQUEST, activitySaga.addDebtAsync),
     takeLatest(types.ADD_PARTICIPANT_REQUEST, activitySaga.addParticipantAsync),
+    takeLatest(types.DELETE_ACTIVITY_REQUEST, activitySaga.deleteActivityAsync),
+    takeLatest(types.DELETE_EXPENSE_REQUEST, activitySaga.deleteExpenseAsync),
+    takeLatest(types.DELETE_DEBT_REQUEST, activitySaga.deleteDebtAsync),
+    takeLatest(
+      types.DELETE_PARTICIPANT_REQUEST,
+      activitySaga.deleteParticipantAsync
+    ),
   ]);
 }

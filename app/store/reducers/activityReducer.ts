@@ -11,6 +11,14 @@ import { AddParticipantRequest } from "../../models/requests/addParticipantReque
 import { AddParticipantResponse } from "../../models/responses/addParticipantResponse";
 import { AddDebtRequest } from "../../models/requests/addDebtRequest";
 import { AddDebtResponse } from "../../models/responses/addDebtResponse";
+import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
+import { DeleteActivityRequest } from "../../models/requests/deleteActivity";
+import { DeleteActivityResponse } from "../../models/responses/deleteActivity";
+import { DeleteExpenseRequest } from "../../models/requests/deleteExpense";
+import { DeleteDebtResponse } from "../../models/responses/deleteDebt";
+import { DeleteExpenseResponse } from "../../models/responses/deleteExpense";
+import { DeleteParticipantRequest } from "../../models/requests/deleteParticipant";
+import { DeleteParticipantResponse } from "../../models/responses/deleteParticipant";
 
 const initialState: IUserState = {
   loading: false,
@@ -27,32 +35,102 @@ const initialState: IUserState = {
 };
 
 export const activityReducer = createReducer(initialState, {
-  [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>) {
+  [types.ADD_ACTIVITY_REQUEST](
+    state: IUserState,
+    action: Action<AddActivityRequest>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_ACTIVITY_RESPONSE](state: IUserState, action: Action<AddActivityResponse>) {
+  [types.ADD_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<AddActivityResponse>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<AddActivityResponse>) {
+  [types.ADD_ACTIVITY_FAIL](
+    state: IUserState,
+    action: Action<AddActivityResponse>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>) {
+  [types.DELETE_ACTIVITY_REQUEST](
+    state: IUserState,
+    action: Action<DeleteActivityRequest>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_EXPENSE_RESPONSE](state: IUserState, action: Action<AddExpenseResponse>) {
+  [types.DELETE_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<DeleteExpenseRequest>
+  ) {
+    return state;
+  },
+  [types.DELETE_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteExpenseResponse>
+  ) {
+    return state;
+  },
+  [types.DELETE_DEBT_REQUEST](
+    state: IUserState,
+    action: Action<DeleteDebtResponse>
+  ) {
+    return state;
+  },
+  [types.DELETE_DEBT_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteDebtResponse>
+  ) {
+    return state;
+  },
+  [types.DELETE_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteActivityResponse>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<AddExpenseResponse>) {
+  [types.DELETE_PARTICIPANT_REQUEST](
+    state: IUserState,
+    action: Action<DeleteParticipantRequest>
+  ) {
+    return state;
+  },
+  [types.DELETE_PARTICIPANT_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteParticipantResponse>
+  ) {
+    return state;
+  },
+  [types.ADD_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<AddExpenseRequest>
+  ) {
+    return {
+      ...state,
+    };
+  },
+  [types.ADD_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<AddExpenseResponse>
+  ) {
+    return {
+      ...state,
+    };
+  },
+  [types.ADD_EXPENSE_FAIL](
+    state: IUserState,
+    action: Action<AddExpenseResponse>
+  ) {
     return {
       ...state,
     };
@@ -62,7 +140,10 @@ export const activityReducer = createReducer(initialState, {
       ...state,
     };
   },
-  [types.ADD_DEBT_RESPONSE](state: IUserState, action: Action<AddDebtResponse>) {
+  [types.ADD_DEBT_RESPONSE](
+    state: IUserState,
+    action: Action<AddDebtResponse>
+  ) {
     return {
       ...state,
     };
@@ -72,17 +153,26 @@ export const activityReducer = createReducer(initialState, {
       ...state,
     };
   },
-  [types.ADD_PARTICIPANT_REQUEST](state: IUserState, action: Action<AddParticipantRequest>) {
+  [types.ADD_PARTICIPANT_REQUEST](
+    state: IUserState,
+    action: Action<AddParticipantRequest>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_PARTICIPANT_RESPONSE](state: IUserState, action: Action<AddParticipantResponse>) {
+  [types.ADD_PARTICIPANT_RESPONSE](
+    state: IUserState,
+    action: Action<AddParticipantResponse>
+  ) {
     return {
       ...state,
     };
   },
-  [types.ADD_PARTICIPANT_FAIL](state: IUserState, action: Action<AddParticipantResponse>) {
+  [types.ADD_PARTICIPANT_FAIL](
+    state: IUserState,
+    action: Action<AddParticipantResponse>
+  ) {
     return {
       ...state,
     };

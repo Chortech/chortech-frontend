@@ -22,7 +22,20 @@ import styles from "./styles";
 
 const ActivityList: React.FC = () => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-  const onActivitySelect = () => NavigationService.navigate("Activity");
+  const onPressActivityItem = (
+    id: string,
+    name: string,
+    type: string,
+    expenseId?: string,
+    debtId?: string
+  ) =>
+    NavigationService.navigate("Activity", {
+      id: id,
+      activityName: name,
+      activityType: type,
+      expenseId: expenseId,
+      debtId: debtId,
+    });
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const [fetchedActivities, setActivities] = useState<Array<Activity>>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -70,7 +83,15 @@ const ActivityList: React.FC = () => {
                 <View>
                   <TouchableOpacity
                     style={styles.activityContainer}
-                    onPress={onActivitySelect}>
+                    onPress={() =>
+                      onPressActivityItem(
+                        item.id,
+                        item.name,
+                        item.type,
+                        item.expenseId,
+                        item.debtId
+                      )
+                    }>
                     <Text style={styles.activityText}>{item.name}</Text>
                     <Image
                       style={styles.activityImage}

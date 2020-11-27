@@ -46,6 +46,10 @@ import { AddParticipantResponse } from "../../../models/responses/addParticipant
 import { AddDebtResponse } from "../../../models/responses/addDebtResponse";
 import { GetUserActivitiesResponse } from "../../../models/responses/getUserActivities";
 import { Activity } from "../../../models/other/Activity";
+import { DeleteParticipantResponse } from "../../../models/responses/deleteParticipant";
+import { DeleteActivityResponse } from "../../../models/responses/deleteActivity";
+import { DeleteExpenseResponse } from "../../../models/responses/deleteExpense";
+import { DeleteDebtResponse } from "../../../models/responses/deleteDebt";
 
 class GraphQLApi
   implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
@@ -131,7 +135,7 @@ class GraphQLApi
     let data: any = await this.client.request(mutations.ADD_EXPENSE, {
       description: description,
       category: category,
-      totalPrice: totalPrice,
+      totalPrice: Number(totalPrice),
     });
     data = data.createExpense;
     let successful: boolean = data != null;
@@ -225,6 +229,66 @@ class GraphQLApi
       userId: id,
       activities: activities,
     };
+  }
+
+  async deleteActivity(id: string): Promise<DeleteActivityResponse> {
+    let data = await this.client.request(mutations.DELETE_ACTIVITY, {
+      activityId: id,
+    });
+    data = data.deleteActivity;
+    let response: DeleteActivityResponse = {
+      success: false,
+      id: "-1",
+    };
+    if (data != null) {
+      response.success = true;
+      response.id = data._id.toString();
+    }
+    return response;
+  }
+  async deleteExpense(id: string): Promise<DeleteExpenseResponse> {
+    let data = await this.client.request(mutations.DELETE_EXPENSE, {
+      expenseId: id,
+    });
+    data = data.deleteExpense;
+    let response: DeleteExpenseResponse = {
+      success: false,
+      id: "-1",
+    };
+    if (data != null) {
+      response.success = true;
+      response.id = data._id.toString();
+    }
+    return response;
+  }
+  async deleteDebt(id: string): Promise<DeleteDebtResponse> {
+    let data = await this.client.request(mutations.DELETE_DEBT, { debtId: id });
+    data = data.deleteDebt;
+    let response: DeleteDebtResponse = {
+      success: false,
+      id: "-1",
+    };
+    if (data != null) {
+      response.success = true;
+      response.id = data._id.toString();
+    }
+    return response;
+  }
+
+  async deleteParticipant(id: string): Promise<DeleteParticipantResponse> {
+    let data = await this.client.request(mutations.DELETE_PARTICIPANT, {
+      participantId: id,
+    });
+    data = data.deleteParticipant;
+    let response: DeleteParticipantResponse = {
+      success: false,
+      id: "-1",
+    };
+    if (data != null) {
+      response.success = true;
+      response.id = data._id.toString();
+    }
+    return response;
   }
 
   async getUser(id: string): Promise<FetchUserResponse> {

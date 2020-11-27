@@ -391,3 +391,39 @@ export const ADD_DEBT = gql`
   }
 `;
 //#endregion group
+
+export const DELETE_ACTIVITY = gql`
+  mutation deleteActivity($activityId: ID!) {
+    deleteActivity(id: $activityId) {
+      _id
+      name
+    }
+  }
+`;
+
+export const DELETE_EXPENSE = gql`
+  mutation deleteExpense($expenseId: ID!) {
+    deleteExpense(id: $expenseId) {
+      _id
+      description
+    }
+  }
+`;
+
+export const DELETE_DEBT = gql`
+  mutation deleteDebt($debtId: ID!) {
+    deleteDebt(id: $debtId) {
+      _id
+      description
+    }
+  }
+`;
+
+export const DELETE_PARTICIPANT = gql`
+  mutation deleteParticipant($participantId: ID!) {
+    deleteParticipant(id: $participantId) {
+      _id
+      share
+    }
+  }
+`;

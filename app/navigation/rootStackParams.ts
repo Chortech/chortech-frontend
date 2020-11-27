@@ -17,5 +17,12 @@ export type RootStackParamList = {
     id: string;
     groupName: string;
     ImageUrl: string;
-  }
+  };
+  Activity: {
+    id: string;
+    activityName: string;
+    activityType: string;
+    expenseId?: string;
+    debtId?: string;
+  };
 };

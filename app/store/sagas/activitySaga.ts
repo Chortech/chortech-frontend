@@ -11,6 +11,14 @@ import { AddParticipantRequest } from "../../models/requests/addParticipantReque
 import { AddParticipantResponse } from "../../models/responses/addParticipantResponse";
 import { AddDebtRequest } from "../../models/requests/addDebtRequest";
 import { AddDebtResponse } from "../../models/responses/addDebtResponse";
+import { DeleteActivityRequest } from "../../models/requests/deleteActivity";
+import { DeleteActivityResponse } from "../../models/responses/deleteActivity";
+import { DeleteExpenseRequest } from "../../models/requests/deleteExpense";
+import { DeleteDebtRequest } from "../../models/requests/deleteDebt";
+import { DeleteDebtResponse } from "../../models/responses/deleteDebt";
+import { DeleteExpenseResponse } from "../../models/responses/deleteExpense";
+import { DeleteParticipantResponse } from "../../models/responses/deleteParticipant";
+import { DeleteParticipantRequest } from "../../models/requests/deleteParticipant";
 
 export function* addActivityAsync(action: Action<AddActivityRequest>) {
   yield put(activityActions.onLoadingEnable());
@@ -108,6 +116,118 @@ export function* addParticipantAsync(action: Action<AddParticipantRequest>) {
     yield put(activityActions.onAddParticipantResponse(response));
   } else {
     yield put(activityActions.onAddParticipantFail());
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* deleteActivityAsync(action: Action<DeleteActivityRequest>) {
+  yield put(activityActions.onLoadingEnable());
+  const { id } = action.payload;
+  let response: DeleteActivityResponse = {
+    id: "-1",
+    success: false,
+  };
+
+  try {
+    response = yield Api.deleteActivity(id);
+    console.log(
+      "delete activity response: " + JSON.stringify(response, undefined, 2)
+    );
+  } catch (error) {
+    console.log(
+      "delete activity response: " + JSON.stringify(error, undefined, 2)
+    );
+  }
+
+  yield put(activityActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(activityActions.onDeleteActivityResponse(response));
+  } else {
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
+  yield put(activityActions.onLoadingEnable());
+  const { id } = action.payload;
+  let response: DeleteExpenseResponse = {
+    id: "-1",
+    success: false,
+  };
+
+  try {
+    response = yield Api.deleteExpense(id);
+    console.log(
+      "delete expense response: " + JSON.stringify(response, undefined, 2)
+    );
+  } catch (error) {
+    console.log(
+      "delete expense response: " + JSON.stringify(error, undefined, 2)
+    );
+  }
+
+  yield put(activityActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(activityActions.onDeleteExpenseResponse(response));
+  } else {
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* deleteDebtAsync(action: Action<DeleteDebtRequest>) {
+  yield put(activityActions.onLoadingEnable());
+  const { id } = action.payload;
+  let response: DeleteDebtResponse = {
+    id: "-1",
+    success: false,
+  };
+
+  try {
+    response = yield Api.deleteDebt(id);
+    console.log(
+      "delete debt response: " + JSON.stringify(response, undefined, 2)
+    );
+  } catch (error) {
+    console.log("delete debt response: " + JSON.stringify(error, undefined, 2));
+  }
+
+  yield put(activityActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(activityActions.onDeleteDebtResponse(response));
+  } else {
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* deleteParticipantAsync(
+  action: Action<DeleteParticipantRequest>
+) {
+  yield put(activityActions.onLoadingEnable());
+  const { id } = action.payload;
+  let response: DeleteParticipantResponse = {
+    id: "-1",
+    success: false,
+  };
+
+  try {
+    response = yield Api.deleteParticipant(id);
+    console.log(
+      "delete participant response: " + JSON.stringify(response, undefined, 2)
+    );
+  } catch (error) {
+    console.log(
+      "delete participant response: " + JSON.stringify(error, undefined, 2)
+    );
+  }
+
+  yield put(activityActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(activityActions.onDeleteParticipantResponse(response));
+  } else {
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
