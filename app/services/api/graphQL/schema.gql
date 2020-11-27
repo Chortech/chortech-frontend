@@ -25,6 +25,7 @@ type Group {
 
 type Activity {
   user: User @relation(name: "user_activities")
+  name: String
   type: String
   group: Group
   expense: Expense

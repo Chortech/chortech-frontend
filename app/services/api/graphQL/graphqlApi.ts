@@ -44,6 +44,8 @@ import { AddExpenseResponse } from "../../../models/responses/addExpenseResponse
 import { Participant } from "../../../models/other/Participant";
 import { AddParticipantResponse } from "../../../models/responses/addParticipantResponse";
 import { AddDebtResponse } from "../../../models/responses/addDebtResponse";
+import { GetUserActivitiesResponse } from "../../../models/responses/getUserActivities";
+import { Activity } from "../../../models/other/Activity";
 
 class GraphQLApi
   implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
@@ -67,7 +69,7 @@ class GraphQLApi
   ): Promise<AddActivityResponse> {
     let data: any;
     if (groupId != null && groupId != undefined) {
-      if (type == "Debt") {
+      if (type == "debt") {
         if (debtId != null && debtId != undefined) {
           data = await this.client.request(mutations.ADD_GROUP_DEBT_ACTIVITY, {
             userId: userId,
@@ -85,7 +87,7 @@ class GraphQLApi
         });
       }
     } else {
-      if (type == "Debt") {
+      if (type == "debt") {
         if (debtId != null && debtId != undefined) {
           data = await this.client.request(
             mutations.ADD_NON_GROUP_DEBT_ACTIVITY,
@@ -192,6 +194,36 @@ class GraphQLApi
     return {
       success: successful,
       id: id,
+    };
+  }
+
+  async getUserActivities(userId: string): Promise<GetUserActivitiesResponse> {
+    let data: any = await this.client.request(queries.COMPLETE_USER_BY_ID, {
+      userId: userId,
+    });
+    data = data.findUserByID;
+    let successful: boolean = data != null;
+    let activities: Array<Activity> = [];
+    let id: string = "-1";
+    if (successful) {
+      id = data._id;
+      data.activities.data.forEach((element: any) => {
+        let activity: Activity = {
+          id: element._id.toString(),
+          name: element.name.toString(),
+          type: element.type.toString(),
+          userId: element.user._id.toString(),
+          expenseId:
+            element.expense != null ? element.expense._id.toString() : "-1",
+          debtId: element.debt != null ? element.debt._id.toString() : "-1",
+        };
+        activities.push(activity);
+      });
+    }
+    return {
+      success: successful,
+      userId: id,
+      activities: activities,
     };
   }
 

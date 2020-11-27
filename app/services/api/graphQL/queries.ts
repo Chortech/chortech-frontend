@@ -39,8 +39,15 @@ export const COMPLETE_USER_BY_ID = gql`
       }
       activities {
         data {
+          _id
+          name
+          user {
+            _id
+            name
+          }
           type
           expense {
+            _id
             description
             category
             totalPrice
@@ -55,6 +62,7 @@ export const COMPLETE_USER_BY_ID = gql`
             }
           }
           debt {
+            _id
             description
             debt
             creditor {
