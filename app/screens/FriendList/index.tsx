@@ -25,14 +25,22 @@ type IState = {
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { friends } = useSelector((state: IState) => state.friendReducer);
+  // const { friends } = useSelector((state: IState) => state.friendReducer);
+  const [fetchedFriends, setFriends] = useState<Array<Friend>>();
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchFriends();
   }, []);
 
   const fetchFriends = (): void => {
-    dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    try {
+      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
+        setFriends(data.friends);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -40,9 +48,7 @@ const FriendList: React.FC = (): JSX.Element => {
     NavigationService.navigate("Friend", { id: id, friendName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
-      fetchFriends();
-    }, 200);
+    fetchFriends();
     setRefreshing(false);
   }, []);
 
@@ -68,7 +74,7 @@ const FriendList: React.FC = (): JSX.Element => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            data={friends}
+            data={fetchedFriends}
             renderItem={renderFriendItem}
           />
         </Animatable.View>

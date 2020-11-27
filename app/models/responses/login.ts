@@ -1,7 +1,6 @@
 export interface LoginResponse {
   id: string;
   success: boolean;
-  name: string;
 }
 
 // export interface LoginResponse {

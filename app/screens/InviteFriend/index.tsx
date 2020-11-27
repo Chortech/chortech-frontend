@@ -10,7 +10,8 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { ILoginState } from "../../models/reducers/login";
-import { useStore } from "react-redux";
+import { useSelector, useStore } from "react-redux";
+import { IUserState } from "../../models/reducers/default";
 
 const InviteFriend: React.FC = (): JSX.Element => {
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
@@ -51,7 +52,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
     let user = fetchedUsers[0];
     try {
       Api.addFriend(user.id, user.name, loggedInUser.id).then((data) =>
-        console.log(JSON.stringify(data, undefined, 2))
+        console.log("call add friend: " + JSON.stringify(data, undefined, 2))
       );
       setFetchedUsers([]);
     } catch (error) {

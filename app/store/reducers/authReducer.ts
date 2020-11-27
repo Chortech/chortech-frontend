@@ -18,7 +18,6 @@ const initialState: ILoginState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
-  name: "",
   email: "",
   phone: "",
   inputType: InputType.None,
@@ -40,7 +39,6 @@ export const authReducer = createReducer(initialState, {
       ...state,
       id: action.payload.id,
       isLoggedIn: true,
-      name: action.payload.name,
     };
   },
   [types.LOGIN_FAILED](state: ILoginState) {

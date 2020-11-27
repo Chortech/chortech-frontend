@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    paddingBottom: 30,
   },
   buttonContainer: {
     flex: 1,

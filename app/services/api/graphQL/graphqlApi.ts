@@ -5,7 +5,13 @@ import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import * as queries from "./queries";
 import * as mutations from "./mutations";
-import { addGroupResponse, deleteGroupResponse, getGroupByIdResponse, GetUserGroupsResponse, updateGroupResponse,  } from "../../../models/responses/group";
+import {
+  addGroupResponse,
+  deleteGroupResponse,
+  getGroupByIdResponse,
+  GetUserGroupsResponse,
+  updateGroupResponse,
+} from "../../../models/responses/group";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identify";
@@ -39,7 +45,8 @@ import { Participant } from "../../../models/other/Participant";
 import { AddParticipantResponse } from "../../../models/responses/addParticipantResponse";
 import { AddDebtResponse } from "../../../models/responses/addDebtResponse";
 
-class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
+class GraphQLApi
+  implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -52,47 +59,53 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
   }
 
   async addActivity(
-    userId: string, 
-    type: string, 
+    userId: string,
+    type: string,
     groupId?: string,
-    expenseId?: string, 
-    debtId?: string,
+    expenseId?: string,
+    debtId?: string
   ): Promise<AddActivityResponse> {
     let data: any;
     if (groupId != null && groupId != undefined) {
       if (type == "Debt") {
-          if (debtId != null && debtId != undefined) {
-            data = await this.client.request(mutations.ADD_GROUP_DEBT_ACTIVITY, {
-              userId: userId,
-              type: type,
-              groupId: groupId,
-              debtId: debtId,
-            });
-          } 
-      } else {
-          data = await this.client.request(mutations.ADD_GROUP_EXPENSE_ACTIVITY, {
+        if (debtId != null && debtId != undefined) {
+          data = await this.client.request(mutations.ADD_GROUP_DEBT_ACTIVITY, {
             userId: userId,
             type: type,
             groupId: groupId,
-            expenseId: expenseId,
+            debtId: debtId,
           });
+        }
+      } else {
+        data = await this.client.request(mutations.ADD_GROUP_EXPENSE_ACTIVITY, {
+          userId: userId,
+          type: type,
+          groupId: groupId,
+          expenseId: expenseId,
+        });
       }
     } else {
-        if (type == "Debt") {
-          if (debtId != null && debtId != undefined) {
-            data = await this.client.request(mutations.ADD_NON_GROUP_DEBT_ACTIVITY, {
+      if (type == "Debt") {
+        if (debtId != null && debtId != undefined) {
+          data = await this.client.request(
+            mutations.ADD_NON_GROUP_DEBT_ACTIVITY,
+            {
               userId: userId,
               type: type,
               debtId: debtId,
-            });
-          }
-        } else {
-          data = await this.client.request(mutations.ADD_NON_GROUP_EXPENSE_ACTIVITY, {
+            }
+          );
+        }
+      } else {
+        data = await this.client.request(
+          mutations.ADD_NON_GROUP_EXPENSE_ACTIVITY,
+          {
             userId: userId,
             type: type,
             expenseId: expenseId,
-          });
-        }
+          }
+        );
+      }
     }
     data = data.createActivity;
     let successful: boolean = data != null;
@@ -105,13 +118,13 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     return {
       success: successful,
       id: id,
-    }
+    };
   }
 
   async addExpense(
     description: string,
     category: string,
-    totalPrice: string,
+    totalPrice: string
   ): Promise<AddExpenseResponse> {
     let data: any = await this.client.request(mutations.ADD_EXPENSE, {
       description: description,
@@ -136,7 +149,7 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     description: string,
     category: string,
     debt: number,
-    creditorId: string,
+    creditorId: string
   ): Promise<AddDebtResponse> {
     let data: any = await this.client.request(mutations.ADD_DEBT, {
       description: description,
@@ -161,7 +174,7 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
   async addParticipant(
     expenseId: string,
     userId: string,
-    share: number,
+    share: number
   ): Promise<AddParticipantResponse> {
     let data: any = await this.client.request(mutations.ADD_PARTICIPANT, {
       expenseId: expenseId,
@@ -316,30 +329,60 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     friendName: string,
     userId: string
   ): Promise<AddFriendResponse> {
-    let data: any = await this.client.request(mutations.ADD_FRIEND, {
-      friendId: friendId,
-      friendName: friendName,
+    let friends = await this.client.request(queries.USER_FRIENDS, {
       userId: userId,
     });
-    data = data.createFriend;
-    let successful: boolean = data != null;
-    let fetchedFriend: Friend = {
-      id: "-1",
-      friendId: "-1",
-      friendName: "",
+    friends = friends.findUserByID;
+    let response: AddFriendResponse = {
+      success: false,
+      friend: {
+        id: "-1",
+        friendName: "",
+        friendId: "-1",
+      },
     };
-    if (successful) {
-      fetchedFriend = {
-        id: data._id.toString(),
-        friendId: data.friendId,
-        friendName: data.friendName,
-      };
+
+    if (friends != null) {
+      let friendExists: boolean = false;
+      friends.data.forEach((element: any) => {
+        if (element.friendId.toString() == friendId) {
+          friendExists = true;
+        }
+      });
+
+      if (!friendExists) {
+        let data: any = await this.client.request(mutations.ADD_FRIEND, {
+          friendId: friendId,
+          friendName: friendName,
+          userId: userId,
+        });
+        data = data.createFriend;
+
+        console.log(
+          "add friend response data: " + JSON.stringify(data, undefined, 2)
+        );
+        let successful: boolean = data != null;
+        let fetchedFriend: Friend = {
+          id: "-1",
+          friendId: "-1",
+          friendName: "",
+        };
+        if (successful) {
+          fetchedFriend = {
+            id: data._id.toString(),
+            friendId: data.friendId,
+            friendName: data.friendName,
+          };
+        }
+      } else {
+        ToastAndroid.show(
+          `${friendName} به دوستان شما اضافه شده‌است.`,
+          ToastAndroid.LONG
+        );
+      }
     }
 
-    return {
-      success: successful,
-      friend: fetchedFriend,
-    };
+    return response;
   }
 
   async deleteFriend(id: string): Promise<DeleteFriendResponse> {
@@ -532,11 +575,20 @@ class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi 
     if (successful) {
       let group: Group;
       data.groups.data.forEach((element: any) => {
+        let groupMembers: Array<string> = [];
+        element.members.data.forEach((member: any) => {
+          groupMembers.push(member._id.toString());
+        });
+        let groupActivities: Array<string> = [];
+        element.activities.data.forEach((activity: any) => {
+          groupActivities.push(activity._id.toString());
+        });
         group = {
           id: element._id.toString(),
           name: element.name,
-          creatorId: element.creatorId,
-          membersIds: element.membersIds,
+          creatorId: element.creator._id,
+          membersIds: groupMembers,
+          activitiesIds: groupActivities,
         };
         groups.push(group);
       });

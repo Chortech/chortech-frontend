@@ -6,7 +6,7 @@ import * as resetPasswordActions from "./resetPasswordActions";
 import * as activityActions from "./activityActions";
 import * as friendActions from "./friendActions";
 import * as userActions from "./userActions";
-import * as groupActions from "./groupActions"
+import * as groupActions from "./groupActions";
 
 export const ActionCreators = Object.assign(
   {},
@@ -17,5 +17,5 @@ export const ActionCreators = Object.assign(
   activityActions,
   friendActions,
   userActions,
-  groupActions,
+  groupActions
 );

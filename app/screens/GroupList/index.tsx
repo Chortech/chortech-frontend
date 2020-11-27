@@ -9,16 +9,19 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
-} from 'react-native';
+  Group,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
 
 import GroupItem from "../../components/GroupItem/index";
-import NavigationService from '../../navigation/navigationService';
+import NavigationService from "../../navigation/navigationService";
 import { ILoginState } from "../../models/reducers/login";
 import * as groupActions from "../../store/actions/groupActions";
-import * as userActions from "../../store/actions/userActions"
+import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
-import styles from "./styles"
+import styles from "./styles";
+import { Api } from "../../services/api/graphQL/graphqlApi";
+import { GetUserGroupsResponse } from "../../models/responses/group";
 
 type IState = {
   groupReducer: IUserState;
@@ -27,28 +30,35 @@ type IState = {
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-  const User: ILoginState = useStore().getState()["userReducer"];
-  dispatch(userActions.onFetchUserRequest(loggedInUser.id));
-  const { groups } = useSelector((state: IState) => state.groupReducer);
+  const User: IUserState = useStore().getState()["userReducer"];
+  // const { groups } = useSelector((state: IState) => state.groupReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const onProfile = () => NavigationService.navigate('Profile');
-  const onAddGroup = () => NavigationService.navigate('AddGroup');
+  const [fetchedGroups, setGroups] = useState<Array<Group>>([]);
+  const onProfile = () => NavigationService.navigate("Profile");
+  const onAddGroup = () => NavigationService.navigate("AddGroup");
+  const onGroup = (id: string, name: string) =>
+    NavigationService.navigate("Group", { id: id, groupName: name });
+
   const userName = User.name;
   console.log(userName);
   const fetchGroups = (): void => {
-    dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
+    dispatch(userActions.onFetchUserRequest(loggedInUser.id));
+    try {
+      Api.getUserGroups(loggedInUser.id).then((data: GetUserGroupsResponse) => {
+        setGroups(data.groups);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
   };
   useEffect(() => {
-    fetchGroups
+    fetchGroups;
   }, []);
 
-  const onGroup = (id: string, name: string) =>
-  NavigationService.navigate("Group", { id: id, groupName: name });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
-      fetchGroups();
-    }, 200);
+    fetchGroups();
     setRefreshing(false);
   }, []);
 
@@ -63,32 +73,33 @@ const GroupList: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
-          <TouchableOpacity onPress={onProfile}>
-            <Image style={styles.avatar} source={require("../../assets/images/friend-image.jpg")}/>
-          </TouchableOpacity>
-          <Text style={styles.name}>{userName}</Text>
+        <TouchableOpacity onPress={onProfile}>
+          <Image
+            style={styles.avatar}
+            source={require("../../assets/images/friend-image.jpg")}
+          />
+        </TouchableOpacity>
+        <Text style={styles.name}>{userName}</Text>
       </View>
-
       <Animatable.View
         animation="slideInUp"
         duration={600}
-        style={styles.infoContainer}
-        >
-        <FlatList 
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-          data={groups}
-          renderItem={( renderGroupItem )}
+        style={styles.infoContainer}>
+        <FlatList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          data={fetchedGroups}
+          renderItem={renderGroupItem}
+          showsVerticalScrollIndicator={false}
         />
       </Animatable.View>
       <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={onAddGroup}>
-              <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
-              <Text style={styles.plus}>+</Text>
-            </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={onAddGroup}>
+          <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
+        </TouchableOpacity>
       </View>
-  </View>
+    </View>
   );
 };
 

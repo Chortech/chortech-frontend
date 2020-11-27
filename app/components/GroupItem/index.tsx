@@ -17,11 +17,9 @@ type Props = {
 
 const GroupItem: React.FC<Props> = (props: Props): JSX.Element => {
   return (
-    <View>
-      <TouchableOpacity
-        style={styles.groupContainer}
-        onPress={props.onPressGroupItem}>
-        <Text style={styles.groupText}>{props.Name}</Text>
+    <View style={styles.groupContainer}>
+      <Text style={styles.groupText}>{props.Name}</Text>
+      <TouchableOpacity onPress={props.onPressGroupItem}>
         <Image style={styles.groupImage} source={props.ImageUrl} />
       </TouchableOpacity>
     </View>

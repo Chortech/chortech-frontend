@@ -38,7 +38,6 @@ export function loginFailed(): Action<LoginResponse> {
     payload: {
       id: "-1",
       success: false,
-      name: "",
     },
   };
 }

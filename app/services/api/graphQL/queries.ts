@@ -21,6 +21,7 @@ export const COMPLETE_USER_BY_ID = gql`
       name
       password
       email
+      phone
       credit
       balance
       friends {
@@ -160,6 +161,24 @@ export const GET_USER_GROUPS = gql`
           creator {
             _id
             name
+          }
+          activities {
+            data {
+              _id
+              type
+              group {
+                _id
+                name
+              }
+              expense {
+                _id
+                description
+              }
+              debt {
+                _id
+                description
+              }
+            }
           }
           members {
             data {
