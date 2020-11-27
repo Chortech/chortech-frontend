@@ -12,15 +12,14 @@ import { styles } from "./styles";
 const AddGroup: React.FC = (): JSX.Element => {
     const loggedInUser: ILoginState = useStore().getState()["authReducer"];
     const confirm = () => {
-        console.log(data.groupName);
-        Api.addGroup(data.groupName, loggedInUser.id, [loggedInUser.id])
         if (data.groupName == "") {
             ToastAndroid.show(
                 "لطفا نام گروه را وارد کنید.",
                 ToastAndroid.SHORT
-            );
-        } else {
-            NavigationService.goBack();
+                );
+            } else {
+                NavigationService.goBack();
+                Api.addGroup(data.groupName, loggedInUser.id, [loggedInUser.id])
         }
     };    
 
