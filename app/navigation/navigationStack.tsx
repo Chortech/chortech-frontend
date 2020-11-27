@@ -96,52 +96,28 @@ const AuthNavigator = () => {
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
     activeColor="#f0edf6"
-    inactiveColor="#3e2465"
-    barStyle={{ backgroundColor: '#1AD927' }}
+    inactiveColor="black"
+    barStyle={{ backgroundColor: '#22855a' }}
     initialRouteName="گروه‌ها"
     screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
-        if (route.name === "گروه‌ها") {
-          iconName = focused;
-        } else if (route.name === "دوستان") {
-          iconName = focused;
-        } else if (route.name === "فعالیت‌ها") {
-          iconName = focused;
-        }
-
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
+      
     })}
-    tabBarOptions={{
-      activeTintColor: "#1AD927",
-      inactiveTintColor: "#A4A4A4",
-      labelStyle: {
-				fontSize: 18,
-			},
-      tabStyle: {
-        borderBottomColor: "#1AD927",
-        borderBottomWidth: 2,
-      },
-    }}>
-    <LoggedInTab.Screen  name="دوستان" component={FriendNavigator}        
+    >
+    <LoggedInTab.Screen  name="FriendList" component={FriendNavigator}        
      options={{
           tabBarLabel: 'دوستان',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="nature-people" color={color} size={26} />
           ),
         }}/>
-    <LoggedInTab.Screen name="گروه‌ها" component={GroupNavigator} 
+    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} 
     options={{
       tabBarLabel: 'گروه‌ها',
       tabBarIcon: ({ color }) => (
         <MaterialCommunityIcons name="home-group" color={color} size={26} />
       ),
     }}/>
-    <LoggedInTab.Screen name="فعالیت‌ها" component={ActivityNavigator} 
+    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} 
     options={{
       tabBarLabel: 'فعالیت‌ها',
       tabBarIcon: ({ color }) => (
