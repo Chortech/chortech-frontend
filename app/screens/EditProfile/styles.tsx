@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   infoContainer: {
-    flex: 6,
+    flex: 7,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     borderTopRightRadius: 20,

@@ -3,7 +3,7 @@ import { StyleSheet, Platform } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: "white",
   },
   header: {
     flex: 2,
@@ -18,10 +18,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Alex",
   },
   infoContainer: {
-    flex: 6,
     backgroundColor: "#fff",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
   },
   inputContainer: {
     flexDirection: "row",
@@ -34,11 +31,10 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: "white",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    borderTopWidth: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EBE8E8",
+    margin: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#1AD927",
   },
   textInput: {
     flex: 10,
@@ -47,5 +43,34 @@ export const styles = StyleSheet.create({
     textAlign: "right",
     backgroundColor: "white",
     justifyContent: "center",
+  },
+  searchInput: {
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+    textAlign: "right",
+    color: "#053751",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flex: 5,
+    justifyContent: "flex-end",
+    margin: 20,
+  },
+  button: {
+    elevation: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#1AD927",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#1AD927",
+    alignSelf: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    writingDirection: "auto",
   },
 });

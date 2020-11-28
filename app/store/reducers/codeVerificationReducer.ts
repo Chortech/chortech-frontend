@@ -1,35 +1,48 @@
 import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { Action } from "../../models/actions/action";
-import { ILoginState } from "../../models/reducers/login";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
-import { IdentifyAccountRequest } from "../../models/requests/identify";
-import { IdentifyAccountResponse } from "../../models/responses/identify";
-import { GenerateCodeRequest } from "../../models/requests/generateCode";
+import { GenerateCodeRequest } from "../../models/requests/codeVerification";
 import { InputType } from "../../utils/inputTypes";
+import { IUserState } from "../../models/reducers/default";
 
-const initialState: ILoginState = {
+const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
   name: "",
+  password: "",
   email: "",
   phone: "",
-  password: "",
-  inputType: InputType.None,
+  authInputType: InputType.None,
+  credit: 0,
+  balance: 0,
+  friends: [],
+  groups: [],
+  activities: [],
 };
 
 export const codeVerificationReducer = createReducer(initialState, {
   [types.GENERATE_CODE_REQUEST](
-    state: ILoginState,
+    state: IUserState,
     action: Action<GenerateCodeRequest>
   ) {
     return {
       ...state,
       email: action.payload.email,
       phone: action.payload.phone,
-      inputType: action.payload.inputType,
+      authInputType: action.payload.inputType,
+    };
+  },
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
     };
   },
 });

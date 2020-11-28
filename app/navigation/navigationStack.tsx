@@ -1,44 +1,39 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { useSelector } from "react-redux";
-
 import { navigationRef } from "./navigationService";
-
 import Login from "../screens/Login";
 import ResetPassword from "../screens/ResetPassword";
 import CodeVerification from "../screens/CodeVerification";
 import SignUp from "../screens/SignUp";
 import AccountIdentification from "../screens/AccountIdentification";
-
 import FriendList from "../screens/FriendList";
 import Friend from "../screens/Friend";
 import InviteFriend from "../screens/InviteFriend";
-
 import GroupList from "../screens/GroupList";
 import Group from "../screens/Group";
-
+import AddGroup from "../screens/AddGroup";
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
-
+import AddExpense from "../screens/AddExpense";
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
-
 import { StatusBar } from "react-native";
-import { ILoginState } from "../models/reducers/login";
+import { IUserState } from "../models/reducers/default";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const LoggedInTab = createMaterialTopTabNavigator();
+const LoggedInTab = createMaterialBottomTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
+const LoadingStack = createStackNavigator();
 
 interface IState {
-  authReducer: ILoginState;
+  authReducer: IUserState;
 }
 
 const AuthNavigator = () => {
@@ -90,31 +85,45 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    initialRouteName="GroupList"
-    screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
-        if (route.name === "GROUPLIST") {
-          iconName = focused;
-        } else if (route.name === "FRIENDS") {
-          iconName = focused;
-        } else if (route.name === "ACTIVITY") {
-          iconName = focused;
-        }
-
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-    })}
-    tabBarOptions={{
-      activeTintColor: "darkgreen",
-      inactiveTintColor: "gray",
-    }}>
-    <LoggedInTab.Screen name="FriendList" component={FriendNavigator} />
-    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} />
-    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} />
+    activeColor="#f0edf6"
+    inactiveColor="black"
+    barStyle={{ backgroundColor: "#22855a" }}
+    initialRouteName="گروه‌ها"
+    screenOptions={({ route }) => ({})}>
+    <LoggedInTab.Screen
+      name="FriendList"
+      component={FriendNavigator}
+      options={{
+        tabBarLabel: "دوستان",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons
+            name="nature-people"
+            color={color}
+            size={26}
+          />
+        ),
+      }}
+    />
+    <LoggedInTab.Screen
+      name="GroupList"
+      component={GroupNavigator}
+      options={{
+        tabBarLabel: "گروه‌ها",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="home-group" color={color} size={26} />
+        ),
+      }}
+    />
+    <LoggedInTab.Screen
+      name="ActivityList"
+      component={ActivityNavigator}
+      options={{
+        tabBarLabel: "فعالیت‌ها",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="cart" color={color} size={26} />
+        ),
+      }}
+    />
   </LoggedInTab.Navigator>
 );
 
@@ -124,6 +133,7 @@ const GroupNavigator = () => (
     initialRouteName="GroupList">
     <LoggedInTab.Screen name="GroupList" component={GroupList} />
     <LoggedInTab.Screen name="Group" component={Group} />
+    <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
   </GroupStack.Navigator>
 );
 
@@ -133,6 +143,7 @@ const ActivityNavigator = () => (
     initialRouteName="ActivityList">
     <LoggedInTab.Screen name="ActivityList" component={ActivityList} />
     <LoggedInTab.Screen name="Activity" component={Activity} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </ActivityStack.Navigator>
 );
 
@@ -143,35 +154,20 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="FriendList" component={FriendList} />
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
-    <Stack.Screen name="Profile" component={Profile} />
-    <Stack.Screen name="EditProfile" component={EditProfile} />
+    <LoggedInTab.Screen name="Profile" component={Profile} />
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
   </FriendStack.Navigator>
 );
 
-// const ProfileNavigator = () => (
-//   <ProfileStack.Navigator
-//     screenOptions={{ headerShown: false }}
-//     initialRouteName="Profile">
-//     <Stack.Screen name="Profile" component={Profile} />
-//     <Stack.Screen name="EditProfile" component={EditProfile} />
-//   </ProfileStack.Navigator>
-// );
-
 const App: React.FC = () => {
-  const isLoggedIn = useSelector(
-    (state: IState) => state.authReducer.isLoggedIn
-  );
-
-  // const isSignUpLoggedIn = useSelector(
-  //   (state: IState) => state.signUpReducer.isLoggedIn
-  // );
+  const { isLoggedIn } = useSelector((state: IState) => state.authReducer);
 
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
 
       <Stack.Navigator>
-        {(isLoggedIn) ? (
+        {isLoggedIn ? (
           <Stack.Screen
             name="GroupList"
             component={LoggedInNavigator}

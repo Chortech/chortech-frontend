@@ -1,54 +1,92 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Text,
   View,
   Image,
-  ScrollView,
   TouchableOpacity,
-  FlatList
-} from 'react-native';
+  FlatList,
+  RefreshControl,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { Activity } from "../../models/other/Activity";
+import { IUserState } from "../../models/reducers/default";
+import { GetUserActivitiesResponse } from "../../models/responses/user";
+import NavigationService from "../../navigation/navigationService";
+import * as userActions from "../../store/actions/userActions";
+import styles from "./styles";
 
-import NavigationService from '../../navigation/navigationService';
-import styles from "./styles"
+type IState = {
+  userReducer: IUserState;
+};
 
 const ActivityList: React.FC = () => {
-  const onActivitySelect = () => NavigationService.navigate('Activity');
-  const expenses = [
-    {id:1, image: "../../assets/images/friend-image.jpg", name:"کالای ۱"},
-    {id:2, image: "../../assets/images/friend-image.jpg", name:"کالای ۲"},
-    {id:3, image: "../../assets/images/friend-image.jpg", name:"کالای ۳"},
-    {id:4, image: "../../assets/images/friend-image.jpg", name:"کالای ۴"},
-    {id:5, image: "../../assets/images/friend-image.jpg", name:"کالای ۵"},
-    {id:6, image: "../../assets/images/friend-image.jpg", name:"کالای ۶"},
-    {id:7, image: "../../assets/images/friend-image.jpg", name:"کالای ۷"},
-    {id:8, image: "../../assets/images/friend-image.jpg", name:"کالای ۸"},
-    {id:10, image: "../../assets/images/friend-image.jpg", name:"کالای ۹"},
-    {id:11, image: "../../assets/images/friend-image.jpg", name:"کالای ۸"},
-    {id:12, image: "../../assets/images/friend-image.jpg", name:"کالای ۸"},
-    {id:13, image: "../../assets/images/friend-image.jpg", name:"کالای ۱۰"},
-  ];
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { activities } = useSelector((state: IState) => state.userReducer);
+  const dispatch = useDispatch();
+  const onPressActivityItem = (
+    id: string,
+    name: string,
+    type: string,
+    expenseId?: string,
+    debtId?: string
+  ) =>
+    NavigationService.navigate("Activity", {
+      id: id,
+      activityName: name,
+      activityType: type,
+      expenseId: expenseId,
+      debtId: debtId,
+    });
+  const onAddExpense = () => NavigationService.navigate("AddExpense");
+  const [refreshing, setRefreshing] = useState(false);
+  const fetchActivities = (): void => {
+    dispatch(userActions.onGetUserActivitiesRequest(loggedInUser.id));
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [dispatch]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchActivities();
+    setRefreshing(false);
+  }, [dispatch]);
 
   return (
-    <View style={styles.container}>
-      <Animatable.View
-        animation="slideInUp"
-        duration={600}
-        style={styles.infoContainer}
-      >
-        <ScrollView showsVerticalScrollIndicator={false}>
+    <>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.textHeader}>فعالیت‌ها</Text>
+        </View>
+        <Animatable.View
+          animation="slideInUp"
+          duration={600}
+          style={styles.infoContainer}>
           <FlatList
-            data={expenses}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            showsVerticalScrollIndicator={false}
+            data={activities}
             renderItem={({ item }) => {
               return (
                 <View>
                   <TouchableOpacity
-                    style={styles.friendContainer}
-                    onPress={onActivitySelect}
-                  >
-                    <Text style={styles.friendText}>{item.name}</Text>
+                    style={styles.activityContainer}
+                    onPress={() =>
+                      onPressActivityItem(
+                        item.id,
+                        item.name,
+                        item.type,
+                        item.expenseId,
+                        item.debtId
+                      )
+                    }>
+                    <Text style={styles.activityText}>{item.name}</Text>
                     <Image
-                      style={styles.friendImage}
+                      style={styles.activityImage}
                       source={require("../../assets/images/friend-image.jpg")}
                     />
                   </TouchableOpacity>
@@ -56,11 +94,15 @@ const ActivityList: React.FC = () => {
               );
             }}
           />
-        </ScrollView>
-      </Animatable.View>
-    </View>
+        </Animatable.View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={onAddExpense}>
+            <Text style={styles.buttonText}>ثبت فعالیت جدید</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
   );
 };
-
 
 export default ActivityList;

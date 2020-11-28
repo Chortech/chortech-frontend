@@ -1,9 +1,9 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-import { GenerateCodeRequest } from "../../models/requests/generateCode";
+import { GenerateCodeRequest } from "../../models/requests/codeVerification";
 
-export function requestGenerateCode(
+export function onGenerateCodeRequest(
   email: string,
   phone: string,
   inputType: InputType
@@ -15,5 +15,19 @@ export function requestGenerateCode(
       phone: phone,
       inputType: inputType,
     },
+  };
+}
+
+export function onLoadingEnable(): Action<any> {
+  return {
+    type: types.LOADING_ENABLED,
+    payload: {},
+  };
+}
+
+export function onLoadingDisable(): Action<any> {
+  return {
+    type: types.LOADING_DISABLED,
+    payload: {},
   };
 }

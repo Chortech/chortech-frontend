@@ -1,13 +1,66 @@
 type User {
-	name: String
-	password: String!
-	email: String @unique
-	phone: String @unique
+  name: String
+  password: String
+  email: String @unique
+  phone: String @unique
+  credit: Int
+  balance: Int
+  friends: [Friend] @relation
+  groups: [Group] @relation
+  activities: [Activity] @relation(name: "user_activities")
+}
+
+type Friend {
+  user: User
+  friendId: ID
+  friendName: String
+}
+
+type Group {
+  name: String
+  creator: User
+  activities: [Activity] @relation
+  members: [User] @relation
+}
+
+type Activity {
+  user: User @relation(name: "user_activities")
+  name: String
+  type: String
+  group: Group
+  expense: Expense
+  debt: Debt
+}
+
+type Expense {
+  description: String
+  category: String
+  totalPrice: Int
+  participants: [Participant] @relation(name: "expense_participants")
+}
+
+type Participant {
+  expense: Expense @relation(name: "expense_participants")
+  user: User
+  share: Int
+}
+
+type Debt {
+  description: String
+  category: String
+  debt: Int
+  creditor: User
 }
 
 type Query {
-	Users: [User]!
-	UsersByName(name: String!): [User]!
-	UserByEmail(email: String!): User
-	UserByPhone(phone: String!): User
+  Users: [User]
+  UsersByName(name: String!): [User]
+  UserByEmail(email: String!): User
+  UserByPhone(phone: String!): User
+  Groups: [Group]
+  Friends: [Friend]
+  Expenses: [Expense]
+  Debts: [Debt]
+  Participants: [Participant]
+  Activities: [Activity]
 }

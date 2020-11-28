@@ -6,16 +6,16 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1AD927",
   },
   header: {
-    flex: 2,
+    flex: 3,
     alignItems: "center",
-    paddingTop: 10,
+    padding: 5,
   },
   friendImage: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
     marginTop: 10,
     borderRadius: 50,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: "#fff",
   },
   userNameText: {
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   infoContainer: {
-    flex: 6,
+    flex: 8,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     borderTopRightRadius: 30,
@@ -72,6 +72,7 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
   },
   removeButtonText: {
     fontSize: 16,

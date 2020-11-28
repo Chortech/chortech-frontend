@@ -4,84 +4,102 @@
 import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
-
 import { Action } from "../../models/actions/action";
-import { ILoginState } from "../../models/reducers/login";
-
 import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
-
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
+import { IUserState } from "../../models/reducers/default";
 
-const initialState: ILoginState = {
+const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
   name: "",
+  password: "",
   email: "",
   phone: "",
-  inputType: InputType.None,
-  password: "",
+  authInputType: InputType.None,
+  credit: 0,
+  balance: 0,
+  friends: [],
+  groups: [],
+  activities: [],
 };
 
 export const authReducer = createReducer(initialState, {
-  [types.LOGIN_REQUEST](state: ILoginState, action: Action<LoginRequest>) {
+  [types.LOGIN_REQUEST](state: IUserState, action: Action<LoginRequest>) {
     return {
       ...state,
       email: action.payload.email,
       phone: action.payload.phone,
       password: action.payload.password,
-      inputType: action.payload.inputType,
+      authInputType: action.payload.inputType,
     };
   },
-  [types.LOGIN_RESPONSE](state: ILoginState, action: Action<LoginResponse>) {
+  [types.LOGIN_RESPONSE](state: IUserState, action: Action<LoginResponse>) {
     return {
       ...state,
-      id: action.payload.id,
       isLoggedIn: true,
+      id: action.payload.user?.id,
+      name: action.payload.user?.name,
+      password: action.payload.user?.password,
+      email: action.payload.user?.email,
+      phone: action.payload.user?.phone,
+      credit: action.payload.user?.credit,
+      balance: action.payload.user?.balance,
     };
   },
-  [types.LOGIN_FAILED](state: ILoginState) {
+  [types.LOGIN_FAIL](state: IUserState) {
     return {
       ...state,
       isLoggedIn: false,
       id: "-1",
       email: "",
       phone: "",
-      inputType: InputType.None,
+      authInputType: InputType.None,
       password: "",
     };
   },
-  [types.LOG_OUT](state: ILoginState) {
+  [types.LOG_OUT](state: IUserState) {
     return {
+      ...state,
       isLoggedIn: false,
       loading: false,
       id: "-1",
       email: "",
       phone: "",
-      inputType: InputType.None,
+      authInputType: InputType.None,
       password: "",
     };
   },
-  [types.SIGNUP_REQUEST](state: ILoginState, action: Action<SignUpRequest>) {
+  [types.SIGNUP_REQUEST](state: IUserState, action: Action<SignUpRequest>) {
     return {
       ...state,
       name: action.payload.name,
       email: action.payload.email,
       phone: action.payload.phone,
       password: action.payload.password,
-      inputType: action.payload.inputType,
+      authInputType: action.payload.inputType,
     };
   },
-  [types.SIGNUP_RESPONSE](state: ILoginState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_RESPONSE](state: IUserState, action: Action<SignUpResponse>) {
     return {
       ...state,
-      id: action.payload.id,
       isLoggedIn: true,
+      id: action.payload.user?.id,
+      name: action.payload.user?.name,
+      password: action.payload.user?.password,
+      email: action.payload.user?.email,
+      phone: action.payload.user?.phone,
+      credit: action.payload.user?.credit,
+      balance: action.payload.user?.balance,
+      friends: action.payload.user?.friends,
+      groups: action.payload.user?.groups,
+      activities: action.payload.user?.activities,
     };
   },
-  [types.SIGNUP_FAIL](state: ILoginState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_FAIL](state: IUserState, action: Action<SignUpResponse>) {
     return {
       ...state,
       id: "-1",
@@ -89,41 +107,19 @@ export const authReducer = createReducer(initialState, {
       email: "",
       phone: "",
       password: "",
-      inputType: InputType.None,
+      authInputType: InputType.None,
+    };
+  },
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
+    };
+  },
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: false,
     };
   },
 });
-
-// const signUpReducer = createReducer(initialState, {
-//     [types.SIGNUP_REQUEST](state: ILoginState, action: Action<SignUpRequest>) {
-//       return {
-//         ...state,
-//         name: action.payload.name,
-//         email: action.payload.email,
-//         phone: action.payload.phone,
-//         password: action.payload.password,
-//         inputType: action.payload.inputType,
-//       };
-//     },
-//     [types.SIGNUP_RESPONSE](state: ILoginState, action: Action<SignUpResponse>) {
-//       return {
-//         ...state,
-//         id: action.payload.id,
-//         isLoggedIn: true,
-//       };
-//     },
-//     [types.SIGNUP_FAIL](state: ILoginState, action: Action<SignUpResponse>) {
-//       return {
-//         ...state,
-//         id: "-1",
-//         name: "",
-//         email: "",
-//         phone: "",
-//         password: "",
-//         inputType: InputType.None,
-//       };
-//     },
-//   });
-  
-// export default {loginReducer, signUpReducer}
-// export default authReducer;

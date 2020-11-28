@@ -1,7 +1,7 @@
 import { LoginResponse } from "../responses/login";
 import { SignUpResponse } from "../responses/signUp";
 import { InputType } from "../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../responses/identify";
+import { IdentifyAccountResponse } from "../responses/identifyAccount";
 import { ResetPasswordResponse } from "../responses/resetPassword";
 
 export interface AuthApi {
@@ -16,7 +16,7 @@ export interface AuthApi {
     email: string,
     phone: string,
     password: string,
-    inputType: InputType,
+    inputType: InputType
   ): Promise<SignUpResponse>;
   identifyAccount(
     email: string,

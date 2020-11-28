@@ -1,21 +1,19 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
 import { InputType } from "../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../../models/responses/identify";
-import { IdentifyAccountRequest } from "../../models/requests/identify";
+import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
+import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
 
-export function requestIdentifyAccount(
+export function onIdentifyAccountRequest(
   email: string,
   phone: string,
   inputType: InputType
 ): Action<IdentifyAccountRequest> {
   return {
-    type: types.IDENTIFY_REQUEST,
+    type: types.IDENTIFY_ACCOUNT_REQUEST,
     payload: {
-      email,
-      phone,
+      email: email,
+      phone: phone,
       inputType: inputType,
     },
   };
@@ -25,17 +23,31 @@ export function onIdentifyAccountResponse(
   response: IdentifyAccountResponse
 ): Action<IdentifyAccountResponse> {
   return {
-    type: types.IDENTIFY_RESPONSE,
+    type: types.IDENTIFY_ACCOUNT_RESPONSE,
     payload: response,
   };
 }
 
 export function onIdentifyAccountFail(): Action<IdentifyAccountResponse> {
   return {
-    type: types.IDENTIFY_FAIL,
+    type: types.IDENTIFY_ACCOUNT_FAIL,
     payload: {
       id: "-1",
       success: false,
     },
+  };
+}
+
+export function onLoadingEnable(): Action<any> {
+  return {
+    type: types.LOADING_ENABLED,
+    payload: {},
+  };
+}
+
+export function onLoadingDisable(): Action<any> {
+  return {
+    type: types.LOADING_DISABLED,
+    payload: {},
   };
 }

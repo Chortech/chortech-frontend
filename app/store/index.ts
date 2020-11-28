@@ -6,15 +6,17 @@ import { createLogger } from "redux-logger";
 
 import sagas from "./sagas";
 import rootReducers from "./reducers";
+import { LOG_OUT } from "./actions/types";
 
 const config = {
   key: "root",
   storage: AsyncStorage,
   // blacklist and whitelist should be in config
   debug: true, //to get logging
+  whitelist: ["authReducer"],
 };
 
-// const middleware = [];
+// const middleware: object[] = [];
 const sagaMiddleware = createSagaMiddleware();
 
 // middleware.push(sagaMiddleware);
@@ -24,13 +26,12 @@ const sagaMiddleware = createSagaMiddleware();
 // }
 
 const reducers = persistCombineReducers(config, rootReducers);
+// const enhancers = [applyMiddleware(sagaMiddleware, createLogger())];
 const enhancers = [applyMiddleware(sagaMiddleware)];
 // const initialState = {};
 const persistConfig: any = { enhancers };
 const store = createStore(reducers, undefined, compose(...enhancers));
-const persistor = persistStore(store, persistConfig, () => {
-  console.log("state: ", store.getState());
-});
+const persistor = persistStore(store, persistConfig, () => {});
 const configureStore = () => {
   return { persistor, store };
 };
