@@ -5,7 +5,6 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-
 import Navigator from "./app/navigation/navigationStack";
 import configureStore from "./app/store";
 
