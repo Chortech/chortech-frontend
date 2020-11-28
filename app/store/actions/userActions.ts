@@ -1,28 +1,79 @@
 import { Action } from "../../models/actions/action";
 import { User } from "../../models/other/User";
-import { FetchUserRequest } from "../../models/requests/getUser";
-import { UpdateUserRequest } from "../../models/requests/updateUser";
-import { FetchUserResponse } from "../../models/responses/getUser";
-import { UpdateUserResponse } from "../../models/responses/updateUser";
+import {
+  GetUserActivitiesRequest,
+  GetUserRequest,
+  UpdateUserRequest,
+} from "../../models/requests/user";
+import {
+  GetUserActivitiesResponse,
+  GetUserResponse,
+  UpdateUserResponse,
+} from "../../models/responses/user";
 import * as types from "./types";
 
-export function onFetchUserRequest(id: string): Action<FetchUserRequest> {
+export function onGetUserRequest(id: string): Action<GetUserRequest> {
   return {
-    type: types.FETCH_USER_REQUEST,
+    type: types.GET_USER_REQUEST,
     payload: {
       id: id,
     },
   };
 }
 
-export function onFetchUserResponse(
-  response: FetchUserResponse
-): Action<FetchUserResponse> {
+export function onGetUserResponse(
+  response: GetUserResponse
+): Action<GetUserResponse> {
   return {
-    type: types.FETCH_USER_RESPONSE,
+    type: types.GET_USER_RESPONSE,
     payload: {
       success: response.success,
       user: response.user,
+    },
+  };
+}
+
+export function onGetUserFail(): Action<GetUserResponse> {
+  return {
+    type: types.GET_USER_FAIL,
+    payload: {
+      success: false,
+      user: undefined,
+    },
+  };
+}
+
+export function onGetUserActivitiesRequest(
+  userId: string
+): Action<GetUserActivitiesRequest> {
+  return {
+    type: types.GET_USER_ACTIVITIES_REQUEST,
+    payload: {
+      userId: userId,
+    },
+  };
+}
+
+export function onGetUserActivitiesResponse(
+  response: GetUserActivitiesResponse
+): Action<GetUserActivitiesResponse> {
+  return {
+    type: types.GET_USER_ACTIVITIES_RESPONSE,
+    payload: {
+      success: response.success,
+      userId: response.userId,
+      activities: response.activities,
+    },
+  };
+}
+
+export function onGetUserActivitiesFail(): Action<GetUserActivitiesResponse> {
+  return {
+    type: types.GET_USER_ACTIVITIES_RESPONSE,
+    payload: {
+      success: false,
+      userId: "-1",
+      activities: [],
     },
   };
 }
@@ -44,6 +95,16 @@ export function onUpdateUserResponse(
     payload: {
       success: response.success,
       user: response.user,
+    },
+  };
+}
+
+export function onUpdateUserFail(): Action<UpdateUserResponse> {
+  return {
+    type: types.UPDATE_USER_FAIL,
+    payload: {
+      success: false,
+      user: undefined,
     },
   };
 }

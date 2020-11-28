@@ -48,7 +48,6 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
                 style={styles.removeButton}
                 onPress={onPressDeleteFriend}>
                 <Text style={styles.removeButtonText}>حذف کردن از دوستان</Text>
-                <Text style={styles.minus}>-</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

@@ -13,9 +13,60 @@ export const ADD_USER = gql`
     ) {
       _id
       name
+      password
       email
       phone
-      password
+      credit
+      balance
+      friends {
+        data {
+          _id
+          friendId
+          friendName
+        }
+      }
+      groups {
+        data {
+          _id
+          name
+        }
+      }
+      activities {
+        data {
+          _id
+          name
+          user {
+            _id
+            name
+          }
+          type
+          expense {
+            _id
+            description
+            category
+            totalPrice
+            participants {
+              data {
+                _id
+                user {
+                  name
+                }
+                share
+              }
+            }
+          }
+          debt {
+            _id
+            description
+            debt
+            creditor {
+              _id
+              name
+            }
+            category
+          }
+        }
+      }
     }
   }
 `;
@@ -82,12 +133,12 @@ export const ADD_FRIEND = gql`
 //#endregion user
 //#region group
 export const ADD_Group = gql`
-  mutation addGroup($name: String, $creator: ID, $members: [ID]) {
+  mutation addGroup($name: String, $creatorId: ID, $membersIds: [ID]) {
     createGroup(
       data: {
         name: $name
-        creator: { connect: $creator }
-        members: { connect: $members }
+        creator: { connect: $creatorId }
+        members: { connect: $membersIds }
       }
     ) {
       _id
@@ -149,8 +200,6 @@ export const DELETE_GROUP = gql`
     deleteGroup(id: $groupId) {
       _id
       name
-      creator
-      members
     }
   }
 `;
@@ -168,16 +217,23 @@ export const ADD_PARTICIPANT = gql`
 `;
 
 export const ADD_NON_GROUP_EXPENSE_ACTIVITY = gql`
-  mutation addActivity($userId: ID!, $type: String, $expenseId: ID) {
+  mutation addActivity(
+    $userId: ID!
+    $name: String
+    $type: String
+    $expenseId: ID
+  ) {
     createActivity(
       data: {
         user: { connect: $userId }
         type: $type
+        name: $name
         expense: { connect: $expenseId }
       }
     ) {
       _id
       type
+      name
       expense {
         _id
         description
@@ -208,17 +264,25 @@ export const ADD_NON_GROUP_EXPENSE_ACTIVITY = gql`
 `;
 
 export const ADD_GROUP_DEBT_ACTIVITY = gql`
-  mutation addActivity($userId: ID!, $type: String, $groupId: ID, $debtId: ID) {
+  mutation addActivity(
+    $userId: ID!
+    $name: String
+    $type: String
+    $groupId: ID
+    $debtId: ID
+  ) {
     createActivity(
       data: {
         user: { connect: $userId }
         type: $type
+        name: $name
         group: { connect: $groupId }
         debt: { connect: $debtId }
       }
     ) {
       _id
       type
+      name
       group {
         _id
         name
@@ -256,6 +320,7 @@ export const ADD_GROUP_EXPENSE_ACTIVITY = gql`
   mutation addActivity(
     $userId: ID!
     $type: String
+    $name: String
     $groupId: ID
     $expenseId: ID
   ) {
@@ -263,12 +328,14 @@ export const ADD_GROUP_EXPENSE_ACTIVITY = gql`
       data: {
         user: { connect: $userId }
         type: $type
+        name: $name
         group: { connect: $groupId }
         expense: { connect: $expenseId }
       }
     ) {
       _id
       type
+      name
       group {
         _id
         name
@@ -303,16 +370,23 @@ export const ADD_GROUP_EXPENSE_ACTIVITY = gql`
 `;
 
 export const ADD_NON_GROUP_DEBT_ACTIVITY = gql`
-  mutation addActivity($userId: ID!, $type: String, $debtId: ID) {
+  mutation addActivity(
+    $userId: ID!
+    $name: String
+    $type: String
+    $debtId: ID
+  ) {
     createActivity(
       data: {
         user: { connect: $userId }
         type: $type
+        name: $name
         debt: { connect: $debtId }
       }
     ) {
       _id
       type
+      name
       group {
         _id
         name
@@ -348,44 +422,71 @@ export const ADD_NON_GROUP_DEBT_ACTIVITY = gql`
 
 export const ADD_EXPENSE = gql`
   mutation addExpense(
+    $userId: ID!
+    $activityName: String
     $description: String
     $category: String
     $totalPrice: Int
   ) {
-    createExpense(
+    createActivity(
       data: {
-        description: $description
-        category: $category
-        totalPrice: $totalPrice
+        user: { connect: $userId }
+        name: $activityName
+        type: "expense"
+        expense: {
+          create: {
+            description: $description
+            category: $category
+            totalPrice: $totalPrice
+          }
+        }
       }
     ) {
       _id
+      expense {
+        _id
+        description
+        category
+        totalPrice
+      }
     }
   }
 `;
 
 export const ADD_DEBT = gql`
   mutation addDebt(
+    $userId: ID!
+    $activityName: String
     $description: String
     $category: String
     $debt: Int
     $creditorId: ID
   ) {
-    createDebt(
+    createActivity(
       data: {
-        description: $description
-        category: $category
-        debt: $debt
-        creditor: { connect: $creditorId }
+        user: { connect: $userId }
+        name: $activityName
+        type: "debt"
+        debt: {
+          create: {
+            description: $description
+            category: $category
+            debt: $debt
+            creditor: { connect: $creditorId }
+          }
+        }
       }
     ) {
       _id
-      description
-      category
-      debt
-      creditor {
+      debt {
         _id
-        name
+        description
+        category
+        debt
+        creditor {
+          _id
+          name
+        }
       }
     }
   }

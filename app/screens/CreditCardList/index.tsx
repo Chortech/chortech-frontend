@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, FlatList } from "react-native";
-import CreditCard from "../../components/CreditCard/CreditCard";
+import CreditCard from "../../components/CreditCard";
 
 const data = [
   {

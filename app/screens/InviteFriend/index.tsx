@@ -9,24 +9,28 @@ import { RegexValidator } from "../../utils/regexValidator";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
-import { ILoginState } from "../../models/reducers/login";
-import { useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
+import LoadingIndicator from "../Loading";
+
+type IState = {
+  friendReducer: IUserState;
+};
 
 const InviteFriend: React.FC = (): JSX.Element => {
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { loading } = useSelector((state: IState) => state.friendReducer);
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);
   const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
+  const dispatch = useDispatch();
 
   const onChangeSearchQuery = (text: string) => {
     const type = RegexValidator.validateEmailOrPhone(text);
     setEmailOrPhone(text);
     setInputType(type);
   };
-
-  console.log("logged in user: " + JSON.stringify(loggedInUser, undefined, 2));
-  console.log("fetched user: " + JSON.stringify(fetchedUsers, undefined, 2));
 
   const onPressSearchButton = (): void => {
     if (inputType == InputType.Email || inputType == InputType.Phone) {
@@ -49,15 +53,15 @@ const InviteFriend: React.FC = (): JSX.Element => {
   };
 
   const onPressAddFriend = (): void => {
-    let user = fetchedUsers[0];
-    try {
-      Api.addFriend(user.id, user.name, loggedInUser.id).then((data) =>
-        console.log("call add friend: " + JSON.stringify(data, undefined, 2))
-      );
-      setFetchedUsers([]);
-    } catch (error) {
-      console.log(JSON.stringify(error, undefined, 2));
-    }
+    let searchedUser = fetchedUsers[0];
+    dispatch(
+      friendActions.onAddFriendRequest(
+        loggedInUser.id,
+        searchedUser.id,
+        searchedUser.name
+      )
+    );
+    setFetchedUsers([]);
   };
 
   const renderSelectedItems: any = ({ item }) => (
@@ -69,23 +73,29 @@ const InviteFriend: React.FC = (): JSX.Element => {
   );
 
   return (
-    <View style={styles.container}>
-      <Animatable.View
-        animation="slideInUp"
-        duration={500}
-        style={styles.infoContainer}>
-        <Searchbar
-          placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-          style={styles.searchBar}
-          inputStyle={styles.searchInput}
-          onChangeText={onChangeSearchQuery}
-          value={emailOrPhone}
-          iconColor="#1AD927"
-          onIconPress={onPressSearchButton}
-        />
-      </Animatable.View>
-      <FlatList data={fetchedUsers} renderItem={renderSelectedItems} />
-    </View>
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <Animatable.View
+            animation="slideInUp"
+            duration={500}
+            style={styles.infoContainer}>
+            <Searchbar
+              placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
+              style={styles.searchBar}
+              inputStyle={styles.searchInput}
+              onChangeText={onChangeSearchQuery}
+              value={emailOrPhone}
+              iconColor="#1AD927"
+              onIconPress={onPressSearchButton}
+            />
+          </Animatable.View>
+          <FlatList data={fetchedUsers} renderItem={renderSelectedItems} />
+        </View>
+      )}
+    </>
   );
 };
 

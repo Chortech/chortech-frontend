@@ -3,25 +3,27 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
   TouchableOpacity,
   FlatList,
   RefreshControl,
 } from "react-native";
-import ActionButton from "react-native-action-button";
 import * as Animatable from "react-native-animatable";
-import { useStore } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { Activity } from "../../models/other/Activity";
-import { ILoginState } from "../../models/reducers/login";
-import { GetUserActivitiesResponse } from "../../models/responses/getUserActivities";
-import { GetUserGroupsResponse } from "../../models/responses/group";
-
+import { IUserState } from "../../models/reducers/default";
+import { GetUserActivitiesResponse } from "../../models/responses/user";
 import NavigationService from "../../navigation/navigationService";
-import { Api } from "../../services/api/graphQL/graphqlApi";
+import * as userActions from "../../store/actions/userActions";
 import styles from "./styles";
 
+type IState = {
+  userReducer: IUserState;
+};
+
 const ActivityList: React.FC = () => {
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { activities } = useSelector((state: IState) => state.userReducer);
+  const dispatch = useDispatch();
   const onPressActivityItem = (
     id: string,
     name: string,
@@ -37,30 +39,20 @@ const ActivityList: React.FC = () => {
       debtId: debtId,
     });
   const onAddExpense = () => NavigationService.navigate("AddExpense");
-  const [fetchedActivities, setActivities] = useState<Array<Activity>>([]);
   const [refreshing, setRefreshing] = useState(false);
-
-  const fetchActivities = () => {
-    try {
-      Api.getUserActivities(loggedInUser.id).then(
-        (data: GetUserActivitiesResponse) => {
-          setActivities(data.activities);
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchActivities = (): void => {
+    dispatch(userActions.onGetUserActivitiesRequest(loggedInUser.id));
   };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [dispatch]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchActivities();
     setRefreshing(false);
-  }, []);
-
-  useEffect(() => {
-    fetchActivities();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -77,7 +69,7 @@ const ActivityList: React.FC = () => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             showsVerticalScrollIndicator={false}
-            data={fetchedActivities}
+            data={activities}
             renderItem={({ item }) => {
               return (
                 <View>

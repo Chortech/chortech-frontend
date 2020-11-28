@@ -1,25 +1,30 @@
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
-import { ILoginState } from "../../models/reducers/login";
+import { IUserState } from "../../models/reducers/default";
 import { ResetPasswordRequest } from "../../models/requests/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/resetPassword";
 import { InputType } from "../../utils/inputTypes";
 import * as types from "../actions/types";
 
-const initialState: ILoginState = {
+const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
   name: "",
+  password: "",
   email: "",
   phone: "",
-  inputType: InputType.None,
-  password: "",
+  authInputType: InputType.None,
+  credit: 0,
+  balance: 0,
+  friends: [],
+  groups: [],
+  activities: [],
 };
 
 export const resetPasswordReducer = createReducer(initialState, {
   [types.RESET_PASSWORD_REQUEST](
-    state: ILoginState,
+    state: IUserState,
     action: Action<ResetPasswordRequest>
   ) {
     return {
@@ -29,7 +34,7 @@ export const resetPasswordReducer = createReducer(initialState, {
     };
   },
   [types.RESET_PASSWORD_RESPONSE](
-    state: ILoginState,
+    state: IUserState,
     action: Action<ResetPasswordResponse>
   ) {
     return {
@@ -38,22 +43,18 @@ export const resetPasswordReducer = createReducer(initialState, {
     };
   },
   [types.RESET_PASSWORD_FAIL](
-    state: ILoginState,
-    action: Action<ResetPasswordRequest>
+    state: IUserState,
+    action: Action<ResetPasswordResponse>
   ) {
-    return {
-      ...state,
-      id: "-1",
-      password: action.payload.password,
-    };
+    return state;
   },
-  [types.LOADING_ENABLED](state: ILoginState, action: Action<any>) {
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
     return {
       ...state,
       loading: true,
     };
   },
-  [types.LOADING_DISABLED](state: ILoginState, action: Action<any>) {
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
     return {
       ...state,
       loading: false,

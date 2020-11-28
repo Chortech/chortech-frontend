@@ -16,7 +16,7 @@ const SearchedUserItem = (props: Props) => {
       <TouchableOpacity onPress={props.onPress}>
         <FontAwesomeIcon
           icon="plus-circle"
-          size={30}
+          size={25}
           style={styles.plusIconStyle}
         />
       </TouchableOpacity>

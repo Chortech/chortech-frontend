@@ -1,27 +1,23 @@
 import { useDispatch, useSelector, useStore } from "react-redux";
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Image,
-  ScrollView,
   TouchableOpacity,
   FlatList,
   RefreshControl,
-  Group,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-
 import GroupItem from "../../components/GroupItem/index";
 import NavigationService from "../../navigation/navigationService";
-import { ILoginState } from "../../models/reducers/login";
 import * as groupActions from "../../store/actions/groupActions";
 import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { GetUserGroupsResponse } from "../../models/responses/group";
+import { Group } from "../../models/other/Group";
 
 type IState = {
   groupReducer: IUserState;
@@ -29,38 +25,30 @@ type IState = {
 
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-  const User: IUserState = useStore().getState()["userReducer"];
-  // const { groups } = useSelector((state: IState) => state.groupReducer);
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { groups } = useSelector((state: IState) => state.groupReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [fetchedGroups, setGroups] = useState<Array<Group>>([]);
+
   const onProfile = () => NavigationService.navigate("Profile");
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
-    NavigationService.navigate("Group", { id: id, groupName: name });
-
-  const userName = User.name;
-  console.log(userName);
+    NavigationService.navigate("Group", {
+      id: id,
+      groupName: name,
+      ImageUrl: "",
+    });
   const fetchGroups = (): void => {
-    dispatch(userActions.onFetchUserRequest(loggedInUser.id));
-    try {
-      Api.getUserGroups(loggedInUser.id).then((data: GetUserGroupsResponse) => {
-        setGroups(data.groups);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    // dispatch(groupActions.getUserGroupsRequest(loggedInUser.id));
+    dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.id));
   };
   useEffect(() => {
-    fetchGroups;
-  }, []);
+    fetchGroups();
+  }, [dispatch]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchGroups();
     setRefreshing(false);
-  }, []);
+  }, [dispatch]);
 
   const renderGroupItem: any = ({ item }) => (
     <GroupItem
@@ -79,7 +67,7 @@ const GroupList: React.FC = () => {
             source={require("../../assets/images/friend-image.jpg")}
           />
         </TouchableOpacity>
-        <Text style={styles.name}>{userName}</Text>
+        <Text style={styles.name}>{loggedInUser.name}</Text>
       </View>
       <Animatable.View
         animation="slideInUp"
@@ -89,7 +77,7 @@ const GroupList: React.FC = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          data={fetchedGroups}
+          data={groups}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}
         />

@@ -11,7 +11,6 @@ import {
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
-
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
@@ -19,19 +18,23 @@ import * as signUpActions from "../../store/actions/authActions";
 import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
 import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
+import { User } from "../../models/other/User";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
 };
 
 type IState = {
-  codeVerificationReducer: ILoginState;
+  codeVerificationReducer: IUserState;
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
-  const state = useStore().getState()["authReducer"];
+  const state: IUserState = useStore().getState()["authReducer"];
+  console.log(JSON.stringify(state, undefined, 2));
+  const [user, setUser] = useState<User | null>(null);
   const { parentScreen } = route.params;
-  const { phone, email, password, inputType, loading } = useSelector(
+  const { phone, email, authInputType, loading } = useSelector(
     (state: IState) => state.codeVerificationReducer
   );
   const [ref, setRef] = useState(null);
@@ -46,9 +49,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
       if (parentScreen == "AccountIdentification") {
         NavigationService.navigate("ResetPassword");
       } else {
-        dispatch(
-          signUpActions.onSignUpResponse({ id: state.id, success: true })
-        );
       }
     } else {
       ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
@@ -57,7 +57,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const regenerateCode = (): void => {
     dispatch(
-      codeVerificationActions.requestGenerateCode(email, phone, inputType)
+      codeVerificationActions.onGenerateCodeRequest(email, phone, authInputType)
     );
     ref.resetCountDown();
   };

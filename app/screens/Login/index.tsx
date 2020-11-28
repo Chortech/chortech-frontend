@@ -10,17 +10,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-
 import { styles } from "./styles";
 import * as loginActions from "../../store/actions/authActions";
-import { ILoginState } from "../../models/reducers/login";
 import NavigationService from "../../navigation/navigationService";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
 
 interface IState {
-  authReducer: ILoginState;
+  authReducer: IUserState;
 }
 
 const Login: React.FC = (): JSX.Element => {
@@ -36,7 +35,7 @@ const Login: React.FC = (): JSX.Element => {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
-        loginActions.requestLogin(email, phone, data.password, data.inputType)
+        loginActions.onLoginRequest(email, phone, data.password, data.inputType)
       );
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);

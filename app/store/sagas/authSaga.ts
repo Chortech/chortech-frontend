@@ -1,6 +1,5 @@
 import { put } from "redux-saga/effects";
-import { Alert, ToastAndroid } from "react-native";
-// import { delay } from 'redux-saga';
+import { ToastAndroid } from "react-native";
 
 import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
@@ -11,19 +10,17 @@ import { LoginResponse } from "../../models/responses/login";
 import { LoginRequest } from "../../models/requests/login";
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
-import { InputType } from "../../utils/inputTypes";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
   const { email, phone, password, inputType } = action.payload;
   let response: LoginResponse = {
-    id: "-1",
     success: false,
+    user: null,
   };
 
   try {
     response = yield Api.login(email, phone, password, inputType);
-    console.log("data: " + JSON.stringify(response, undefined, 2));
   } catch (error) {
     console.error(JSON.stringify(error, undefined, 2));
   }
@@ -31,10 +28,9 @@ export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingDisable());
 
   if (response.success) {
-    console.log("success");
     yield put(authActions.onLoginResponse(response));
   } else {
-    yield put(authActions.loginFailed());
+    yield put(authActions.onLoginFail());
     ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
   }
 }
@@ -42,21 +38,21 @@ export function* loginAsync(action: Action<LoginRequest>) {
 export function* signUpAsync(action: Action<SignUpRequest>) {
   yield put(authActions.onLoadingEnable());
   const { name, email, phone, password, inputType } = action.payload;
-  let response: LoginResponse = {
-    id: "-1",
+  let response: SignUpResponse = {
     success: false,
+    user: null,
   };
 
   try {
     response = yield Api.signUp(name, email, phone, password, inputType);
-    console.log("sign up reponse: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(authActions.onLoadingDisable());
 
   if (response.success) {
+    yield put(authActions.onSignUpResponse(response));
     yield navigationRef.current?.navigate("CodeVerification", {
       parentScreen: "SignUp",
     });

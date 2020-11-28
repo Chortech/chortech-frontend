@@ -1,6 +1,8 @@
+import { User } from "../other/User";
+
 export interface LoginResponse {
-  id: string;
   success: boolean;
+  user: User | null;
 }
 
 // export interface LoginResponse {

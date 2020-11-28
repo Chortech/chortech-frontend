@@ -10,16 +10,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import * as signUpActions from "../../store/actions/authActions";
-import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
 
 interface IState {
-  authReducer: ILoginState;
+  authReducer: IUserState;
 }
 
 const SignUp: React.FC = (): JSX.Element => {
@@ -43,12 +42,10 @@ const SignUp: React.FC = (): JSX.Element => {
         ToastAndroid.SHORT
       );
     } else if (data.name && data.emailOrPhone && data.password) {
-      const generateRandomString = (length = 10) =>
-        Math.random().toString(20).substr(2, length);
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
-        signUpActions.requestSignUp(
+        signUpActions.onSignUpRequest(
           data.name,
           email,
           phone,

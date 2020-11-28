@@ -1,19 +1,24 @@
-import {addGroupResponse, updateGroupResponse, deleteGroupResponse, 
-        getGroupByIdResponse, getUserGroupsResponse} from "../responses/group";
+import {
+  AddGroupResponse,
+  UpdateGroupResponse,
+  DeleteGroupResponse,
+  GetGroupByIdResponse,
+  GetUserGroupsResponse,
+} from "../responses/group";
 
 export interface GroupApi {
   addGroup(
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<addGroupResponse>;
+  ): Promise<AddGroupResponse>;
   updateGroup(
     groupId: string,
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<updateGroupResponse>;
-  deleteGroup(groupId: string): Promise<deleteGroupResponse>;
-  getGroupById(groupId: string): Promise<getGroupByIdResponse>;
-  getUserGroups(userId: string): Promise<getUserGroupsResponse>;
+  ): Promise<UpdateGroupResponse>;
+  deleteGroup(groupId: string): Promise<DeleteGroupResponse>;
+  getGroupById(groupId: string): Promise<GetGroupByIdResponse>;
+  getUserGroups(userId: string): Promise<GetUserGroupsResponse>;
 }

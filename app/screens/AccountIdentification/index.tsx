@@ -14,11 +14,11 @@ import * as identifyAccountActions from "../../store/actions/identifyAccountActi
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
 
 interface IState {
-  IdentifyAccountReducer: ILoginState;
+  IdentifyAccountReducer: IUserState;
 }
 
 const AccountIdentification: React.FC = () => {
@@ -31,7 +31,7 @@ const AccountIdentification: React.FC = () => {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
-        identifyAccountActions.requestIdentifyAccount(
+        identifyAccountActions.onIdentifyAccountRequest(
           email,
           phone,
           data.inputType

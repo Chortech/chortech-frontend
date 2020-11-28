@@ -7,10 +7,3 @@ export interface SignUpRequest {
   password: string;
   inputType: InputType;
 }
-
-// export interface SignUpRequestState {
-//   type: string;
-//   email: string;
-//   phone: string;
-//   password: string;
-// }

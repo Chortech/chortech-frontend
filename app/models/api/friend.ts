@@ -1,11 +1,12 @@
 import { InputType } from "../../utils/inputTypes";
-import { AddFriendResponse } from "../responses/addFriend";
-import { DeleteFriendResponse } from "../responses/deleteFriend";
-import { FriendsResponse } from "../responses/getFriends";
-import { UserByFilterResponse } from "../responses/userByFilter";
+import { AddFriendResponse, DeleteFriendResponse } from "../responses/friend";
+import {
+  GetUserFriendsResponse,
+  UserByFilterResponse,
+} from "../responses/user";
 
 export interface FriendsApi {
-  getUserFriends(userId: string): Promise<FriendsResponse>;
+  getUserFriends(userId: string): Promise<GetUserFriendsResponse>;
   getFilteredUser(
     emailOrPhone: string,
     inputType: InputType

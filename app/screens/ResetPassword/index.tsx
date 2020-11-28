@@ -8,17 +8,16 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
-
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { ILoginState } from "../../models/reducers/login";
 import * as resetPasswordActions from "../../store/actions/resetPasswordActions";
 import LoadingIndicator from "../Loading";
+import { IUserState } from "../../models/reducers/default";
 
 type IState = {
-  resetPasswordReducer: ILoginState;
+  resetPasswordReducer: IUserState;
 };
 
 const ResetPassword: React.FC = (): JSX.Element => {
@@ -33,7 +32,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
       data.validPassword &&
       data.validConfirmPassword
     ) {
-      dispatch(resetPasswordActions.requestResetPassword(id, data.password));
+      dispatch(resetPasswordActions.onResetPasswordRequest(id, data.password));
     } else {
       ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
     }

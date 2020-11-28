@@ -3,22 +3,27 @@ import { ToastAndroid } from "react-native";
 import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import * as activityActions from "../actions/activityActions";
-import { AddActivityRequest } from "../../models/requests/addActivityRequest";
-import { AddActivityResponse } from "../../models/responses/addActivityResponse";
-import { AddExpenseRequest } from "../../models/requests/addExpenseRequest";
-import { AddExpenseResponse } from "../../models/responses/addExpenseResponse";
-import { AddParticipantRequest } from "../../models/requests/addParticipantRequest";
-import { AddParticipantResponse } from "../../models/responses/addParticipantResponse";
-import { AddDebtRequest } from "../../models/requests/addDebtRequest";
-import { AddDebtResponse } from "../../models/responses/addDebtResponse";
-import { DeleteActivityRequest } from "../../models/requests/deleteActivity";
-import { DeleteActivityResponse } from "../../models/responses/deleteActivity";
-import { DeleteExpenseRequest } from "../../models/requests/deleteExpense";
-import { DeleteDebtRequest } from "../../models/requests/deleteDebt";
-import { DeleteDebtResponse } from "../../models/responses/deleteDebt";
-import { DeleteExpenseResponse } from "../../models/responses/deleteExpense";
-import { DeleteParticipantResponse } from "../../models/responses/deleteParticipant";
-import { DeleteParticipantRequest } from "../../models/requests/deleteParticipant";
+import {
+  AddActivityRequest,
+  AddExpenseRequest,
+  AddDebtRequest,
+  AddParticipantRequest,
+  DeleteActivityRequest,
+  DeleteExpenseRequest,
+  DeleteDebtRequest,
+  DeleteParticipantRequest,
+} from "../../models/requests/activity";
+import {
+  AddActivityResponse,
+  AddExpenseResponse,
+  AddDebtResponse,
+  AddParticipantResponse,
+  DeleteActivityResponse,
+  DeleteExpenseResponse,
+  DeleteDebtResponse,
+  DeleteParticipantResponse,
+} from "../../models/responses/activity";
+import { navigationRef } from "../../navigation/navigationService";
 
 export function* addActivityAsync(action: Action<AddActivityRequest>) {
   yield put(activityActions.onLoadingEnable());
@@ -30,9 +35,8 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
 
   try {
     response = yield Api.addActivity(userId, type, groupId, expenseId, debtId);
-    console.log("add activity response: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -47,23 +51,36 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(activityActions.onLoadingEnable());
-  const { description, category, totalPrice } = action.payload;
+  const {
+    userId,
+    activityName,
+    description,
+    category,
+    totalPrice,
+  } = action.payload;
   let response: AddExpenseResponse = {
     id: "-1",
     success: false,
   };
 
   try {
-    response = yield Api.addExpense(description, category, totalPrice);
-    console.log("add expense response: " + response);
+    response = yield Api.addExpense(
+      userId,
+      activityName,
+      description,
+      category,
+      totalPrice
+    );
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
 
   if (response.success) {
     yield put(activityActions.onAddExpenseResponse(response));
+    navigationRef.current?.goBack();
+    ToastAndroid.show("فعالیت با موفقیت اضافه شد.", ToastAndroid.SHORT);
   } else {
     yield put(activityActions.onAddExpenseFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -72,23 +89,38 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
 
 export function* addDebtAsync(action: Action<AddDebtRequest>) {
   yield put(activityActions.onLoadingEnable());
-  const { description, category, debt, creditorId } = action.payload;
+  const {
+    userId,
+    activityName,
+    description,
+    category,
+    debt,
+    creditorId,
+  } = action.payload;
   let response: AddDebtResponse = {
     id: "-1",
     success: false,
   };
 
   try {
-    response = yield Api.addDebt(description, category, debt, creditorId);
-    console.log("add debt response: " + response);
+    response = yield Api.addDebt(
+      userId,
+      activityName,
+      description,
+      category,
+      debt,
+      creditorId
+    );
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
 
   if (response.success) {
     yield put(activityActions.onAddDebtResponse(response));
+    navigationRef.current?.goBack();
+    ToastAndroid.show("فعالیت با موفقیت اضافه شد.", ToastAndroid.SHORT);
   } else {
     yield put(activityActions.onAddDebtFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -105,9 +137,8 @@ export function* addParticipantAsync(action: Action<AddParticipantRequest>) {
 
   try {
     response = yield Api.addParticipant(expenseId, userId, share);
-    console.log("add Participant response: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -130,20 +161,17 @@ export function* deleteActivityAsync(action: Action<DeleteActivityRequest>) {
 
   try {
     response = yield Api.deleteActivity(id);
-    console.log(
-      "delete activity response: " + JSON.stringify(response, undefined, 2)
-    );
   } catch (error) {
-    console.log(
-      "delete activity response: " + JSON.stringify(error, undefined, 2)
-    );
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
 
   if (response.success) {
     yield put(activityActions.onDeleteActivityResponse(response));
+    navigationRef.current?.goBack();
   } else {
+    yield put(activityActions.onDeleteActivityFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
@@ -158,13 +186,8 @@ export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
 
   try {
     response = yield Api.deleteExpense(id);
-    console.log(
-      "delete expense response: " + JSON.stringify(response, undefined, 2)
-    );
   } catch (error) {
-    console.log(
-      "delete expense response: " + JSON.stringify(error, undefined, 2)
-    );
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -172,6 +195,7 @@ export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
   if (response.success) {
     yield put(activityActions.onDeleteExpenseResponse(response));
   } else {
+    yield put(activityActions.onDeleteExpenseFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
@@ -186,11 +210,8 @@ export function* deleteDebtAsync(action: Action<DeleteDebtRequest>) {
 
   try {
     response = yield Api.deleteDebt(id);
-    console.log(
-      "delete debt response: " + JSON.stringify(response, undefined, 2)
-    );
   } catch (error) {
-    console.log("delete debt response: " + JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -198,6 +219,7 @@ export function* deleteDebtAsync(action: Action<DeleteDebtRequest>) {
   if (response.success) {
     yield put(activityActions.onDeleteDebtResponse(response));
   } else {
+    yield put(activityActions.onDeleteDebtFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
@@ -214,13 +236,8 @@ export function* deleteParticipantAsync(
 
   try {
     response = yield Api.deleteParticipant(id);
-    console.log(
-      "delete participant response: " + JSON.stringify(response, undefined, 2)
-    );
   } catch (error) {
-    console.log(
-      "delete participant response: " + JSON.stringify(error, undefined, 2)
-    );
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -228,6 +245,7 @@ export function* deleteParticipantAsync(
   if (response.success) {
     yield put(activityActions.onDeleteParticipantResponse(response));
   } else {
+    yield put(activityActions.onDeleteParticipantFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

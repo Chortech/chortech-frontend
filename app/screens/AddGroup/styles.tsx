@@ -61,6 +61,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#EBE8E8",
   },
+  searchInput: {
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+    textAlign: "right",
+    color: "#053751",
+    justifyContent: "center",
+  },
   textInput: {
     flex: 10,
     color: "#053751",

@@ -72,6 +72,7 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
   },
   removeButtonText: {
     fontSize: 16,

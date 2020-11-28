@@ -3,8 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Image,
   TextInput,
   ToastAndroid,
 } from "react-native";
@@ -18,14 +16,14 @@ import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import * as activityActions from "../../store/actions/activityActions";
 import { Api } from "../../services/api/graphQL/graphqlApi";
-import { ILoginState } from "../../models/reducers/login";
+import { Searchbar } from "react-native-paper";
 
 type IState = {
   activityReducer: IUserState;
 };
 
 const AddExpense: React.FC = (): JSX.Element => {
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const [data, setData] = useState({
     activityName: "",
     expenseAmount: "",
@@ -33,6 +31,7 @@ const AddExpense: React.FC = (): JSX.Element => {
   });
   const dispatch = useDispatch();
   const { loading } = useSelector((state: IState) => state.activityReducer);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const confirm = () => {
     if (data.activityName == "") {
@@ -40,30 +39,22 @@ const AddExpense: React.FC = (): JSX.Element => {
     } else if (data.expenseAmount == "") {
       ToastAndroid.show("لطفا مبلغ را وارد کنید.", ToastAndroid.SHORT);
     } else if (data.isValidExpenseAmount) {
-      // dispatch(
-      //   activityActions.requestAddExpense(
-      //     "description",
-      //     "میوه",
-      //     data.expenseAmount
-      //   )
-      // );
-      try {
-        let expenseId: string = "-1";
-        Api.addExpense("description", "میوه", data.expenseAmount).then(
-          (data) => (expenseId = data.id)
-        );
-        Api.addActivity(
+      dispatch(
+        activityActions.onAddExpenseRequest(
           loggedInUser.id,
-          "expense",
-          undefined,
-          expenseId,
-          undefined
-        );
-      } catch (error) {}
-      ToastAndroid.show("فعالیت با موفقیت اضافه شد.", ToastAndroid.SHORT);
-      NavigationService.goBack();
+          data.activityName,
+          "description",
+          "fruit",
+          "10000"
+        )
+      );
     }
   };
+
+  const onChangeSearchQuery = (text: string) => {
+    setSearchQuery(text);
+  };
+  const onPressSearchButton = () => {};
 
   const cancel = () => NavigationService.goBack();
 
@@ -102,14 +93,14 @@ const AddExpense: React.FC = (): JSX.Element => {
             animation="slideInUp"
             duration={1000}
             style={styles.infoContainer}>
-            <SearchBar
-              lightTheme
-              searchIcon={{ size: 20 }}
-              placeholder="افراد مشترک در هزینه را اضافه کنید"
-              containerStyle={styles.searchBar}
-              inputStyle={styles.textInput}
-              leftIconContainerStyle={{ backgroundColor: "white" }}
-              inputContainerStyle={{ backgroundColor: "white" }}
+            <Searchbar
+              placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
+              style={styles.searchBar}
+              inputStyle={styles.searchInput}
+              onChangeText={onChangeSearchQuery}
+              value={searchQuery}
+              iconColor="#1AD927"
+              onIconPress={onPressSearchButton}
             />
             <TextInput
               placeholder="مبلغ (تومان)"

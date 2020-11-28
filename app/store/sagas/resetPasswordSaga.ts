@@ -2,7 +2,6 @@ import { ToastAndroid } from "react-native";
 import { useSelector } from "react-redux";
 import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
-import { ILoginState } from "../../models/reducers/login";
 import { ResetPasswordRequest } from "../../models/requests/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/resetPassword";
 import { navigationRef } from "../../navigation/navigationService";
@@ -22,13 +21,11 @@ export default function* resetPasswordAsync(
   try {
     response = yield Api.resetPassword(id, password);
   } catch (error) {
-    console.log("reset password error: " + JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(resetPasswordActions.onLoadingDisable());
 
-  console.log("reset password response: " + response);
   if (response.success) {
     yield put(resetPasswordActions.onResetPasswordResponse(response));
     yield navigationRef.current?.reset({
@@ -36,7 +33,7 @@ export default function* resetPasswordAsync(
       routes: [{ name: "Login" }],
     });
   } else {
-    yield put(resetPasswordActions.onResetPasswordFailed());
+    yield put(resetPasswordActions.onResetPasswordFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

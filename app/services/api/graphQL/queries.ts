@@ -110,6 +110,57 @@ export const USERS_BY_NAME = gql`
         password
         email
         phone
+        credit
+        balance
+        friends {
+          data {
+            _id
+            friendId
+            friendName
+          }
+        }
+        groups {
+          data {
+            _id
+            name
+          }
+        }
+        activities {
+          data {
+            _id
+            name
+            user {
+              _id
+              name
+            }
+            type
+            expense {
+              _id
+              description
+              category
+              totalPrice
+              participants {
+                data {
+                  _id
+                  user {
+                    name
+                  }
+                  share
+                }
+              }
+            }
+            debt {
+              _id
+              description
+              debt
+              creditor {
+                _id
+                name
+              }
+              category
+            }
+          }
+        }
       }
     }
   }
@@ -123,6 +174,57 @@ export const USER_BY_EMAIL = gql`
       password
       email
       phone
+      credit
+      balance
+      friends {
+        data {
+          _id
+          friendId
+          friendName
+        }
+      }
+      groups {
+        data {
+          _id
+          name
+        }
+      }
+      activities {
+        data {
+          _id
+          name
+          user {
+            _id
+            name
+          }
+          type
+          expense {
+            _id
+            description
+            category
+            totalPrice
+            participants {
+              data {
+                _id
+                user {
+                  name
+                }
+                share
+              }
+            }
+          }
+          debt {
+            _id
+            description
+            debt
+            creditor {
+              _id
+              name
+            }
+            category
+          }
+        }
+      }
     }
   }
 `;
@@ -135,6 +237,57 @@ export const USER_BY_PHONE = gql`
       password
       email
       phone
+      credit
+      balance
+      friends {
+        data {
+          _id
+          friendId
+          friendName
+        }
+      }
+      groups {
+        data {
+          _id
+          name
+        }
+      }
+      activities {
+        data {
+          _id
+          name
+          user {
+            _id
+            name
+          }
+          type
+          expense {
+            _id
+            description
+            category
+            totalPrice
+            participants {
+              data {
+                _id
+                user {
+                  name
+                }
+                share
+              }
+            }
+          }
+          debt {
+            _id
+            description
+            debt
+            creditor {
+              _id
+              name
+            }
+            category
+          }
+        }
+      }
     }
   }
 `;
@@ -149,6 +302,12 @@ export const GET_GROUP_BY_ID = gql`
         name
       }
       members {
+        data {
+          _id
+          name
+        }
+      }
+      activities {
         data {
           _id
           name

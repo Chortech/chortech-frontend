@@ -1,9 +1,9 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-import { GenerateCodeRequest } from "../../models/requests/generateCode";
+import { GenerateCodeRequest } from "../../models/requests/codeVerification";
 
-export function requestGenerateCode(
+export function onGenerateCodeRequest(
   email: string,
   phone: string,
   inputType: InputType

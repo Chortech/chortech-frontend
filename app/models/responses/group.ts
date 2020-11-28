@@ -1,26 +1,28 @@
-export interface addGroupResponse {
-  id: string;
-  success: boolean;
-  }
+import { Group } from "../other/Group";
 
-export interface updateGroupResponse {
+export interface AddGroupResponse {
   id: string;
   success: boolean;
-  }
+}
 
-export interface deleteGroupResponse {
+export interface UpdateGroupResponse {
   id: string;
   success: boolean;
-  }
+}
 
-export interface getGroupByIdResponse {
+export interface DeleteGroupResponse {
   id: string;
   success: boolean;
-  group: any;
+}
+
+export interface GetGroupByIdResponse {
+  id: string;
+  success: boolean;
+  group: Group;
 }
 
 export interface GetUserGroupsResponse {
   userId: string;
   success: boolean;
-  groups: any;
+  groups: Array<Group>;
 }

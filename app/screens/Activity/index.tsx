@@ -24,30 +24,15 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
   const { loading } = useSelector((state: IState) => state.activityReducer);
   const dispatch = useDispatch();
 
-  console.log(
-    "activity: " +
-      id +
-      " " +
-      activityName +
-      " " +
-      activityType +
-      " " +
-      expenseId +
-      " " +
-      debtId
-  );
-
   const onPressDeleteActivity = () => {
     if (activityType == "debt") {
       let targetid: string = debtId != undefined ? debtId : "-1";
       dispatch(activityActions.onDeleteDebtRequest(targetid));
       dispatch(activityActions.onDeleteActivityRequest(id));
-      NavigationService.goBack();
     } else {
       let targetId: string = expenseId != undefined ? expenseId : "-1";
       dispatch(activityActions.onDeleteExpenseRequest(targetId));
       dispatch(activityActions.onDeleteActivityRequest(id));
-      NavigationService.goBack();
     }
   };
 

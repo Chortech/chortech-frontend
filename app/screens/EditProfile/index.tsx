@@ -21,7 +21,6 @@ type IState = {
 
 const EditProfile: React.FC = (): JSX.Element => {
   let user = useSelector((state: IState) => state.userReducer);
-  console.log(JSON.stringify(user, undefined, 2));
   const dispatch = useDispatch();
   const [data, setData] = useState({
     name: "بابک سفیدگر",

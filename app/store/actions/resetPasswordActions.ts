@@ -1,18 +1,17 @@
 import { Action } from "../../models/actions/action";
 import { ResetPasswordRequest } from "../../models/requests/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/resetPassword";
-import { InputType } from "../../utils/inputTypes";
 import * as types from "./types";
 
-export function requestResetPassword(
+export function onResetPasswordRequest(
   id: string,
   password: string
 ): Action<ResetPasswordRequest> {
   return {
     type: types.RESET_PASSWORD_REQUEST,
     payload: {
-      id,
-      password,
+      id: id,
+      password: password,
     },
   };
 }
@@ -26,7 +25,7 @@ export function onResetPasswordResponse(
   };
 }
 
-export function onResetPasswordFailed(): Action<ResetPasswordResponse> {
+export function onResetPasswordFail(): Action<ResetPasswordResponse> {
   return {
     type: types.RESET_PASSWORD_FAIL,
     payload: {

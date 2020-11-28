@@ -1,81 +1,91 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, ToastAndroid } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+} from "react-native";
+import { Searchbar } from "react-native-paper";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { SearchBar } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
-
-import NavigationService from '../../navigation/navigationService';
-import { ILoginState } from "../../models/reducers/login";
-import { Api } from "../../services/api/graphQL/graphqlApi";
+import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { IUserState } from "../../models/reducers/default";
+import * as groupActions from "../../store/actions/groupActions";
+import LoadingIndicator from "../Loading";
+
+type IState = {
+  groupReducer: IUserState;
+};
 
 const AddGroup: React.FC = (): JSX.Element => {
-    const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-    const confirm = () => {
-        if (data.groupName == "") {
-            ToastAndroid.show(
-                "لطفا نام گروه را وارد کنید.",
-                ToastAndroid.SHORT
-                );
-            } else {
-                NavigationService.goBack();
-                Api.addGroup(data.groupName, loggedInUser.id, [loggedInUser.id])
-        }
-    };    
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { loading } = useSelector((state: IState) => state.groupReducer);
+  const dispatch = useDispatch();
+  const [groupName, setGroupName] = useState("");
+  const [memberIds, setMemberIds] = useState<Array<string>>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const cancel = () => NavigationService.goBack();
+  const confirm = () => {
+    if (groupName == "") {
+      ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
+    } else {
+      dispatch(
+        groupActions.onAddGrouptRequest(groupName, loggedInUser.id, memberIds)
+      );
+    }
+  };
 
-    const setGroupName = (text: string) => {
-        setData({
-        ...data,
-        groupName: text,
-        });
-    };
+  const onChangeSearchQuery = (text: string) => {
+    setSearchQuery(text);
+  };
+  const onPressSearchButton = () => {};
 
-    const [data, setData] = useState({
-        groupName: "",
-    });
+  const cancel = () => NavigationService.goBack();
 
-    return (
+  return (
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
         <View style={styles.container}>
-            <View style={styles.header}>
-                {/* <Image
-                style={styles.groupImage}
-                source={require("../../assets/images/group-image.jpg")}
-                /> */}
-                <View style={styles.groupNameContainer}>
-                    <TextInput
-                        placeholder="نام گروه"
-                        placeholderTextColor="#A4A4A4"
-                        style={styles.textHeader}
-                        onChangeText={(text) => setGroupName(text)}
-                    />
-                </View>
+          <View style={styles.header}>
+            <View style={styles.groupNameContainer}>
+              <TextInput
+                placeholder="نام گروه"
+                placeholderTextColor="#A4A4A4"
+                style={styles.textHeader}
+                onChangeText={(text) => setGroupName(text)}
+              />
             </View>
-            <Animatable.View
-                animation="slideInUp"
-                duration={1000}
-                style={styles.infoContainer}>
-                <SearchBar
-                lightTheme
-                searchIcon={{ size: 20 }}
-                placeholder="دوستانی که می‌خواهید اضافه کنید را پیدا کنید"
-                containerStyle={styles.searchBar}
-                inputStyle={styles.textInput}
-                leftIconContainerStyle={{ backgroundColor: "white" }}
-                inputContainerStyle={{ backgroundColor: "white" }}
-                />
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.addButton} onPress={confirm}>
-                        <Text style={styles.addButtonText}>ایجاد گروه</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-                        <Text style={styles.removeButtonText}>انصراف</Text>
-                    </TouchableOpacity>
-                </View>
-            </Animatable.View>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            duration={1000}
+            style={styles.infoContainer}>
+            <Searchbar
+              placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
+              style={styles.searchBar}
+              inputStyle={styles.searchInput}
+              onChangeText={onChangeSearchQuery}
+              value={searchQuery}
+              iconColor="#1AD927"
+              onIconPress={onPressSearchButton}
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.addButton} onPress={confirm}>
+                <Text style={styles.addButtonText}>ایجاد گروه</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.removeButton} onPress={cancel}>
+                <Text style={styles.removeButtonText}>انصراف</Text>
+              </TouchableOpacity>
+            </View>
+          </Animatable.View>
         </View>
-    );
+      )}
+    </>
+  );
 };
 
 export default AddGroup;

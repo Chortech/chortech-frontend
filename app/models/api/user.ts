@@ -1,8 +1,7 @@
 import { User } from "../other/User";
-import { FetchUserResponse } from "../responses/getUser";
-import { UpdateUserResponse } from "../responses/updateUser";
+import { GetUserResponse, UpdateUserResponse } from "../responses/user";
 
 export interface UserApi {
-  getUser(id: string): Promise<FetchUserResponse>;
+  getUser(id: string): Promise<GetUserResponse>;
   updateUser(user: User): Promise<UpdateUserResponse>;
 }

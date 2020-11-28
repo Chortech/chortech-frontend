@@ -11,36 +11,26 @@ import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { ILoginState } from "../../models/reducers/login";
-import { Friend } from "../../models/other/Friend";
 import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
-import { FriendsResponse } from "../../models/responses/getFriends";
-import { Api } from "../../services/api/graphQL/graphqlApi";
 
 type IState = {
   friendReducer: IUserState;
 };
 
 const FriendList: React.FC = (): JSX.Element => {
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  // const { friends } = useSelector((state: IState) => state.friendReducer);
-  const [fetchedFriends, setFriends] = useState<Array<Friend>>();
+  const { friends } = useSelector((state: IState) => state.friendReducer);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
+    setRefreshing(true);
     fetchFriends();
-  }, []);
+    setRefreshing(false);
+  }, [dispatch]);
 
   const fetchFriends = (): void => {
-    try {
-      Api.getUserFriends(loggedInUser.id).then((data: FriendsResponse) => {
-        setFriends(data.friends);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    // dispatch(friendActions.onUserFriendsRequest(loggedInUser.id));
+    dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.id));
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -50,7 +40,7 @@ const FriendList: React.FC = (): JSX.Element => {
     setRefreshing(true);
     fetchFriends();
     setRefreshing(false);
-  }, []);
+  }, [dispatch]);
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
@@ -74,7 +64,7 @@ const FriendList: React.FC = (): JSX.Element => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            data={fetchedFriends}
+            data={friends}
             renderItem={renderFriendItem}
           />
         </Animatable.View>

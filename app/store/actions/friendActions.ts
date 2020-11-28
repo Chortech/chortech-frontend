@@ -1,28 +1,88 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
-import { FriendsRequest } from "../../models/requests/getFriends";
-import { FriendsResponse } from "../../models/responses/getFriends";
-import { DeleteFriendRequest } from "../../models/requests/deleteFriend";
-import { DeleteFriendResponse } from "../../models/responses/deleteFriend";
+import {
+  AddFriendRequest,
+  DeleteFriendRequest,
+} from "../../models/requests/friend";
+import { GetUserFriendsRequest } from "../../models/requests/user";
+import {
+  AddFriendResponse,
+  DeleteFriendResponse,
+} from "../../models/responses/friend";
+import { GetUserFriendsResponse } from "../../models/responses/user";
 
-export function onUserFriendsRequest(userId: string): Action<FriendsRequest> {
+export function onGetUserFriendsRequest(
+  userId: string
+): Action<GetUserFriendsRequest> {
   return {
-    type: types.USER_FRIENDS_REQUEST,
+    type: types.GET_USER_FRIENDS_REQUEST,
     payload: {
       userId: userId,
     },
   };
 }
 
-export function onUserFriendsResponse(
-  response: FriendsResponse
-): Action<FriendsResponse> {
+export function onGetUserFriendsResponse(
+  response: GetUserFriendsResponse
+): Action<GetUserFriendsResponse> {
   return {
-    type: types.USER_FRIENDS_RESPONSE,
+    type: types.GET_USER_FRIENDS_RESPONSE,
     payload: {
       success: response.success,
       userId: response.userId,
       friends: response.friends,
+    },
+  };
+}
+
+export function onGetUserFriendsFail(): Action<GetUserFriendsResponse> {
+  return {
+    type: types.GET_USER_FRIENDS_FAIL,
+    payload: {
+      success: false,
+      userId: "-1",
+      friends: [],
+    },
+  };
+}
+
+export function onAddFriendRequest(
+  userId: string,
+  friendId: string,
+  friendName: string
+): Action<AddFriendRequest> {
+  return {
+    type: types.ADD_FRIEND_REQUEST,
+    payload: {
+      userId: userId,
+      friendId: friendId,
+      friendName: friendName,
+    },
+  };
+}
+
+export function onAddFriendResponse(
+  response: AddFriendResponse
+): Action<AddFriendResponse> {
+  return {
+    type: types.ADD_FRIEND_RESPONSE,
+    payload: {
+      success: response.success,
+      friend: response.friend,
+    },
+  };
+}
+
+export function onAddFriendFail(): Action<AddFriendResponse> {
+  return {
+    type: types.ADD_FRIEND_FAIL,
+    payload: {
+      success: false,
+      friend: {
+        id: "-1",
+        friendId: "-1",
+        friendName: "",
+      },
     },
   };
 }
@@ -44,6 +104,16 @@ export function onDeleteFriendResponse(
     payload: {
       success: response.success,
       id: response.id,
+    },
+  };
+}
+
+export function onDeleteFriendFail(): Action<DeleteFriendResponse> {
+  return {
+    type: types.DELETE_USER_FRIEND_FAIL,
+    payload: {
+      success: false,
+      id: "-1",
     },
   };
 }

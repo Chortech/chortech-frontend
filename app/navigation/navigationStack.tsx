@@ -1,38 +1,28 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { useSelector } from "react-redux";
-
 import { navigationRef } from "./navigationService";
-
 import Login from "../screens/Login";
 import ResetPassword from "../screens/ResetPassword";
 import CodeVerification from "../screens/CodeVerification";
 import SignUp from "../screens/SignUp";
 import AccountIdentification from "../screens/AccountIdentification";
-
 import FriendList from "../screens/FriendList";
 import Friend from "../screens/Friend";
 import InviteFriend from "../screens/InviteFriend";
-
 import GroupList from "../screens/GroupList";
 import Group from "../screens/Group";
 import AddGroup from "../screens/AddGroup";
-
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
 import AddExpense from "../screens/AddExpense";
-
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
-
 import { StatusBar } from "react-native";
-import { ILoginState } from "../models/reducers/login";
-import LoadingIndicator from "../screens/Loading";
+import { IUserState } from "../models/reducers/default";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -43,7 +33,7 @@ const ActivityStack = createStackNavigator();
 const LoadingStack = createStackNavigator();
 
 interface IState {
-  authReducer: ILoginState;
+  authReducer: IUserState;
 }
 
 const AuthNavigator = () => {
@@ -97,33 +87,43 @@ const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
     activeColor="#f0edf6"
     inactiveColor="black"
-    barStyle={{ backgroundColor: '#22855a' }}
+    barStyle={{ backgroundColor: "#22855a" }}
     initialRouteName="گروه‌ها"
-    screenOptions={({ route }) => ({
-      
-    })}
-    >
-    <LoggedInTab.Screen  name="FriendList" component={FriendNavigator}        
-     options={{
-          tabBarLabel: 'دوستان',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="nature-people" color={color} size={26} />
-          ),
-        }}/>
-    <LoggedInTab.Screen name="GroupList" component={GroupNavigator} 
-    options={{
-      tabBarLabel: 'گروه‌ها',
-      tabBarIcon: ({ color }) => (
-        <MaterialCommunityIcons name="home-group" color={color} size={26} />
-      ),
-    }}/>
-    <LoggedInTab.Screen name="ActivityList" component={ActivityNavigator} 
-    options={{
-      tabBarLabel: 'فعالیت‌ها',
-      tabBarIcon: ({ color }) => (
-        <MaterialCommunityIcons name="cart" color={color} size={26} />
-      ),
-    }}/>
+    screenOptions={({ route }) => ({})}>
+    <LoggedInTab.Screen
+      name="FriendList"
+      component={FriendNavigator}
+      options={{
+        tabBarLabel: "دوستان",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons
+            name="nature-people"
+            color={color}
+            size={26}
+          />
+        ),
+      }}
+    />
+    <LoggedInTab.Screen
+      name="GroupList"
+      component={GroupNavigator}
+      options={{
+        tabBarLabel: "گروه‌ها",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="home-group" color={color} size={26} />
+        ),
+      }}
+    />
+    <LoggedInTab.Screen
+      name="ActivityList"
+      component={ActivityNavigator}
+      options={{
+        tabBarLabel: "فعالیت‌ها",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="cart" color={color} size={26} />
+        ),
+      }}
+    />
   </LoggedInTab.Navigator>
 );
 

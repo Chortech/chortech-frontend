@@ -1,4 +1,5 @@
-import { request, GraphQLClient, gql } from "graphql-request";
+import { GraphQLClient } from "graphql-request";
+import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { AuthApi } from "../../../models/api/auth";
 import { GroupApi } from "../../../models/api/group";
 import { LoginResponse } from "../../../models/responses/login";
@@ -6,50 +7,44 @@ import { SignUpResponse } from "../../../models/responses/signUp";
 import * as queries from "./queries";
 import * as mutations from "./mutations";
 import {
-  addGroupResponse,
-  deleteGroupResponse,
-  getGroupByIdResponse,
+  AddGroupResponse,
+  DeleteGroupResponse,
+  GetGroupByIdResponse,
   GetUserGroupsResponse,
-  updateGroupResponse,
+  UpdateGroupResponse,
 } from "../../../models/responses/group";
-import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { InputType } from "../../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../../../models/responses/identify";
+import { IdentifyAccountResponse } from "../../../models/responses/identifyAccount";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
-import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 import { ActivityApi } from "../../../models/api/activity";
-import { Debt } from "../../../models/other/Debt";
-import { Expense } from "../../../models/other/Expense";
 import { FriendsApi } from "../../../models/api/friend";
-import { FriendsResponse } from "../../../models/responses/getFriends";
+import {
+  GetUserFriendsResponse,
+  UserByFilterResponse,
+  GetUserResponse,
+  UpdateUserResponse,
+  GetUserActivitiesResponse,
+} from "../../../models/responses/user";
 import { Friend } from "../../../models/other/Friend";
 import { Group } from "../../../models/other/Group";
-import { FriendsRequest } from "../../../models/requests/getFriends";
-import { UserByFilterResponse } from "../../../models/responses/userByFilter";
 import { User } from "../../../models/other/User";
-import { AddFriendResponse } from "../../../models/responses/addFriend";
-import { DeleteFriendResponse } from "../../../models/responses/deleteFriend";
-import { UserApi } from "../../../models/api/user";
-import { FetchUserResponse } from "../../../models/responses/getUser";
-import { UpdateUserResponse } from "../../../models/responses/updateUser";
 import {
-  DELETE_GTOUP_REQUEST,
-  GET_USER_GROUPS_REQUEST,
-  GET_USER_GROUPS_RESPONSE,
-  UPDATE_GROUP_REQUEST,
-} from "../../../store/actions/types";
-import { AddActivityResponse } from "../../../models/responses/addActivityResponse";
-import { AddExpenseResponse } from "../../../models/responses/addExpenseResponse";
-import { Participant } from "../../../models/other/Participant";
-import { AddParticipantResponse } from "../../../models/responses/addParticipantResponse";
-import { AddDebtResponse } from "../../../models/responses/addDebtResponse";
-import { GetUserActivitiesResponse } from "../../../models/responses/getUserActivities";
+  AddFriendResponse,
+  DeleteFriendResponse,
+} from "../../../models/responses/friend";
+import { UserApi } from "../../../models/api/user";
+import {
+  AddActivityResponse,
+  AddDebtResponse,
+  AddExpenseResponse,
+  AddParticipantResponse,
+  DeleteActivityResponse,
+  DeleteDebtResponse,
+  DeleteExpenseResponse,
+  DeleteParticipantResponse,
+} from "../../../models/responses/activity";
 import { Activity } from "../../../models/other/Activity";
-import { DeleteParticipantResponse } from "../../../models/responses/deleteParticipant";
-import { DeleteActivityResponse } from "../../../models/responses/deleteActivity";
-import { DeleteExpenseResponse } from "../../../models/responses/deleteExpense";
-import { DeleteDebtResponse } from "../../../models/responses/deleteDebt";
 
 class GraphQLApi
   implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
@@ -128,21 +123,25 @@ class GraphQLApi
   }
 
   async addExpense(
+    userId: string,
+    activityName: string,
     description: string,
     category: string,
     totalPrice: string
   ): Promise<AddExpenseResponse> {
     let data: any = await this.client.request(mutations.ADD_EXPENSE, {
+      userId: userId,
+      activityName: activityName,
       description: description,
       category: category,
       totalPrice: Number(totalPrice),
     });
-    data = data.createExpense;
+    data = data.createActivity;
     let successful: boolean = data != null;
     let id: string = "-1";
 
     if (successful) {
-      id = data._id.toString();
+      id = data.expense._id.toString();
     }
 
     return {
@@ -152,12 +151,16 @@ class GraphQLApi
   }
 
   async addDebt(
+    userId: string,
+    activityName: string,
     description: string,
     category: string,
     debt: number,
     creditorId: string
   ): Promise<AddDebtResponse> {
     let data: any = await this.client.request(mutations.ADD_DEBT, {
+      userId: userId,
+      activityName: activityName,
       description: description,
       category: category,
       debt: debt,
@@ -168,7 +171,7 @@ class GraphQLApi
     let id: string = "-1";
 
     if (successful) {
-      id = data._id.toString();
+      id = data.debt._id.toString();
     }
 
     return {
@@ -210,18 +213,20 @@ class GraphQLApi
     let activities: Array<Activity> = [];
     let id: string = "-1";
     if (successful) {
-      id = data._id;
+      id = data._id.toString();
       data.activities.data.forEach((element: any) => {
-        let activity: Activity = {
-          id: element._id.toString(),
-          name: element.name.toString(),
-          type: element.type.toString(),
-          userId: element.user._id.toString(),
-          expenseId:
-            element.expense != null ? element.expense._id.toString() : "-1",
-          debtId: element.debt != null ? element.debt._id.toString() : "-1",
-        };
-        activities.push(activity);
+        if (element != null) {
+          let activity: Activity = {
+            id: element._id.toString(),
+            name: element.name,
+            type: element.type,
+            userId: element.user._id.toString(),
+            expenseId:
+              element.expense != null ? element.expense._id.toString() : "-1",
+            debtId: element.debt != null ? element.debt._id.toString() : "-1",
+          };
+          activities.push(activity);
+        }
       });
     }
     return {
@@ -291,7 +296,7 @@ class GraphQLApi
     return response;
   }
 
-  async getUser(id: string): Promise<FetchUserResponse> {
+  async getUser(id: string): Promise<GetUserResponse> {
     let data: any = await this.client.request(queries.COMPLETE_USER_BY_ID, {
       userId: id,
     });
@@ -350,7 +355,7 @@ class GraphQLApi
     };
   }
 
-  async getUserFriends(userId: string): Promise<FriendsResponse> {
+  async getUserFriends(userId: string): Promise<GetUserFriendsResponse> {
     let data: any = await this.client.request(queries.USER_FRIENDS, {
       userId: userId,
     });
@@ -361,11 +366,13 @@ class GraphQLApi
     if (successful) {
       let friend: Friend;
       data.friends.data.forEach((element: any) => {
-        friend = {
-          id: element._id.toString(),
-          friendId: element.friendId,
-          friendName: element.friendName,
-        };
+        if (element != null) {
+          friend = {
+            id: element._id.toString(),
+            friendId: element.friendId,
+            friendName: element.friendName,
+          };
+        }
         friends.push(friend);
       });
     }
@@ -428,7 +435,7 @@ class GraphQLApi
     let friends = await this.client.request(queries.USER_FRIENDS, {
       userId: userId,
     });
-    friends = friends.findUserByID;
+    friends = friends.findUserByID.friends;
     let response: AddFriendResponse = {
       success: false,
       friend: {
@@ -453,21 +460,15 @@ class GraphQLApi
           userId: userId,
         });
         data = data.createFriend;
-
-        console.log(
-          "add friend response data: " + JSON.stringify(data, undefined, 2)
-        );
         let successful: boolean = data != null;
-        let fetchedFriend: Friend = {
-          id: "-1",
-          friendId: "-1",
-          friendName: "",
-        };
         if (successful) {
-          fetchedFriend = {
-            id: data._id.toString(),
-            friendId: data.friendId,
-            friendName: data.friendName,
+          response = {
+            success: successful,
+            friend: {
+              id: data._id.toString(),
+              friendId: data.friendId,
+              friendName: data.friendName,
+            },
           };
         }
       } else {
@@ -515,11 +516,29 @@ class GraphQLApi
       data = data.UserByPhone;
     }
 
-    let responsePassword = data != null ? data.password : "";
+    let successful: boolean = data != null;
+    let user: User | null = null;
+    if (successful) {
+      let responsePassword = data.password;
+      if (responsePassword === password) {
+        user = {
+          id: data._id.toString(),
+          name: data.name != null ? data.name : "",
+          password: data.password,
+          email: data.email != null ? data.email : "",
+          phone: data.phone != null ? data.phone : "",
+          credit: data.credit != null ? data.credit : 0,
+          balance: data.balance != null ? data.balance : 0,
+          friends: [],
+          groups: [],
+          activities: [],
+        };
+      }
+    }
 
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: password === responsePassword,
+      success: successful,
+      user: user,
     };
   }
 
@@ -537,10 +556,26 @@ class GraphQLApi
       phone: inputType == InputType.Phone ? phone : null,
     });
     data = data.createUser;
+    let successful: boolean = data != null;
+    let user: User | null = null;
+    if (successful) {
+      user = {
+        id: data._id.toString(),
+        name: data.name,
+        password: data.password,
+        email: inputType == InputType.Email ? data.email : "",
+        phone: inputType == InputType.Phone ? data.phone : "",
+        credit: 0,
+        balance: 0,
+        friends: [],
+        groups: [],
+        activities: [],
+      };
+    }
 
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: data != null,
+      success: successful,
+      user: user,
     };
   }
 
@@ -597,18 +632,23 @@ class GraphQLApi
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<addGroupResponse> {
+  ): Promise<AddGroupResponse> {
     let data = await this.client.request(mutations.ADD_Group, {
       name: name,
-      creator: creator,
-      members: members,
+      creatorId: creator,
+      membersIds: members,
     });
     data = JSON.parse(JSON.stringify(data));
-    data = data.findGroupByID;
+    data = data.createGroup;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+    if (successful) {
+      id = data._id.toString();
+    }
 
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: data != null,
+      success: successful,
+      id: id,
     };
   }
 
@@ -617,45 +657,87 @@ class GraphQLApi
     name: string,
     creator: string,
     members: Array<string>
-  ): Promise<updateGroupResponse> {
-    let data = await this.client.request(UPDATE_GROUP_REQUEST, {
+  ): Promise<UpdateGroupResponse> {
+    let data = await this.client.request(mutations.UPDATE_GROUP, {
       groupId: groupId,
       name: name,
       creator: creator,
       members: members,
     });
     data = JSON.parse(JSON.stringify(data));
-    data = data.findGroupByID;
+    data = data.updateGroup;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+    if (successful) {
+      id = data._id.toString();
+    }
 
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: data != null,
+      success: successful,
+      id: id,
     };
   }
-  async deleteGroup(groupId: string): Promise<deleteGroupResponse> {
-    let data = await this.client.request(DELETE_GTOUP_REQUEST, {
+  async deleteGroup(groupId: string): Promise<DeleteGroupResponse> {
+    let data = await this.client.request(mutations.DELETE_GROUP, {
       groupId: groupId,
     });
     data = JSON.parse(JSON.stringify(data));
-    data = data.findGroupByID;
+    data = data.deleteGroup;
+    let successful: boolean = data != null;
+    let id: string = "-1";
+    if (successful) {
+      id = data._id.toString();
+    }
 
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: data != null,
+      success: successful,
+      id: id,
     };
   }
 
-  async getGroupById(groupId: string): Promise<getGroupByIdResponse> {
+  async getGroupById(groupId: string): Promise<GetGroupByIdResponse> {
     let data = await this.client.request(queries.GET_GROUP_BY_ID, {
       groupId: groupId,
     });
     data = JSON.parse(JSON.stringify(data));
     data = data.findGroupByID;
 
+    let successful: boolean = data != null;
+    let id: string = "-1";
+    let group: Group = {
+      id: "-1",
+      name: "",
+      creatorId: "-1",
+      membersIds: [],
+      activitiesIds: [],
+    };
+    if (successful) {
+      id = data._id.toString();
+      let activityIds: Array<string> = [];
+      let memberIds: Array<string> = [];
+      if (data.members.length > 0) {
+        data.members.data.forEach((element: any) => {
+          memberIds.push(element._id.toString());
+        });
+      }
+      if (data.activities.length > 0) {
+        data.members.data.forEach((element: any) => {
+          activityIds.push(element._id.toString());
+        });
+      }
+      group = {
+        id: id,
+        name: data.name,
+        creatorId: data.creator._id.toString(),
+        membersIds: memberIds,
+        activitiesIds: activityIds,
+      };
+    }
+
     return {
-      id: data != null ? data._id.toString() : "-1",
-      success: data != null,
-      group: data.group,
+      id: id,
+      success: successful,
+      group: group,
     };
   }
 
@@ -672,21 +754,23 @@ class GraphQLApi
       let group: Group;
       data.groups.data.forEach((element: any) => {
         let groupMembers: Array<string> = [];
-        element.members.data.forEach((member: any) => {
-          groupMembers.push(member._id.toString());
-        });
-        let groupActivities: Array<string> = [];
-        element.activities.data.forEach((activity: any) => {
-          groupActivities.push(activity._id.toString());
-        });
-        group = {
-          id: element._id.toString(),
-          name: element.name,
-          creatorId: element.creator._id,
-          membersIds: groupMembers,
-          activitiesIds: groupActivities,
-        };
-        groups.push(group);
+        if (element != null) {
+          element.members.data.forEach((member: any) => {
+            groupMembers.push(member._id.toString());
+          });
+          let groupActivities: Array<string> = [];
+          element.activities.data.forEach((activity: any) => {
+            groupActivities.push(activity._id.toString());
+          });
+          group = {
+            id: element._id.toString(),
+            name: element.name,
+            creatorId: element.creator._id,
+            membersIds: groupMembers,
+            activitiesIds: groupActivities,
+          };
+          groups.push(group);
+        }
       });
     }
     return {
@@ -695,8 +779,6 @@ class GraphQLApi
       groups: groups,
     };
   }
-
-  // async addParticipant()
 
   //#endregion group
 }

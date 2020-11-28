@@ -15,18 +15,19 @@ import * as groupSaga from "./groupSaga";
 export default function* watch() {
   yield all([
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
-    takeLatest(types.IDENTIFY_REQUEST, identifyAccountSaga),
+    takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, identifyAccountSaga),
     takeLatest(types.GENERATE_CODE_REQUEST, generateCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, resetPasswordSaga),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
-    takeLatest(types.USER_FRIENDS_REQUEST, friendSaga.userFriendsSaga),
-    takeLatest(types.DELETE_USER_FRIEND_REQUEST, friendSaga.deleteUserFriend),
-    takeLatest(types.FETCH_USER_REQUEST, userSaga.fetchUserAsync),
+    takeLatest(types.GET_USER_FRIENDS_REQUEST, friendSaga.getUserFriendsAsync),
+    takeLatest(types.ADD_FRIEND_REQUEST, friendSaga.addFriendAsync),
+    takeLatest(types.DELETE_USER_FRIEND_REQUEST, friendSaga.deleteFriendAsync),
+    takeLatest(types.GET_USER_REQUEST, userSaga.fetchUserAsync),
     takeLatest(types.UPDATE_USER_REQUEST, userSaga.updateUserAsync),
     takeLatest(types.ADD_GROUP_REQUEST, groupSaga.addGroupAsync),
     takeLatest(types.UPDATE_GROUP_REQUEST, groupSaga.updateGroupAsync),
-    takeLatest(types.DELETE_GTOUP_REQUEST, groupSaga.deleteGroupAsync),
-    takeLatest(types.GET_GROUP_BY_ID, groupSaga.getGroupByIdAsync),
+    takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.deleteGroupAsync),
+    takeLatest(types.GET_GROUP_BY_ID_REQUEST, groupSaga.getGroupByIdAsync),
     takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.getUserGroups),
     takeLatest(types.ADD_ACTIVITY_REQUEST, activitySaga.addActivityAsync),
     takeLatest(types.ADD_EXPENSE_REQUEST, activitySaga.addExpenseAsync),
@@ -38,6 +39,10 @@ export default function* watch() {
     takeLatest(
       types.DELETE_PARTICIPANT_REQUEST,
       activitySaga.deleteParticipantAsync
+    ),
+    takeLatest(
+      types.GET_USER_ACTIVITIES_REQUEST,
+      userSaga.getUserActivitiesAsync
     ),
   ]);
 }

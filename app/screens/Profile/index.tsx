@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { Button } from 'react-native-paper';
+import { Button } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
-import { ILoginState } from "../../models/reducers/login";
 import * as userActions from "../../store/actions/userActions";
-import * as authActions from '../../store/actions/authActions';
+import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
@@ -16,15 +15,13 @@ type IState = {
 };
 
 const Profile: React.FC = (): JSX.Element => {
-  const loggedInUser: ILoginState = useStore().getState()["authReducer"];
-  console.log(loggedInUser.id);
-  const onLogout = () => dispatch(authActions.logOut());
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const onLogout = () => dispatch(authActions.onLogout());
   const user = useSelector((state: IState) => state.userReducer);
-  console.log(JSON.stringify(user, undefined, 2));
   const dispatch = useDispatch();
 
   const fetchUser = () => {
-    dispatch(userActions.onFetchUserRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
@@ -32,12 +29,6 @@ const Profile: React.FC = (): JSX.Element => {
   useEffect(() => {
     fetchUser();
   }, []);
-
-  // const [data, setData] = useState({
-  //   name: user.name == "" ? "-" : user.name,
-  //   email: user.email == "" ? "-" : user.email,
-  //   phone: user.phone == "" ? "-" : user.phone,
-  // });
 
   return (
     <>
@@ -86,7 +77,9 @@ const Profile: React.FC = (): JSX.Element => {
             </View>
           </Animatable.View>
           <View>
-            <Button icon="logout" mode="outlined" onPress={onLogout}>Logout</Button>
+            <Button icon="logout" mode="outlined" onPress={onLogout}>
+              Logout
+            </Button>
           </View>
         </View>
       )}

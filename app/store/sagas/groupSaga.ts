@@ -1,123 +1,145 @@
 import { put } from "redux-saga/effects";
 import { Alert, ToastAndroid } from "react-native";
-// import { delay } from 'redux-saga';
-
 import { Action } from "../../models/actions/action";
 import { Api } from "../../services/api/graphQL/graphqlApi";
-
-import { DefaultResponse } from "../../models/responses/default";
-import { AddGroupRequest, UpdateGroupRequest, DeleteGroupRequest,
-   GetGroupByIdRequest, GetUserGroupsRequest } from "../../models/requests/group";
-import { GetUserGroupsResponse } from "../../models/responses/group";
-import * as groupActions from "../actions/groupActions"
+import {
+  AddGroupRequest,
+  UpdateGroupRequest,
+  DeleteGroupRequest,
+  GetGroupByIdRequest,
+  GetUserGroupsRequest,
+} from "../../models/requests/group";
+import {
+  AddGroupResponse,
+  DeleteGroupResponse,
+  GetGroupByIdResponse,
+  GetUserGroupsResponse,
+  UpdateGroupResponse,
+} from "../../models/responses/group";
+import * as groupActions from "../actions/groupActions";
+import { navigationRef } from "../../navigation/navigationService";
 
 export function* addGroupAsync(action: Action<AddGroupRequest>) {
+  yield put(groupActions.onLoadingEnable());
   const { name, creator, members } = action.payload;
-  let response: DefaultResponse = {
+  let response: AddGroupResponse = {
     id: "-1",
     success: false,
-    data:null,
   };
 
   try {
     response = yield Api.addGroup(name, creator, members);
-    console.log("add group reponse: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(groupActions.onLoadingDisable());
+
   if (response.success) {
-  console.log("saga: add group")
+    yield put(groupActions.onAddGroupResponse(response));
+    navigationRef.current?.goBack();
   } else {
+    yield put(groupActions.onAddGroupFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
 
 export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
+  yield put(groupActions.onLoadingEnable());
   const { groupId, name, creator, members } = action.payload;
-  let response: DefaultResponse = {
+  let response: UpdateGroupResponse = {
     id: "-1",
     success: false,
-    data:null,
   };
 
   try {
     response = yield Api.updateGroup(groupId, name, creator, members);
-    console.log("update group reponse: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(groupActions.onLoadingDisable());
   if (response.success) {
-  console.log("saga: update group")
+    yield put(groupActions.onUpdateGroupResponse(response));
   } else {
+    yield put(groupActions.onUpdateGroupFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
-  
+
 export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
+  yield put(groupActions.onLoadingEnable());
   const { groupId } = action.payload;
-  let response: DefaultResponse = {
+  let response: DeleteGroupResponse = {
     id: "-1",
     success: false,
-    data:null,
   };
 
   try {
     response = yield Api.deleteGroup(groupId);
-    console.log("delete group reponse: " + response);
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(groupActions.onLoadingDisable());
   if (response.success) {
-  console.log("saga: group deleted")
+    yield put(groupActions.onDeleteGroupResponse(response));
+    navigationRef.current?.goBack();
   } else {
+    yield put(groupActions.onDeleteGroupFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
 
 export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
+  yield put(groupActions.onLoadingEnable());
   const { groupId } = action.payload;
-  let response: DefaultResponse = {
+  let response: GetGroupByIdResponse = {
     id: "-1",
     success: false,
-    data:null,
+    group: {
+      id: "-1,",
+      name: "",
+      creatorId: "-1",
+      membersIds: [],
+      activitiesIds: [],
+    },
   };
 
   try {
     response = yield Api.getGroupById(groupId);
-    console.log("get group reponse: " + JSON.stringify(response));
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
-
+  yield put(groupActions.onLoadingDisable());
   if (response.success) {
-  console.log("saga: group added")
+    yield put(groupActions.onGetGroupByIdResponse(response));
   } else {
+    yield put(groupActions.onGetGroupByIdFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
 
 export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
+  yield put(groupActions.onLoadingEnable());
   const { userId } = action.payload;
   let response: GetUserGroupsResponse = {
     userId: "-1",
     success: false,
-    groups: null,
+    groups: [],
   };
 
   try {
     response = yield Api.getUserGroups(userId);
-    console.log("get group reponse: " + JSON.stringify(response));
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    console.error(JSON.stringify(error, undefined, 2));
   }
 
+  yield put(groupActions.onLoadingDisable());
   if (response.success) {
-    yield put(groupActions.getUserGroupsResponse(response))
-    console.log("saga: get groups")
+    yield put(groupActions.onGetUserGroupsResponse(response));
   } else {
+    yield put(groupActions.onGetUserGroupsFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

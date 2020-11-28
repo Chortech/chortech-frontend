@@ -6,7 +6,7 @@ import { LoginResponse } from "../../models/responses/login";
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
 
-export function requestLogin(
+export function onLoginRequest(
   email: string,
   phone: string,
   password: string,
@@ -15,10 +15,10 @@ export function requestLogin(
   return {
     type: types.LOGIN_REQUEST,
     payload: {
-      email,
-      phone,
-      password,
-      inputType,
+      email: email,
+      phone: phone,
+      password: password,
+      inputType: inputType,
     },
   };
 }
@@ -32,24 +32,27 @@ export function onLoginResponse(
   };
 }
 
-export function loginFailed(): Action<LoginResponse> {
+export function onLoginFail(): Action<LoginResponse> {
   return {
-    type: types.LOGIN_FAILED,
+    type: types.LOGIN_FAIL,
     payload: {
-      id: "-1",
       success: false,
+      user: null,
     },
   };
 }
 
-export function logOut(): Action<any> {
+export function onLogout(): Action<LoginResponse> {
   return {
     type: types.LOG_OUT,
-    payload: {},
+    payload: {
+      success: false,
+      user: null,
+    },
   };
 }
 
-export function requestSignUp(
+export function onSignUpRequest(
   name: string,
   email: string,
   phone: string,
@@ -59,11 +62,11 @@ export function requestSignUp(
   return {
     type: types.SIGNUP_REQUEST,
     payload: {
-      name,
-      email,
-      phone,
-      password,
-      inputType,
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+      inputType: inputType,
     },
   };
 }

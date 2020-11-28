@@ -1,12 +1,14 @@
-import { DeleteDebtRequest } from "../requests/deleteDebt";
-import { AddActivityResponse } from "../responses/addActivityResponse";
-import { AddDebtResponse } from "../responses/addDebtResponse";
-import { AddExpenseResponse } from "../responses/addExpenseResponse";
-import { AddParticipantResponse } from "../responses/addParticipantResponse";
-import { DeleteActivityResponse } from "../responses/deleteActivity";
-import { DeleteExpenseResponse } from "../responses/deleteExpense";
-import { DeleteParticipantResponse } from "../responses/deleteParticipant";
-import { GetUserActivitiesResponse } from "../responses/getUserActivities";
+import { DeleteDebtRequest } from "../requests/activity";
+import {
+  AddActivityResponse,
+  AddExpenseResponse,
+  AddDebtResponse,
+  AddParticipantResponse,
+  DeleteActivityResponse,
+  DeleteExpenseResponse,
+  DeleteParticipantResponse,
+} from "../responses/activity";
+import { GetUserActivitiesResponse } from "../responses/user";
 
 export interface ActivityApi {
   addActivity(
@@ -18,12 +20,16 @@ export interface ActivityApi {
   ): Promise<AddActivityResponse>;
 
   addExpense(
+    userId: string,
+    activityName: string,
     description: string,
     category: string,
     totalPrice: string
   ): Promise<AddExpenseResponse>;
 
   addDebt(
+    userId: string,
+    activityName: string,
     description: string,
     category: string,
     debt: number,

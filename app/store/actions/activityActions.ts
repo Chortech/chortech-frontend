@@ -1,25 +1,28 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
-import { AddActivityRequest } from "../../models/requests/addActivityRequest";
-import { AddActivityResponse } from "../../models/responses/addActivityResponse";
-import { Participant } from "../../models/other/Participant";
-import { AddExpenseRequest } from "../../models/requests/addExpenseRequest";
-import { AddExpenseResponse } from "../../models/responses/addExpenseResponse";
-import { AddParticipantResponse } from "../../models/responses/addParticipantResponse";
-import { AddParticipantRequest } from "../../models/requests/addParticipantRequest";
-import { AddDebtRequest } from "../../models/requests/addDebtRequest";
-import { AddDebtResponse } from "../../models/responses/addDebtResponse";
-import { DeleteActivityRequest } from "../../models/requests/deleteActivity";
-import { DeleteActivityResponse } from "../../models/responses/deleteActivity";
-import { DeleteFriendResponse } from "../../models/responses/deleteFriend";
-import { DeleteExpenseRequest } from "../../models/requests/deleteExpense";
-import { DeleteExpenseResponse } from "../../models/responses/deleteExpense";
-import { DeleteDebtRequest } from "../../models/requests/deleteDebt";
-import { DeleteDebtResponse } from "../../models/responses/deleteDebt";
-import { DeleteParticipantRequest } from "../../models/requests/deleteParticipant";
-import { DeleteParticipantResponse } from "../../models/responses/deleteParticipant";
+import {
+  AddActivityRequest,
+  AddExpenseRequest,
+  AddDebtRequest,
+  AddParticipantRequest,
+  DeleteActivityRequest,
+  DeleteExpenseRequest,
+  DeleteDebtRequest,
+  DeleteParticipantRequest,
+} from "../../models/requests/activity";
+import {
+  AddActivityResponse,
+  AddExpenseResponse,
+  AddDebtResponse,
+  AddParticipantResponse,
+  DeleteActivityResponse,
+  DeleteExpenseResponse,
+  DeleteDebtResponse,
+  DeleteParticipantResponse,
+} from "../../models/responses/activity";
+import { DeleteFriendResponse } from "../../models/responses/friend";
 
-export function requestAddActivity(
+export function onAddActivityRequest(
   userId: string,
   type: string,
   groupId?: string,
@@ -57,6 +60,118 @@ export function onAddActivityFail(): Action<AddActivityResponse> {
   };
 }
 
+export function onAddExpenseRequest(
+  userId: string,
+  activityName: string,
+  description: string,
+  category: string,
+  totalPrice: string
+): Action<AddExpenseRequest> {
+  return {
+    type: types.ADD_EXPENSE_REQUEST,
+    payload: {
+      userId: userId,
+      activityName: activityName,
+      description: description,
+      category: category,
+      totalPrice: totalPrice,
+    },
+  };
+}
+
+export function onAddExpenseResponse(
+  response: AddExpenseResponse
+): Action<AddExpenseResponse> {
+  return {
+    type: types.ADD_EXPENSE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onAddExpenseFail(): Action<AddExpenseResponse> {
+  return {
+    type: types.ADD_EXPENSE_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
+export function onAddDebtRequest(
+  userId: string,
+  activityName: string,
+  description: string,
+  category: string,
+  debt: number,
+  creditorId: string
+): Action<AddDebtRequest> {
+  return {
+    type: types.ADD_DEBT_REQUEST,
+    payload: {
+      userId: userId,
+      activityName: activityName,
+      description: description,
+      category: category,
+      debt: debt,
+      creditorId: creditorId,
+    },
+  };
+}
+
+export function onAddDebtResponse(
+  response: AddDebtResponse
+): Action<AddDebtResponse> {
+  return {
+    type: types.ADD_DEBT_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onAddDebtFail(): Action<AddDebtResponse> {
+  return {
+    type: types.ADD_DEBT_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
+export function onAddParticipantRequest(
+  expenseId: string,
+  userId: string,
+  share: number
+): Action<AddParticipantRequest> {
+  return {
+    type: types.ADD_PARTICIPANT_REQUEST,
+    payload: {
+      expenseId,
+      userId,
+      share,
+    },
+  };
+}
+
+export function onAddParticipantResponse(
+  response: AddParticipantResponse
+): Action<AddParticipantResponse> {
+  return {
+    type: types.ADD_PARTICIPANT_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onAddParticipantFail(): Action<AddParticipantResponse> {
+  return {
+    type: types.ADD_PARTICIPANT_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
 export function onDeleteActivityRequest(
   id: string
 ): Action<DeleteActivityRequest> {
@@ -76,6 +191,16 @@ export function onDeleteActivityResponse(
     payload: {
       id: response.id,
       success: response.success,
+    },
+  };
+}
+
+export function onDeleteActivityFail(): Action<DeleteActivityResponse> {
+  return {
+    type: types.DELETE_ACTIVITY_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
     },
   };
 }
@@ -103,6 +228,16 @@ export function onDeleteExpenseResponse(
   };
 }
 
+export function onDeleteExpenseFail(): Action<DeleteExpenseResponse> {
+  return {
+    type: types.DELETE_EXPENSE_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
 export function onDeleteDebtRequest(id: string): Action<DeleteDebtRequest> {
   return {
     type: types.DELETE_DEBT_REQUEST,
@@ -120,6 +255,16 @@ export function onDeleteDebtResponse(
     payload: {
       id: response.id,
       success: response.success,
+    },
+  };
+}
+
+export function onDeleteDebtFail(): Action<DeleteDebtResponse> {
+  return {
+    type: types.DELETE_DEBT_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
     },
   };
 }
@@ -147,103 +292,9 @@ export function onDeleteParticipantResponse(
   };
 }
 
-export function requestAddExpense(
-  description: string,
-  category: string,
-  totalPrice: string
-): Action<AddExpenseRequest> {
+export function onDeleteParticipantFail(): Action<DeleteParticipantResponse> {
   return {
-    type: types.ADD_EXPENSE_REQUEST,
-    payload: {
-      description,
-      category,
-      totalPrice,
-    },
-  };
-}
-
-export function onAddExpenseResponse(
-  response: AddExpenseResponse
-): Action<AddExpenseResponse> {
-  return {
-    type: types.ADD_EXPENSE_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onAddExpenseFail(): Action<AddExpenseResponse> {
-  return {
-    type: types.ADD_EXPENSE_FAIL,
-    payload: {
-      id: "-1",
-      success: false,
-    },
-  };
-}
-
-export function requestAddDebt(
-  description: string,
-  category: string,
-  debt: number,
-  creditorId: string
-): Action<AddDebtRequest> {
-  return {
-    type: types.ADD_DEBT_REQUEST,
-    payload: {
-      description,
-      category,
-      debt,
-      creditorId,
-    },
-  };
-}
-
-export function onAddDebtResponse(
-  response: AddDebtResponse
-): Action<AddDebtResponse> {
-  return {
-    type: types.ADD_DEBT_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onAddDebtFail(): Action<AddDebtResponse> {
-  return {
-    type: types.ADD_DEBT_FAIL,
-    payload: {
-      id: "-1",
-      success: false,
-    },
-  };
-}
-
-export function requestAddParticipant(
-  expenseId: string,
-  userId: string,
-  share: number
-): Action<AddParticipantRequest> {
-  return {
-    type: types.ADD_PARTICIPANT_REQUEST,
-    payload: {
-      expenseId,
-      userId,
-      share,
-    },
-  };
-}
-
-export function onAddParticipantResponse(
-  response: AddParticipantResponse
-): Action<AddParticipantResponse> {
-  return {
-    type: types.ADD_PARTICIPANT_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onAddParticipantFail(): Action<AddParticipantResponse> {
-  return {
-    type: types.ADD_PARTICIPANT_FAIL,
+    type: types.DELETE_PARTICIPANT_FAIL,
     payload: {
       id: "-1",
       success: false,

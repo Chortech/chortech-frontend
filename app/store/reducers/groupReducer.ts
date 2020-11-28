@@ -11,15 +11,24 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/group";
-import { GetUserGroupsResponse } from "../../models/responses/group";
+import {
+  AddGroupResponse,
+  DeleteGroupResponse,
+  GetGroupByIdResponse,
+  GetUserGroupsResponse,
+  UpdateGroupResponse,
+} from "../../models/responses/group";
+import { InputType } from "../../utils/inputTypes";
 
 const initialState: IUserState = {
+  isLoggedIn: true,
   loading: false,
   id: "-1",
   name: "",
   password: "",
   email: "",
   phone: "",
+  authInputType: InputType.None,
   credit: 0,
   balance: 0,
   friends: [],
@@ -32,33 +41,70 @@ export const groupReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<AddGroupRequest>
   ) {
-    return {
-      ...state,
-    };
+    return state;
+  },
+  [types.ADD_GROUP_RESPONSE](
+    state: IUserState,
+    action: Action<AddGroupResponse>
+  ) {
+    return state;
+  },
+  [types.ADD_GROUP_FAIL](state: IUserState, action: Action<AddGroupResponse>) {
+    return state;
   },
   [types.UPDATE_GROUP_REQUEST](
     state: IUserState,
     action: Action<UpdateGroupRequest>
   ) {
-    return {
-      ...state,
-    };
+    return state;
   },
-  [types.DELETE_GTOUP_REQUEST](
+  [types.UPDATE_GROUP_RESPONSE](
+    state: IUserState,
+    action: Action<UpdateGroupResponse>
+  ) {
+    return state;
+  },
+  [types.UPDATE_GROUP_FAIL](
+    state: IUserState,
+    action: Action<UpdateGroupResponse>
+  ) {
+    return state;
+  },
+  [types.DELETE_GROUP_REQUEST](
     state: IUserState,
     action: Action<DeleteGroupRequest>
   ) {
-    return {
-      ...state,
-    };
+    return state;
   },
-  [types.GET_GROUP_BY_ID](
+  [types.DELETE_GROUP_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteGroupResponse>
+  ) {
+    return state;
+  },
+  [types.DELETE_GROUP_FAIL](
+    state: IUserState,
+    action: Action<DeleteGroupResponse>
+  ) {
+    return state;
+  },
+  [types.GET_GROUP_BY_ID_REQUEST](
     state: IUserState,
     action: Action<GetGroupByIdRequest>
   ) {
-    return {
-      ...state,
-    };
+    return state;
+  },
+  [types.GET_GROUP_BY_ID_RESPONSE](
+    state: IUserState,
+    action: Action<GetGroupByIdResponse>
+  ) {
+    return state;
+  },
+  [types.GET_GROUP_BY_ID_FAIL](
+    state: IUserState,
+    action: Action<GetGroupByIdResponse>
+  ) {
+    return state;
   },
   [types.GET_USER_GROUPS_REQUEST](
     state: IUserState,
@@ -70,6 +116,15 @@ export const groupReducer = createReducer(initialState, {
     };
   },
   [types.GET_USER_GROUPS_RESPONSE](
+    state: IUserState,
+    action: Action<GetUserGroupsResponse>
+  ) {
+    return {
+      ...state,
+      groups: action.payload.groups,
+    };
+  },
+  [types.GET_USER_GROUPS_FAIL](
     state: IUserState,
     action: Action<GetUserGroupsResponse>
   ) {

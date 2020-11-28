@@ -53,6 +53,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#EBE8E8",
   },
+  searchInput: {
+    fontFamily: "IRANSansWeb_Bold",
+    fontSize: 12,
+    textAlign: "right",
+    color: "#053751",
+    justifyContent: "center",
+  },
   textInput: {
     flex: 10,
     color: "#053751",
@@ -62,11 +69,13 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   expenseContainer: {
+    marginTop: 10,
     padding: 10,
     borderBottomColor: "#EBE8E8",
     borderBottomWidth: 1,
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 16,
+    fontFamily: "IRANSansWeb_Bold",
   },
   buttonContainer: {
     flex: 5,
