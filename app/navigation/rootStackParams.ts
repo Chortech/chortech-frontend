@@ -1,8 +1,15 @@
+import { InputType } from "../utils/inputTypes";
+
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   CodeVerification: {
     parentScreen: string;
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    inputType: InputType;
   };
   Profile: undefined;
   EditProfile: undefined;

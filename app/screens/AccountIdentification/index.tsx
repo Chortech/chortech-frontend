@@ -10,21 +10,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
 
-import * as identifyAccountActions from "../../store/actions/identifyAccountActions";
+import * as authActions from "../../store/actions/authActions";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
+import NavigationService from "../../navigation/navigationService";
 
 interface IState {
-  IdentifyAccountReducer: IUserState;
+  authReducer: IUserState;
 }
 
 const AccountIdentification: React.FC = () => {
-  const { loading } = useSelector(
-    (state: IState) => state.IdentifyAccountReducer
-  );
+  const { loading } = useSelector((state: IState) => state.authReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     emailOrPhone: "",
@@ -37,11 +36,7 @@ const AccountIdentification: React.FC = () => {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
       dispatch(
-        identifyAccountActions.onIdentifyAccountRequest(
-          email,
-          phone,
-          data.inputType
-        )
+        authActions.onIdentifyAccountRequest(email, phone, data.inputType)
       );
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);

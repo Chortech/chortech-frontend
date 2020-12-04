@@ -16,6 +16,7 @@ import { InputType } from "../../utils/inputTypes";
 import * as signUpActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
+import NavigationService from "../../navigation/navigationService";
 
 interface IState {
   authReducer: IUserState;
@@ -44,15 +45,23 @@ const SignUp: React.FC = (): JSX.Element => {
     } else if (data.name && data.emailOrPhone && data.password) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
-      dispatch(
-        signUpActions.onSignUpRequest(
-          data.name,
-          email,
-          phone,
-          data.password,
-          data.inputType
-        )
-      );
+      NavigationService.navigate("CodeVerification", {
+        parentScreen: "SignUp",
+        name: data.name,
+        email: email,
+        phone: phone,
+        password: data.password,
+        inputType: data.inputType,
+      });
+      // dispatch(
+      //   signUpActions.onSignUpRequest(
+      //     data.name,
+      //     email,
+      //     phone,
+      //     data.password,
+      //     data.inputType
+      //   )
+      // );
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }

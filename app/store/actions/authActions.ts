@@ -5,6 +5,11 @@ import { LoginRequest } from "../../models/requests/login";
 import { LoginResponse } from "../../models/responses/login";
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
+import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
+import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
+import { GenerateCodeRequest } from "../../models/requests/codeVerification";
+import { ResetPasswordRequest } from "../../models/requests/resetPassword";
+import { ResetPasswordResponse } from "../../models/responses/resetPassword";
 
 export function onLoginRequest(
   email: string,
@@ -83,6 +88,87 @@ export function onSignUpResponse(
 export function onSignUpFail(): Action<SignUpResponse> {
   return {
     type: types.SIGNUP_FAIL,
+    payload: {
+      user: null,
+      success: false,
+    },
+  };
+}
+
+export function onIdentifyAccountRequest(
+  email: string,
+  phone: string,
+  inputType: InputType
+): Action<IdentifyAccountRequest> {
+  return {
+    type: types.IDENTIFY_ACCOUNT_REQUEST,
+    payload: {
+      email: email,
+      phone: phone,
+      inputType: inputType,
+    },
+  };
+}
+
+export function onIdentifyAccountResponse(
+  response: IdentifyAccountResponse
+): Action<IdentifyAccountResponse> {
+  return {
+    type: types.IDENTIFY_ACCOUNT_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onIdentifyAccountFail(): Action<IdentifyAccountResponse> {
+  return {
+    type: types.IDENTIFY_ACCOUNT_FAIL,
+    payload: {
+      id: "-1",
+      success: false,
+    },
+  };
+}
+
+export function onGenerateCodeRequest(
+  email: string,
+  phone: string,
+  inputType: InputType
+): Action<GenerateCodeRequest> {
+  return {
+    type: types.GENERATE_CODE_REQUEST,
+    payload: {
+      email: email,
+      phone: phone,
+      inputType: inputType,
+    },
+  };
+}
+
+export function onResetPasswordRequest(
+  id: string,
+  password: string
+): Action<ResetPasswordRequest> {
+  return {
+    type: types.RESET_PASSWORD_REQUEST,
+    payload: {
+      id: id,
+      password: password,
+    },
+  };
+}
+
+export function onResetPasswordResponse(
+  response: ResetPasswordResponse
+): Action<ResetPasswordResponse> {
+  return {
+    type: types.RESET_PASSWORD_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onResetPasswordFail(): Action<ResetPasswordResponse> {
+  return {
+    type: types.RESET_PASSWORD_FAIL,
     payload: {
       id: "-1",
       success: false,

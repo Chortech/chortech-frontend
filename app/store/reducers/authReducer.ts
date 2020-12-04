@@ -10,6 +10,11 @@ import { LoginResponse } from "../../models/responses/login";
 import { SignUpRequest } from "../../models/requests/signUp";
 import { SignUpResponse } from "../../models/responses/signUp";
 import { IUserState } from "../../models/reducers/default";
+import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
+import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
+import { GenerateCodeRequest } from "../../models/requests/codeVerification";
+import { ResetPasswordRequest } from "../../models/requests/resetPassword";
+import { ResetPasswordResponse } from "../../models/responses/resetPassword";
 
 const initialState: IUserState = {
   isLoggedIn: false,
@@ -108,6 +113,94 @@ export const authReducer = createReducer(initialState, {
       phone: "",
       password: "",
       authInputType: InputType.None,
+    };
+  },
+  [types.IDENTIFY_ACCOUNT_REQUEST](
+    state: IUserState,
+    action: Action<IdentifyAccountRequest>
+  ) {
+    return {
+      ...state,
+      email: action.payload.email,
+      phone: action.payload.phone,
+      authInputType: action.payload.inputType,
+    };
+  },
+  [types.IDENTIFY_ACCOUNT_RESPONSE](
+    state: IUserState,
+    action: Action<IdentifyAccountResponse>
+  ) {
+    return {
+      ...state,
+      id: action.payload.id,
+    };
+  },
+  [types.IDENTIFY_ACCOUNT_FAIL](
+    state: IUserState,
+    action: Action<IdentifyAccountResponse>
+  ) {
+    return {
+      ...state,
+      id: "-1",
+      email: "",
+      phone: "",
+      authInputType: InputType.None,
+      password: "",
+    };
+  },
+  [types.GENERATE_CODE_REQUEST](
+    state: IUserState,
+    action: Action<GenerateCodeRequest>
+  ) {
+    return {
+      ...state,
+      email: action.payload.email,
+      phone: action.payload.phone,
+      authInputType: action.payload.inputType,
+    };
+  },
+  [types.RESET_PASSWORD_REQUEST](
+    state: IUserState,
+    action: Action<ResetPasswordRequest>
+  ) {
+    return {
+      ...state,
+      id: action.payload.id,
+      password: action.payload.password,
+    };
+  },
+  [types.RESET_PASSWORD_RESPONSE](
+    state: IUserState,
+    action: Action<ResetPasswordResponse>
+  ) {
+    return {
+      ...state,
+      id: "-1",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      authInputType: InputType.None,
+    };
+  },
+  [types.RESET_PASSWORD_FAIL](
+    state: IUserState,
+    action: Action<ResetPasswordResponse>
+  ) {
+    return {
+      ...state,
+      id: "-1",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      authInputType: InputType.None,
+    };
+  },
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      loading: true,
     };
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {

@@ -4,9 +4,6 @@
 import { takeLatest, all } from "redux-saga/effects";
 import * as types from "../actions/types";
 import * as authSaga from "./authSaga";
-import identifyAccountSaga from "./identifyAccountSaga";
-import { generateCodeAsync } from "./codeVerificationSaga";
-import resetPasswordSaga from "./resetPasswordSaga";
 import * as friendSaga from "./friendSaga";
 import * as userSaga from "./userSaga";
 import * as activitySaga from "./activitySaga";
@@ -15,9 +12,9 @@ import * as groupSaga from "./groupSaga";
 export default function* watch() {
   yield all([
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
-    takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, identifyAccountSaga),
-    takeLatest(types.GENERATE_CODE_REQUEST, generateCodeAsync),
-    takeLatest(types.RESET_PASSWORD_REQUEST, resetPasswordSaga),
+    takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, authSaga.identifyAccountAsync),
+    takeLatest(types.GENERATE_CODE_REQUEST, authSaga.generateCodeAsync),
+    takeLatest(types.RESET_PASSWORD_REQUEST, authSaga.resetPasswordAsync),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
     takeLatest(types.GET_USER_FRIENDS_REQUEST, friendSaga.getUserFriendsAsync),
     takeLatest(types.ADD_FRIEND_REQUEST, friendSaga.addFriendAsync),

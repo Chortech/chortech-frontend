@@ -515,12 +515,11 @@ class GraphQLApi
       });
       data = data.UserByPhone;
     }
-
     let successful: boolean = data != null;
     let user: User | null = null;
     if (successful) {
       let responsePassword = data.password;
-      if (responsePassword === password) {
+      if (responsePassword == password) {
         user = {
           id: data._id.toString(),
           name: data.name != null ? data.name : "",
@@ -533,9 +532,10 @@ class GraphQLApi
           groups: [],
           activities: [],
         };
+      } else {
+        successful = false;
       }
     }
-
     return {
       success: successful,
       user: user,

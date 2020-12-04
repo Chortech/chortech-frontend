@@ -12,19 +12,16 @@ import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import * as resetPasswordActions from "../../store/actions/resetPasswordActions";
+import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 
 type IState = {
-  resetPasswordReducer: IUserState;
+  authReducer: IUserState;
 };
 
 const ResetPassword: React.FC = (): JSX.Element => {
-  const id = useStore().getState()["IdentifyAccountReducer"].id;
-  const { loading } = useSelector(
-    (state: IState) => state.resetPasswordReducer
-  );
+  const { id, loading } = useSelector((state: IState) => state.authReducer);
   const dispatch = useDispatch();
   const resetToHome = () => {
     if (
@@ -32,7 +29,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
       data.validPassword &&
       data.validConfirmPassword
     ) {
-      dispatch(resetPasswordActions.onResetPasswordRequest(id, data.password));
+      dispatch(authActions.onResetPasswordRequest(id, data.password));
     } else {
       ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
     }

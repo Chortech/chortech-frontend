@@ -1,5 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as signUpActions from "../../store/actions/authActions";
-import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
+import * as authActions from "../../store/actions/authActions";
 import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
@@ -26,29 +25,47 @@ type Props = {
 };
 
 type IState = {
-  codeVerificationReducer: IUserState;
+  authReducer: IUserState;
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const state: IUserState = useStore().getState()["authReducer"];
   console.log(JSON.stringify(state, undefined, 2));
-  const [user, setUser] = useState<User | null>(null);
-  const { parentScreen } = route.params;
+  const props = route.params;
   const { phone, email, authInputType, loading } = useSelector(
-    (state: IState) => state.codeVerificationReducer
+    (state: IState) => state.authReducer
   );
-  const [ref, setRef] = useState(null);
+  const [ref, setRef] = useState<any>(null);
   const [data, setData] = useState({
     verificationCode: "",
     validCode: false,
   });
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(
+      authActions.onGenerateCodeRequest(
+        props.email,
+        props.phone,
+        props.inputType
+      )
+    );
+  }, [dispatch]);
+
   const onNextScreen = () => {
     if (data.validCode) {
-      if (parentScreen == "AccountIdentification") {
+      if (props.parentScreen == "AccountIdentification") {
         NavigationService.navigate("ResetPassword");
       } else {
+        dispatch(
+          authActions.onSignUpRequest(
+            props.name,
+            props.email,
+            props.phone,
+            props.password,
+            props.inputType
+          )
+        );
       }
     } else {
       ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
@@ -56,9 +73,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   };
 
   const regenerateCode = (): void => {
-    dispatch(
-      codeVerificationActions.onGenerateCodeRequest(email, phone, authInputType)
-    );
+    dispatch(authActions.onGenerateCodeRequest(email, phone, authInputType));
     ref.resetCountDown();
   };
 
@@ -93,7 +108,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
             </View>
             <View style={styles.timerContainer}>
               <CountDown
-                ref={(ref) => {
+                ref={(ref: any) => {
                   setRef(ref);
                 }}
                 initialSeconds={120}
