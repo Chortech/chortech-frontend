@@ -26,6 +26,12 @@ const AccountIdentification: React.FC = () => {
     (state: IState) => state.IdentifyAccountReducer
   );
   const dispatch = useDispatch();
+  const [data, setData] = useState({
+    emailOrPhone: "",
+    validEmailOrPhone: true,
+    inputType: InputType.None,
+  });
+
   const onVerify = () => {
     if (data.emailOrPhone != "" && data.validEmailOrPhone) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
@@ -41,12 +47,6 @@ const AccountIdentification: React.FC = () => {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }
   };
-
-  const [data, setData] = useState({
-    emailOrPhone: "",
-    validEmailOrPhone: true,
-    inputType: InputType.None,
-  });
 
   const setEmailOrPhone = (text: string): void => {
     const type = RegexValidator.validateEmailOrPhone(text);
