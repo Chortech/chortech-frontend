@@ -36,7 +36,8 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
   try {
     response = yield Api.addActivity(userId, type, groupId, expenseId, debtId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -72,7 +73,8 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
       totalPrice
     );
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -112,7 +114,8 @@ export function* addDebtAsync(action: Action<AddDebtRequest>) {
       creditorId
     );
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -138,7 +141,8 @@ export function* addParticipantAsync(action: Action<AddParticipantRequest>) {
   try {
     response = yield Api.addParticipant(expenseId, userId, share);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -162,7 +166,8 @@ export function* deleteActivityAsync(action: Action<DeleteActivityRequest>) {
   try {
     response = yield Api.deleteActivity(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -187,7 +192,8 @@ export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
   try {
     response = yield Api.deleteExpense(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -211,7 +217,8 @@ export function* deleteDebtAsync(action: Action<DeleteDebtRequest>) {
   try {
     response = yield Api.deleteDebt(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());
@@ -237,7 +244,8 @@ export function* deleteParticipantAsync(
   try {
     response = yield Api.deleteParticipant(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(activityActions.onLoadingDisable());

@@ -26,7 +26,8 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   try {
     response = yield Api.getUserFriends(userId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   if (response.success) {
@@ -52,7 +53,8 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
   try {
     response = yield Api.addFriend(friendId, friendName, userId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(friendActions.onLoadingDisable());
@@ -77,7 +79,8 @@ export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
   try {
     response = yield Api.deleteFriend(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(friendActions.onLoadingDisable());

@@ -24,12 +24,10 @@ export function* loginAsync(action: Action<LoginRequest>) {
     user: null,
   };
 
-  console.log(JSON.stringify(action.payload, undefined, 2));
-
   try {
     response = yield Api.login(email, phone, password, inputType);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
@@ -54,7 +52,7 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
   try {
     response = yield Api.signUp(name, email, phone, password, inputType);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
@@ -79,7 +77,7 @@ export function* identifyAccountAsync(action: Action<IdentifyAccountRequest>) {
   try {
     response = yield Api.identifyAccount(email, phone, inputType);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
@@ -107,6 +105,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   try {
     yield Api.generateCode(email, phone, inputType);
   } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
   yield put(authActions.onLoadingDisable());
@@ -123,6 +122,7 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
   try {
     response = yield Api.resetPassword(id, password);
   } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 

@@ -30,11 +30,8 @@ type IState = {
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const state: IUserState = useStore().getState()["authReducer"];
-  console.log(JSON.stringify(state, undefined, 2));
   const props = route.params;
-  const { phone, email, authInputType, loading } = useSelector(
-    (state: IState) => state.authReducer
-  );
+  const { loading } = useSelector((state: IState) => state.authReducer);
   const [ref, setRef] = useState<any>(null);
   const [data, setData] = useState({
     verificationCode: "",
@@ -73,7 +70,13 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   };
 
   const regenerateCode = (): void => {
-    dispatch(authActions.onGenerateCodeRequest(email, phone, authInputType));
+    dispatch(
+      authActions.onGenerateCodeRequest(
+        props.email,
+        props.phone,
+        props.inputType
+      )
+    );
     ref.resetCountDown();
   };
 

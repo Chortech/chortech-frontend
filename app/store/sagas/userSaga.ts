@@ -25,7 +25,8 @@ export function* fetchUserAsync(action: Action<GetUserRequest>) {
   try {
     response = yield Api.getUser(id);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(userActions.onLoadingDisable());
@@ -49,7 +50,8 @@ export function* updateUserAsync(action: Action<UpdateUserRequest>) {
   try {
     response = yield Api.updateUser(user);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(userActions.onLoadingDisable());
@@ -76,7 +78,8 @@ export function* getUserActivitiesAsync(
   try {
     response = yield Api.getUserActivities(userId);
   } catch (error) {
-    console.error(JSON.stringify(error));
+    console.log(JSON.stringify(error));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(userActions.onLoadingDisable());

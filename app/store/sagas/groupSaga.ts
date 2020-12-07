@@ -30,7 +30,8 @@ export function* addGroupAsync(action: Action<AddGroupRequest>) {
   try {
     response = yield Api.addGroup(name, creator, members);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -55,7 +56,8 @@ export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
   try {
     response = yield Api.updateGroup(groupId, name, creator, members);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -78,7 +80,8 @@ export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
   try {
     response = yield Api.deleteGroup(groupId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -109,7 +112,8 @@ export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
   try {
     response = yield Api.getGroupById(groupId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
   yield put(groupActions.onLoadingDisable());
   if (response.success) {
@@ -132,7 +136,8 @@ export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
   try {
     response = yield Api.getUserGroups(userId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
