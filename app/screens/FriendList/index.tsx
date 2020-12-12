@@ -11,17 +11,17 @@ import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import * as friendActions from "../../store/actions/friendActions";
+import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 
 type IState = {
-  friendReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { friends } = useSelector((state: IState) => state.friendReducer);
+  const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     setRefreshing(true);
@@ -30,7 +30,7 @@ const FriendList: React.FC = (): JSX.Element => {
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserFriendsRequest(loggedInUser.id));
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");

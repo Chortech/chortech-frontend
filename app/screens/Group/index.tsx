@@ -8,24 +8,24 @@ import NavigationService from "../../navigation/navigationService";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import * as groupActions from "../../store/actions/groupActions";
+import * as userActions from "../../store/actions/userActions";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Group">;
 };
 
 type IState = {
-  groupReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { id, groupName, ImageUrl } = route.params;
-  const { loading } = useSelector((state: IState) => state.groupReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const onPressDeleteGroup = () => {
-    dispatch(groupActions.onDeleteGroupRequest(id));
+    dispatch(userActions.onDeleteGroupRequest(id));
   };
 
   const expenses = [

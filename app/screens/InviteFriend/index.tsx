@@ -10,17 +10,17 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import * as friendActions from "../../store/actions/friendActions";
+import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 import LoadingIndicator from "../Loading";
 
 type IState = {
-  friendReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const InviteFriend: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading } = useSelector((state: IState) => state.friendReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);
   const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
@@ -55,7 +55,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
   const onPressAddFriend = (): void => {
     let searchedUser = fetchedUsers[0];
     dispatch(
-      friendActions.onAddFriendRequest(
+      userActions.onAddFriendRequest(
         loggedInUser.id,
         searchedUser.id,
         searchedUser.name

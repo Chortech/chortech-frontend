@@ -14,12 +14,12 @@ import { styles } from "./styles";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import * as activityActions from "../../store/actions/activityActions";
+import * as userActions from "../../store/actions/userActions";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { Searchbar } from "react-native-paper";
 
 type IState = {
-  activityReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const AddExpense: React.FC = (): JSX.Element => {
@@ -30,7 +30,7 @@ const AddExpense: React.FC = (): JSX.Element => {
     isValidExpenseAmount: true,
   });
   const dispatch = useDispatch();
-  const { loading } = useSelector((state: IState) => state.activityReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const [searchQuery, setSearchQuery] = useState("");
 
   const confirm = () => {
@@ -40,7 +40,7 @@ const AddExpense: React.FC = (): JSX.Element => {
       ToastAndroid.show("لطفا مبلغ را وارد کنید.", ToastAndroid.SHORT);
     } else if (data.isValidExpenseAmount) {
       dispatch(
-        activityActions.onAddExpenseRequest(
+        userActions.onAddExpenseRequest(
           loggedInUser.id,
           data.activityName,
           "description",
