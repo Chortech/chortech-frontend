@@ -5,7 +5,7 @@ import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import * as friendActions from "../../store/actions/friendActions";
+import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { styles } from "./styles";
 
@@ -14,16 +14,16 @@ type Props = {
 };
 
 type IState = {
-  friendReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { id, friendName } = route.params;
-  const { loading } = useSelector((state: IState) => state.friendReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressDeleteFriend = () => {
-    dispatch(friendActions.onDeleteFriendRequest(id));
+    dispatch(userActions.onDeleteFriendRequest(id));
   };
 
   return (

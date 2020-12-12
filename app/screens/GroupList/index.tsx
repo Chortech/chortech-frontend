@@ -11,22 +11,18 @@ import {
 import * as Animatable from "react-native-animatable";
 import GroupItem from "../../components/GroupItem/index";
 import NavigationService from "../../navigation/navigationService";
-import * as groupActions from "../../store/actions/groupActions";
 import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
-import { Api } from "../../services/api/graphQL/graphqlApi";
-import { GetUserGroupsResponse } from "../../models/responses/group";
-import { Group } from "../../models/other/Group";
 
 type IState = {
-  groupReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { groups } = useSelector((state: IState) => state.groupReducer);
+  const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
   const onProfile = () => NavigationService.navigate("Profile");
@@ -38,7 +34,7 @@ const GroupList: React.FC = () => {
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserGroupsRequest(loggedInUser.id));
   };
   useEffect(() => {
     fetchGroups();
@@ -60,15 +56,6 @@ const GroupList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContent}>
-        <TouchableOpacity onPress={onProfile}>
-          <Image
-            style={styles.avatar}
-            source={require("../../assets/images/friend-image.jpg")}
-          />
-        </TouchableOpacity>
-        <Text style={styles.name}>{loggedInUser.name}</Text>
-      </View>
       <Animatable.View
         animation="slideInUp"
         duration={600}

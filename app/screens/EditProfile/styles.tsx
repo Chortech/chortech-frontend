@@ -43,6 +43,15 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     paddingBottom: 5,
   },
+  inputContainerError: {
+    flexDirection: "row",
+    marginTop: 5,
+    borderWidth: 1,
+    borderColor: "red",
+    borderRadius: 5,
+    backgroundColor: "#f2f2f2",
+    paddingBottom: 5,
+  },
   textInput: {
     flex: 10,
     color: "#053751",
@@ -56,7 +65,6 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: "center",
   },
-
   buttonContainer: {
     flex: 4,
     justifyContent: "flex-end",

@@ -12,16 +12,16 @@ import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
-import * as groupActions from "../../store/actions/groupActions";
+import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 
 type IState = {
-  groupReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const AddGroup: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading } = useSelector((state: IState) => state.groupReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [groupName, setGroupName] = useState("");
   const [memberIds, setMemberIds] = useState<Array<string>>([]);
@@ -32,7 +32,7 @@ const AddGroup: React.FC = (): JSX.Element => {
       ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
     } else {
       dispatch(
-        groupActions.onAddGrouptRequest(groupName, loggedInUser.id, memberIds)
+        userActions.onAddGrouptRequest(groupName, loggedInUser.id, memberIds)
       );
     }
   };

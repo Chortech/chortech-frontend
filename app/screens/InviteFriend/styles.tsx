@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: "white",
-    margin: 5,
+    margin: 10,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#1AD927",

@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,6 +15,8 @@ import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
 import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
+import { RegexValidator } from "../../utils/regexValidator";
+import { InputType } from "../../utils/inputTypes";
 
 type IState = {
   userReducer: IUserState;
@@ -23,28 +26,57 @@ const EditProfile: React.FC = (): JSX.Element => {
   let user = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    name: "بابک سفیدگر",
-    email: "sample@example.com",
-    phone: "09123456789",
-    password: "12345678",
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    password: user.password,
+    validName: true,
+    validEmail: true,
+    validPhone: true,
+    validPassword: true,
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+  console.log(JSON.stringify(data, undefined, 2));
+  console.log(
+    data.validEmail &&
+      data.validPhone &&
+      (data.email != "" || data.phone != "") &&
+      data.validName &&
+      data.name != "" &&
+      data.validPassword &&
+      data.password != ""
+  );
+
   const onPressUpdateUser = () => {
-    user = {
-      ...user,
-      name: data.name,
-      password: data.password,
-      phone: data.phone,
-      email: data.email,
-    };
-    dispatch(userActions.onUpdateUserRequest(user));
+    let validInput: boolean =
+      data.validEmail &&
+      data.validPhone &&
+      (data.email != "" || data.phone != "") &&
+      data.validName &&
+      data.name != "" &&
+      data.validPassword &&
+      data.password != "";
+    console.log(validInput);
+    if (validInput) {
+      user = {
+        ...user,
+        name: data.name,
+        password: data.password,
+        phone: data.phone,
+        email: data.email,
+      };
+      dispatch(userActions.onUpdateUserRequest(user));
+    } else {
+      ToastAndroid.show("اطلاعات وارد شده کافی نمی‌باشد.", ToastAndroid.SHORT);
+    }
   };
 
   const onChangeName = (text: string) => {
     setData({
       ...data,
       name: text,
+      validName: RegexValidator.validateName(text) == InputType.Name,
     });
   };
 
@@ -52,39 +84,32 @@ const EditProfile: React.FC = (): JSX.Element => {
     setData({
       ...data,
       email: text,
+      validEmail:
+        RegexValidator.validateEmailOrPhone(text) == InputType.Email ||
+        text == "",
     });
   };
   const onChangePhone = (text: string) => {
     setData({
       ...data,
       phone: text,
+      validPhone:
+        RegexValidator.validateEmailOrPhone(text) == InputType.Phone ||
+        text == "",
     });
   };
   const onChangePassword = (text: string) => {
     setData({
       ...data,
       password: text,
+      validPassword:
+        RegexValidator.validatePassword(text) == InputType.Password,
     });
   };
 
   const togglePassword = (): void => {
     setSecureTextEntry(!secureTextEntry);
   };
-  // const confirm = () => {
-  //     if (data.activityName == "") {
-  //         ToastAndroid.show(
-  //             "لطفا نام فعالیت را وارد کنید.",
-  //             ToastAndroid.SHORT
-  //         );
-  //     } else if (data.expenseAmount == "") {
-  //         ToastAndroid.show(
-  //             "لطفا مبلغ را وارد کنید.",
-  //             ToastAndroid.SHORT
-  //         );
-  //     } else {
-  //         NavigationService.navigate('Profile');
-  //     }
-  // };
 
   const cancel = () => NavigationService.goBack();
 
@@ -104,9 +129,14 @@ const EditProfile: React.FC = (): JSX.Element => {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>نام و نام خانوادگی</Text>
-                <View style={styles.inputContainer}>
+                <View
+                  style={
+                    data.validName
+                      ? styles.inputContainer
+                      : styles.inputContainerError
+                  }>
                   <TextInput
-                    defaultValue={user.name}
+                    defaultValue={data.name}
                     placeholder="نام و نام خانوادگی"
                     style={styles.textInput}
                     onChangeText={onChangeName}
@@ -115,9 +145,14 @@ const EditProfile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>ایمیل</Text>
-                <View style={styles.inputContainer}>
+                <View
+                  style={
+                    data.validEmail
+                      ? styles.inputContainer
+                      : styles.inputContainerError
+                  }>
                   <TextInput
-                    defaultValue={user.email}
+                    defaultValue={data.email}
                     placeholder="ایمیل"
                     style={styles.textInput}
                     onChangeText={onChangeEmail}
@@ -126,9 +161,14 @@ const EditProfile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>شماره تلفن</Text>
-                <View style={styles.inputContainer}>
+                <View
+                  style={
+                    data.validPhone
+                      ? styles.inputContainer
+                      : styles.inputContainerError
+                  }>
                   <TextInput
-                    defaultValue={user.phone}
+                    defaultValue={data.phone}
                     placeholder="شماره تلفن"
                     style={styles.textInput}
                     onChangeText={onChangePhone}
@@ -137,7 +177,12 @@ const EditProfile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>رمز عبور</Text>
-                <View style={styles.inputContainer}>
+                <View
+                  style={
+                    data.validPassword
+                      ? styles.inputContainer
+                      : styles.inputContainerError
+                  }>
                   <TouchableOpacity
                     onPress={togglePassword}
                     style={styles.toggleIcon}>
@@ -156,7 +201,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                     )}
                   </TouchableOpacity>
                   <TextInput
-                    defaultValue={user.password}
+                    defaultValue={data.password}
                     placeholder="رمز عبور"
                     secureTextEntry={secureTextEntry}
                     style={styles.textInput}
@@ -172,7 +217,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.outlinedButton}
-                  onPress={() => NavigationService.goBack()}>
+                  onPress={cancel}>
                   <Text style={styles.outlinedButtonText}>انصراف</Text>
                 </TouchableOpacity>
               </View>

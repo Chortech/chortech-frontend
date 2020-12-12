@@ -5,7 +5,7 @@ import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import * as activityActions from "../../store/actions/activityActions";
+import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 
@@ -16,23 +16,23 @@ type Props = {
 };
 
 type IState = {
-  activityReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const Activity: React.FC<Props> = ({ route }: Props) => {
   const { id, activityName, activityType, expenseId, debtId } = route.params;
-  const { loading } = useSelector((state: IState) => state.activityReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressDeleteActivity = () => {
     if (activityType == "debt") {
       let targetid: string = debtId != undefined ? debtId : "-1";
-      dispatch(activityActions.onDeleteDebtRequest(targetid));
-      dispatch(activityActions.onDeleteActivityRequest(id));
+      dispatch(userActions.onDeleteDebtRequest(targetid));
+      dispatch(userActions.onDeleteActivityRequest(id));
     } else {
       let targetId: string = expenseId != undefined ? expenseId : "-1";
-      dispatch(activityActions.onDeleteExpenseRequest(targetId));
-      dispatch(activityActions.onDeleteActivityRequest(id));
+      dispatch(userActions.onDeleteExpenseRequest(targetId));
+      dispatch(userActions.onDeleteActivityRequest(id));
     }
   };
 

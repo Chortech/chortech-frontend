@@ -14,12 +14,12 @@ import { styles } from "./styles";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import * as activityActions from "../../store/actions/activityActions";
+import * as userActions from "../../store/actions/userActions";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { Searchbar } from "react-native-paper";
 
 type IState = {
-  activityReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const AddExpense: React.FC = (): JSX.Element => {
@@ -30,7 +30,7 @@ const AddExpense: React.FC = (): JSX.Element => {
     isValidExpenseAmount: true,
   });
   const dispatch = useDispatch();
-  const { loading } = useSelector((state: IState) => state.activityReducer);
+  const { loading, id } = useSelector((state: IState) => state.userReducer);
   const [searchQuery, setSearchQuery] = useState("");
 
   const confirm = () => {
@@ -40,7 +40,7 @@ const AddExpense: React.FC = (): JSX.Element => {
       ToastAndroid.show("لطفا مبلغ را وارد کنید.", ToastAndroid.SHORT);
     } else if (data.isValidExpenseAmount) {
       dispatch(
-        activityActions.onAddExpenseRequest(
+        userActions.onAddExpenseRequest(
           loggedInUser.id,
           data.activityName,
           "description",
@@ -69,7 +69,8 @@ const AddExpense: React.FC = (): JSX.Element => {
     setData({
       ...data,
       expenseAmount: text,
-      isValidExpenseAmount: RegexValidator.validateExpenseAmount(text) == true,
+      isValidExpenseAmount:
+        text == "" || RegexValidator.validateExpenseAmount(text) == true,
     });
   };
 
@@ -79,16 +80,6 @@ const AddExpense: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.expenseNameContainer}>
-              <TextInput
-                placeholder="نام فعالیت"
-                placeholderTextColor="#A4A4A4"
-                style={styles.textHeader}
-                onChangeText={(text) => setActivityName(text)}
-              />
-            </View>
-          </View>
           <Animatable.View
             animation="slideInUp"
             duration={1000}
@@ -102,13 +93,21 @@ const AddExpense: React.FC = (): JSX.Element => {
               iconColor="#1AD927"
               onIconPress={onPressSearchButton}
             />
-            <TextInput
-              placeholder="مبلغ (تومان)"
-              placeholderTextColor="#A4A4A4"
-              style={styles.expenseContainer}
-              keyboardType="numeric"
-              onChangeText={(text) => setExpenseAmount(text)}
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="نام فعالیت"
+                placeholderTextColor="#A4A4A4"
+                style={styles.textInput}
+                onChangeText={(text) => setActivityName(text)}
+              />
+              <TextInput
+                placeholder="مبلغ (تومان)"
+                placeholderTextColor="#A4A4A4"
+                style={styles.textInput}
+                keyboardType="numeric"
+                onChangeText={(text) => setExpenseAmount(text)}
+              />
+            </View>
             {!data.isValidExpenseAmount ? (
               <Animatable.Text
                 style={styles.validationText}
@@ -117,15 +116,15 @@ const AddExpense: React.FC = (): JSX.Element => {
                 مبلغ باید به صورت یک عدد حداکثر ده رقمی باشد.
               </Animatable.Text>
             ) : null}
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.addButton} onPress={confirm}>
-                <Text style={styles.addButtonText}>ایجاد هزینه</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-                <Text style={styles.removeButtonText}>انصراف</Text>
-              </TouchableOpacity>
-            </View>
           </Animatable.View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.addButton} onPress={confirm}>
+              <Text style={styles.addButtonText}>ایجاد هزینه</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.removeButton} onPress={cancel}>
+              <Text style={styles.removeButtonText}>انصراف</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </>
