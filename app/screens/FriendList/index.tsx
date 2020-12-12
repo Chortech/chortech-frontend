@@ -53,9 +53,6 @@ const FriendList: React.FC = (): JSX.Element => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.textHeader}>دوستان</Text>
-        </View>
         <Animatable.View
           animation="slideInUp"
           duration={600}

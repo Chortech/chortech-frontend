@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { Button } from "react-native-paper";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
@@ -16,7 +16,6 @@ type IState = {
 
 const Profile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const onLogout = () => dispatch(authActions.onLogout());
   const user = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
@@ -25,10 +24,11 @@ const Profile: React.FC = (): JSX.Element => {
   };
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
+  const onLogout = () => dispatch(authActions.onLogout());
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -39,8 +39,15 @@ const Profile: React.FC = (): JSX.Element => {
           <View style={styles.header}>
             <Image
               style={styles.profileImage}
-              source={require("../../assets/images/profile_picture_white.png")}
+              source={require("../../assets/images/friend-image.jpg")}
             />
+            <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
+              <FontAwesomeIcon
+                icon="sign-out-alt"
+                style={{ color: "#ff0000" }}
+                size={25}
+              />
+            </TouchableOpacity>
             <Text style={styles.userNameText}>{user.name}</Text>
           </View>
           <Animatable.View
@@ -76,11 +83,6 @@ const Profile: React.FC = (): JSX.Element => {
               </TouchableOpacity>
             </View>
           </Animatable.View>
-          <View>
-            <Button icon="logout" mode="outlined" onPress={onLogout}>
-              Logout
-            </Button>
-          </View>
         </View>
       )}
     </>

@@ -60,15 +60,6 @@ const GroupList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContent}>
-        <TouchableOpacity onPress={onProfile}>
-          <Image
-            style={styles.avatar}
-            source={require("../../assets/images/friend-image.jpg")}
-          />
-        </TouchableOpacity>
-        <Text style={styles.name}>{loggedInUser.name}</Text>
-      </View>
       <Animatable.View
         animation="slideInUp"
         duration={600}

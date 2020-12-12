@@ -57,9 +57,6 @@ const ActivityList: React.FC = () => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.textHeader}>فعالیت‌ها</Text>
-        </View>
         <Animatable.View
           animation="slideInUp"
           duration={600}
