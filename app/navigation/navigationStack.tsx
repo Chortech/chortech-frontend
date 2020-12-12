@@ -168,7 +168,7 @@ const ActivityNavigator = () => (
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
         fontSize: 20,
-        textAlign: "center",
+        textAlign: "right",
       },
       headerStyle: {
         elevation: 10,
