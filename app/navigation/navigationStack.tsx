@@ -145,7 +145,7 @@ const GroupNavigator = () => (
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
         fontSize: 20,
-        textAlign: "center",
+        textAlign: "right",
       },
       headerStyle: {
         elevation: 10,
@@ -156,8 +156,16 @@ const GroupNavigator = () => (
       component={GroupList}
       options={{ title: "گروه‌ها" }}
     />
-    <LoggedInTab.Screen name="Group" component={Group} />
-    <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
+    <LoggedInTab.Screen
+      name="Group"
+      component={Group}
+      options={({ route }) => ({ title: route.params.groupName })}
+    />
+    <LoggedInTab.Screen
+      name="AddGroup"
+      component={AddGroup}
+      options={{ title: "افزودن گروه جدید" }}
+    />
   </GroupStack.Navigator>
 );
 
@@ -184,7 +192,7 @@ const ActivityNavigator = () => (
     <LoggedInTab.Screen
       name="AddExpense"
       component={AddExpense}
-      options={{ title: "فعالیت جدید" }}
+      options={{ title: "افزودن فعالیت جدید" }}
     />
   </ActivityStack.Navigator>
 );
@@ -196,7 +204,7 @@ const FriendNavigator = () => (
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
         fontSize: 20,
-        textAlign: "center",
+        textAlign: "right",
       },
       headerStyle: {
         elevation: 10,
@@ -208,8 +216,16 @@ const FriendNavigator = () => (
       component={FriendList}
       options={{ title: "دوستان" }}
     />
-    <LoggedInTab.Screen name="Friend" component={Friend} />
-    <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
+    <LoggedInTab.Screen
+      name="Friend"
+      component={Friend}
+      options={({ route }) => ({ title: route.params.friendName })}
+    />
+    <LoggedInTab.Screen
+      name="InviteFriend"
+      component={InviteFriend}
+      options={{ title: "دعوت از دوستان" }}
+    />
   </FriendStack.Navigator>
 );
 

@@ -30,7 +30,7 @@ const AddExpense: React.FC = (): JSX.Element => {
     isValidExpenseAmount: true,
   });
   const dispatch = useDispatch();
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const { loading, id } = useSelector((state: IState) => state.userReducer);
   const [searchQuery, setSearchQuery] = useState("");
 
   const confirm = () => {
