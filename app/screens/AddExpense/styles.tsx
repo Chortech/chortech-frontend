@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
   searchBar: {
     backgroundColor: "white",
     borderWidth: 1,
+    borderRadius: 12,
     borderColor: "#1AD927",
     margin: 10,
   },
@@ -43,13 +44,14 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
     paddingBottom: 10,
+    marginBottom: 10,
   },
   textInput: {
-    marginTop: 4,
+    marginTop: 5,
     padding: 10,
     borderColor: "#cccccc",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
     textAlign: "center",
     fontSize: 16,
     color: "#000",
@@ -57,6 +59,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+    // position: "absolute",
     flexDirection: "row-reverse",
     justifyContent: "center",
     alignItems: "center",

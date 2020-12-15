@@ -15,20 +15,20 @@ type IState = {
 };
 
 const Profile: React.FC = (): JSX.Element => {
-  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  // const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const user = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  const fetchUser = () => {
-    dispatch(userActions.onGetUserRequest(loggedInUser.id));
-  };
+  // const fetchUser = () => {
+  //   dispatch(userActions.onGetUserRequest(user.id));
+  // };
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
   const onLogout = () => dispatch(authActions.onLogout());
 
-  useEffect(() => {
-    fetchUser();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [dispatch]);
 
   return (
     <>
@@ -42,18 +42,11 @@ const Profile: React.FC = (): JSX.Element => {
               source={require("../../assets/images/friend-image.jpg")}
             />
             <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
-              <FontAwesomeIcon
-                icon="sign-out-alt"
-                style={{ color: "#ff0000" }}
-                size={25}
-              />
+              <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
             </TouchableOpacity>
             <Text style={styles.userNameText}>{user.name}</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.textWrapper}>
               <View style={styles.textContainerLeft}>
                 <Text style={styles.textInfo}>{user.email}</Text>
@@ -71,14 +64,10 @@ const Profile: React.FC = (): JSX.Element => {
               </View>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={onPressFriendsList}>
+              <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
                 <Text style={styles.buttonText}>دوستان</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={onPressEditProfile}>
+              <TouchableOpacity style={styles.button} onPress={onPressEditProfile}>
                 <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
               </TouchableOpacity>
             </View>
