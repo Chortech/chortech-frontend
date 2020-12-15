@@ -41,10 +41,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
           }
           setFetchedUsers([data.user]);
         } else {
-          ToastAndroid.show(
-            "کاربر با این مشخصات وجود ندارد",
-            ToastAndroid.SHORT
-          );
+          ToastAndroid.show("کاربر با این مشخصات وجود ندارد", ToastAndroid.SHORT);
         }
       });
     } else {
@@ -54,22 +51,12 @@ const InviteFriend: React.FC = (): JSX.Element => {
 
   const onPressAddFriend = (): void => {
     let searchedUser = fetchedUsers[0];
-    dispatch(
-      userActions.onAddFriendRequest(
-        loggedInUser.id,
-        searchedUser.id,
-        searchedUser.name
-      )
-    );
+    dispatch(userActions.onAddFriendRequest(loggedInUser.id, searchedUser.id, searchedUser.name));
     setFetchedUsers([]);
   };
 
   const renderSelectedItems: any = ({ item }) => (
-    <SearchedUserItem
-      id={item.id}
-      name={item.name}
-      onPress={onPressAddFriend}
-    />
+    <SearchedUserItem id={item.id} name={item.name} onPress={onPressAddFriend} />
   );
 
   return (
@@ -78,10 +65,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <Animatable.View
-            animation="slideInUp"
-            duration={500}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
             <Searchbar
               placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
               style={styles.searchBar}

@@ -1,19 +1,13 @@
 import { useDispatch, useSelector, useStore } from "react-redux";
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import GroupItem from "../../components/GroupItem/index";
 import NavigationService from "../../navigation/navigationService";
 import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
+import { error, log, warn } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
@@ -25,7 +19,6 @@ const GroupList: React.FC = () => {
   const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
-  const onProfile = () => NavigationService.navigate("Profile");
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -36,6 +29,7 @@ const GroupList: React.FC = () => {
   const fetchGroups = (): void => {
     dispatch(userActions.onGetUserGroupsRequest(loggedInUser.id));
   };
+
   useEffect(() => {
     fetchGroups();
   }, [dispatch]);
@@ -56,14 +50,9 @@ const GroupList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Animatable.View
-        animation="slideInUp"
-        duration={600}
-        style={styles.infoContainer}>
+      <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
         <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           data={groups}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}

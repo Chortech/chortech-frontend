@@ -59,7 +59,6 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    // position: "absolute",
     flexDirection: "row-reverse",
     justifyContent: "center",
     alignItems: "center",
