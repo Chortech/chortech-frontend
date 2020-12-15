@@ -11,10 +11,7 @@ import {
   DeleteDebtRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/activity";
-import {
-  AddFriendRequest,
-  DeleteFriendRequest,
-} from "../../models/requests/friend";
+import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -38,10 +35,7 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/activity";
-import {
-  AddFriendResponse,
-  DeleteFriendResponse,
-} from "../../models/responses/friend";
+import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -109,9 +103,7 @@ export function* updateUserAsync(action: Action<UpdateUserRequest>) {
   }
 }
 
-export function* getUserActivitiesAsync(
-  action: Action<GetUserActivitiesRequest>
-) {
+export function* getUserActivitiesAsync(action: Action<GetUserActivitiesRequest>) {
   yield put(userActions.onLoadingEnable());
   const { userId } = action.payload;
   let response: GetUserActivitiesResponse = {
@@ -164,26 +156,14 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(userActions.onLoadingEnable());
-  const {
-    userId,
-    activityName,
-    description,
-    category,
-    totalPrice,
-  } = action.payload;
+  const { userId, activityName, description, category, totalPrice } = action.payload;
   let response: AddExpenseResponse = {
     id: "-1",
     success: false,
   };
 
   try {
-    response = yield Api.addExpense(
-      userId,
-      activityName,
-      description,
-      category,
-      totalPrice
-    );
+    response = yield Api.addExpense(userId, activityName, description, category, totalPrice);
   } catch (error) {
     console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -203,28 +183,14 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
 
 export function* addDebtAsync(action: Action<AddDebtRequest>) {
   yield put(userActions.onLoadingEnable());
-  const {
-    userId,
-    activityName,
-    description,
-    category,
-    debt,
-    creditorId,
-  } = action.payload;
+  const { userId, activityName, description, category, debt, creditorId } = action.payload;
   let response: AddDebtResponse = {
     id: "-1",
     success: false,
   };
 
   try {
-    response = yield Api.addDebt(
-      userId,
-      activityName,
-      description,
-      category,
-      debt,
-      creditorId
-    );
+    response = yield Api.addDebt(userId, activityName, description, category, debt, creditorId);
   } catch (error) {
     console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -343,9 +309,7 @@ export function* deleteDebtAsync(action: Action<DeleteDebtRequest>) {
   }
 }
 
-export function* deleteParticipantAsync(
-  action: Action<DeleteParticipantRequest>
-) {
+export function* deleteParticipantAsync(action: Action<DeleteParticipantRequest>) {
   yield put(userActions.onLoadingEnable());
   const { id } = action.payload;
   let response: DeleteParticipantResponse = {
@@ -416,10 +380,7 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
 
   if (response.success) {
     yield put(userActions.onAddFriendResponse(response));
-    ToastAndroid.show(
-      `${response.friend.friendName} به دوستان شما افزوده‌شد.`,
-      ToastAndroid.SHORT
-    );
+    ToastAndroid.show(`${response.friend.friendName} به دوستان شما افزوده‌شد.`, ToastAndroid.SHORT);
   } else {
     yield put(userActions.onAddFriendFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);

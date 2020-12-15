@@ -27,7 +27,7 @@ const GroupList: React.FC = () => {
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    dispatch(userActions.onGetUserGroupsRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   useEffect(() => {

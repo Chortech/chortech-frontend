@@ -6,7 +6,7 @@ import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 
 type Props = {
-  id: string;
+  id?: string;
   Name: string;
   selected?: boolean;
   onPressItem: (event: GestureResponderEvent) => void | undefined;
