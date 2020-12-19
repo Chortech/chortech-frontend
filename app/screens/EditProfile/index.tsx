@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
@@ -37,17 +30,6 @@ const EditProfile: React.FC = (): JSX.Element => {
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  console.log(JSON.stringify(data, undefined, 2));
-  console.log(
-    data.validEmail &&
-      data.validPhone &&
-      (data.email != "" || data.phone != "") &&
-      data.validName &&
-      data.name != "" &&
-      data.validPassword &&
-      data.password != ""
-  );
-
   const onPressUpdateUser = () => {
     let validInput: boolean =
       data.validEmail &&
@@ -57,7 +39,6 @@ const EditProfile: React.FC = (): JSX.Element => {
       data.name != "" &&
       data.validPassword &&
       data.password != "";
-    console.log(validInput);
     if (validInput) {
       user = {
         ...user,
@@ -84,26 +65,21 @@ const EditProfile: React.FC = (): JSX.Element => {
     setData({
       ...data,
       email: text,
-      validEmail:
-        RegexValidator.validateEmailOrPhone(text) == InputType.Email ||
-        text == "",
+      validEmail: RegexValidator.validateEmailOrPhone(text) == InputType.Email || text == "",
     });
   };
   const onChangePhone = (text: string) => {
     setData({
       ...data,
       phone: text,
-      validPhone:
-        RegexValidator.validateEmailOrPhone(text) == InputType.Phone ||
-        text == "",
+      validPhone: RegexValidator.validateEmailOrPhone(text) == InputType.Phone || text == "",
     });
   };
   const onChangePassword = (text: string) => {
     setData({
       ...data,
       password: text,
-      validPassword:
-        RegexValidator.validatePassword(text) == InputType.Password,
+      validPassword: RegexValidator.validatePassword(text) == InputType.Password,
     });
   };
 
@@ -122,19 +98,11 @@ const EditProfile: React.FC = (): JSX.Element => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>ویرایش اطلاعات</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>نام و نام خانوادگی</Text>
-                <View
-                  style={
-                    data.validName
-                      ? styles.inputContainer
-                      : styles.inputContainerError
-                  }>
+                <View style={data.validName ? styles.inputContainer : styles.inputContainerError}>
                   <TextInput
                     defaultValue={data.name}
                     placeholder="نام و نام خانوادگی"
@@ -145,12 +113,7 @@ const EditProfile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>ایمیل</Text>
-                <View
-                  style={
-                    data.validEmail
-                      ? styles.inputContainer
-                      : styles.inputContainerError
-                  }>
+                <View style={data.validEmail ? styles.inputContainer : styles.inputContainerError}>
                   <TextInput
                     defaultValue={data.email}
                     placeholder="ایمیل"
@@ -161,12 +124,7 @@ const EditProfile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>شماره تلفن</Text>
-                <View
-                  style={
-                    data.validPhone
-                      ? styles.inputContainer
-                      : styles.inputContainerError
-                  }>
+                <View style={data.validPhone ? styles.inputContainer : styles.inputContainerError}>
                   <TextInput
                     defaultValue={data.phone}
                     placeholder="شماره تلفن"
@@ -178,26 +136,12 @@ const EditProfile: React.FC = (): JSX.Element => {
               <View style={styles.customInputContainer}>
                 <Text style={styles.label}>رمز عبور</Text>
                 <View
-                  style={
-                    data.validPassword
-                      ? styles.inputContainer
-                      : styles.inputContainerError
-                  }>
-                  <TouchableOpacity
-                    onPress={togglePassword}
-                    style={styles.toggleIcon}>
+                  style={data.validPassword ? styles.inputContainer : styles.inputContainerError}>
+                  <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
                     {secureTextEntry ? (
-                      <FontAwesomeIcon
-                        icon="eye-slash"
-                        size={20}
-                        style={{ color: "red" }}
-                      />
+                      <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
                     ) : (
-                      <FontAwesomeIcon
-                        icon="eye"
-                        size={20}
-                        style={{ color: "#1AD927" }}
-                      />
+                      <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
                     )}
                   </TouchableOpacity>
                   <TextInput
@@ -210,14 +154,10 @@ const EditProfile: React.FC = (): JSX.Element => {
                 </View>
               </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.filledButton}
-                  onPress={onPressUpdateUser}>
+                <TouchableOpacity style={styles.filledButton} onPress={onPressUpdateUser}>
                   <Text style={styles.filledButtonText}>تایید</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.outlinedButton}
-                  onPress={cancel}>
+                <TouchableOpacity style={styles.outlinedButton} onPress={cancel}>
                   <Text style={styles.outlinedButtonText}>انصراف</Text>
                 </TouchableOpacity>
               </View>

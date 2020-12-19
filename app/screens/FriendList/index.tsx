@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
@@ -30,7 +24,7 @@ const FriendList: React.FC = (): JSX.Element => {
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    dispatch(userActions.onGetUserFriendsRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -53,16 +47,12 @@ const FriendList: React.FC = (): JSX.Element => {
   return (
     <>
       <View style={styles.container}>
-        <Animatable.View
-          animation="slideInUp"
-          duration={600}
-          style={styles.infoContainer}>
+        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
           <FlatList
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             data={friends}
             renderItem={renderFriendItem}
+            showsVerticalScrollIndicator={false}
           />
         </Animatable.View>
         <View style={styles.buttonContainer}>

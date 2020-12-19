@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Activity } from "../../models/other/Activity";
@@ -41,7 +34,7 @@ const ActivityList: React.FC = () => {
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const [refreshing, setRefreshing] = useState(false);
   const fetchActivities = (): void => {
-    dispatch(userActions.onGetUserActivitiesRequest(loggedInUser.id));
+    dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   useEffect(() => {
@@ -57,14 +50,9 @@ const ActivityList: React.FC = () => {
   return (
     <>
       <View style={styles.container}>
-        <Animatable.View
-          animation="slideInUp"
-          duration={600}
-          style={styles.infoContainer}>
+        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
           <FlatList
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             showsVerticalScrollIndicator={false}
             data={activities}
             renderItem={({ item }) => {

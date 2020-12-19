@@ -29,10 +29,7 @@ import {
 import { Friend } from "../../../models/other/Friend";
 import { Group } from "../../../models/other/Group";
 import { User } from "../../../models/other/User";
-import {
-  AddFriendResponse,
-  DeleteFriendResponse,
-} from "../../../models/responses/friend";
+import { AddFriendResponse, DeleteFriendResponse } from "../../../models/responses/friend";
 import { UserApi } from "../../../models/api/user";
 import {
   AddActivityResponse,
@@ -46,8 +43,7 @@ import {
 } from "../../../models/responses/activity";
 import { Activity } from "../../../models/other/Activity";
 
-class GraphQLApi
-  implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
+class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
   endpoint: string = API_URL;
   client: GraphQLClient;
 
@@ -88,24 +84,18 @@ class GraphQLApi
     } else {
       if (type == "debt") {
         if (debtId != null && debtId != undefined) {
-          data = await this.client.request(
-            mutations.ADD_NON_GROUP_DEBT_ACTIVITY,
-            {
-              userId: userId,
-              type: type,
-              debtId: debtId,
-            }
-          );
-        }
-      } else {
-        data = await this.client.request(
-          mutations.ADD_NON_GROUP_EXPENSE_ACTIVITY,
-          {
+          data = await this.client.request(mutations.ADD_NON_GROUP_DEBT_ACTIVITY, {
             userId: userId,
             type: type,
-            expenseId: expenseId,
-          }
-        );
+            debtId: debtId,
+          });
+        }
+      } else {
+        data = await this.client.request(mutations.ADD_NON_GROUP_EXPENSE_ACTIVITY, {
+          userId: userId,
+          type: type,
+          expenseId: expenseId,
+        });
       }
     }
     data = data.createActivity;
@@ -221,8 +211,7 @@ class GraphQLApi
             name: element.name,
             type: element.type,
             userId: element.user._id.toString(),
-            expenseId:
-              element.expense != null ? element.expense._id.toString() : "-1",
+            expenseId: element.expense != null ? element.expense._id.toString() : "-1",
             debtId: element.debt != null ? element.debt._id.toString() : "-1",
           };
           activities.push(activity);
@@ -304,6 +293,37 @@ class GraphQLApi
     let successful: boolean = data != null;
     let user: User | undefined | null = undefined;
     if (successful) {
+      let friends: Array<Friend> = [];
+      if (data.friends.data != null) {
+        data.friends.data.forEach((element: any) => {
+          friends.push({
+            id: element._id.toString(),
+            friendId: element.friendId.toString(),
+            friendName: element.friendName,
+          });
+        });
+      }
+      let groups: Array<Group> = [];
+      if (data.groups.data != null) {
+        data.groups.data.forEach((element: any) => {
+          groups.push({
+            id: element._id.toString(),
+            name: element.name,
+            creatorId: element.creator._id.toString(),
+          });
+        });
+      }
+      let activities: Array<Activity> = [];
+      if (data.activities.data != null) {
+        data.activities.data.forEach((element: any) => {
+          activities.push({
+            id: element._id.toString(),
+            name: element.name,
+            type: element.type,
+            userId: element.user._id.toString(),
+          });
+        });
+      }
       user = {
         id: data._id.toString(),
         name: data.name,
@@ -312,9 +332,9 @@ class GraphQLApi
         phone: data.phone,
         credit: data.credit,
         balance: data.balance,
-        friends: data.friends,
-        groups: data.groups,
-        activities: data.activities,
+        friends: friends,
+        groups: groups,
+        activities: activities,
       };
     }
 
@@ -383,10 +403,7 @@ class GraphQLApi
     };
   }
 
-  async getFilteredUser(
-    emailOrPhone: string,
-    inputType: InputType
-  ): Promise<UserByFilterResponse> {
+  async getFilteredUser(emailOrPhone: string, inputType: InputType): Promise<UserByFilterResponse> {
     let data: any;
     if (inputType == InputType.Email) {
       data = await this.client.request(queries.USER_BY_EMAIL, {
@@ -471,10 +488,7 @@ class GraphQLApi
           };
         }
       } else {
-        ToastAndroid.show(
-          `${friendName} به دوستان شما اضافه شده‌است.`,
-          ToastAndroid.LONG
-        );
+        ToastAndroid.show(`${friendName} به دوستان شما اضافه شده‌است.`, ToastAndroid.LONG);
       }
     }
 
@@ -610,10 +624,7 @@ class GraphQLApi
 
   async cancelCode(email: string, phone: string): Promise<void> {}
 
-  async resetPassword(
-    id: string,
-    password: string
-  ): Promise<ResetPasswordResponse> {
+  async resetPassword(id: string, password: string): Promise<ResetPasswordResponse> {
     let data = await this.client.request(mutations.UPDATE_USER_PASSWORD, {
       userId: id,
       password: password,
@@ -627,11 +638,7 @@ class GraphQLApi
   }
   //#endregion auth
   //#region group
-  async addGroup(
-    name: string,
-    creator: string,
-    members: Array<string>
-  ): Promise<AddGroupResponse> {
+  async addGroup(name: string, creator: string, members: Array<string>): Promise<AddGroupResponse> {
     let data = await this.client.request(mutations.ADD_Group, {
       name: name,
       creatorId: creator,
