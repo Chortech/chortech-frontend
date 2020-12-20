@@ -42,16 +42,28 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
     { id: "6", description: "گردو", category: "سبزی", participants: [], totalPrice: "50000" },
   ];
 
-  const onExpensePress = () => {
+  const onExpensePress = (
+    id: string,
+    name: string,
+    type: string,
+    expenseId?: string,
+    debtId?: string
+  ) => {
     setRenderFlatList(!renderFlatList);
-    console.log("expense pressed!");
+    NavigationService.navigate("Activity", {
+      id: id,
+      activityName: name,
+      activityType: type,
+      expenseId: expenseId,
+      debtId: debtId,
+    });
   };
 
   const renderExpenseItem: any = ({ item }) => (
     <ExpenseItem
       description={item.description}
       price={item.totalPrice}
-      onPressExpenseItem={onExpensePress}
+      onPressExpenseItem={() => onExpensePress(item.id, item.description, "expense", "-1", "-1")}
     />
   );
 
@@ -66,7 +78,7 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
               style={styles.groupImage}
               source={require("../../assets/images/group-image.jpg")}
             />
-            <Text style={styles.text}>{groupName}</Text>
+            <Text style={styles.textHeader}>{groupName}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <FlatList

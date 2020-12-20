@@ -49,14 +49,9 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
             />
             <Text style={styles.activityNameText}>{activityName}</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={onPressDeleteActivity}>
+              <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteActivity}>
                 <Text style={styles.removeButtonText}>حذف فعالیت</Text>
                 <Text style={styles.minus}>-</Text>
               </TouchableOpacity>
