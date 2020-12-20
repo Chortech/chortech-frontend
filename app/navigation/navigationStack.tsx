@@ -39,13 +39,9 @@ interface IState {
 }
 
 const AuthNavigator = () => {
-  const isLoggedIn = useSelector(
-    (state: IState) => state.authReducer.isLoggedIn
-  );
+  const isLoggedIn = useSelector((state: IState) => state.authReducer.isLoggedIn);
   return (
-    <AuthStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="Login">
+    <AuthStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={Login}
@@ -109,9 +105,7 @@ const LoggedInNavigator = () => (
       component={FriendNavigator}
       options={{
         tabBarLabel: "دوستان",
-        tabBarIcon: ({ color }) => (
-          <FontAwesomeIcon icon="users" color={color} size={26} />
-        ),
+        tabBarIcon: ({ color }) => <FontAwesomeIcon icon="users" color={color} size={26} />,
       }}
     />
     <LoggedInTab.Screen
@@ -129,9 +123,7 @@ const LoggedInNavigator = () => (
       component={ProfileNavigator}
       options={{
         tabBarLabel: "صفحه شخصی",
-        tabBarIcon: ({ color }) => (
-          <FontAwesomeIcon icon="user" color={color} size={26} />
-        ),
+        tabBarIcon: ({ color }) => <FontAwesomeIcon icon="user" color={color} size={26} />,
       }}
     />
   </LoggedInTab.Navigator>
@@ -151,11 +143,7 @@ const GroupNavigator = () => (
         elevation: 10,
       },
     }}>
-    <LoggedInTab.Screen
-      name="GroupList"
-      component={GroupList}
-      options={{ title: "گروه‌ها" }}
-    />
+    <LoggedInTab.Screen name="GroupList" component={GroupList} options={{ title: "گروه‌ها" }} />
     <LoggedInTab.Screen
       name="Group"
       component={Group}
@@ -211,11 +199,7 @@ const FriendNavigator = () => (
       },
     }}
     initialRouteName="FriendList">
-    <LoggedInTab.Screen
-      name="FriendList"
-      component={FriendList}
-      options={{ title: "دوستان" }}
-    />
+    <LoggedInTab.Screen name="FriendList" component={FriendList} options={{ title: "دوستان" }} />
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
@@ -230,9 +214,7 @@ const FriendNavigator = () => (
 );
 
 const ProfileNavigator = () => (
-  <ProfileStack.Navigator
-    screenOptions={{ headerShown: false }}
-    initialRouteName="Profile">
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Profile">
     <LoggedInTab.Screen name="Profile" component={Profile} />
     <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
   </ProfileStack.Navigator>

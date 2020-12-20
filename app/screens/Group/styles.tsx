@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
   textHeader: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 16,
+    fontSize: 20,
+    padding: 10,
     writingDirection: "auto",
     fontFamily: "IRANSansWeb_Bold",
   },
@@ -43,7 +44,7 @@ export const styles = StyleSheet.create({
     width: 70,
     borderRadius: 50,
     padding: 10,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: "#fff",
   },
   activityImage: {
