@@ -1,6 +1,6 @@
 import { Token } from "../../other/Token";
 
-// login models
+// login request models
 export interface loginEmailRequest {
   email: string;
   password: string;
@@ -11,7 +11,7 @@ export interface loginPhoneRequest {
   password: string;
 }
 
-// signup models
+// signup request models
 export interface SignUpEmailRequest {
   email: string;
   name: string;
@@ -24,7 +24,7 @@ export interface SignUpPhoneRequest {
   password: string;
 }
 
-// reset password models
+// reset password request models
 export interface resetPasswordRequestByEmail {
   email: string;
   newpass: string;
@@ -37,20 +37,20 @@ export interface resetPasswordRequestByPhone {
   token: Token;
 }
 
-// change password model
+// change password request model
 export interface changePasswordRequest {
   newpass: string;
   oldpass: string;
   token: Token;
 }
 
-// change email model
+// change email request model
 export interface changeEmailRequest {
   newEmail: string;
   token: Token;
 }
 
-// change phone model
+// change phone request model
 export interface changePhoneRequest {
   newPhone: string;
   token: Token;
