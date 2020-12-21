@@ -1,11 +1,11 @@
 import { Token } from "../../other/axios/Token";
 
-export interface loginResponse {
+export interface Login {
   id: string;
   token: Token;
 }
 
-export interface signUpResponse {
+export interface SignUp {
   id: string;
   name: string;
   token: Token;

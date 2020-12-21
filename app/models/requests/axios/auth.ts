@@ -1,12 +1,12 @@
 import { Token } from "../../other/axios/Token";
 
 // login request models
-export interface loginEmailRequest {
+export interface LoginEmailRequest {
   email: string;
   password: string;
 }
 
-export interface loginPhoneRequest {
+export interface LoginPhoneRequest {
   phone: string;
   password: string;
 }
@@ -25,33 +25,33 @@ export interface SignUpPhoneRequest {
 }
 
 // reset password request models
-export interface resetPasswordRequestByEmail {
+export interface ResetPasswordRequestByEmail {
   email: string;
   newpass: string;
   token: Token;
 }
 
-export interface resetPasswordRequestByPhone {
+export interface ResetPasswordRequestByPhone {
   phone: string;
   newpass: string;
   token: Token;
 }
 
 // change password request model
-export interface changePasswordRequest {
+export interface ChangePasswordRequest {
   newpass: string;
   oldpass: string;
   token: Token;
 }
 
 // change email request model
-export interface changeEmailRequest {
+export interface ChangeEmailRequest {
   newEmail: string;
   token: Token;
 }
 
 // change phone request model
-export interface changePhoneRequest {
+export interface ChangePhoneRequest {
   newPhone: string;
   token: Token;
 }

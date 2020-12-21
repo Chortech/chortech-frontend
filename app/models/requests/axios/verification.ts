@@ -1,19 +1,19 @@
 // generate code request models
-export interface generateCodeEmailRequest {
+export interface GenerateCodeEmailRequest {
   email: string;
 }
 
-export interface generateCodePhoneRequest {
+export interface GenerateCodePhoneRequest {
   phone: string;
 }
 
 // verify code request models
-export interface verifyCodeEmailRequest {
+export interface VerifyCodeEmailRequest {
   email: string;
   code: string;
 }
 
-export interface verifyCodePhoneRequest {
+export interface VerifyCodePhoneRequest {
   phone: string;
   code: string;
 }

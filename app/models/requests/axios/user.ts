@@ -1,37 +1,31 @@
+import { Invitee } from "../../other/axios/Invitee";
 import { Token } from "../../other/axios/Token";
 
-export interface getUserFriendsRequest {
+export interface GetUserFriendsRequest {
   token: Token;
 }
 
-export interface addFriendEmailRequest {
+export interface AddFriendEmailRequest {
   email: string;
 }
 
-export interface addFriendPhoneRequest {
+export interface AddFriendPhoneRequest {
   phone: string;
 }
 
-export interface removeFriendRequest {
+export interface RemoveFriendRequest {
   id: string;
 }
 
-export interface invitee {
-  type: "phone" | "email" | "combo";
-  phone?: string;
-  email?: string;
-  name: string;
+export interface InviteFriendsRequest {
+  invitees: Array<Invitee>;
 }
 
-export interface inviteFriendsRequest {
-  invitees: Array<invitee>;
-}
-
-export interface getProfileRequest {
+export interface GetProfileRequest {
   token: Token;
 }
 
-export interface editProfileRequest {
+export interface EditProfileRequest {
   picture: string;
   newName: string;
 }

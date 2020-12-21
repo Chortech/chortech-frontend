@@ -1,26 +1,26 @@
 import { Friend } from "../../other/axios/Friend";
 
-export interface getUserFriendsResponse {
+export interface GetUserFriends {
   friends: Array<Friend>;
 }
 
-export interface addFriendResponse {
+export interface AddFriendResponse {
   id: string;
   name: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   friends: Array<Friend>;
 }
 
-export interface removeFriendResponse {
+export interface RemoveFriendResponse {
   id: string;
   name: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   friends: Array<Friend>;
 }
 
-export interface editProfileResponse {
+export interface EditProfileResponse {
   name: string;
   email?: string;
   phone?: string;
