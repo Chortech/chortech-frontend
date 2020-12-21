@@ -72,7 +72,7 @@ const ActivityList: React.FC = () => {
                     <Text style={styles.activityText}>{item.name}</Text>
                     <Image
                       style={styles.activityImage}
-                      source={require("../../assets/images/friend-image.jpg")}
+                      source={require("../../assets/images/category-image.jpg")}
                     />
                   </TouchableOpacity>
                 </View>
