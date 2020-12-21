@@ -45,12 +45,32 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
           <View style={styles.header}>
             <Image
               style={styles.activityImage}
-              source={require("../../assets/images/friend-image.jpg")}
+              source={require("../../assets/images/category-image.jpg")}
             />
             <Text style={styles.activityNameText}>{activityName}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}></Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>دسته‌بندی</Text>
+                </View>
+              </View>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}></Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>مبلغ</Text>
+                </View>
+              </View>
             <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.addButton} onPress={onPressDeleteActivity}>
+                  <Text style={styles.addButtonText}>اضافه‌کردن یادداشت</Text>
+                  <Text style={styles.plus}>+</Text>
+                </TouchableOpacity>
               <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteActivity}>
                 <Text style={styles.removeButtonText}>حذف فعالیت</Text>
                 <Text style={styles.minus}>-</Text>
