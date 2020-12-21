@@ -16,7 +16,6 @@ class AuthenticationApi implements AuthApi {
   }
 
   async loginByEmail(email: string, password: string): Promise<Response<Login>> {
-    log("fetch data");
     let data: AxiosResponse = await this.client.post("/login", {
       email: email,
       password: password,
@@ -38,12 +37,32 @@ class AuthenticationApi implements AuthApi {
       result.status = data.status;
     }
 
-    log(result);
     return result;
   }
 
   async loginByPhone(phone: string, password: string): Promise<Response<Login>> {
-    throw new Error("Method not implemented.");
+    let data: AxiosResponse = await this.client.post("/login", {
+      phone: phone,
+      password: password,
+    });
+    let result: Response<Login> = {
+      success: false,
+      status: -1,
+      response: null,
+    };
+
+    if (data.status == 200) {
+      let response: Login = data.data;
+      result = {
+        success: true,
+        status: data.status,
+        response: response,
+      };
+    } else {
+      result.status = data.status;
+    }
+
+    return result;
   }
 
   async signUpByEmail(name: string, email: string, password: string): Promise<Response<SignUp>> {
