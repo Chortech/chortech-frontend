@@ -34,7 +34,7 @@ const ActivityList: React.FC = () => {
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const [refreshing, setRefreshing] = useState(false);
   const fetchActivities = (): void => {
-    dispatch(userActions.onGetUserRequest(loggedInUser.id));
+    // dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   useEffect(() => {

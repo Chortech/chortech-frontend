@@ -6,8 +6,6 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { navigationRef } from "../../navigation/navigationService";
 
 import * as authActions from "../actions/authActions";
-import { LoginResponse } from "../../models/responses/graphql/login";
-import { LoginRequest } from "../../models/requests/graphql/login";
 import { SignUpRequest } from "../../models/requests/graphql/signUp";
 import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
@@ -15,19 +13,33 @@ import { IdentifyAccountResponse } from "../../models/responses/graphql/identify
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
+import { LoginRequest } from "../../models/requests/axios/auth";
+import { Response } from "../../models/responses/axios/response";
+import { Login } from "../../models/responses/axios/auth";
+import { InputType } from "../../utils/inputTypes";
+import { AuthAPI } from "../../services/api/axios/authApi";
+import { log } from "../../utils/logger";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
   const { email, phone, password, inputType } = action.payload;
-  let response: LoginResponse = {
+  let response: Response<Login> = {
     success: false,
-    user: null,
+    status: -1,
+    response: null,
   };
 
+  log(action.payload);
+
   try {
-    response = yield Api.login(email, phone, password, inputType);
+    if (inputType == InputType.Email) {
+      log("login by email");
+      response = yield AuthAPI.loginByEmail(email, password);
+    } else if (inputType == InputType.Phone) {
+      response = yield AuthAPI.loginByPhone(phone, password);
+    }
   } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
+    error(error);
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 

@@ -24,7 +24,7 @@ const FriendList: React.FC = (): JSX.Element => {
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    dispatch(userActions.onGetUserRequest(loggedInUser.id));
+    // dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");

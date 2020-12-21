@@ -1,5 +1,5 @@
 export interface Response<T> {
   success: boolean;
   status: number;
-  response?: T;
+  response?: T | null | undefined;
 }

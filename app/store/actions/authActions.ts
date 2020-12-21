@@ -1,8 +1,7 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-import { LoginRequest } from "../../models/requests/graphql/login";
-import { LoginResponse } from "../../models/responses/graphql/login";
+// import { LoginResponse } from "../../models/responses/axios/auth";
 import { SignUpRequest } from "../../models/requests/graphql/signUp";
 import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
@@ -10,6 +9,9 @@ import { IdentifyAccountResponse } from "../../models/responses/graphql/identify
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
+import { LoginRequest } from "../../models/requests/axios/auth";
+import { Login } from "../../models/responses/axios/auth";
+import { Response } from "../../models/responses/axios/response";
 
 export function onLoginRequest(
   email: string,
@@ -28,29 +30,29 @@ export function onLoginRequest(
   };
 }
 
-export function onLoginResponse(response: LoginResponse): Action<LoginResponse> {
+export function onLoginResponse(response: Response<Login>): Action<Response<Login>> {
   return {
     type: types.LOGIN_RESPONSE,
     payload: response,
   };
 }
 
-export function onLoginFail(): Action<LoginResponse> {
+export function onLoginFail(): Action<Response<Login>> {
   return {
     type: types.LOGIN_FAIL,
     payload: {
       success: false,
-      user: null,
+      status: -1,
     },
   };
 }
 
-export function onLogout(): Action<LoginResponse> {
+export function onLogout(): Action<Response<Login>> {
   return {
     type: types.LOG_OUT,
     payload: {
       success: false,
-      user: null,
+      status: -1,
     },
   };
 }

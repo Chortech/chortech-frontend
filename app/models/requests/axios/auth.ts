@@ -1,14 +1,12 @@
+import { InputType } from "../../../utils/inputTypes";
 import { Token } from "../../other/axios/Token";
 
 // login request models
-export interface LoginEmailRequest {
+export interface LoginRequest {
   email: string;
-  password: string;
-}
-
-export interface LoginPhoneRequest {
   phone: string;
   password: string;
+  inputType: InputType;
 }
 
 // signup request models

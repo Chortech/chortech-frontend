@@ -8,7 +8,6 @@ import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as authActions from "../../store/actions/authActions";
-import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";

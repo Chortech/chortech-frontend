@@ -5,8 +5,6 @@ import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
-import { LoginRequest } from "../../models/requests/graphql/login";
-import { LoginResponse } from "../../models/responses/graphql/login";
 import { SignUpRequest } from "../../models/requests/graphql/signUp";
 import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IUserState } from "../../models/reducers/default";
@@ -15,21 +13,25 @@ import { IdentifyAccountResponse } from "../../models/responses/graphql/identify
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
+import { LoginRequest } from "../../models/requests/axios/auth";
+import { Response } from "../../models/responses/axios/response";
+import { Login } from "../../models/responses/axios/auth";
 
 const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
+  token: undefined,
   name: "",
   password: "",
   email: "",
   phone: "",
   authInputType: InputType.None,
-  credit: 0,
-  balance: 0,
   friends: [],
   groups: [],
   activities: [],
+  myCreditCards: [],
+  otherCreditCards: [],
 };
 
 export const authReducer = createReducer(initialState, {
@@ -42,17 +44,12 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.LOGIN_RESPONSE](state: IUserState, action: Action<LoginResponse>) {
+  [types.LOGIN_RESPONSE](state: IUserState, action: Action<Response<Login>>) {
     return {
       ...state,
       isLoggedIn: true,
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
+      id: action.payload.response?.id,
+      token: action.payload.response?.token,
     };
   },
   [types.LOGIN_FAIL](state: IUserState) {
@@ -60,6 +57,7 @@ export const authReducer = createReducer(initialState, {
       ...state,
       isLoggedIn: false,
       id: "-1",
+      token: undefined,
       email: "",
       phone: "",
       authInputType: InputType.None,
@@ -70,8 +68,8 @@ export const authReducer = createReducer(initialState, {
     return {
       ...state,
       isLoggedIn: false,
-      loading: false,
       id: "-1",
+      token: undefined,
       email: "",
       phone: "",
       authInputType: InputType.None,

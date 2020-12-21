@@ -20,7 +20,7 @@ const Profile: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const fetchUser = () => {
-    dispatch(userActions.onGetUserRequest(loggedInUserId));
+    // dispatch(userActions.onGetUserRequest(loggedInUserId));
   };
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
