@@ -7,7 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { InputType } from "../../utils/inputTypes";
 import { RegexValidator } from "../../utils/regexValidator";
 import { Api } from "../../services/api/graphQL/graphqlApi";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as userActions from "../../store/actions/userActions";

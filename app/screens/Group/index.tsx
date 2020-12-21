@@ -10,7 +10,7 @@ import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
 import FriendItem from "../../components/FriendItem";
-import { Expense } from "../../models/other/Expense";
+import { Expense } from "../../models/other/graphql/Expense";
 import ExpenseItem from "../../components/ExpenseItem";
 
 type Props = {

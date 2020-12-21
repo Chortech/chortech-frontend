@@ -1,4 +1,4 @@
-import { User } from "../../other/User";
+import { User } from "../../other/graphql/User";
 import { GetUserResponse, UpdateUserResponse } from "../../responses/graphql/user";
 
 export interface UserApi {

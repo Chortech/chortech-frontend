@@ -1,6 +1,6 @@
-import { User } from "../../other/User";
-import { Activity } from "../../other/Activity";
-import { Friend } from "../../other/Friend";
+import { User } from "../../other/graphql/User";
+import { Activity } from "../../other/graphql/Activity";
+import { Friend } from "../../other/graphql/Friend";
 
 export interface GetUserResponse {
   success: boolean;

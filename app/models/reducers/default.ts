@@ -1,7 +1,7 @@
 import { InputType } from "../../utils/inputTypes";
-import { Activity } from "../other/Activity";
-import { Friend } from "../other/Friend";
-import { Group } from "../other/Group";
+import { Activity } from "../other/graphql/Activity";
+import { Friend } from "../other/graphql/Friend";
+import { Group } from "../other/graphql/Group";
 
 export interface IUserState {
   isLoggedIn: boolean;

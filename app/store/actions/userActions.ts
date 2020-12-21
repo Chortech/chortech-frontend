@@ -1,5 +1,5 @@
 import { Action } from "../../models/actions/action";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
 import {
   AddActivityRequest,
   AddExpenseRequest,

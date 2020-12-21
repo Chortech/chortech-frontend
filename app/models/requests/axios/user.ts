@@ -1,4 +1,4 @@
-import { Token } from "../../other/Token";
+import { Token } from "../../other/axios/Token";
 
 export interface getUserFriendsRequest {
   token: Token;

@@ -26,9 +26,9 @@ import {
   UpdateUserResponse,
   GetUserActivitiesResponse,
 } from "../../../models/responses/graphql/user";
-import { Friend } from "../../../models/other/Friend";
-import { Group } from "../../../models/other/Group";
-import { User } from "../../../models/other/User";
+import { Friend } from "../../../models/other/graphql/Friend";
+import { Group } from "../../../models/other/graphql/Group";
+import { User } from "../../../models/other/graphql/User";
 import { AddFriendResponse, DeleteFriendResponse } from "../../../models/responses/graphql/friend";
 import { UserApi } from "../../../models/api/grapql-api/user";
 import {
@@ -41,7 +41,7 @@ import {
   DeleteExpenseResponse,
   DeleteParticipantResponse,
 } from "../../../models/responses/graphql/activity";
-import { Activity } from "../../../models/other/Activity";
+import { Activity } from "../../../models/other/graphql/Activity";
 
 class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {
   endpoint: string = API_URL;

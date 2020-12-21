@@ -1,13 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -18,7 +11,7 @@ import * as authActions from "../../store/actions/authActions";
 import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -40,13 +33,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      authActions.onGenerateCodeRequest(
-        props.email,
-        props.phone,
-        props.inputType
-      )
-    );
+    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
   }, [dispatch]);
 
   const onNextScreen = () => {
@@ -70,13 +57,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   };
 
   const regenerateCode = (): void => {
-    dispatch(
-      authActions.onGenerateCodeRequest(
-        props.email,
-        props.phone,
-        props.inputType
-      )
-    );
+    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
     ref.resetCountDown();
   };
 
@@ -97,10 +78,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>Chortech</Text>
           </View>
-          <Animatable.View
-            animation="fadeInUpBig"
-            duration={500}
-            style={styles.footer}>
+          <Animatable.View animation="fadeInUpBig" duration={500} style={styles.footer}>
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="لطفا کد فعال‌سازی را وارد کنید"
@@ -133,9 +111,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
               </View>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={onNextScreen}>
+              <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>
                 <Text style={styles.confirmButtonText}>تایید</Text>
               </TouchableOpacity>
             </View>

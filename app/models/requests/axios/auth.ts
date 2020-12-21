@@ -1,4 +1,4 @@
-import { Token } from "../../other/Token";
+import { Token } from "../../other/axios/Token";
 
 // login request models
 export interface loginEmailRequest {
