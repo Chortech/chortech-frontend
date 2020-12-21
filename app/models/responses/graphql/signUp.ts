@@ -1,4 +1,4 @@
-import { User } from "../other/User";
+import { User } from "../../other/User";
 
 export interface SignUpResponse {
   success: boolean;

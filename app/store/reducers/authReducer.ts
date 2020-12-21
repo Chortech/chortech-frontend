@@ -5,16 +5,16 @@ import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
-import { SignUpRequest } from "../../models/requests/signUp";
-import { SignUpResponse } from "../../models/responses/signUp";
+import { LoginRequest } from "../../models/requests/graphql/login";
+import { LoginResponse } from "../../models/responses/graphql/login";
+import { SignUpRequest } from "../../models/requests/graphql/signUp";
+import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IUserState } from "../../models/reducers/default";
-import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
-import { GenerateCodeRequest } from "../../models/requests/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/resetPassword";
+import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
+import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
+import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
+import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
+import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
 
 const initialState: IUserState = {
   isLoggedIn: false,
@@ -115,10 +115,7 @@ export const authReducer = createReducer(initialState, {
       authInputType: InputType.None,
     };
   },
-  [types.IDENTIFY_ACCOUNT_REQUEST](
-    state: IUserState,
-    action: Action<IdentifyAccountRequest>
-  ) {
+  [types.IDENTIFY_ACCOUNT_REQUEST](state: IUserState, action: Action<IdentifyAccountRequest>) {
     return {
       ...state,
       email: action.payload.email,
@@ -126,19 +123,13 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.IDENTIFY_ACCOUNT_RESPONSE](
-    state: IUserState,
-    action: Action<IdentifyAccountResponse>
-  ) {
+  [types.IDENTIFY_ACCOUNT_RESPONSE](state: IUserState, action: Action<IdentifyAccountResponse>) {
     return {
       ...state,
       id: action.payload.id,
     };
   },
-  [types.IDENTIFY_ACCOUNT_FAIL](
-    state: IUserState,
-    action: Action<IdentifyAccountResponse>
-  ) {
+  [types.IDENTIFY_ACCOUNT_FAIL](state: IUserState, action: Action<IdentifyAccountResponse>) {
     return {
       ...state,
       id: "-1",
@@ -148,10 +139,7 @@ export const authReducer = createReducer(initialState, {
       password: "",
     };
   },
-  [types.GENERATE_CODE_REQUEST](
-    state: IUserState,
-    action: Action<GenerateCodeRequest>
-  ) {
+  [types.GENERATE_CODE_REQUEST](state: IUserState, action: Action<GenerateCodeRequest>) {
     return {
       ...state,
       email: action.payload.email,
@@ -159,20 +147,14 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.RESET_PASSWORD_REQUEST](
-    state: IUserState,
-    action: Action<ResetPasswordRequest>
-  ) {
+  [types.RESET_PASSWORD_REQUEST](state: IUserState, action: Action<ResetPasswordRequest>) {
     return {
       ...state,
       id: action.payload.id,
       password: action.payload.password,
     };
   },
-  [types.RESET_PASSWORD_RESPONSE](
-    state: IUserState,
-    action: Action<ResetPasswordResponse>
-  ) {
+  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<ResetPasswordResponse>) {
     return {
       ...state,
       id: "-1",
@@ -183,10 +165,7 @@ export const authReducer = createReducer(initialState, {
       authInputType: InputType.None,
     };
   },
-  [types.RESET_PASSWORD_FAIL](
-    state: IUserState,
-    action: Action<ResetPasswordResponse>
-  ) {
+  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<ResetPasswordResponse>) {
     return {
       ...state,
       id: "-1",

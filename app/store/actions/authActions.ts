@@ -1,15 +1,15 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
-import { SignUpRequest } from "../../models/requests/signUp";
-import { SignUpResponse } from "../../models/responses/signUp";
-import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
-import { GenerateCodeRequest } from "../../models/requests/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/resetPassword";
+import { LoginRequest } from "../../models/requests/graphql/login";
+import { LoginResponse } from "../../models/responses/graphql/login";
+import { SignUpRequest } from "../../models/requests/graphql/signUp";
+import { SignUpResponse } from "../../models/responses/graphql/signUp";
+import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
+import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
+import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
+import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
+import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
 
 export function onLoginRequest(
   email: string,
@@ -28,9 +28,7 @@ export function onLoginRequest(
   };
 }
 
-export function onLoginResponse(
-  response: LoginResponse
-): Action<LoginResponse> {
+export function onLoginResponse(response: LoginResponse): Action<LoginResponse> {
   return {
     type: types.LOGIN_RESPONSE,
     payload: response,
@@ -76,9 +74,7 @@ export function onSignUpRequest(
   };
 }
 
-export function onSignUpResponse(
-  response: SignUpResponse
-): Action<SignUpResponse> {
+export function onSignUpResponse(response: SignUpResponse): Action<SignUpResponse> {
   return {
     type: types.SIGNUP_RESPONSE,
     payload: response,
@@ -144,10 +140,7 @@ export function onGenerateCodeRequest(
   };
 }
 
-export function onResetPasswordRequest(
-  id: string,
-  password: string
-): Action<ResetPasswordRequest> {
+export function onResetPasswordRequest(id: string, password: string): Action<ResetPasswordRequest> {
   return {
     type: types.RESET_PASSWORD_REQUEST,
     payload: {

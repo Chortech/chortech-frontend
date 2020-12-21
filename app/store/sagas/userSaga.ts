@@ -10,21 +10,21 @@ import {
   DeleteExpenseRequest,
   DeleteDebtRequest,
   DeleteParticipantRequest,
-} from "../../models/requests/activity";
-import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/friend";
+} from "../../models/requests/graphql/activity";
+import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
   DeleteGroupRequest,
   GetGroupByIdRequest,
   GetUserGroupsRequest,
-} from "../../models/requests/group";
+} from "../../models/requests/graphql/group";
 import {
   GetUserActivitiesRequest,
   GetUserFriendsRequest,
   GetUserRequest,
   UpdateUserRequest,
-} from "../../models/requests/user";
+} from "../../models/requests/graphql/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -34,8 +34,8 @@ import {
   DeleteExpenseResponse,
   DeleteDebtResponse,
   DeleteParticipantResponse,
-} from "../../models/responses/activity";
-import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/friend";
+} from "../../models/responses/graphql/activity";
+import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -48,7 +48,7 @@ import {
   GetUserFriendsResponse,
   GetUserResponse,
   UpdateUserResponse,
-} from "../../models/responses/user";
+} from "../../models/responses/graphql/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import * as userActions from "../actions/userActions";

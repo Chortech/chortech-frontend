@@ -9,24 +9,21 @@ import {
   DeleteExpenseRequest,
   DeleteDebtRequest,
   DeleteParticipantRequest,
-} from "../../models/requests/activity";
-import {
-  AddFriendRequest,
-  DeleteFriendRequest,
-} from "../../models/requests/friend";
+} from "../../models/requests/graphql/activity";
+import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
   DeleteGroupRequest,
   GetGroupByIdRequest,
   GetUserGroupsRequest,
-} from "../../models/requests/group";
+} from "../../models/requests/graphql/group";
 import {
   GetUserActivitiesRequest,
   GetUserFriendsRequest,
   GetUserRequest,
   UpdateUserRequest,
-} from "../../models/requests/user";
+} from "../../models/requests/graphql/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -36,11 +33,8 @@ import {
   DeleteExpenseResponse,
   DeleteDebtResponse,
   DeleteParticipantResponse,
-} from "../../models/responses/activity";
-import {
-  AddFriendResponse,
-  DeleteFriendResponse,
-} from "../../models/responses/friend";
+} from "../../models/responses/graphql/activity";
+import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -53,7 +47,7 @@ import {
   GetUserFriendsResponse,
   GetUserResponse,
   UpdateUserResponse,
-} from "../../models/responses/user";
+} from "../../models/responses/graphql/user";
 import * as types from "./types";
 
 export function onGetUserRequest(id: string): Action<GetUserRequest> {
@@ -65,9 +59,7 @@ export function onGetUserRequest(id: string): Action<GetUserRequest> {
   };
 }
 
-export function onGetUserResponse(
-  response: GetUserResponse
-): Action<GetUserResponse> {
+export function onGetUserResponse(response: GetUserResponse): Action<GetUserResponse> {
   return {
     type: types.GET_USER_RESPONSE,
     payload: {
@@ -87,9 +79,7 @@ export function onGetUserFail(): Action<GetUserResponse> {
   };
 }
 
-export function onGetUserActivitiesRequest(
-  userId: string
-): Action<GetUserActivitiesRequest> {
+export function onGetUserActivitiesRequest(userId: string): Action<GetUserActivitiesRequest> {
   return {
     type: types.GET_USER_ACTIVITIES_REQUEST,
     payload: {
@@ -131,9 +121,7 @@ export function onUpdateUserRequest(user: User): Action<UpdateUserRequest> {
   };
 }
 
-export function onUpdateUserResponse(
-  response: UpdateUserResponse
-): Action<UpdateUserResponse> {
+export function onUpdateUserResponse(response: UpdateUserResponse): Action<UpdateUserResponse> {
   return {
     type: types.UPDATE_USER_RESPONSE,
     payload: {
@@ -168,9 +156,7 @@ export function onAddGrouptRequest(
   };
 }
 
-export function onAddGroupResponse(
-  response: AddGroupResponse
-): Action<AddGroupResponse> {
+export function onAddGroupResponse(response: AddGroupResponse): Action<AddGroupResponse> {
   return {
     type: types.ADD_GROUP_RESPONSE,
     payload: {
@@ -207,9 +193,7 @@ export function onUpdateGroupRequest(
   };
 }
 
-export function onUpdateGroupResponse(
-  response: UpdateGroupResponse
-): Action<UpdateGroupResponse> {
+export function onUpdateGroupResponse(response: UpdateGroupResponse): Action<UpdateGroupResponse> {
   return {
     type: types.UPDATE_GROUP_RESPONSE,
     payload: {
@@ -229,9 +213,7 @@ export function onUpdateGroupFail(): Action<UpdateGroupResponse> {
   };
 }
 
-export function onDeleteGroupRequest(
-  groupId: string
-): Action<DeleteGroupRequest> {
+export function onDeleteGroupRequest(groupId: string): Action<DeleteGroupRequest> {
   return {
     type: types.DELETE_GROUP_REQUEST,
     payload: {
@@ -240,9 +222,7 @@ export function onDeleteGroupRequest(
   };
 }
 
-export function onDeleteGroupResponse(
-  response: DeleteGroupResponse
-): Action<DeleteGroupResponse> {
+export function onDeleteGroupResponse(response: DeleteGroupResponse): Action<DeleteGroupResponse> {
   return {
     type: types.DELETE_GROUP_RESPONSE,
     payload: {
@@ -262,9 +242,7 @@ export function onDeleteGroupFail(): Action<DeleteGroupResponse> {
   };
 }
 
-export function onGetGroupByIdRequest(
-  groupId: string
-): Action<GetGroupByIdRequest> {
+export function onGetGroupByIdRequest(groupId: string): Action<GetGroupByIdRequest> {
   return {
     type: types.GET_GROUP_BY_ID_REQUEST,
     payload: {
@@ -303,9 +281,7 @@ export function onGetGroupByIdFail(): Action<GetGroupByIdResponse> {
   };
 }
 
-export function onGetUserGroupsRequest(
-  userId: string
-): Action<GetUserGroupsRequest> {
+export function onGetUserGroupsRequest(userId: string): Action<GetUserGroupsRequest> {
   return {
     type: types.GET_USER_GROUPS_REQUEST,
     payload: {
@@ -338,9 +314,7 @@ export function onGetUserGroupsFail(): Action<GetUserGroupsResponse> {
   };
 }
 
-export function onGetUserFriendsRequest(
-  userId: string
-): Action<GetUserFriendsRequest> {
+export function onGetUserFriendsRequest(userId: string): Action<GetUserFriendsRequest> {
   return {
     type: types.GET_USER_FRIENDS_REQUEST,
     payload: {
@@ -388,9 +362,7 @@ export function onAddFriendRequest(
   };
 }
 
-export function onAddFriendResponse(
-  response: AddFriendResponse
-): Action<AddFriendResponse> {
+export function onAddFriendResponse(response: AddFriendResponse): Action<AddFriendResponse> {
   return {
     type: types.ADD_FRIEND_RESPONSE,
     payload: {
@@ -464,9 +436,7 @@ export function onAddActivityRequest(
   };
 }
 
-export function onAddActivityResponse(
-  response: AddActivityResponse
-): Action<AddActivityResponse> {
+export function onAddActivityResponse(response: AddActivityResponse): Action<AddActivityResponse> {
   return {
     type: types.ADD_ACTIVITY_RESPONSE,
     payload: response,
@@ -502,9 +472,7 @@ export function onAddExpenseRequest(
   };
 }
 
-export function onAddExpenseResponse(
-  response: AddExpenseResponse
-): Action<AddExpenseResponse> {
+export function onAddExpenseResponse(response: AddExpenseResponse): Action<AddExpenseResponse> {
   return {
     type: types.ADD_EXPENSE_RESPONSE,
     payload: response,
@@ -542,9 +510,7 @@ export function onAddDebtRequest(
   };
 }
 
-export function onAddDebtResponse(
-  response: AddDebtResponse
-): Action<AddDebtResponse> {
+export function onAddDebtResponse(response: AddDebtResponse): Action<AddDebtResponse> {
   return {
     type: types.ADD_DEBT_RESPONSE,
     payload: response,
@@ -595,9 +561,7 @@ export function onAddParticipantFail(): Action<AddParticipantResponse> {
   };
 }
 
-export function onDeleteActivityRequest(
-  id: string
-): Action<DeleteActivityRequest> {
+export function onDeleteActivityRequest(id: string): Action<DeleteActivityRequest> {
   return {
     type: types.DELETE_ACTIVITY_REQUEST,
     payload: {
@@ -628,9 +592,7 @@ export function onDeleteActivityFail(): Action<DeleteActivityResponse> {
   };
 }
 
-export function onDeleteExpenseRequest(
-  id: string
-): Action<DeleteExpenseRequest> {
+export function onDeleteExpenseRequest(id: string): Action<DeleteExpenseRequest> {
   return {
     type: types.DELETE_EXPENSE_REQUEST,
     payload: {
@@ -670,9 +632,7 @@ export function onDeleteDebtRequest(id: string): Action<DeleteDebtRequest> {
   };
 }
 
-export function onDeleteDebtResponse(
-  response: DeleteDebtResponse
-): Action<DeleteDebtResponse> {
+export function onDeleteDebtResponse(response: DeleteDebtResponse): Action<DeleteDebtResponse> {
   return {
     type: types.DELETE_DEBT_RESPONSE,
     payload: {
@@ -692,9 +652,7 @@ export function onDeleteDebtFail(): Action<DeleteDebtResponse> {
   };
 }
 
-export function onDeleteParticipantRequest(
-  id: string
-): Action<DeleteParticipantRequest> {
+export function onDeleteParticipantRequest(id: string): Action<DeleteParticipantRequest> {
   return {
     type: types.DELETE_PARTICIPANT_REQUEST,
     payload: {

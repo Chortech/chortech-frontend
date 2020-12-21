@@ -1,6 +1,6 @@
-import { User } from "../other/User";
-import { Activity } from "../other/Activity";
-import { Friend } from "../other/Friend";
+import { User } from "../../other/User";
+import { Activity } from "../../other/Activity";
+import { Friend } from "../../other/Friend";
 
 export interface GetUserResponse {
   success: boolean;

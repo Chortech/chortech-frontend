@@ -1,6 +1,6 @@
 import { InputType } from "../../../utils/inputTypes";
-import { AddFriendResponse, DeleteFriendResponse } from "../../responses/friend";
-import { GetUserFriendsResponse, UserByFilterResponse } from "../../responses/user";
+import { AddFriendResponse, DeleteFriendResponse } from "../../responses/graphql/friend";
+import { GetUserFriendsResponse, UserByFilterResponse } from "../../responses/graphql/user";
 
 export interface FriendsApi {
   getUserFriends(userId: string): Promise<GetUserFriendsResponse>;

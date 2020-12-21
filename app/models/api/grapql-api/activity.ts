@@ -1,4 +1,4 @@
-import { DeleteDebtRequest } from "../../requests/activity";
+import { DeleteDebtRequest } from "../../requests/graphql/activity";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -7,8 +7,8 @@ import {
   DeleteActivityResponse,
   DeleteExpenseResponse,
   DeleteParticipantResponse,
-} from "../../responses/activity";
-import { GetUserActivitiesResponse } from "../../responses/user";
+} from "../../responses/graphql/activity";
+import { GetUserActivitiesResponse } from "../../responses/graphql/user";
 
 export interface ActivityApi {
   addActivity(

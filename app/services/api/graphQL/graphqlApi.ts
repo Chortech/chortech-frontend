@@ -2,8 +2,8 @@ import { GraphQLClient } from "graphql-request";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
 import { AuthApi } from "../../../models/api/grapql-api/auth";
 import { GroupApi } from "../../../models/api/grapql-api/group";
-import { LoginResponse } from "../../../models/responses/login";
-import { SignUpResponse } from "../../../models/responses/signUp";
+import { LoginResponse } from "../../../models/responses/graphql/login";
+import { SignUpResponse } from "../../../models/responses/graphql/signUp";
 import * as queries from "./queries";
 import * as mutations from "./mutations";
 import {
@@ -14,9 +14,9 @@ import {
   UpdateGroupResponse,
 } from "../../../models/responses/group";
 import { InputType } from "../../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../../../models/responses/identifyAccount";
+import { IdentifyAccountResponse } from "../../../models/responses/graphql/identifyAccount";
 import { ToastAndroid } from "react-native";
-import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
+import { ResetPasswordResponse } from "../../../models/responses/graphql/resetPassword";
 import { ActivityApi } from "../../../models/api/grapql-api/activity";
 import { FriendsApi } from "../../../models/api/grapql-api/friend";
 import {
@@ -25,11 +25,11 @@ import {
   GetUserResponse,
   UpdateUserResponse,
   GetUserActivitiesResponse,
-} from "../../../models/responses/user";
+} from "../../../models/responses/graphql/user";
 import { Friend } from "../../../models/other/Friend";
 import { Group } from "../../../models/other/Group";
 import { User } from "../../../models/other/User";
-import { AddFriendResponse, DeleteFriendResponse } from "../../../models/responses/friend";
+import { AddFriendResponse, DeleteFriendResponse } from "../../../models/responses/graphql/friend";
 import { UserApi } from "../../../models/api/grapql-api/user";
 import {
   AddActivityResponse,
@@ -40,7 +40,7 @@ import {
   DeleteDebtResponse,
   DeleteExpenseResponse,
   DeleteParticipantResponse,
-} from "../../../models/responses/activity";
+} from "../../../models/responses/graphql/activity";
 import { Activity } from "../../../models/other/Activity";
 
 class GraphQLApi implements AuthApi, GroupApi, FriendsApi, UserApi, ActivityApi {

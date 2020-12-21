@@ -6,15 +6,15 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { navigationRef } from "../../navigation/navigationService";
 
 import * as authActions from "../actions/authActions";
-import { LoginResponse } from "../../models/responses/login";
-import { LoginRequest } from "../../models/requests/login";
-import { SignUpRequest } from "../../models/requests/signUp";
-import { SignUpResponse } from "../../models/responses/signUp";
-import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
-import { GenerateCodeRequest } from "../../models/requests/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/resetPassword";
+import { LoginResponse } from "../../models/responses/graphql/login";
+import { LoginRequest } from "../../models/requests/graphql/login";
+import { SignUpRequest } from "../../models/requests/graphql/signUp";
+import { SignUpResponse } from "../../models/responses/graphql/signUp";
+import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
+import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
+import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
+import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
+import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());

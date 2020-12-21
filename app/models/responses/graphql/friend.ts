@@ -1,4 +1,4 @@
-import { Friend } from "../other/Friend";
+import { Friend } from "../../other/Friend";
 
 export interface AddFriendResponse {
   success: boolean;
