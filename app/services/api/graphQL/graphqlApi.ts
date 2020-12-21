@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
 import { API_URL, API_KEY } from "../../../../local_env_vars";
-import { AuthApi } from "../../../models/api/auth";
-import { GroupApi } from "../../../models/api/group";
+import { AuthApi } from "../../../models/api/grapql-api/auth";
+import { GroupApi } from "../../../models/api/grapql-api/group";
 import { LoginResponse } from "../../../models/responses/login";
 import { SignUpResponse } from "../../../models/responses/signUp";
 import * as queries from "./queries";
@@ -17,8 +17,8 @@ import { InputType } from "../../../utils/inputTypes";
 import { IdentifyAccountResponse } from "../../../models/responses/identifyAccount";
 import { ToastAndroid } from "react-native";
 import { ResetPasswordResponse } from "../../../models/responses/resetPassword";
-import { ActivityApi } from "../../../models/api/activity";
-import { FriendsApi } from "../../../models/api/friend";
+import { ActivityApi } from "../../../models/api/grapql-api/activity";
+import { FriendsApi } from "../../../models/api/grapql-api/friend";
 import {
   GetUserFriendsResponse,
   UserByFilterResponse,
@@ -30,7 +30,7 @@ import { Friend } from "../../../models/other/Friend";
 import { Group } from "../../../models/other/Group";
 import { User } from "../../../models/other/User";
 import { AddFriendResponse, DeleteFriendResponse } from "../../../models/responses/friend";
-import { UserApi } from "../../../models/api/user";
+import { UserApi } from "../../../models/api/grapql-api/user";
 import {
   AddActivityResponse,
   AddDebtResponse,
