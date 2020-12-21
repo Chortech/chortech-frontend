@@ -1,10 +1,10 @@
-export interface SignUpPhoneRequest {
+export interface SignUpEmailRequest {
   email: string;
   name: string;
   password: string;
 }
 
-export interface SignUpEmailRequest {
+export interface SignUpPhoneRequest {
   phone: string;
   name: string;
   password: string;
