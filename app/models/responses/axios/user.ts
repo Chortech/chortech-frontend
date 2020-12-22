@@ -20,6 +20,13 @@ export interface RemoveFriendResponse {
   friends: Array<Friend>;
 }
 
+export interface UserProfileResponse {
+  name: string;
+  email: string;
+  phone: string;
+  picture: string;
+}
+
 export interface EditProfileResponse {
   name: string;
   email?: string;

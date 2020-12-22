@@ -1,5 +1,7 @@
 import { Action } from "../../models/actions/action";
+import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
+import { GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -21,9 +23,10 @@ import {
 import {
   GetUserActivitiesRequest,
   GetUserFriendsRequest,
-  GetUserRequest,
   UpdateUserRequest,
 } from "../../models/requests/graphql/user";
+import { Response } from "../../models/responses/axios/response";
+import { UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -41,40 +44,38 @@ import {
   DeleteGroupResponse,
   GetGroupByIdResponse,
   GetUserGroupsResponse,
-} from "../../models/responses/group";
+} from "../../models/responses/graphql/group";
 import {
   GetUserActivitiesResponse,
   GetUserFriendsResponse,
-  GetUserResponse,
   UpdateUserResponse,
 } from "../../models/responses/graphql/user";
 import * as types from "./types";
 
-export function onGetUserRequest(id: string): Action<GetUserRequest> {
+export function onGetUserProfileRequest(token: Token | undefined): Action<GetUserProfileRequest> {
   return {
-    type: types.GET_USER_REQUEST,
+    type: types.GET_USER_PROFILE_REQUEST,
     payload: {
-      id: id,
+      token: token,
     },
   };
 }
 
-export function onGetUserResponse(response: GetUserResponse): Action<GetUserResponse> {
+export function onGetUserProfileResponse(
+  response: Response<UserProfileResponse>
+): Action<Response<UserProfileResponse>> {
   return {
-    type: types.GET_USER_RESPONSE,
-    payload: {
-      success: response.success,
-      user: response.user,
-    },
+    type: types.GET_USER_PROFILE_RESPONSE,
+    payload: response,
   };
 }
 
-export function onGetUserFail(): Action<GetUserResponse> {
+export function onGetUserProfileFail(): Action<Response<UserProfileResponse>> {
   return {
-    type: types.GET_USER_FAIL,
+    type: types.GET_USER_PROFILE_FAIL,
     payload: {
       success: false,
-      user: undefined,
+      status: -1,
     },
   };
 }

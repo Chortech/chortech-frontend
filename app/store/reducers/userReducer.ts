@@ -1,6 +1,9 @@
+import { State } from "react-native-gesture-handler";
+import configureStore from "..";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
+import { GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -18,11 +21,9 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import {
-  GetUserActivitiesRequest,
-  GetUserRequest,
-  UpdateUserRequest,
-} from "../../models/requests/graphql/user";
+import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
+import { Response } from "../../models/responses/axios/response";
+import { UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -39,65 +40,54 @@ import {
   DeleteGroupResponse,
   GetGroupByIdResponse,
   GetUserGroupsResponse,
-} from "../../models/responses/group";
+} from "../../models/responses/graphql/group";
 import {
   GetUserActivitiesResponse,
   GetUserFriendsResponse,
-  GetUserResponse,
 } from "../../models/responses/graphql/user";
-import { InputType } from "../../utils/inputTypes";
 import * as types from "../actions/types";
 
-const initialState: IUserState = {
-  isLoggedIn: true,
-  loading: false,
-  id: "-1",
-  name: "",
-  password: "",
-  email: "",
-  phone: "",
-  authInputType: InputType.None,
-  credit: 0,
-  balance: 0,
-  friends: [],
-  groups: [],
-  activities: [],
-};
+const initialState: IUserState = configureStore().store.getState()["authReducer"];
+
+// const initialState: IUserState = {
+//   isLoggedIn: true,
+//   loading: false,
+//   id: "-1",
+//   token: undefined,
+//   name: "",
+//   password: "",
+//   email: "",
+//   phone: "",
+//   picture: "",
+//   authInputType: InputType.None,
+//   friends: [],
+//   groups: [],
+//   activities: [],
+//   myCreditCards: [],
+//   otherCreditCards: [],
+// };
 
 export const userReducer = createReducer(initialState, {
-  [types.GET_USER_REQUEST](state: IUserState, action: Action<GetUserRequest>) {
+  [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
     return {
       ...state,
-      id: action.payload.id,
+      token: action.payload.token,
     };
   },
-  [types.GET_USER_RESPONSE](state: IUserState, action: Action<GetUserResponse>) {
+  [types.GET_USER_PROFILE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserProfileResponse>>
+  ) {
     return {
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
+      ...state,
+      name: action.payload.response?.name,
+      email: action.payload.response?.email,
+      phone: action.payload.response?.phone,
+      picture: action.payload.response?.picture,
     };
   },
-  [types.GET_USER_FAIL](state: IUserState, action: Action<GetUserResponse>) {
-    return {
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
-    };
+  [types.GET_USER_PROFILE_FAIL](state: IUserState, action: Action<Response<UserProfileResponse>>) {
+    return state;
   },
   [types.GET_USER_ACTIVITIES_REQUEST](state: IUserState, action: Action<GetUserActivitiesRequest>) {
     return {

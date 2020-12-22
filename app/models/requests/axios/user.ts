@@ -21,8 +21,8 @@ export interface InviteFriendsRequest {
   invitees: Array<Invitee>;
 }
 
-export interface GetProfileRequest {
-  token: Token;
+export interface GetUserProfileRequest {
+  token: Token | undefined;
 }
 
 export interface EditProfileRequest {

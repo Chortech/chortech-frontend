@@ -16,13 +16,15 @@ type IState = {
 };
 
 const Profile: React.FC = (): JSX.Element => {
-  const loggedInUserId: string = useStore().getState()["authReducer"].id;
-  const user = useSelector((state: IState) => state.userReducer);
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
+  log(loggedInUser);
   const fetchUser = () => {
-    // dispatch(userActions.onGetUserRequest(loggedInUserId));
+    dispatch(userActions.onGetUserProfileRequest(user.token));
   };
+
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
   const onLogout = () => dispatch(authActions.onLogout());

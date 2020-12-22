@@ -1,6 +1,7 @@
 import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
+import { GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -22,9 +23,10 @@ import {
 import {
   GetUserActivitiesRequest,
   GetUserFriendsRequest,
-  GetUserRequest,
   UpdateUserRequest,
 } from "../../models/requests/graphql/user";
+import { Response } from "../../models/responses/axios/response";
+import { UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -42,38 +44,33 @@ import {
   DeleteGroupResponse,
   GetGroupByIdResponse,
   GetUserGroupsResponse,
-} from "../../models/responses/group";
+} from "../../models/responses/graphql/group";
 import {
   GetUserActivitiesResponse,
   GetUserFriendsResponse,
-  GetUserResponse,
   UpdateUserResponse,
 } from "../../models/responses/graphql/user";
 import { navigationRef } from "../../navigation/navigationService";
+import { userAPI } from "../../services/api/axios/userApi";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import * as userActions from "../actions/userActions";
 
-export function* fetchUserAsync(action: Action<GetUserRequest>) {
+export function* fetchUserAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());
-  const id = action.payload.id;
-  let response: GetUserResponse = {
+  const token = action.payload.token;
+  let response: Response<UserProfileResponse> = {
     success: false,
-    user: undefined,
+    status: -1,
   };
 
-  try {
-    response = yield Api.getUser(id);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
+  response = yield userAPI.getUserProfile();
 
   yield put(userActions.onLoadingDisable());
 
   if (response.success) {
-    yield put(userActions.onGetUserResponse(response));
+    yield put(userActions.onGetUserProfileResponse(response));
   } else {
-    yield put(userActions.onGetUserFail());
+    yield put(userActions.onGetUserProfileFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }

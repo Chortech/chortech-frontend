@@ -9,11 +9,12 @@ export interface IUserState {
   isLoggedIn: boolean;
   loading: boolean;
   id: string;
-  token: Token | null | undefined;
+  token: Token | undefined;
   name: string;
   email: string | undefined;
   phone: string | undefined;
   password: string;
+  picture: string;
   authInputType: InputType;
   friends: Array<Friend>;
   groups: Array<Group>;

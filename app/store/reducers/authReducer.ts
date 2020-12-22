@@ -25,6 +25,7 @@ const initialState: IUserState = {
   password: "",
   email: "",
   phone: "",
+  picture: "",
   authInputType: InputType.None,
   friends: [],
   groups: [],

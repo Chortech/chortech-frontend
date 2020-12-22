@@ -5,15 +5,23 @@ import { Token } from "../../../models/other/axios/Token";
 import { Login, SignUp } from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
-import { TapGestureHandler } from "react-native-gesture-handler";
+import { IUserState } from "../../../models/reducers/default";
+import { useStore } from "react-redux";
+import configureStore from "../../../store/index";
 
 class AuthenticationApi implements AuthApi {
   client: AxiosInstance;
-
+  state: IUserState;
   constructor() {
     this.client = axios.create({
       baseURL: SERVER_AUTH_URL,
     });
+    this.client.interceptors.request.use(function (config) {
+      log(config.url);
+      return config;
+    });
+    this.state = configureStore().store.getState()["authReducer"];
+    log(this.state);
   }
 
   async loginByEmail(email: string, password: string): Promise<Response<Login>> {

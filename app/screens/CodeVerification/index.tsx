@@ -31,8 +31,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     verificationCode: "",
   });
 
-  log("finished: " + timerFinished);
-
   const dispatch = useDispatch();
   const generateCode = () => {
     dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
