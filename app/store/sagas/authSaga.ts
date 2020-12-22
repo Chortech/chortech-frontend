@@ -19,6 +19,8 @@ import { Login } from "../../models/responses/axios/auth";
 import { InputType } from "../../utils/inputTypes";
 import { AuthAPI } from "../../services/api/axios/authApi";
 import { log } from "../../utils/logger";
+import { VerificationAPI } from "../../services/api/axios/verificationApi";
+import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -112,15 +114,83 @@ export function* identifyAccountAsync(action: Action<IdentifyAccountRequest>) {
 }
 
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
-  yield put(authActions.onLoadingEnable());
   const { email, phone, inputType } = action.payload;
-  try {
-    yield Api.generateCode(email, phone, inputType);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  let response: Response<null> = {
+    success: false,
+    status: -1,
+  };
+
+  if (inputType == InputType.Email) {
+    response = yield VerificationAPI.generateCodeRequestByEmail(email);
+  } else if (inputType == InputType.Phone) {
+    response = yield VerificationAPI.generateCodeRequestByPhone(phone);
   }
-  yield put(authActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(authActions.onGenerateCodeResponse(response));
+    ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
+  } else {
+    yield put(authActions.onGenerateCodeFail());
+    ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
+  }
+}
+
+export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
+  const { email, phone, code, inputType, parentScreen, name, password } = action.payload;
+  let response: Response<null> = {
+    success: false,
+    status: -1,
+  };
+
+  try {
+    if (inputType == InputType.Email) {
+      response = yield VerificationAPI.verifyCodeRequestByEmail(email, code);
+    } else if (inputType == InputType.Phone) {
+      response = yield VerificationAPI.verifyCodeRequestByPhone(phone, code);
+    }
+  } catch (error) {
+    error(error);
+  }
+
+  if (response.success) {
+    if (parentScreen == "AccountIdentification") {
+    } else {
+      yield put(authActions.onVerifyCodeResponse(response));
+      yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
+      ToastAndroid.show("کد واردشده تایید شد", ToastAndroid.SHORT);
+    }
+  } else {
+    yield put(authActions.onVerifyCodeFail());
+    ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
+  }
+}
+
+export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
+  const { email, phone, inputType } = action.payload;
+  let response: Response<null> = {
+    success: false,
+    status: -1,
+  };
+
+  if (inputType == InputType.Email) {
+    response = yield VerificationAPI.cancelCodeRequestByEmail(email);
+  } else if (inputType == InputType.Phone) {
+    response = yield VerificationAPI.cancelCodeRequestByPhone(phone);
+  }
+
+  // try {
+  //   if (inputType == InputType.Email) {
+  //   } else if (inputType == InputType.Phone) {
+  //   }
+  // } catch (error) {
+  //   log(error);
+  // }
+
+  if (response.success) {
+    yield put(authActions.onCancelCodeResponse(response));
+  } else {
+    yield put(authActions.onCancelCodeResponse(response));
+  }
 }
 
 export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {

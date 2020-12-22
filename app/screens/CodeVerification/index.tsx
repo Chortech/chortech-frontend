@@ -11,6 +11,7 @@ import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";
+import { log } from "../../utils/logger";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -25,39 +26,61 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const props = route.params;
   const { loading } = useSelector((state: IState) => state.authReducer);
   const [ref, setRef] = useState<any>(null);
+  const [timerFinished, setTimerFinished] = useState<boolean>(false);
   const [data, setData] = useState({
     verificationCode: "",
     validCode: false,
   });
+
+  log("finished: " + timerFinished);
+
   const dispatch = useDispatch();
+  const generateCode = () => {
+    dispatch(authActions.onCancelCodeRequest(props.email, props.phone, props.inputType));
+    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
+  };
 
   useEffect(() => {
-    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
+    generateCode();
   }, [dispatch]);
 
   const onNextScreen = () => {
-    if (data.validCode) {
-      if (props.parentScreen == "AccountIdentification") {
-        NavigationService.navigate("ResetPassword");
-      } else {
-        dispatch(
-          authActions.onSignUpRequest(
-            props.name,
-            props.email,
-            props.phone,
-            props.password,
-            props.inputType
-          )
-        );
-      }
+    // if (data.validCode) {
+    if (props.parentScreen == "AccountIdentification") {
+      NavigationService.navigate("ResetPassword");
     } else {
-      ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
+      // dispatch(
+      //   authActions.onSignUpRequest(
+      //     props.name,
+      //     props.email,
+      //     props.phone,
+      //     props.password,
+      //     props.inputType
+      //   )
+      // );
+      dispatch(
+        authActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen
+        )
+      );
     }
+    // } else {
+    //   ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
+    // }
   };
 
   const regenerateCode = (): void => {
-    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
-    ref.resetCountDown();
+    if (timerFinished) {
+      generateCode();
+      ref.resetCountDown();
+      setTimerFinished(false);
+    }
   };
 
   const setCode = (code: string): void => {
@@ -91,10 +114,10 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 ref={(ref: any) => {
                   setRef(ref);
                 }}
-                initialSeconds={120}
+                initialSeconds={20}
                 digitFontSize={20}
                 labelFontSize={20}
-                onTimeOut={(): void => {}}
+                onTimeOut={(): void => setTimerFinished(true)}
                 showHours={false}
                 showSeparator
                 separatorStyle={styles.seperatorLabel}
@@ -104,7 +127,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 height={40}
               />
               <View>
-                <TouchableOpacity onPress={regenerateCode}>
+                <TouchableOpacity onPress={regenerateCode} disabled={!timerFinished}>
                   <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
                 </TouchableOpacity>
               </View>

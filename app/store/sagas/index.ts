@@ -11,6 +11,8 @@ export default function* watch() {
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
     takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, authSaga.identifyAccountAsync),
     takeLatest(types.GENERATE_CODE_REQUEST, authSaga.generateCodeAsync),
+    takeLatest(types.VERIFY_CODE_REQUEST, authSaga.verifyCodeAsync),
+    takeLatest(types.CANCE_CODE_REQUEST, authSaga.cancelCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, authSaga.resetPasswordAsync),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
     takeLatest(types.GET_USER_FRIENDS_REQUEST, userSaga.getUserFriendsAsync),
@@ -30,13 +32,7 @@ export default function* watch() {
     takeLatest(types.DELETE_ACTIVITY_REQUEST, userSaga.deleteActivityAsync),
     takeLatest(types.DELETE_EXPENSE_REQUEST, userSaga.deleteExpenseAsync),
     takeLatest(types.DELETE_DEBT_REQUEST, userSaga.deleteDebtAsync),
-    takeLatest(
-      types.DELETE_PARTICIPANT_REQUEST,
-      userSaga.deleteParticipantAsync
-    ),
-    takeLatest(
-      types.GET_USER_ACTIVITIES_REQUEST,
-      userSaga.getUserActivitiesAsync
-    ),
+    takeLatest(types.DELETE_PARTICIPANT_REQUEST, userSaga.deleteParticipantAsync),
+    takeLatest(types.GET_USER_ACTIVITIES_REQUEST, userSaga.getUserActivitiesAsync),
   ]);
 }

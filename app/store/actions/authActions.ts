@@ -1,17 +1,20 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-// import { LoginResponse } from "../../models/responses/axios/auth";
 import { SignUpRequest } from "../../models/requests/graphql/signUp";
 import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
 import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
-import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
 import { LoginRequest } from "../../models/requests/axios/auth";
 import { Login } from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
+import {
+  CancelCodeRequest,
+  GenerateCodeRequest,
+  VerifyCodeRequest,
+} from "../../models/requests/axios/verification";
 
 export function onLoginRequest(
   email: string,
@@ -138,6 +141,95 @@ export function onGenerateCodeRequest(
       email: email,
       phone: phone,
       inputType: inputType,
+    },
+  };
+}
+
+export function onGenerateCodeResponse(response: Response<null>): Action<Response<null>> {
+  return {
+    type: types.GENERATE_CODE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onGenerateCodeFail(): Action<Response<null>> {
+  return {
+    type: types.GENERATE_CODE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onVerifyCodeRequest(
+  name: string,
+  email: string,
+  phone: string,
+  password: string,
+  inputType: InputType,
+  code: string,
+  parentScreen: string
+): Action<VerifyCodeRequest> {
+  return {
+    type: types.VERIFY_CODE_REQUEST,
+    payload: {
+      name: name,
+      email: email,
+      phone: phone,
+      code: code,
+      password: password,
+      inputType: inputType,
+      parentScreen: parentScreen,
+    },
+  };
+}
+
+export function onVerifyCodeResponse(response: Response<null>): Action<Response<null>> {
+  return {
+    type: types.VERIFY_CODE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onVerifyCodeFail(): Action<Response<null>> {
+  return {
+    type: types.VERIFY_CODE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onCancelCodeRequest(
+  email: string,
+  phone: string,
+  inputType: InputType
+): Action<CancelCodeRequest> {
+  return {
+    type: types.CANCE_CODE_REQUEST,
+    payload: {
+      email: email,
+      phone: phone,
+      inputType: inputType,
+    },
+  };
+}
+
+export function onCancelCodeResponse(response: Response<null>): Action<Response<null>> {
+  return {
+    type: types.CANCEL_CODE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onCancelCodeFail(): Action<Response<null>> {
+  return {
+    type: types.CANCEL_CODE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
     },
   };
 }

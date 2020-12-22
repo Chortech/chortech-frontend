@@ -1,19 +1,26 @@
-// generate code request models
-export interface GenerateCodeEmailRequest {
+import { InputType } from "../../../utils/inputTypes";
+
+// generate code request model
+export interface GenerateCodeRequest {
   email: string;
-}
-
-export interface GenerateCodePhoneRequest {
   phone: string;
+  inputType: InputType;
 }
 
-// verify code request models
-export interface VerifyCodeEmailRequest {
+// verify code request model
+export interface VerifyCodeRequest {
+  name: string;
   email: string;
+  phone: string;
+  password: string;
   code: string;
+  inputType: InputType;
+  parentScreen: string;
 }
 
-export interface VerifyCodePhoneRequest {
+// cancel code request model
+export interface CancelCodeRequest {
+  email: string;
   phone: string;
-  code: string;
+  inputType: InputType;
 }

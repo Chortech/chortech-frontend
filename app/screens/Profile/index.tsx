@@ -9,6 +9,7 @@ import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;

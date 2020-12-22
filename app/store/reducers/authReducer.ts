@@ -16,6 +16,7 @@ import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassw
 import { LoginRequest } from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
 import { Login } from "../../models/responses/axios/auth";
+import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
 
 const initialState: IUserState = {
   isLoggedIn: false,
@@ -138,12 +139,31 @@ export const authReducer = createReducer(initialState, {
     };
   },
   [types.GENERATE_CODE_REQUEST](state: IUserState, action: Action<GenerateCodeRequest>) {
-    return {
-      ...state,
-      email: action.payload.email,
-      phone: action.payload.phone,
-      authInputType: action.payload.inputType,
-    };
+    return state;
+  },
+  [types.GENERATE_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.GENERATE_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.VERIFY_CODE_REQUEST](state: IUserState, action: Action<VerifyCodeRequest>) {
+    return state;
+  },
+  [types.VERIFY_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.VERIFY_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CANCE_CODE_REQUEST](state: IUserState, action: Action<CancelCodeRequest>) {
+    return state;
+  },
+  [types.CANCEL_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CANCEL_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
   [types.RESET_PASSWORD_REQUEST](state: IUserState, action: Action<ResetPasswordRequest>) {
     return {
