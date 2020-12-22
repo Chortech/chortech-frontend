@@ -1,14 +1,12 @@
 import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
-import { SignUpRequest } from "../../models/requests/graphql/signUp";
-import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
 import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
-import { LoginRequest } from "../../models/requests/axios/auth";
-import { Login } from "../../models/responses/axios/auth";
+import { LoginRequest, SignUpRequest } from "../../models/requests/axios/auth";
+import { Login, SignUp } from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
 import {
   CancelCodeRequest,
@@ -79,19 +77,19 @@ export function onSignUpRequest(
   };
 }
 
-export function onSignUpResponse(response: SignUpResponse): Action<SignUpResponse> {
+export function onSignUpResponse(response: Response<SignUp>): Action<Response<SignUp>> {
   return {
     type: types.SIGNUP_RESPONSE,
     payload: response,
   };
 }
 
-export function onSignUpFail(): Action<SignUpResponse> {
+export function onSignUpFail(): Action<Response<SignUp>> {
   return {
     type: types.SIGNUP_FAIL,
     payload: {
-      user: null,
       success: false,
+      status: -1,
     },
   };
 }

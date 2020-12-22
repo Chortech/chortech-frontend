@@ -5,17 +5,15 @@ import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
-import { SignUpRequest } from "../../models/requests/graphql/signUp";
-import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IUserState } from "../../models/reducers/default";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
 import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
-import { LoginRequest } from "../../models/requests/axios/auth";
+import { LoginRequest, SignUpRequest } from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
-import { Login } from "../../models/responses/axios/auth";
+import { Login, SignUp } from "../../models/responses/axios/auth";
 import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
 
 const initialState: IUserState = {
@@ -87,27 +85,22 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.SIGNUP_RESPONSE](state: IUserState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_RESPONSE](state: IUserState, action: Action<Response<SignUp>>) {
     return {
       ...state,
       isLoggedIn: true,
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
+      id: action.payload.response?.id,
+      name: action.payload.response?.name,
+      token: action.payload.response?.token,
     };
   },
-  [types.SIGNUP_FAIL](state: IUserState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_FAIL](state: IUserState, action: Action<Response<SignUp>>) {
     return {
       ...state,
+      isLoggedIn: false,
       id: "-1",
       name: "",
+      token: undefined,
       email: "",
       phone: "",
       password: "",

@@ -16,61 +16,130 @@ class AuthenticationApi implements AuthApi {
   }
 
   async loginByEmail(email: string, password: string): Promise<Response<Login>> {
-    let data: AxiosResponse = await this.client.post("/login", {
-      email: email,
-      password: password,
-    });
     let result: Response<Login> = {
       success: false,
       status: -1,
       response: null,
     };
-
-    if (data.status == 200) {
-      let response: Login = data.data;
-      result = {
-        success: true,
-        status: data.status,
-        response: response,
-      };
-    } else {
-      result.status = data.status;
+    try {
+      let data: AxiosResponse = await this.client.post("/login", {
+        email: email,
+        password: password,
+      });
+      if (data.status == 200) {
+        let response: Login = data.data;
+        result = {
+          success: true,
+          status: data.status,
+          response: response,
+        };
+      } else {
+        result.status = data.status;
+      }
+      log("login api (email) result");
+      log(result);
+    } catch (error) {
+      log("login api (email) error");
+      log(error);
     }
 
     return result;
   }
 
   async loginByPhone(phone: string, password: string): Promise<Response<Login>> {
-    let data: AxiosResponse = await this.client.post("/login", {
-      phone: phone,
-      password: password,
-    });
     let result: Response<Login> = {
       success: false,
       status: -1,
       response: null,
     };
 
-    if (data.status == 200) {
-      let response: Login = data.data;
-      result = {
-        success: true,
-        status: data.status,
-        response: response,
-      };
-    } else {
-      result.status = data.status;
+    try {
+      let data: AxiosResponse = await this.client.post("/login", {
+        phone: phone,
+        password: password,
+      });
+      if (data.status == 200) {
+        let response: Login = data.data;
+        result = {
+          success: true,
+          status: data.status,
+          response: response,
+        };
+      } else {
+        result.status = data.status;
+      }
+      log("login api (phone) result");
+      log(result);
+    } catch (error) {
+      log("login api (phone) error");
+      log(error);
     }
 
     return result;
   }
 
   async signUpByEmail(name: string, email: string, password: string): Promise<Response<SignUp>> {
-    throw new Error("Method not implemented.");
+    let result: Response<SignUp> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.post("/signup", {
+        name: name,
+        email: email,
+        password: password,
+      });
+      if (response.status == 201) {
+        let data: SignUp = response.data;
+        result = {
+          success: true,
+          status: response.status,
+          response: data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("signup api (email) result");
+      log(result);
+    } catch (errors) {
+      log("signup api (email) error");
+      log(errors);
+    }
+
+    return result;
   }
 
   async signUpByPhone(name: string, phone: string, password: string): Promise<Response<SignUp>> {
-    throw new Error("Method not implemented.");
+    let result: Response<SignUp> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.post("/signup", {
+        name: name,
+        phone: phone,
+        password: password,
+      });
+      if (response.status == 201) {
+        let data: SignUp = response.data;
+        result = {
+          success: true,
+          status: response.status,
+          response: data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("signup api (email) result");
+      log(result);
+    } catch (error) {
+      log("signup api (email) error");
+      log(error);
+    }
+
+    return result;
   }
 
   async resetPasswordByEmail(

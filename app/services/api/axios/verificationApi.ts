@@ -87,6 +87,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("verify code api (email) error");
+      log(error);
     }
 
     return result;

@@ -29,14 +29,13 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const [timerFinished, setTimerFinished] = useState<boolean>(false);
   const [data, setData] = useState({
     verificationCode: "",
-    validCode: false,
   });
 
   log("finished: " + timerFinished);
 
   const dispatch = useDispatch();
   const generateCode = () => {
-    dispatch(authActions.onCancelCodeRequest(props.email, props.phone, props.inputType));
+    // dispatch(authActions.onCancelCodeRequest(props.email, props.phone, props.inputType));
     dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
   };
 
@@ -49,15 +48,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     if (props.parentScreen == "AccountIdentification") {
       NavigationService.navigate("ResetPassword");
     } else {
-      // dispatch(
-      //   authActions.onSignUpRequest(
-      //     props.name,
-      //     props.email,
-      //     props.phone,
-      //     props.password,
-      //     props.inputType
-      //   )
-      // );
       dispatch(
         authActions.onVerifyCodeRequest(
           props.name,
@@ -86,7 +76,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const setCode = (code: string): void => {
     setData({
       verificationCode: code,
-      validCode: code === "12345",
     });
   };
 
@@ -126,11 +115,13 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 width="40%"
                 height={40}
               />
-              <View>
-                <TouchableOpacity onPress={regenerateCode} disabled={!timerFinished}>
-                  <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
-                </TouchableOpacity>
-              </View>
+              {timerFinished ? (
+                <Animatable.View animation="bounceIn" duration={500}>
+                  <TouchableOpacity onPress={regenerateCode}>
+                    <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
+                  </TouchableOpacity>
+                </Animatable.View>
+              ) : null}
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>

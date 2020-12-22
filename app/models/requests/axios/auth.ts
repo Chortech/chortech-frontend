@@ -9,17 +9,13 @@ export interface LoginRequest {
   inputType: InputType;
 }
 
-// signup request models
-export interface SignUpEmailRequest {
+// signup request model
+export interface SignUpRequest {
+  name: string;
   email: string;
-  name: string;
-  password: string;
-}
-
-export interface SignUpPhoneRequest {
   phone: string;
-  name: string;
   password: string;
+  inputType: InputType;
 }
 
 // reset password request models

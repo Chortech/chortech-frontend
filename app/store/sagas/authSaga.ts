@@ -6,16 +6,14 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { navigationRef } from "../../navigation/navigationService";
 
 import * as authActions from "../actions/authActions";
-import { SignUpRequest } from "../../models/requests/graphql/signUp";
-import { SignUpResponse } from "../../models/responses/graphql/signUp";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
 import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
 import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
-import { LoginRequest } from "../../models/requests/axios/auth";
+import { LoginRequest, SignUpRequest } from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
-import { Login } from "../../models/responses/axios/auth";
+import { Login, SignUp } from "../../models/responses/axios/auth";
 import { InputType } from "../../utils/inputTypes";
 import { AuthAPI } from "../../services/api/axios/authApi";
 import { log } from "../../utils/logger";
@@ -31,18 +29,11 @@ export function* loginAsync(action: Action<LoginRequest>) {
     response: null,
   };
 
-  log(action.payload);
-
-  try {
-    if (inputType == InputType.Email) {
-      log("login by email");
-      response = yield AuthAPI.loginByEmail(email, password);
-    } else if (inputType == InputType.Phone) {
-      response = yield AuthAPI.loginByPhone(phone, password);
-    }
-  } catch (error) {
-    error(error);
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  if (inputType == InputType.Email) {
+    log("login by email");
+    response = yield AuthAPI.loginByEmail(email, password);
+  } else if (inputType == InputType.Phone) {
+    response = yield AuthAPI.loginByPhone(phone, password);
   }
 
   yield put(authActions.onLoadingDisable());
@@ -58,16 +49,15 @@ export function* loginAsync(action: Action<LoginRequest>) {
 export function* signUpAsync(action: Action<SignUpRequest>) {
   yield put(authActions.onLoadingEnable());
   const { name, email, phone, password, inputType } = action.payload;
-  let response: SignUpResponse = {
+  let response: Response<SignUp> = {
     success: false,
-    user: null,
+    status: -1,
   };
 
-  try {
-    response = yield Api.signUp(name, email, phone, password, inputType);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  if (inputType == InputType.Email) {
+    response = yield AuthAPI.signUpByEmail(name, email, password);
+  } else if (inputType == InputType.Phone) {
+    response = yield AuthAPI.signUpByPhone(name, phone, password);
   }
 
   yield put(authActions.onLoadingDisable());
@@ -115,6 +105,9 @@ export function* identifyAccountAsync(action: Action<IdentifyAccountRequest>) {
 
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   const { email, phone, inputType } = action.payload;
+
+  yield put(authActions.onCancelCodeRequest(email, phone, inputType));
+
   let response: Response<null> = {
     success: false,
     status: -1,
@@ -142,26 +135,21 @@ export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
     status: -1,
   };
 
-  try {
-    if (inputType == InputType.Email) {
-      response = yield VerificationAPI.verifyCodeRequestByEmail(email, code);
-    } else if (inputType == InputType.Phone) {
-      response = yield VerificationAPI.verifyCodeRequestByPhone(phone, code);
-    }
-  } catch (error) {
-    error(error);
+  if (inputType == InputType.Email) {
+    response = yield VerificationAPI.verifyCodeRequestByEmail(email, code);
+  } else if (inputType == InputType.Phone) {
+    response = yield VerificationAPI.verifyCodeRequestByPhone(phone, code);
   }
 
   if (response.success) {
+    yield put(authActions.onVerifyCodeResponse(response));
     if (parentScreen == "AccountIdentification") {
     } else {
-      yield put(authActions.onVerifyCodeResponse(response));
       yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
-      ToastAndroid.show("کد واردشده تایید شد", ToastAndroid.SHORT);
     }
   } else {
     yield put(authActions.onVerifyCodeFail());
-    ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
+    ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
   }
 }
 
@@ -178,18 +166,10 @@ export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
     response = yield VerificationAPI.cancelCodeRequestByPhone(phone);
   }
 
-  // try {
-  //   if (inputType == InputType.Email) {
-  //   } else if (inputType == InputType.Phone) {
-  //   }
-  // } catch (error) {
-  //   log(error);
-  // }
-
   if (response.success) {
     yield put(authActions.onCancelCodeResponse(response));
   } else {
-    yield put(authActions.onCancelCodeResponse(response));
+    yield put(authActions.onCancelCodeFail());
   }
 }
 
