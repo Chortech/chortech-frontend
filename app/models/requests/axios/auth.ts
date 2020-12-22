@@ -18,17 +18,12 @@ export interface SignUpRequest {
   inputType: InputType;
 }
 
-// reset password request models
-export interface ResetPasswordRequestByEmail {
+// reset password request model
+export interface ResetPasswordRequest {
   email: string;
-  newpass: string;
-  token: Token;
-}
-
-export interface ResetPasswordRequestByPhone {
   phone: string;
-  newpass: string;
-  token: Token;
+  newPassword: string;
+  inputType: InputType;
 }
 
 // change password request model

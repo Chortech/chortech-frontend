@@ -5,6 +5,7 @@ import { Token } from "../../../models/other/axios/Token";
 import { Login, SignUp } from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
+import { TapGestureHandler } from "react-native-gesture-handler";
 
 class AuthenticationApi implements AuthApi {
   client: AxiosInstance;
@@ -40,7 +41,7 @@ class AuthenticationApi implements AuthApi {
       log(result);
     } catch (error) {
       log("login api (email) error");
-      log(error);
+      log(error.message);
     }
 
     return result;
@@ -72,7 +73,7 @@ class AuthenticationApi implements AuthApi {
       log(result);
     } catch (error) {
       log("login api (phone) error");
-      log(error);
+      log(error.message);
     }
 
     return result;
@@ -102,9 +103,9 @@ class AuthenticationApi implements AuthApi {
       }
       log("signup api (email) result");
       log(result);
-    } catch (errors) {
+    } catch (error) {
       log("signup api (email) error");
-      log(errors);
+      log(error.message);
     }
 
     return result;
@@ -136,26 +137,64 @@ class AuthenticationApi implements AuthApi {
       log(result);
     } catch (error) {
       log("signup api (email) error");
-      log(error);
+      log(error.message);
     }
 
     return result;
   }
 
-  async resetPasswordByEmail(
-    email: string,
-    newPassword: string,
-    token: Token
-  ): Promise<Response<null>> {
-    throw new Error("Method not implemented.");
+  async resetPasswordByEmail(email: string, newPassword: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/resetpass", {
+        email: email,
+        newpass: newPassword,
+      });
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (error) {
+      log("reset password api (email) error");
+      log(error.message);
+    }
+
+    return result;
   }
 
-  async resetPasswordByPhone(
-    phone: string,
-    newPassword: string,
-    token: Token
-  ): Promise<Response<null>> {
-    throw new Error("Method not implemented.");
+  async resetPasswordByPhone(phone: string, newPassword: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/resetpass", {
+        phone: phone,
+        newpass: newPassword,
+      });
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (error) {
+      log("reset password api (email) error");
+      log(error.message);
+    }
+
+    return result;
   }
 
   async changePassword(

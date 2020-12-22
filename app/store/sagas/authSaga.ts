@@ -9,9 +9,11 @@ import * as authActions from "../actions/authActions";
 import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
 import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
-import { LoginRequest, SignUpRequest } from "../../models/requests/axios/auth";
+import {
+  LoginRequest,
+  ResetPasswordRequest,
+  SignUpRequest,
+} from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
 import { Login, SignUp } from "../../models/responses/axios/auth";
 import { InputType } from "../../utils/inputTypes";
@@ -70,39 +72,6 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
   }
 }
 
-export function* identifyAccountAsync(action: Action<IdentifyAccountRequest>) {
-  yield put(authActions.onLoadingEnable());
-  const { email, phone, inputType } = action.payload;
-  let response: IdentifyAccountResponse = {
-    id: "-1",
-    success: false,
-  };
-
-  try {
-    response = yield Api.identifyAccount(email, phone, inputType);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
-
-  yield put(authActions.onLoadingDisable());
-
-  if (response.success) {
-    yield put(authActions.onIdentifyAccountResponse(response));
-    navigationRef.current?.navigate("CodeVerification", {
-      parentScreen: "AccountIdentification",
-      name: "",
-      email: email,
-      phone: phone,
-      password: "",
-      inputType: inputType,
-    });
-  } else {
-    yield put(authActions.onIdentifyAccountFail());
-    ToastAndroid.show("اطلاعات وارد شده نادرست است", ToastAndroid.SHORT);
-  }
-}
-
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   const { email, phone, inputType } = action.payload;
 
@@ -144,6 +113,11 @@ export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
   if (response.success) {
     yield put(authActions.onVerifyCodeResponse(response));
     if (parentScreen == "AccountIdentification") {
+      navigationRef.current?.navigate("ResetPassword", {
+        email: email,
+        phone: phone,
+        inputType: inputType,
+      });
     } else {
       yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
     }
@@ -175,17 +149,16 @@ export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
 
 export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
   yield put(authActions.onLoadingEnable());
-  const { id, password } = action.payload;
-  let response: ResetPasswordResponse = {
-    id: "-1",
+  const { email, phone, newPassword, inputType } = action.payload;
+  let response: Response<null> = {
     success: false,
+    status: -1,
   };
 
-  try {
-    response = yield Api.resetPassword(id, password);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  if (inputType == InputType.Email) {
+    response = yield AuthAPI.resetPasswordByEmail(email, newPassword);
+  } else if (inputType == InputType.Phone) {
+    response = yield AuthAPI.resetPasswordByEmail(phone, newPassword);
   }
 
   yield put(authActions.onLoadingDisable());

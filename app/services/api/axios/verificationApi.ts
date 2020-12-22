@@ -35,6 +35,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("generate code api (email) error");
+      log(error.message);
     }
 
     return result;
@@ -60,6 +61,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("generate code api (email) error");
+      log(error.message);
     }
 
     return result;
@@ -87,7 +89,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("verify code api (email) error");
-      log(error);
+      log(error.message);
     }
 
     return result;
@@ -115,6 +117,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("verify code api (phone) error");
+      log(error.message);
     }
     return result;
   }
@@ -142,7 +145,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("cancel code request by email error");
-      // log(error.message);
+      log(error.message);
     }
 
     return result;
@@ -170,7 +173,7 @@ class CodeVerificationAPI implements VerificationApi {
       log(result);
     } catch (error) {
       log("cancel code request api by phone error");
-      log(error);
+      log(error.message);
     }
 
     return result;

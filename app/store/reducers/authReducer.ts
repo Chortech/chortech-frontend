@@ -6,12 +6,12 @@ import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
-import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/graphql/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/graphql/resetPassword";
-import { LoginRequest, SignUpRequest } from "../../models/requests/axios/auth";
+import {
+  LoginRequest,
+  ResetPasswordRequest,
+  SignUpRequest,
+} from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
 import { Login, SignUp } from "../../models/responses/axios/auth";
 import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
@@ -107,30 +107,6 @@ export const authReducer = createReducer(initialState, {
       authInputType: InputType.None,
     };
   },
-  [types.IDENTIFY_ACCOUNT_REQUEST](state: IUserState, action: Action<IdentifyAccountRequest>) {
-    return {
-      ...state,
-      email: action.payload.email,
-      phone: action.payload.phone,
-      authInputType: action.payload.inputType,
-    };
-  },
-  [types.IDENTIFY_ACCOUNT_RESPONSE](state: IUserState, action: Action<IdentifyAccountResponse>) {
-    return {
-      ...state,
-      id: action.payload.id,
-    };
-  },
-  [types.IDENTIFY_ACCOUNT_FAIL](state: IUserState, action: Action<IdentifyAccountResponse>) {
-    return {
-      ...state,
-      id: "-1",
-      email: "",
-      phone: "",
-      authInputType: InputType.None,
-      password: "",
-    };
-  },
   [types.GENERATE_CODE_REQUEST](state: IUserState, action: Action<GenerateCodeRequest>) {
     return state;
   },
@@ -159,33 +135,13 @@ export const authReducer = createReducer(initialState, {
     return state;
   },
   [types.RESET_PASSWORD_REQUEST](state: IUserState, action: Action<ResetPasswordRequest>) {
-    return {
-      ...state,
-      id: action.payload.id,
-      password: action.payload.password,
-    };
+    return state;
   },
-  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<ResetPasswordResponse>) {
-    return {
-      ...state,
-      id: "-1",
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      authInputType: InputType.None,
-    };
+  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
-  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<ResetPasswordResponse>) {
-    return {
-      ...state,
-      id: "-1",
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      authInputType: InputType.None,
-    };
+  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
     return {

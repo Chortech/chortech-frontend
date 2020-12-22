@@ -35,7 +35,6 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const dispatch = useDispatch();
   const generateCode = () => {
-    // dispatch(authActions.onCancelCodeRequest(props.email, props.phone, props.inputType));
     dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
   };
 
@@ -44,33 +43,23 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   }, [dispatch]);
 
   const onNextScreen = () => {
-    // if (data.validCode) {
-    if (props.parentScreen == "AccountIdentification") {
-      NavigationService.navigate("ResetPassword");
-    } else {
-      dispatch(
-        authActions.onVerifyCodeRequest(
-          props.name,
-          props.email,
-          props.phone,
-          props.password,
-          props.inputType,
-          data.verificationCode,
-          props.parentScreen
-        )
-      );
-    }
-    // } else {
-    //   ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
-    // }
+    dispatch(
+      authActions.onVerifyCodeRequest(
+        props.name,
+        props.email,
+        props.phone,
+        props.password,
+        props.inputType,
+        data.verificationCode,
+        props.parentScreen
+      )
+    );
   };
 
   const regenerateCode = (): void => {
-    if (timerFinished) {
-      generateCode();
-      ref.resetCountDown();
-      setTimerFinished(false);
-    }
+    generateCode();
+    ref.resetCountDown();
+    setTimerFinished(false);
   };
 
   const setCode = (code: string): void => {
@@ -103,7 +92,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 ref={(ref: any) => {
                   setRef(ref);
                 }}
-                initialSeconds={20}
+                initialSeconds={120}
                 digitFontSize={20}
                 labelFontSize={20}
                 onTimeOut={(): void => setTimerFinished(true)}
@@ -115,13 +104,11 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 width="40%"
                 height={40}
               />
-              {timerFinished ? (
-                <Animatable.View animation="bounceIn" duration={500}>
-                  <TouchableOpacity onPress={regenerateCode}>
-                    <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
-                  </TouchableOpacity>
-                </Animatable.View>
-              ) : null}
+              <Animatable.View animation="bounceIn" duration={500}>
+                <TouchableOpacity onPress={regenerateCode}>
+                  <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
+                </TouchableOpacity>
+              </Animatable.View>
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>

@@ -13,7 +13,11 @@ export type RootStackParamList = {
   };
   Profile: undefined;
   EditProfile: undefined;
-  ResetPassword: undefined;
+  ResetPassword: {
+    email: string;
+    phone: string;
+    inputType: InputType;
+  };
   CreditCardList: undefined;
   Friend: {
     id: string;

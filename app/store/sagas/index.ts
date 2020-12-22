@@ -9,7 +9,6 @@ import * as userSaga from "./userSaga";
 export default function* watch() {
   yield all([
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
-    takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, authSaga.identifyAccountAsync),
     takeLatest(types.GENERATE_CODE_REQUEST, authSaga.generateCodeAsync),
     takeLatest(types.VERIFY_CODE_REQUEST, authSaga.verifyCodeAsync),
     takeLatest(types.CANCE_CODE_REQUEST, authSaga.cancelCodeAsync),
