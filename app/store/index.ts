@@ -7,6 +7,7 @@ import { createLogger } from "redux-logger";
 import sagas from "./sagas";
 import rootReducers from "./reducers";
 import { LOG_OUT } from "./actions/types";
+import { log } from "../utils/logger";
 
 const config = {
   key: "root",
@@ -32,7 +33,8 @@ const enhancers = [applyMiddleware(sagaMiddleware)];
 const persistConfig: any = { enhancers };
 const store = createStore(reducers, undefined, compose(...enhancers));
 const persistor = persistStore(store, persistConfig, () => {
-  // console.log(JSON.stringify(store.getState(), undefined, 2));
+  // log("auth reducer");
+  // log(store.getState()["authReducer"]);
 });
 const configureStore = () => {
   return { persistor, store };

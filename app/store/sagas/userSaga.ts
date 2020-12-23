@@ -51,11 +51,12 @@ import {
   UpdateUserResponse,
 } from "../../models/responses/graphql/user";
 import { navigationRef } from "../../navigation/navigationService";
-import { userAPI } from "../../services/api/axios/userApi";
+import { UserAPI } from "../../services/api/axios/userApi";
 import { Api } from "../../services/api/graphQL/graphqlApi";
+import { log } from "../../utils/logger";
 import * as userActions from "../actions/userActions";
 
-export function* fetchUserAsync(action: Action<GetUserProfileRequest>) {
+export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());
   const token = action.payload.token;
   let response: Response<UserProfileResponse> = {
@@ -63,7 +64,8 @@ export function* fetchUserAsync(action: Action<GetUserProfileRequest>) {
     status: -1,
   };
 
-  response = yield userAPI.getUserProfile();
+  const api: UserAPI = new UserAPI(token);
+  response = yield api.getUserProfile();
 
   yield put(userActions.onLoadingDisable());
 

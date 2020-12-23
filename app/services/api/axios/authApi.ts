@@ -11,17 +11,11 @@ import configureStore from "../../../store/index";
 
 class AuthenticationApi implements AuthApi {
   client: AxiosInstance;
-  state: IUserState;
+
   constructor() {
     this.client = axios.create({
       baseURL: SERVER_AUTH_URL,
     });
-    this.client.interceptors.request.use(function (config) {
-      log(config.url);
-      return config;
-    });
-    this.state = configureStore().store.getState()["authReducer"];
-    log(this.state);
   }
 
   async loginByEmail(email: string, password: string): Promise<Response<Login>> {

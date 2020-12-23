@@ -17,7 +17,7 @@ export default function* watch() {
     takeLatest(types.GET_USER_FRIENDS_REQUEST, userSaga.getUserFriendsAsync),
     takeLatest(types.ADD_FRIEND_REQUEST, userSaga.addFriendAsync),
     takeLatest(types.DELETE_USER_FRIEND_REQUEST, userSaga.deleteFriendAsync),
-    takeLatest(types.GET_USER_PROFILE_REQUEST, userSaga.fetchUserAsync),
+    takeLatest(types.GET_USER_PROFILE_REQUEST, userSaga.getUserProfileAsync),
     takeLatest(types.UPDATE_USER_REQUEST, userSaga.updateUserAsync),
     takeLatest(types.ADD_GROUP_REQUEST, userSaga.addGroupAsync),
     takeLatest(types.UPDATE_GROUP_REQUEST, userSaga.updateGroupAsync),

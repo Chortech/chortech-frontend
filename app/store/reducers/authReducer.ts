@@ -20,7 +20,11 @@ const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
-  token: undefined,
+  token: {
+    access: "",
+    created: 0,
+    expires: 0,
+  },
   name: "",
   password: "",
   email: "",

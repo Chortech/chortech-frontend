@@ -22,7 +22,7 @@ export interface InviteFriendsRequest {
 }
 
 export interface GetUserProfileRequest {
-  token: Token | undefined;
+  token: Token;
 }
 
 export interface EditProfileRequest {

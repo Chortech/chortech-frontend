@@ -1,26 +1,24 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_USER_URL } from "../../../../local_env_vars";
 import { userApi } from "../../../models/api/axios-api/user";
+import { Token } from "../../../models/other/axios/Token";
 import { IUserState } from "../../../models/reducers/default";
 import { Response } from "../../../models/responses/axios/response";
 import { UserProfileResponse } from "../../../models/responses/axios/user";
-import configureStore from "../../../store";
+import configureStore from "../../../store/index";
 import { log } from "../../../utils/logger";
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
 
-  constructor() {
+  constructor(token: Token) {
     this.client = axios.create({
       baseURL: SERVER_USER_URL,
     });
 
     this.client.interceptors.request.use(function (config) {
-      const state: IUserState = configureStore().store.getState()["authReducer"];
-      log("token");
-      log(state.token);
-      if (state.token != undefined) {
-        config.headers["Authorization"] = `Bearer ${state.token?.access}`;
+      if (token != undefined && token != null) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
       }
       return config;
     });
@@ -54,5 +52,3 @@ export class UserAPI implements userApi {
     return result;
   }
 }
-
-export const userAPI = new UserAPI();

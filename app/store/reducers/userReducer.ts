@@ -45,27 +45,30 @@ import {
   GetUserActivitiesResponse,
   GetUserFriendsResponse,
 } from "../../models/responses/graphql/user";
+import { InputType } from "../../utils/inputTypes";
 import * as types from "../actions/types";
 
-const initialState: IUserState = configureStore().store.getState()["authReducer"];
-
-// const initialState: IUserState = {
-//   isLoggedIn: true,
-//   loading: false,
-//   id: "-1",
-//   token: undefined,
-//   name: "",
-//   password: "",
-//   email: "",
-//   phone: "",
-//   picture: "",
-//   authInputType: InputType.None,
-//   friends: [],
-//   groups: [],
-//   activities: [],
-//   myCreditCards: [],
-//   otherCreditCards: [],
-// };
+const initialState: IUserState = {
+  isLoggedIn: true,
+  loading: false,
+  id: "-1",
+  token: {
+    access: "",
+    created: 0,
+    expires: 0,
+  },
+  name: "",
+  password: "",
+  email: "",
+  phone: "",
+  picture: "",
+  authInputType: InputType.None,
+  friends: [],
+  groups: [],
+  activities: [],
+  myCreditCards: [],
+  otherCreditCards: [],
+};
 
 export const userReducer = createReducer(initialState, {
   [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
@@ -314,6 +317,16 @@ export const userReducer = createReducer(initialState, {
   },
   [types.DELETE_PARTICIPANT_FAIL](state: IUserState, action: Action<DeleteDebtResponse>) {
     return state;
+  },
+  [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>) {
+    return {
+      ...state,
+      token: {
+        access: "",
+        created: 0,
+        expired: 0,
+      },
+    };
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
     return {

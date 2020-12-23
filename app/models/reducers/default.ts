@@ -9,10 +9,10 @@ export interface IUserState {
   isLoggedIn: boolean;
   loading: boolean;
   id: string;
-  token: Token | undefined;
+  token: Token;
   name: string;
-  email: string | undefined;
-  phone: string | undefined;
+  email: string;
+  phone: string;
   password: string;
   picture: string;
   authInputType: InputType;

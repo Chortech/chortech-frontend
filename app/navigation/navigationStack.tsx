@@ -226,7 +226,6 @@ const App: React.FC = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
-
       <Stack.Navigator>
         {isLoggedIn ? (
           <Stack.Screen

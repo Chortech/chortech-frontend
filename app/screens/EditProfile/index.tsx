@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
@@ -10,12 +10,15 @@ import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
 };
 
 const EditProfile: React.FC = (): JSX.Element => {
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  log(loggedInUser);
   let user = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({

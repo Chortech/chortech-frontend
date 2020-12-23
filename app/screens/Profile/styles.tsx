@@ -34,8 +34,7 @@ export const styles = StyleSheet.create({
   },
   userNameText: {
     fontSize: 20,
-    // marginVertical: 10,
-    // padding: 5,
+    marginTop: 5,
     color: "#fff",
     alignSelf: "center",
     alignItems: "center",

@@ -52,7 +52,7 @@ import {
 } from "../../models/responses/graphql/user";
 import * as types from "./types";
 
-export function onGetUserProfileRequest(token: Token | undefined): Action<GetUserProfileRequest> {
+export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
   return {
     type: types.GET_USER_PROFILE_REQUEST,
     payload: {
@@ -681,6 +681,13 @@ export function onDeleteParticipantFail(): Action<DeleteParticipantResponse> {
       id: "-1",
       success: false,
     },
+  };
+}
+
+export function onClearTokenRequest(): Action<any> {
+  return {
+    type: types.CLEAR_TOKEN_REQUEST,
+    payload: {},
   };
 }
 

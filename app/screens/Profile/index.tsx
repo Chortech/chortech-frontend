@@ -20,14 +20,29 @@ const Profile: React.FC = (): JSX.Element => {
   const user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  log(loggedInUser);
   const fetchUser = () => {
-    dispatch(userActions.onGetUserProfileRequest(user.token));
+    let difference = (loggedInUser.token.expires - Math.floor(Date.now() / 1000)) / 60;
+    if (difference > 1) {
+      log("profile request");
+      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
+    } else {
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+    }
   };
 
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
-  const onLogout = () => dispatch(authActions.onLogout());
+  const onLogout = () => {
+    dispatch(userActions.onClearTokenRequest());
+    dispatch(authActions.onLogout());
+  };
 
   useEffect(() => {
     fetchUser();
