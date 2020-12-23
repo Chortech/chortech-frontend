@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1AD927",
   },
   header: {
-    flex: 3,
+    flex: 2,
     paddingTop: 10,
   },
   profileImage: {
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   infoContainer: {
-    flex: 8,
+    flex: 6,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     borderTopRightRadius: 30,
@@ -71,9 +71,9 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   buttonContainer: {
-    flex: 5,
-    justifyContent: "flex-end",
-    margin: 20,
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+    marginTop: 70,
   },
   button: {
     elevation: 1,

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -18,6 +18,8 @@ type IState = {
 const Profile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const user: IUserState = useSelector((state: IState) => state.userReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
   const dispatch = useDispatch();
 
   const fetchUser = () => {
@@ -44,6 +46,12 @@ const Profile: React.FC = (): JSX.Element => {
     dispatch(authActions.onLogout());
   };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchUser();
+    setRefreshing(false);
+  }, [dispatch]);
+
   useEffect(() => {
     fetchUser();
   }, [dispatch]);
@@ -65,22 +73,27 @@ const Profile: React.FC = (): JSX.Element => {
             <Text style={styles.userNameText}>{user.name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.email}</Text>
+            <ScrollView
+              // style={styles.scrollViewContainer}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              showsVerticalScrollIndicator={false}>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>{user.email}</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>ایمیل</Text>
+                </View>
               </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>ایمیل</Text>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>{user.phone}</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>تلفن همراه</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.phone}</Text>
-              </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>تلفن همراه</Text>
-              </View>
-            </View>
+            </ScrollView>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
                 <Text style={styles.buttonText}>دوستان</Text>

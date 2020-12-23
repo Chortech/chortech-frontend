@@ -1,13 +1,10 @@
-import { put } from "redux-saga/effects";
+import { actionChannel, call, put, take } from "redux-saga/effects";
 import { ToastAndroid } from "react-native";
 
 import { Action } from "../../models/actions/action";
-import { Api } from "../../services/api/graphQL/graphqlApi";
 import { navigationRef } from "../../navigation/navigationService";
 
 import * as authActions from "../actions/authActions";
-import { IdentifyAccountRequest } from "../../models/requests/graphql/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/graphql/identifyAccount";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import {
   LoginRequest,
@@ -21,6 +18,7 @@ import { AuthAPI } from "../../services/api/axios/authApi";
 import { log } from "../../utils/logger";
 import { VerificationAPI } from "../../services/api/axios/verificationApi";
 import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
+import * as types from "../actions/types";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -75,7 +73,7 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   const { email, phone, inputType } = action.payload;
 
-  yield put(authActions.onCancelCodeRequest(email, phone, inputType));
+  yield call(cancelCodeAsync, authActions.onCancelCodeRequest(email, phone, inputType));
 
   let response: Response<null> = {
     success: false,
@@ -85,6 +83,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   if (inputType == InputType.Email) {
     response = yield VerificationAPI.generateCodeRequestByEmail(email);
   } else if (inputType == InputType.Phone) {
+    yield VerificationAPI.cancelCodeRequestByPhone(phone);
     response = yield VerificationAPI.generateCodeRequestByPhone(phone);
   }
 
