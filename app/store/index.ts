@@ -6,8 +6,6 @@ import { createLogger } from "redux-logger";
 
 import sagas from "./sagas";
 import rootReducers from "./reducers";
-import { LOG_OUT } from "./actions/types";
-import { log } from "../utils/logger";
 
 const config = {
   key: "root",

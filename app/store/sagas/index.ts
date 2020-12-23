@@ -11,7 +11,7 @@ export default function* watch() {
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
     takeLatest(types.GENERATE_CODE_REQUEST, authSaga.generateCodeAsync),
     takeLatest(types.VERIFY_CODE_REQUEST, authSaga.verifyCodeAsync),
-    takeLatest(types.CANCE_CODE_REQUEST, authSaga.cancelCodeAsync),
+    takeLatest(types.CANCEL_CODE_REQUEST, authSaga.cancelCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, authSaga.resetPasswordAsync),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
     takeLatest(types.GET_USER_FRIENDS_REQUEST, userSaga.getUserFriendsAsync),

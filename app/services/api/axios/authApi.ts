@@ -5,9 +5,6 @@ import { Token } from "../../../models/other/axios/Token";
 import { Login, SignUp } from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
-import { IUserState } from "../../../models/reducers/default";
-import { useStore } from "react-redux";
-import configureStore from "../../../store/index";
 
 class AuthenticationApi implements AuthApi {
   client: AxiosInstance;

@@ -172,7 +172,7 @@ export function onCancelCodeRequest(
   inputType: InputType
 ): Action<CancelCodeRequest> {
   return {
-    type: types.CANCE_CODE_REQUEST,
+    type: types.CANCEL_CODE_REQUEST,
     payload: {
       email: email,
       phone: phone,

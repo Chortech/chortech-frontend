@@ -39,14 +39,9 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
             />
             <Text style={styles.userNameText}>{friendName}</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={onPressDeleteFriend}>
+              <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteFriend}>
                 <Text style={styles.removeButtonText}>حذف کردن از دوستان</Text>
               </TouchableOpacity>
             </View>

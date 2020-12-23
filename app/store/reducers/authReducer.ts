@@ -130,7 +130,7 @@ export const authReducer = createReducer(initialState, {
   [types.VERIFY_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
     return state;
   },
-  [types.CANCE_CODE_REQUEST](state: IUserState, action: Action<CancelCodeRequest>) {
+  [types.CANCEL_CODE_REQUEST](state: IUserState, action: Action<CancelCodeRequest>) {
     return state;
   },
   [types.CANCEL_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {

@@ -19,7 +19,7 @@ type IState = {
 const EditProfile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   log(loggedInUser);
-  let user = useSelector((state: IState) => state.userReducer);
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     name: user.name,
@@ -50,7 +50,7 @@ const EditProfile: React.FC = (): JSX.Element => {
         phone: data.phone,
         email: data.email,
       };
-      dispatch(userActions.onUpdateUserRequest(user));
+      // dispatch(userActions.onUpdateUserRequest(user));
     } else {
       ToastAndroid.show("اطلاعات وارد شده کافی نمی‌باشد.", ToastAndroid.SHORT);
     }

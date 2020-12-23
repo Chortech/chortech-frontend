@@ -142,7 +142,7 @@ export function onUpdateUserFail(): Action<UpdateUserResponse> {
   };
 }
 
-export function onAddGrouptRequest(
+export function onAddGroupRequest(
   name: string,
   creatorId: string,
   membersIds: Array<string>
