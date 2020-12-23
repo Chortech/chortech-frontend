@@ -24,6 +24,8 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
+  const onPressAddComment = () => NavigationService.navigate("AddComment");
+
   const onPressDeleteActivity = () => {
     if (activityType == "debt") {
       let targetid: string = debtId != undefined ? debtId : "-1";
@@ -67,7 +69,7 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
                 </View>
               </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.addButton} onPress={onPressDeleteActivity}>
+                <TouchableOpacity style={styles.addButton} onPress={onPressAddComment}>
                   <Text style={styles.addButtonText}>اضافه‌کردن یادداشت</Text>
                   <Text style={styles.plus}>+</Text>
                 </TouchableOpacity>
