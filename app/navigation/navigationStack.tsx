@@ -22,6 +22,7 @@ import ActivityList from "../screens/ActivityList";
 import AddExpense from "../screens/AddExpense";
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
+import AddComment from "../screens/AddComment";
 import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
 
@@ -181,6 +182,11 @@ const ActivityNavigator = () => (
       name="AddExpense"
       component={AddExpense}
       options={{ title: "افزودن فعالیت جدید" }}
+    />
+    <LoggedInTab.Screen
+      name="AddComment"
+      component={AddComment}
+      options={{ title: "افزودن یادداشت" }}
     />
   </ActivityStack.Navigator>
 );
