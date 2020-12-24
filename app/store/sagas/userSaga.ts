@@ -3,6 +3,7 @@ import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
 import {
   AddFriendRequest,
+  DeleteFriendRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
 } from "../../models/requests/axios/user";
@@ -16,7 +17,6 @@ import {
   DeleteDebtRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
-import { DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -26,7 +26,12 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { AddFriend, GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
+import {
+  AddFriend,
+  DeleteFriend,
+  GetUserFriends,
+  UserProfileResponse,
+} from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -37,7 +42,6 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/graphql/activity";
-import { DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -398,15 +402,14 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
 
 export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
   yield put(userActions.onLoadingEnable());
-  const id = action.payload.id;
-  let response: DeleteFriendResponse = { success: false, id: "-1" };
+  const { token, id } = action.payload;
+  let response: Response<DeleteFriend> = {
+    success: false,
+    status: -1,
+  };
 
-  try {
-    response = yield Api.deleteFriend(id);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
+  let api: UserAPI = new UserAPI(token);
+  response = yield api.deleteFriend(id);
 
   yield put(userActions.onLoadingDisable());
 
@@ -415,7 +418,15 @@ export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
     yield navigationRef.current?.navigate("FriendList");
   } else {
     yield put(userActions.onDeleteFriendFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == -2) {
+      ToastAndroid.show("عملیات با خطا مواجه شد", ToastAndroid.SHORT);
+    } else if (response.status == -3) {
+      ToastAndroid.show("امکان انجام این عملیات وجود ندارد", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("کاربر مورد نظر دوست شما نیست", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 

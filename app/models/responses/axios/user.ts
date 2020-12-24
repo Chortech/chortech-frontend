@@ -12,11 +12,7 @@ export interface AddFriend {
   friends: Array<Friend>;
 }
 
-export interface RemoveFriendResponse {
-  id: string;
-  name: string;
-  email?: string;
-  phone?: string;
+export interface DeleteFriend {
   friends: Array<Friend>;
 }
 

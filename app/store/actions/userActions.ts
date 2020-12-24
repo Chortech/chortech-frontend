@@ -5,6 +5,7 @@ import {
   AddFriendRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
+  DeleteFriendRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -16,7 +17,6 @@ import {
   DeleteDebtRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
-import { DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -26,7 +26,12 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { AddFriend, GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
+import {
+  AddFriend,
+  DeleteFriend,
+  GetUserFriends,
+  UserProfileResponse,
+} from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -37,7 +42,6 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/graphql/activity";
-import { DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -382,33 +386,35 @@ export function onAddFriendFail(): Action<Response<AddFriend>> {
   };
 }
 
-export function onDeleteFriendRequest(id: string): Action<DeleteFriendRequest> {
+export function onDeleteFriendRequest(token: Token, id: string): Action<DeleteFriendRequest> {
   return {
     type: types.DELETE_USER_FRIEND_REQUEST,
     payload: {
       id: id,
+      token: token,
     },
   };
 }
 
 export function onDeleteFriendResponse(
-  response: DeleteFriendResponse
-): Action<DeleteFriendResponse> {
+  response: Response<DeleteFriend>
+): Action<Response<DeleteFriend>> {
   return {
     type: types.DELETE_USER_FRIEND_RESPONSE,
     payload: {
       success: response.success,
-      id: response.id,
+      status: response.status,
+      response: response.response,
     },
   };
 }
 
-export function onDeleteFriendFail(): Action<DeleteFriendResponse> {
+export function onDeleteFriendFail(): Action<Response<DeleteFriend>> {
   return {
     type: types.DELETE_USER_FRIEND_FAIL,
     payload: {
       success: false,
-      id: "-1",
+      status: -1,
     },
   };
 }
@@ -568,7 +574,7 @@ export function onDeleteActivityRequest(id: string): Action<DeleteActivityReques
 
 export function onDeleteActivityResponse(
   response: DeleteActivityResponse
-): Action<DeleteFriendResponse> {
+): Action<DeleteActivityResponse> {
   return {
     type: types.DELETE_ACTIVITY_RESPONSE,
     payload: {

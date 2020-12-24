@@ -13,8 +13,9 @@ export interface AddFriendRequest {
   inputType: InputType;
 }
 
-export interface RemoveFriendRequest {
+export interface DeleteFriendRequest {
   id: string;
+  token: Token;
 }
 
 export interface InviteFriendsRequest {

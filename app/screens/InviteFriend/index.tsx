@@ -27,29 +27,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
   // const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
   const dispatch = useDispatch();
 
-  // const onChangeSearchQuery = (text: string) => {
-  //   const type = RegexValidator.validateEmailOrPhone(text);
-  //   setEmailOrPhone(text);
-  //   setInputType(type);
-  // };
-
-  // const onPressSearchButton = (): void => {
-  //   if (inputType == InputType.Email || inputType == InputType.Phone) {
-  //     Api.getFilteredUser(emailOrPhone, inputType).then((data) => {
-  //       if (data.success) {
-  //         if (fetchedUsers.length > 0) {
-  //           setFetchedUsers([]);
-  //         }
-  //         setFetchedUsers([data.user]);
-  //       } else {
-  //         ToastAndroid.show("کاربر با این مشخصات وجود ندارد", ToastAndroid.SHORT);
-  //       }
-  //     });
-  //   } else {
-  //     ToastAndroid.show("اطلاعات وارد شده نامعتبر است", ToastAndroid.SHORT);
-  //   }
-  // };
-
   const onPressAddFriend = (): void => {
     if (validInput) {
       if (inputType == InputType.Email) {

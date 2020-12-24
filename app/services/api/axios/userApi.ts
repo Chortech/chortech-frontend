@@ -8,6 +8,7 @@ import { Response } from "../../../models/responses/axios/response";
 import {
   AddFriend,
   GetUserFriends,
+  DeleteFriend,
   UserProfileResponse,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store/index";
@@ -111,11 +112,8 @@ export class UserAPI implements userApi {
         result = {
           success: true,
           status: response.status,
+          response: response.data.friends != undefined ? response.data.friends : [],
         };
-        if (response.data.friends != undefined) {
-          result.response =
-            response.data.friends.length > 0 ? response.data.friends[0] : result.response;
-        }
       } else {
         result.status = response.status;
       }
@@ -155,11 +153,8 @@ export class UserAPI implements userApi {
         result = {
           success: true,
           status: response.status,
+          response: response.data.friends != undefined ? response.data.friends : [],
         };
-        if (response.data.friends != undefined) {
-          result.response =
-            response.data.friends.length > 0 ? response.data.friends[0] : result.response;
-        }
       } else {
         result.status = response.status;
       }
@@ -178,6 +173,46 @@ export class UserAPI implements userApi {
         }
       } else {
         log("add user friend api (phone) error");
+        log(e.message);
+      }
+    }
+
+    return result;
+  }
+
+  async deleteFriend(friendId: string): Promise<Response<DeleteFriend>> {
+    let result: Response<DeleteFriend> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.delete(`/friends/${friendId}`);
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data.friends != undefined ? response.data.friends : [],
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("delete friend api result");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+        if (message == "You can't remove your self as friend!") {
+          result.status = -3;
+        } else if (message == "Something went wrong") {
+          result.status = -2;
+        } else if (error.response?.status == 404) {
+          result.status = error.response?.status;
+        }
+      } else {
+        log("delete friend api error");
         log(e.message);
       }
     }
