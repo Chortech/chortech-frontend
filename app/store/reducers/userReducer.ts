@@ -68,6 +68,7 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  imageUri: "",
 };
 
 export const userReducer = createReducer(initialState, {
