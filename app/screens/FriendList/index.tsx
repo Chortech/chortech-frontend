@@ -70,7 +70,7 @@ const FriendList: React.FC = (): JSX.Element => {
         </Animatable.View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-            <Text style={styles.buttonText}>دعوت از دوستان</Text>
+            <Text style={styles.buttonText}>اضافه کردن دوستان جدید</Text>
           </TouchableOpacity>
         </View>
       </View>

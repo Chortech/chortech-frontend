@@ -208,7 +208,7 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen
       name="InviteFriend"
       component={InviteFriend}
-      options={{ title: "دعوت از دوستان" }}
+      options={{ title: "افزودن دوستان جدید" }}
     />
   </FriendStack.Navigator>
 );

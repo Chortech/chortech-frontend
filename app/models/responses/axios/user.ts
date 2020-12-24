@@ -4,7 +4,7 @@ export interface GetUserFriends {
   friends: Array<Friend>;
 }
 
-export interface AddFriendResponse {
+export interface AddFriend {
   id: string;
   name: string;
   email?: string;

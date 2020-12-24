@@ -1,7 +1,11 @@
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
-import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
+import {
+  AddFriendRequest,
+  GetUserFriendsRequest,
+  GetUserProfileRequest,
+} from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -11,7 +15,7 @@ import {
   DeleteExpenseRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
-import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/graphql/friend";
+import { DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -21,7 +25,7 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
+import { AddFriend, GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -31,7 +35,7 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/graphql/activity";
-import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/graphql/friend";
+import { DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -218,12 +222,18 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
   [types.ADD_FRIEND_REQUEST](state: IUserState, action: Action<AddFriendRequest>) {
-    return state;
+    return {
+      ...state,
+      token: action.payload.token,
+    };
   },
-  [types.ADD_FRIEND_RESPONSE](state: IUserState, action: Action<AddFriendResponse>) {
-    return state;
+  [types.ADD_FRIEND_RESPONSE](state: IUserState, action: Action<Response<AddFriend>>) {
+    return {
+      ...state,
+      friends: action.payload.response?.friends,
+    };
   },
-  [types.ADD_FRIEND_FAIL](state: IUserState, action: Action<AddFriendResponse>) {
+  [types.ADD_FRIEND_FAIL](state: IUserState, action: Action<Response<AddFriend>>) {
     return state;
   },
   [types.DELETE_USER_FRIEND_REQUEST](state: IUserState, action: Action<DeleteFriendRequest>) {

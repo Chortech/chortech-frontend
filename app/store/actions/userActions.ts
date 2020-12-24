@@ -1,7 +1,11 @@
 import { Action } from "../../models/actions/action";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
-import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
+import {
+  AddFriendRequest,
+  GetUserFriendsRequest,
+  GetUserProfileRequest,
+} from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -12,7 +16,7 @@ import {
   DeleteDebtRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
-import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/graphql/friend";
+import { DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -22,7 +26,7 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
+import { AddFriend, GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -33,7 +37,7 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/graphql/activity";
-import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/graphql/friend";
+import { DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -42,6 +46,7 @@ import {
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
 import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
+import { InputType } from "../../utils/inputTypes";
 import * as types from "./types";
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
@@ -340,40 +345,39 @@ export function onGetUserFriendsFail(): Action<Response<GetUserFriends>> {
 }
 
 export function onAddFriendRequest(
-  userId: string,
-  friendId: string,
-  friendName: string
+  token: Token,
+  email: string,
+  phone: string,
+  inputType: InputType
 ): Action<AddFriendRequest> {
   return {
     type: types.ADD_FRIEND_REQUEST,
     payload: {
-      userId: userId,
-      friendId: friendId,
-      friendName: friendName,
+      token: token,
+      email: email,
+      phone: phone,
+      inputType: inputType,
     },
   };
 }
 
-export function onAddFriendResponse(response: AddFriendResponse): Action<AddFriendResponse> {
+export function onAddFriendResponse(response: Response<AddFriend>): Action<Response<AddFriend>> {
   return {
     type: types.ADD_FRIEND_RESPONSE,
     payload: {
       success: response.success,
-      friend: response.friend,
+      status: response.status,
+      response: response.response,
     },
   };
 }
 
-export function onAddFriendFail(): Action<AddFriendResponse> {
+export function onAddFriendFail(): Action<Response<AddFriend>> {
   return {
     type: types.ADD_FRIEND_FAIL,
     payload: {
       success: false,
-      friend: {
-        id: "-1",
-        friendId: "-1",
-        friendName: "",
-      },
+      status: -1,
     },
   };
 }

@@ -1,7 +1,11 @@
 import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
-import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
+import {
+  AddFriendRequest,
+  GetUserFriendsRequest,
+  GetUserProfileRequest,
+} from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -12,7 +16,7 @@ import {
   DeleteDebtRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
-import { AddFriendRequest, DeleteFriendRequest } from "../../models/requests/graphql/friend";
+import { DeleteFriendRequest } from "../../models/requests/graphql/friend";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -22,7 +26,7 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
+import { AddFriend, GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -33,7 +37,7 @@ import {
   DeleteDebtResponse,
   DeleteParticipantResponse,
 } from "../../models/responses/graphql/activity";
-import { AddFriendResponse, DeleteFriendResponse } from "../../models/responses/graphql/friend";
+import { DeleteFriendResponse } from "../../models/responses/graphql/friend";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -45,6 +49,7 @@ import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/resp
 import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { Api } from "../../services/api/graphQL/graphqlApi";
+import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as userActions from "../actions/userActions";
 
@@ -353,31 +358,41 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
 
 export function* addFriendAsync(action: Action<AddFriendRequest>) {
   yield put(userActions.onLoadingEnable());
-  const { userId, friendId, friendName } = action.payload;
-  let response: AddFriendResponse = {
+  const { token, email, phone, inputType } = action.payload;
+  let response: Response<AddFriend> = {
     success: false,
-    friend: {
-      id: "-1",
-      friendId: "-1",
-      friendName: "",
-    },
+    status: -1,
   };
 
-  try {
-    response = yield Api.addFriend(friendId, friendName, userId);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  let api: UserAPI = new UserAPI(token);
+  if (inputType == InputType.Email) {
+    response = yield api.addUserFriendByEmail(email);
+  } else if (inputType == InputType.Phone) {
+    response = yield api.addUserFriendByEmail(phone);
   }
 
   yield put(userActions.onLoadingDisable());
 
   if (response.success) {
     yield put(userActions.onAddFriendResponse(response));
-    ToastAndroid.show(`${response.friend.friendName} به دوستان شما افزوده‌شد.`, ToastAndroid.SHORT);
   } else {
     yield put(userActions.onAddFriendFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == -3) {
+      ToastAndroid.show("این عملیات امکان‌پذیر نیست", ToastAndroid.SHORT);
+    } else if (response.status == -2) {
+      ToastAndroid.show("عملیات با خطا مواجه شد", ToastAndroid.SHORT);
+    } else if (response.status == 400) {
+      ToastAndroid.show("اطلاعات واردشده معتبر نیست", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("کاربر با این مشخصات وجود ندارد", ToastAndroid.SHORT);
+    } else if (response.status == 409) {
+      ToastAndroid.show(
+        "امکان اضافه‌کردن دوباره این کاربر به دوستان شما وجود ندارد",
+        ToastAndroid.SHORT
+      );
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
