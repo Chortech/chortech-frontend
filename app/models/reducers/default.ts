@@ -17,4 +17,5 @@ export interface IUserState {
   friends: Array<Friend>;
   groups: Array<Group>;
   activities: Array<Activity>;
+  imageUri: string;
 }
