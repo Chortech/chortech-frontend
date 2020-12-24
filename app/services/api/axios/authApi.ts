@@ -1,6 +1,6 @@
 import { SERVER_AUTH_URL } from "../../../../local_env_vars";
 import { AuthApi } from "../../../models/api/axios-api/auth";
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { Token } from "../../../models/other/axios/Token";
 import { Login, SignUp } from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
@@ -38,9 +38,18 @@ class AuthenticationApi implements AuthApi {
       }
       log("login api (email) result");
       log(result);
-    } catch (error) {
-      log("login api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("login api (email) error");
+        log(e);
+      }
     }
 
     return result;
@@ -70,9 +79,18 @@ class AuthenticationApi implements AuthApi {
       }
       log("login api (phone) result");
       log(result);
-    } catch (error) {
-      log("login api (phone) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("login api (phone) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -102,9 +120,18 @@ class AuthenticationApi implements AuthApi {
       }
       log("signup api (email) result");
       log(result);
-    } catch (error) {
-      log("signup api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("signup api (email) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -134,9 +161,18 @@ class AuthenticationApi implements AuthApi {
       }
       log("signup api (email) result");
       log(result);
-    } catch (error) {
-      log("signup api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("signup api (phone) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -161,9 +197,22 @@ class AuthenticationApi implements AuthApi {
       } else {
         result.status = response.status;
       }
-    } catch (error) {
-      log("reset password api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else if (error.response?.data.errors[0].message == "Wrong Credentials") {
+          result.status = -3;
+        } else if (error.response?.data.errors[0].message == "Email or Phone not verified!") {
+          result.status = -4;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("reset password api (email) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -188,9 +237,22 @@ class AuthenticationApi implements AuthApi {
       } else {
         result.status = response.status;
       }
-    } catch (error) {
-      log("reset password api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else if (error.response?.data.errors[0].message == "Wrong Credentials") {
+          result.status = -3;
+        } else if (error.response?.data.errors[0].message == "Email or Phone not verified!") {
+          result.status = -4;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("reset password api (phone) error");
+        log(e.message);
+      }
     }
 
     return result;

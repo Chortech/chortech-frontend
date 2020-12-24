@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_USER_URL } from "../../../../local_env_vars";
 import { userApi } from "../../../models/api/axios-api/user";
 import { Token } from "../../../models/other/axios/Token";
@@ -46,7 +46,6 @@ export class UserAPI implements userApi {
       log(result);
     } catch (error) {
       log("get user profile error");
-      log(error);
     }
 
     return result;

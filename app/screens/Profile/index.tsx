@@ -10,6 +10,7 @@ import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
   userReducer: IUserState;
@@ -23,8 +24,7 @@ const Profile: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const fetchUser = () => {
-    let difference = (loggedInUser.token.expires - Math.floor(Date.now() / 1000)) / 60;
-    if (difference > 1) {
+    if (validateToken(loggedInUser.token)) {
       log("profile request");
       dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
     } else {

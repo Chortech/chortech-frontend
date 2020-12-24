@@ -33,9 +33,18 @@ class CodeVerificationAPI implements VerificationApi {
       }
       log("generate code api (email) result");
       log(result);
-    } catch (error) {
-      log("generate code api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("generate code api (email) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -57,11 +66,20 @@ class CodeVerificationAPI implements VerificationApi {
       } else {
         result.status = response.status;
       }
-      log("generate code api (email) result");
+      log("generate code api (phone) result");
       log(result);
-    } catch (error) {
-      log("generate code api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("generate code api (phone) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -87,9 +105,20 @@ class CodeVerificationAPI implements VerificationApi {
       }
       log("verify code api (email) result");
       log(result);
-    } catch (error) {
-      log("verify code api (email) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+          result.status = -3;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("verify code api (email) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -115,9 +144,20 @@ class CodeVerificationAPI implements VerificationApi {
       }
       log("verify code api (phone) result");
       log(result);
-    } catch (error) {
-      log("verify code api (phone) error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+          result.status = -3;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("verify code api (phone) error");
+        log(e.message);
+      }
     }
     return result;
   }
@@ -143,9 +183,18 @@ class CodeVerificationAPI implements VerificationApi {
       }
       log("cancel code api(email) result");
       log(result);
-    } catch (error) {
-      log("cancel code request by email error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("cancel code api (email) error");
+        log(e.message);
+      }
     }
 
     return result;
@@ -171,9 +220,18 @@ class CodeVerificationAPI implements VerificationApi {
       }
       log("cancel code api (phone) result");
       log(result);
-    } catch (error) {
-      log("cancel code request api by phone error");
-      log(error.message);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        if (error.response?.data.errors[0].message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("cancel code api (phone) error");
+        log(e.message);
+      }
     }
 
     return result;

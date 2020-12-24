@@ -29,6 +29,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const [timerFinished, setTimerFinished] = useState<boolean>(false);
   const [data, setData] = useState({
     verificationCode: "",
+    validCodeLength: false,
   });
 
   const dispatch = useDispatch();
@@ -41,17 +42,21 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   }, [dispatch]);
 
   const onNextScreen = () => {
-    dispatch(
-      authActions.onVerifyCodeRequest(
-        props.name,
-        props.email,
-        props.phone,
-        props.password,
-        props.inputType,
-        data.verificationCode,
-        props.parentScreen
-      )
-    );
+    if (data.validCodeLength) {
+      dispatch(
+        authActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen
+        )
+      );
+    } else {
+      ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
+    }
   };
 
   const regenerateCode = (): void => {
@@ -63,6 +68,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const setCode = (code: string): void => {
     setData({
       verificationCode: code,
+      validCodeLength: code.length == 6,
     });
   };
 
@@ -82,6 +88,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 placeholder="لطفا کد فعال‌سازی را وارد کنید"
                 style={styles.textInput}
                 keyboardType="number-pad"
+                maxLength={6}
                 onChangeText={(text) => setCode(text)}
               />
             </View>

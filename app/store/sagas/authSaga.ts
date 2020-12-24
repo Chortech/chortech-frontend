@@ -18,7 +18,6 @@ import { AuthAPI } from "../../services/api/axios/authApi";
 import { log } from "../../utils/logger";
 import { VerificationAPI } from "../../services/api/axios/verificationApi";
 import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
-import * as types from "../actions/types";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -42,7 +41,15 @@ export function* loginAsync(action: Action<LoginRequest>) {
     yield put(authActions.onLoginResponse(response));
   } else {
     yield put(authActions.onLoginFail());
-    ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
+    if (response.status == -2) {
+      ToastAndroid.show("درخواست ورود با خطا مواجه شد", ToastAndroid.SHORT);
+    } else if (response.status == 400) {
+      ToastAndroid.show("اطلاعات واردشده نامعتبر است", ToastAndroid.SHORT);
+    } else if (response.status == 401) {
+      ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
@@ -66,7 +73,15 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
     yield put(authActions.onSignUpResponse(response));
   } else {
     yield put(authActions.onSignUpFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == -2) {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    } else if (response.status == 400) {
+      ToastAndroid.show("ایمیل یا شماره تلفن شما تایید نشده‌است", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+    } else if (response.status == 409) {
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
@@ -92,7 +107,11 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
     ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
   } else {
     yield put(authActions.onGenerateCodeFail());
-    ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
+    if (response.status == 400) {
+      ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
@@ -122,7 +141,15 @@ export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
     }
   } else {
     yield put(authActions.onVerifyCodeFail());
-    ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
+    if (response.status == -3) {
+      ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
+    } else if (response.status == -2) {
+      ToastAndroid.show("خطایی ناشناخته در تایید کد رخ داده‌است", ToastAndroid.SHORT);
+    } else if (response.status == 400) {
+      ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
@@ -170,6 +197,16 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
     });
   } else {
     yield put(authActions.onResetPasswordFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == 400) {
+      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+    } else if (response.status == -2) {
+      ToastAndroid.show("تغییر رمز عبور با خطا مواجه شده‌است", ToastAndroid.SHORT);
+    } else if (response.status == -3) {
+      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+    } else if (response.status == -4) {
+      ToastAndroid.show("ایمیل یا شماره موبایل وارد شده تایید نشده‌است", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+    }
   }
 }
