@@ -1,8 +1,8 @@
 import { InputType } from "../../utils/inputTypes";
 import { CreditCard } from "../other/axios/CreditCard";
+import { Friend } from "../other/axios/Friend";
 import { Token } from "../other/axios/Token";
 import { Activity } from "../other/graphql/Activity";
-import { Friend } from "../other/graphql/Friend";
 import { Group } from "../other/graphql/Group";
 
 export interface IUserState {

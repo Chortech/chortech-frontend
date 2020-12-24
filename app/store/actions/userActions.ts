@@ -1,7 +1,7 @@
 import { Action } from "../../models/actions/action";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
-import { GetUserProfileRequest } from "../../models/requests/axios/user";
+import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -20,13 +20,9 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import {
-  GetUserActivitiesRequest,
-  GetUserFriendsRequest,
-  UpdateUserRequest,
-} from "../../models/requests/graphql/user";
+import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { UserProfileResponse } from "../../models/responses/axios/user";
+import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -45,11 +41,7 @@ import {
   GetGroupByIdResponse,
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
-import {
-  GetUserActivitiesResponse,
-  GetUserFriendsResponse,
-  UpdateUserResponse,
-} from "../../models/responses/graphql/user";
+import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
 import * as types from "./types";
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
@@ -315,35 +307,34 @@ export function onGetUserGroupsFail(): Action<GetUserGroupsResponse> {
   };
 }
 
-export function onGetUserFriendsRequest(userId: string): Action<GetUserFriendsRequest> {
+export function onGetUserFriendsRequest(token: Token): Action<GetUserFriendsRequest> {
   return {
     type: types.GET_USER_FRIENDS_REQUEST,
     payload: {
-      userId: userId,
+      token: token,
     },
   };
 }
 
 export function onGetUserFriendsResponse(
-  response: GetUserFriendsResponse
-): Action<GetUserFriendsResponse> {
+  response: Response<GetUserFriends>
+): Action<Response<GetUserFriends>> {
   return {
     type: types.GET_USER_FRIENDS_RESPONSE,
     payload: {
       success: response.success,
-      userId: response.userId,
-      friends: response.friends,
+      status: response.status,
+      response: response.response,
     },
   };
 }
 
-export function onGetUserFriendsFail(): Action<GetUserFriendsResponse> {
+export function onGetUserFriendsFail(): Action<Response<GetUserFriends>> {
   return {
     type: types.GET_USER_FRIENDS_FAIL,
     payload: {
       success: false,
-      userId: "-1",
-      friends: [],
+      status: -1,
     },
   };
 }

@@ -3,5 +3,5 @@ export type Friend = {
   name: string;
   email?: string;
   phone?: string;
-  picture: string;
+  picture?: string;
 };

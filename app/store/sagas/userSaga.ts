@@ -1,7 +1,7 @@
 import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
-import { GetUserProfileRequest } from "../../models/requests/axios/user";
+import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -20,13 +20,9 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import {
-  GetUserActivitiesRequest,
-  GetUserFriendsRequest,
-  UpdateUserRequest,
-} from "../../models/requests/graphql/user";
+import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { UserProfileResponse } from "../../models/responses/axios/user";
+import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -45,11 +41,7 @@ import {
   GetGroupByIdResponse,
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
-import {
-  GetUserActivitiesResponse,
-  GetUserFriendsResponse,
-  UpdateUserResponse,
-} from "../../models/responses/graphql/user";
+import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { Api } from "../../services/api/graphQL/graphqlApi";
@@ -73,7 +65,11 @@ export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
     yield put(userActions.onGetUserProfileResponse(response));
   } else {
     yield put(userActions.onGetUserProfileFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
@@ -334,25 +330,24 @@ export function* deleteParticipantAsync(action: Action<DeleteParticipantRequest>
 }
 
 export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
-  const { userId } = action.payload;
-  let response: GetUserFriendsResponse = {
+  const { token } = action.payload;
+  let response: Response<GetUserFriends> = {
     success: false,
-    userId: "-1",
-    friends: [],
+    status: -1,
   };
 
-  try {
-    response = yield Api.getUserFriends(userId);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
+  let api: UserAPI = new UserAPI(token);
+  response = yield api.getUserFriends();
 
   if (response.success) {
     yield put(userActions.onGetUserFriendsResponse(response));
   } else {
     yield put(userActions.onGetUserFriendsFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == 404) {
+      ToastAndroid.show("اطلاعات کاربر وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 

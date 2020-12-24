@@ -1,9 +1,7 @@
-import { State } from "react-native-gesture-handler";
-import configureStore from "..";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
-import { GetUserProfileRequest } from "../../models/requests/axios/user";
+import { GetUserFriendsRequest, GetUserProfileRequest } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
   AddExpenseRequest,
@@ -23,7 +21,7 @@ import {
 } from "../../models/requests/graphql/group";
 import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import { UserProfileResponse } from "../../models/responses/axios/user";
+import { GetUserFriends, UserProfileResponse } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -41,10 +39,7 @@ import {
   GetGroupByIdResponse,
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
-import {
-  GetUserActivitiesResponse,
-  GetUserFriendsResponse,
-} from "../../models/responses/graphql/user";
+import { GetUserActivitiesResponse } from "../../models/responses/graphql/user";
 import { InputType } from "../../utils/inputTypes";
 import * as types from "../actions/types";
 
@@ -207,23 +202,20 @@ export const userReducer = createReducer(initialState, {
       groups: action.payload.groups,
     };
   },
-  [types.GET_USER_FRIENDS_REQUEST](state: IUserState, action: Action<GetUserGroupsRequest>) {
+  [types.GET_USER_FRIENDS_REQUEST](state: IUserState, action: Action<GetUserFriendsRequest>) {
     return {
       ...state,
-      id: action.payload.userId,
+      token: action.payload.token,
     };
   },
-  [types.GET_USER_FRIENDS_RESPONSE](state: IUserState, action: Action<GetUserFriendsResponse>) {
+  [types.GET_USER_FRIENDS_RESPONSE](state: IUserState, action: Action<Response<GetUserFriends>>) {
     return {
       ...state,
-      friends: action.payload.friends,
+      friends: action.payload.response?.friends,
     };
   },
-  [types.GET_USER_FRIENDS_FAIL](state: IUserState, action: Action<GetUserFriendsResponse>) {
-    return {
-      ...state,
-      friends: action.payload.friends,
-    };
+  [types.GET_USER_FRIENDS_FAIL](state: IUserState, action: Action<Response<GetUserFriends>>) {
+    return state;
   },
   [types.ADD_FRIEND_REQUEST](state: IUserState, action: Action<AddFriendRequest>) {
     return state;
