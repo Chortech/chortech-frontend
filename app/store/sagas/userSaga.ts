@@ -6,6 +6,7 @@ import {
   DeleteFriendRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
+  InviteFriendsRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -424,6 +425,43 @@ export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
       ToastAndroid.show("امکان انجام این عملیات وجود ندارد", ToastAndroid.SHORT);
     } else if (response.status == 404) {
       ToastAndroid.show("کاربر مورد نظر دوست شما نیست", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+}
+
+export function* inviteFriendAsync(action: Action<InviteFriendsRequest>) {
+  yield put(userActions.onLoadingEnable());
+
+  const { token, email, phone, inputType } = action.payload;
+  let response: Response<null> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: UserAPI = new UserAPI(token);
+  if (inputType == InputType.Email) {
+    response = yield api.inviteFriendRequestByEmail(email);
+  } else if (inputType == InputType.Phone) {
+    response = yield api.inviteFriendRequestByPhone(phone);
+  }
+
+  yield put(userActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(userActions.onInviteFriendResponse(response));
+    ToastAndroid.show("دعوت‌نامه برای ایمیل یا شماره موبایل واردشده ارسال شد", ToastAndroid.SHORT);
+  } else {
+    yield put(userActions.onInviteFriendFail());
+    if (response.status == -2) {
+      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+    } else if (response.status == -3) {
+      ToastAndroid.show("ایمیل یا شماره موبایل واردشده تکراری است", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+    } else if (response.status == 409) {
+      ToastAndroid.show("این کاربر در حال حاضر در برنامه ثبت‌نام کرده‌است", ToastAndroid.SHORT);
     } else {
       ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
     }

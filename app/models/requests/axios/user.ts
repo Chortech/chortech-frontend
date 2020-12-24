@@ -19,7 +19,10 @@ export interface DeleteFriendRequest {
 }
 
 export interface InviteFriendsRequest {
-  invitees: Array<Invitee>;
+  token: Token;
+  email: string;
+  phone: string;
+  inputType: InputType;
 }
 
 export interface GetUserProfileRequest {

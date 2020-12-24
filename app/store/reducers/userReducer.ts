@@ -6,6 +6,7 @@ import {
   DeleteFriendRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
+  InviteFriendsRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -250,6 +251,15 @@ export const userReducer = createReducer(initialState, {
     };
   },
   [types.DELETE_USER_FRIEND_FAIL](state: IUserState, action: Action<Response<DeleteFriend>>) {
+    return state;
+  },
+  [types.INVITE_FRIEND_REQUEST](state: IUserState, action: Action<InviteFriendsRequest>) {
+    return state;
+  },
+  [types.INVITE_FRIEND_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>) {
     return state;
   },
   [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>) {

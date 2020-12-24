@@ -1,4 +1,5 @@
 import { Action } from "../../models/actions/action";
+import { Invitee } from "../../models/other/axios/Invitee";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
 import {
@@ -6,6 +7,7 @@ import {
   GetUserFriendsRequest,
   GetUserProfileRequest,
   DeleteFriendRequest,
+  InviteFriendsRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -412,6 +414,40 @@ export function onDeleteFriendResponse(
 export function onDeleteFriendFail(): Action<Response<DeleteFriend>> {
   return {
     type: types.DELETE_USER_FRIEND_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onInviteFriendRequest(
+  token: Token,
+  email: string,
+  phone: string,
+  inputType: InputType
+): Action<InviteFriendsRequest> {
+  return {
+    type: types.INVITE_FRIEND_REQUEST,
+    payload: {
+      token: token,
+      email: email,
+      phone: phone,
+      inputType: inputType,
+    },
+  };
+}
+
+export function onInviteFriendResponse(response: Response<null>): Action<Response<null>> {
+  return {
+    type: types.INVITE_FRIEND_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onInviteFriendFail(): Action<Response<null>> {
+  return {
+    type: types.INVITE_FRIEND_FAIL,
     payload: {
       success: false,
       status: -1,

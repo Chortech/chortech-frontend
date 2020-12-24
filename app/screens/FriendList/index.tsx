@@ -9,6 +9,7 @@ import * as userActions from "../../store/actions/userActions";
 import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
@@ -19,10 +20,9 @@ const FriendList: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
-    setRefreshing(true);
     fetchFriends();
-    setRefreshing(false);
   }, [dispatch]);
 
   const fetchFriends = (): void => {

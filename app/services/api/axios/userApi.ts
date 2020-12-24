@@ -1,9 +1,8 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_USER_URL } from "../../../../local_env_vars";
 import { userApi } from "../../../models/api/axios-api/user";
-import { Friend } from "../../../models/other/axios/Friend";
+import { Invitee, InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
 import { Token } from "../../../models/other/axios/Token";
-import { IUserState } from "../../../models/reducers/default";
 import { Response } from "../../../models/responses/axios/response";
 import {
   AddFriend,
@@ -11,7 +10,6 @@ import {
   DeleteFriend,
   UserProfileResponse,
 } from "../../../models/responses/axios/user";
-import configureStore from "../../../store/index";
 import { log } from "../../../utils/logger";
 
 export class UserAPI implements userApi {
@@ -84,7 +82,7 @@ export class UserAPI implements userApi {
         result.status = response.status;
       }
       log("get user friends api result");
-      log(result);
+      // log(result);
     } catch (e) {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
@@ -208,11 +206,105 @@ export class UserAPI implements userApi {
           result.status = -3;
         } else if (message == "Something went wrong") {
           result.status = -2;
-        } else if (error.response?.status == 404) {
-          result.status = error.response?.status;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
       } else {
         log("delete friend api error");
+        log(e.message);
+      }
+    }
+
+    return result;
+  }
+
+  async inviteFriendRequestByEmail(email: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      log(email);
+      let invitees: Array<InviteeByEmail> = [
+        {
+          name: "mySampleName",
+          email: email,
+        },
+      ];
+      let response: AxiosResponse = await this.client.post("/friends/invite", { invitees });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("invite friend api (email) result");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Found duplicate phone or email!") {
+          result.status = -3;
+        } else if (message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("invite friend api (email) error");
+        log(e.message);
+      }
+    }
+
+    return result;
+  }
+  async inviteFriendRequestByPhone(phone: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let invitees: Array<InviteeByPhone> = [
+        {
+          name: "نام من",
+          phone: phone,
+        },
+      ];
+      let response: AxiosResponse = await this.client.post("/friends/invite", { invitees });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("invite friend api (email) result");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Found duplicate phone or email!") {
+          result.status = -3;
+        } else if (message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("invite friend api (email) error");
         log(e.message);
       }
     }

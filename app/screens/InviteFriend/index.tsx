@@ -11,8 +11,10 @@ import { User } from "../../models/other/graphql/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
+import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import LoadingIndicator from "../Loading";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
   userReducer: IUserState;
@@ -24,18 +26,55 @@ const InviteFriend: React.FC = (): JSX.Element => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);
   const [validInput, setValidInput] = useState(true);
-  // const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
   const dispatch = useDispatch();
 
   const onPressAddFriend = (): void => {
-    if (validInput) {
-      if (inputType == InputType.Email) {
-        dispatch(userActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType));
-      } else if (inputType == InputType.Phone) {
-        dispatch(userActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType));
+    if (validateToken(loggedInUser.token)) {
+      if (validInput) {
+        if (inputType == InputType.Email) {
+          dispatch(userActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType));
+        } else if (inputType == InputType.Phone) {
+          dispatch(userActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType));
+        }
+      } else {
+        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
     } else {
-      ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+    }
+  };
+
+  const onPressInviteFriend = (): void => {
+    if (validateToken(loggedInUser.token)) {
+      if (validInput) {
+        if (inputType == InputType.Email) {
+          dispatch(
+            userActions.onInviteFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
+          );
+        } else if (inputType == InputType.Phone) {
+          dispatch(
+            userActions.onInviteFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
+          );
+        }
+      } else {
+        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
+    } else {
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
     }
   };
 
@@ -49,10 +88,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
       setValidInput(false);
     }
   };
-
-  const renderSelectedItems: any = ({ item }) => (
-    <SearchedUserItem id={item.id} name={item.name} onPress={onPressAddFriend} />
-  );
 
   return (
     <>
@@ -74,7 +109,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
             <TouchableOpacity style={styles.button} onPress={onPressAddFriend}>
               <Text style={styles.buttonText}>افزودن به دوستان</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={onPressInviteFriend}>
               <Text style={styles.buttonText}>ارسال دعوت‌نامه</Text>
             </TouchableOpacity>
           </View>

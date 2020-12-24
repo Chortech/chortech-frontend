@@ -13,4 +13,6 @@ export interface userApi {
   addUserFriendByEmail(email: string): Promise<Response<AddFriend>>;
   addUserFriendByPhone(phone: string): Promise<Response<AddFriend>>;
   deleteFriend(friendId: string): Promise<Response<DeleteFriend>>;
+  inviteFriendRequestByEmail(email: string): Promise<Response<null>>;
+  inviteFriendRequestByPhone(phone: string): Promise<Response<null>>;
 }
