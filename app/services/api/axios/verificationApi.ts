@@ -34,6 +34,8 @@ class CodeVerificationAPI implements VerificationApi {
       log("generate code api (email) result");
       log(result);
     } catch (e) {
+      log("generate error");
+      log(e.response);
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -41,6 +43,7 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        result.response = error.response != undefined ? error.response.data : result.response;
       } else {
         log("generate code api (email) error");
         log(e.message);

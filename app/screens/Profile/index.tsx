@@ -11,6 +11,7 @@ import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
+import { InputType } from "../../utils/inputTypes";
 
 type IState = {
   userReducer: IUserState;
@@ -25,7 +26,6 @@ const Profile: React.FC = (): JSX.Element => {
 
   const fetchUser = () => {
     if (validateToken(loggedInUser.token)) {
-      log("profile request");
       dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
     } else {
       dispatch(
@@ -74,12 +74,11 @@ const Profile: React.FC = (): JSX.Element => {
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <ScrollView
-              // style={styles.scrollViewContainer}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}>
               <View style={styles.textWrapper}>
                 <View style={styles.textContainerLeft}>
-                  <Text style={styles.textInfo}>{user.email}</Text>
+                  <Text style={styles.textInfo}>{loggedInUser.email}</Text>
                 </View>
                 <View style={styles.textContainerRight}>
                   <Text style={styles.textInfo}>ایمیل</Text>
@@ -87,7 +86,7 @@ const Profile: React.FC = (): JSX.Element => {
               </View>
               <View style={styles.textWrapper}>
                 <View style={styles.textContainerLeft}>
-                  <Text style={styles.textInfo}>{user.phone}</Text>
+                  <Text style={styles.textInfo}>{loggedInUser.phone}</Text>
                 </View>
                 <View style={styles.textContainerRight}>
                   <Text style={styles.textInfo}>تلفن همراه</Text>

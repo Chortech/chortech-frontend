@@ -31,16 +31,16 @@ export interface ChangePasswordRequest {
   newpass: string;
   oldpass: string;
   token: Token;
+  email: string;
+  phone: string;
+  inputType: InputType;
 }
 
-// change email request model
-export interface ChangeEmailRequest {
+// change email and phone request models
+export interface ChangeEmailOrPhone {
+  token: Token;
   newEmail: string;
-  token: Token;
-}
-
-// change phone request model
-export interface ChangePhoneRequest {
   newPhone: string;
-  token: Token;
+  inputType: InputType;
+  password: string;
 }

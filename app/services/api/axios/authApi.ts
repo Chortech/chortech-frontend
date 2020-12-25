@@ -6,12 +6,18 @@ import { Login, SignUp } from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
 
-class AuthenticationApi implements AuthApi {
+export class AuthenticationApi implements AuthApi {
   client: AxiosInstance;
 
-  constructor() {
+  constructor(token?: Token) {
     this.client = axios.create({
       baseURL: SERVER_AUTH_URL,
+    });
+    this.client.interceptors.request.use(function (config) {
+      if (token != undefined && token != null) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
+      }
+      return config;
     });
   }
 
@@ -258,20 +264,118 @@ class AuthenticationApi implements AuthApi {
     return result;
   }
 
-  async changePassword(
-    oldPassowrd: string,
-    newPassword: string,
-    token: Token
-  ): Promise<Response<null>> {
-    throw new Error("Method not implemented.");
+  async changePassword(oldPassowrd: string, newPassword: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/changepass", {
+        newpass: newPassword,
+        oldpass: oldPassowrd,
+      });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("change password api result");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+      } else {
+        log("change password api error");
+        log(e.message);
+      }
+    }
+
+    return result;
   }
 
-  async changeEmail(newEmail: string, token: Token): Promise<Response<null>> {
-    throw new Error("Method not implemented.");
+  async changeEmail(newEmail: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/change-email", {
+        newEmail: newEmail,
+      });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (e) {
+      log(e.response);
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("change email api error");
+        log(e.message);
+      }
+    }
+
+    return result;
   }
 
-  async changePhone(newPhone: string, token: Token): Promise<Response<null>> {
-    throw new Error("Method not implemented.");
+  async changePhone(newPhone: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/change-phone", {
+        newPhone: newPhone,
+      });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
+      } else {
+        log("change email api error");
+        log(e.message);
+      }
+    }
+
+    return result;
   }
 }
 

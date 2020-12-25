@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     justifyContent: "space-between",
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginTop: 70,
   },
   button: {

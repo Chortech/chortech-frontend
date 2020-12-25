@@ -12,6 +12,7 @@ import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";
 import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -32,6 +33,8 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     validCodeLength: false,
   });
 
+  // log(props);
+
   const dispatch = useDispatch();
   const generateCode = () => {
     dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
@@ -43,17 +46,38 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const onNextScreen = () => {
     if (data.validCodeLength) {
-      dispatch(
-        authActions.onVerifyCodeRequest(
-          props.name,
-          props.email,
-          props.phone,
-          props.password,
-          props.inputType,
-          data.verificationCode,
-          props.parentScreen
-        )
-      );
+      if (state.token != undefined) {
+        if (validateToken(state.token)) {
+          dispatch(
+            authActions.onVerifyCodeRequest(
+              props.name,
+              props.email,
+              props.phone,
+              props.password,
+              props.inputType,
+              data.verificationCode,
+              props.parentScreen,
+              state.token
+            )
+          );
+        } else {
+          dispatch(
+            authActions.onLoginRequest(props.email, props.phone, props.password, props.inputType)
+          );
+        }
+      } else {
+        dispatch(
+          authActions.onVerifyCodeRequest(
+            props.name,
+            props.email,
+            props.phone,
+            props.password,
+            props.inputType,
+            data.verificationCode,
+            props.parentScreen
+          )
+        );
+      }
     } else {
       ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }

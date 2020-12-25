@@ -120,7 +120,8 @@ export class UserAPI implements userApi {
     } catch (e) {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        let message: string = error.response?.data.errors[0].message;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
         if (message == "You can't add your self as friend!") {
           result.status = -3;
         } else if (message == "Something went wrong") {
@@ -161,7 +162,8 @@ export class UserAPI implements userApi {
     } catch (e) {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        let message: string = error.response?.data.errors[0].message;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
         if (message == "You can't add your self as friend!") {
           result.status = -3;
         } else if (message == "Something went wrong") {

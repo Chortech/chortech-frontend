@@ -8,6 +8,8 @@ import { Action } from "../../models/actions/action";
 import { IUserState } from "../../models/reducers/default";
 import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
 import {
+  ChangeEmailOrPhone,
+  ChangePasswordRequest,
   LoginRequest,
   ResetPasswordRequest,
   SignUpRequest,
@@ -122,7 +124,10 @@ export const authReducer = createReducer(initialState, {
     return state;
   },
   [types.VERIFY_CODE_REQUEST](state: IUserState, action: Action<VerifyCodeRequest>) {
-    return state;
+    return {
+      ...state,
+      token: action.payload.token != undefined ? action.payload.token : undefined,
+    };
   },
   [types.VERIFY_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
     return state;
@@ -146,6 +151,27 @@ export const authReducer = createReducer(initialState, {
     return state;
   },
   [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CHANGE_PASSWORD_REQUEST](state: IUserState, action: Action<ChangePasswordRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.CHANGE_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CHANGE_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_REQUEST](state: IUserState, action: Action<ChangeEmailOrPhone>) {
+    return state;
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_FAIL](state: IUserState, action: Action<Response<null>>) {
     return state;
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {

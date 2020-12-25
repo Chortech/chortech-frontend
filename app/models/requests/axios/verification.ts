@@ -1,4 +1,5 @@
 import { InputType } from "../../../utils/inputTypes";
+import { Token } from "../../other/axios/Token";
 
 // generate code request model
 export interface GenerateCodeRequest {
@@ -9,6 +10,7 @@ export interface GenerateCodeRequest {
 
 // verify code request model
 export interface VerifyCodeRequest {
+  token?: Token;
   name: string;
   email: string;
   phone: string;
