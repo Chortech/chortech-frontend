@@ -8,8 +8,10 @@ import {
   GetUserProfileRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
-  GetExpenseRequest,
+  GetExpensesRequest,
   AddCommentRequest,
+  GetExpenseRequest,
+  GetCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -34,8 +36,10 @@ import {
   GetUserFriends,
   UserProfileResponse,
   AddExpense,
-  GetExpense,
   AddComment,
+  GetExpenses,
+  GetExpense,
+  GetComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -74,6 +78,7 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  comments: [],
   myCreditCards: [],
   otherCreditCards: [],
 };
@@ -275,6 +280,7 @@ export const userReducer = createReducer(initialState, {
   [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<AddActivityResponse>) {
     return state;
   },
+
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>) {
     return {
       ...state,
@@ -283,19 +289,36 @@ export const userReducer = createReducer(initialState, {
   },
   [types.ADD_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<AddExpense>>) {
     state.activities.push({
-      id: action.payload.response?.id,
-      description: action.payload.response?.description,
-      total: action.payload.response?.total,
-      paid_at: action.payload.response?.paid_at,
+      id: action.payload.response!.id,
+      description: action.payload.response!.description,
+      total: action.payload.response!.total,
+      paid_at: action.payload.response!.paid_at,
       group: action.payload.response?.group,
       notes: action.payload.response?.notes,
-      participants: action.payload.response?.participants
+      participants: action.payload.response!.participants
     })
     return state;
   },
   [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>) {
     return state;
   },
+
+  [types.GET_EXPENSES_REQUEST](state: IUserState, action: Action<GetExpensesRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_EXPENSES_RESPONSE](state: IUserState, action: Action<Response<GetExpenses>>) {
+    return {
+      ...state,
+      activities: action.payload.response?.expenses,
+    }; 
+  },
+  [types.GET_EXPENSES_FAIL](state: IUserState, action: Action<Response<GetExpenses>>) {
+    return state;
+  },
+
   [types.GET_EXPENSE_REQUEST](state: IUserState, action: Action<GetExpenseRequest>) {
     return {
       ...state,
@@ -303,11 +326,15 @@ export const userReducer = createReducer(initialState, {
     };
   },
   [types.GET_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<GetExpense>>) {
-    return state;
+    return {
+      ...state,
+      activities: action.payload.response?.expense
+    }  
   },
   [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<GetExpense>>) {
     return state;
   },
+
   [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>) {
     return {
       ...state,
@@ -320,6 +347,23 @@ export const userReducer = createReducer(initialState, {
   [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<AddComment>>) {
     return state;
   },
+
+  [types.GET_COMMENT_REQUEST](state: IUserState, action: Action<GetCommentRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_COMMENT_RESPONSE](state: IUserState, action: Action<Response<GetComment>>) {
+    return {
+      ...state,
+      comments: action.payload.response?.comments,
+    };   
+  },
+  [types.GET_COMMENT_FAIL](state: IUserState, action: Action<Response<GetComment>>) {
+    return state;
+  },
+
   [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>) {
     return state;
   },
