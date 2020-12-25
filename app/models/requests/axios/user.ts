@@ -1,7 +1,6 @@
 import { InputType } from "../../../utils/inputTypes";
 import { Participant } from "../../other/axios/Participant";
 import { Token } from "../../other/axios/Token";
-import { You } from "../../other/axios/You";
 
 export interface GetUserFriendsRequest {
   token: Token;
@@ -40,17 +39,28 @@ export interface AddExpenseRequest {
   description: string;
   total: number;
   paid_at: number;
-  group: string;
-  notes: string;
+  group?: string;
+  notes?: string;
   participants: Array<Participant>;
+}
+
+export interface GetExpensesRequest {
+  token: Token;
 }
 
 export interface GetExpenseRequest {
   token: Token;
+  id: string;
 }
 
 export interface AddCommentRequest {
   token: Token;
   text: string;
   created_at: number;
+  id: string;
+}
+
+export interface GetCommentRequest {
+  token: Token;
+  id: string;
 }
