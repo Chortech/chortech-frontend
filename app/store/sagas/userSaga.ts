@@ -7,10 +7,11 @@ import {
   GetUserFriendsRequest,
   GetUserProfileRequest,
   InviteFriendsRequest,
+  AddExpenseRequest,
+  GetExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
-  AddExpenseRequest,
   AddDebtRequest,
   AddParticipantRequest,
   DeleteActivityRequest,
@@ -32,10 +33,11 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  AddExpense,
+  GetExpense,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
-  AddExpenseResponse,
   AddDebtResponse,
   AddParticipantResponse,
   DeleteActivityResponse,
@@ -161,14 +163,15 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(userActions.onLoadingEnable());
-  const { userId, activityName, description, category, totalPrice } = action.payload;
-  let response: AddExpenseResponse = {
-    id: "-1",
+  const { token, description, total, paid_at, group, notes, participants } = action.payload;
+  let response: Response<AddExpense> = {
     success: false,
+    status: -1,
   };
 
   try {
-    response = yield Api.addExpense(userId, activityName, description, category, totalPrice);
+    let api: UserAPI = new UserAPI(token);
+    response = yield api.addExpense(description, total, paid_at, group, notes, participants);
   } catch (error) {
     console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -179,10 +182,32 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   if (response.success) {
     yield put(userActions.onAddExpenseResponse(response));
     navigationRef.current?.goBack();
-    ToastAndroid.show("فعالیت با موفقیت اضافه شد.", ToastAndroid.SHORT);
+    ToastAndroid.show("فعالیت با موفقیت اضافه شد", ToastAndroid.SHORT);
   } else {
     yield put(userActions.onAddExpenseFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* getExpenseAsync(action: Action<GetExpenseRequest>) {
+  const { token } = action.payload;
+  let response: Response<GetExpense> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: UserAPI = new UserAPI(token);
+  response = yield api.getExpense();
+
+  if (response.success) {
+    yield put(userActions.onGetExpenseResponse(response));
+  } else {
+    yield put(userActions.onGetExpenseFail());
+    if (response.status == 404) {
+      ToastAndroid.show("فعالیتی وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
