@@ -9,6 +9,7 @@ import {
   InviteFriendsRequest,
   AddExpenseRequest,
   GetExpenseRequest,
+  AddCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -35,6 +36,7 @@ import {
   UserProfileResponse,
   AddExpense,
   GetExpense,
+  AddComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -208,6 +210,34 @@ export function* getExpenseAsync(action: Action<GetExpenseRequest>) {
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
+  }
+}
+
+export function* addCommentAsync(action: Action<AddCommentRequest>) {
+  yield put(userActions.onLoadingEnable());
+  const { token, text, created_at } = action.payload;
+  let response: Response<AddComment> = {
+    success: false,
+    status: -1,
+  };
+
+  try {
+    let api: UserAPI = new UserAPI(token);
+    response = yield api.addComment(text, created_at);
+  } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+
+  yield put(userActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(userActions.onAddCommentResponse(response));
+    navigationRef.current?.goBack();
+    ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
+  } else {
+    yield put(userActions.onAddExpenseFail());
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 }
 
