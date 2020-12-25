@@ -506,7 +506,7 @@ export function onAddExpenseRequest(
   paid_at: number,
   participants: Array<Participant>,
   group?: string,
-  notes?: string,
+  notes?: string
 ): Action<AddExpenseRequest> {
   return {
     type: types.ADD_EXPENSE_REQUEST,
@@ -518,7 +518,7 @@ export function onAddExpenseRequest(
       group: group,
       notes: notes,
       participants: participants,
-    }
+    },
   };
 }
 
@@ -529,7 +529,7 @@ export function onAddExpenseResponse(response: Response<AddExpense>): Action<Res
       success: response.success,
       status: response.status,
       response: response.response,
-    }
+    },
   };
 }
 
@@ -543,25 +543,25 @@ export function onAddExpenseFail(): Action<Response<AddExpense>> {
   };
 }
 
-export function onGetExpensesRequest(
-  token: Token,
-): Action<GetExpensesRequest> {
+export function onGetExpensesRequest(token: Token): Action<GetExpensesRequest> {
   return {
     type: types.GET_EXPENSES_REQUEST,
     payload: {
       token: token,
-    }
+    },
   };
 }
 
-export function onGetExpensesResponse(response: Response<GetExpenses>): Action<Response<GetExpenses>> {
+export function onGetExpensesResponse(
+  response: Response<GetExpenses>
+): Action<Response<GetExpenses>> {
   return {
     type: types.GET_EXPENSES_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
       response: response.response,
-    }
+    },
   };
 }
 
@@ -575,16 +575,13 @@ export function onGetExpensesFail(): Action<Response<GetExpenses>> {
   };
 }
 
-export function onGetExpenseRequest(
-  token: Token,
-  id: string,
-): Action<GetExpenseRequest> {
+export function onGetExpenseRequest(token: Token, id: string): Action<GetExpenseRequest> {
   return {
     type: types.GET_EXPENSE_REQUEST,
     payload: {
       token: token,
       id: id,
-    }
+    },
   };
 }
 
@@ -595,7 +592,7 @@ export function onGetExpenseResponse(response: Response<GetExpense>): Action<Res
       success: response.success,
       status: response.status,
       response: response.response,
-    }
+    },
   };
 }
 
@@ -613,7 +610,7 @@ export function onAddCommentRequest(
   token: Token,
   text: string,
   created_at: number,
-  id: string,
+  id: string
 ): Action<AddCommentRequest> {
   return {
     type: types.ADD_COMMENT_REQUEST,
@@ -622,7 +619,7 @@ export function onAddCommentRequest(
       text: text,
       created_at: created_at,
       id: id,
-    }
+    },
   };
 }
 
@@ -633,7 +630,7 @@ export function onAddCommentResponse(response: Response<AddComment>): Action<Res
       success: response.success,
       status: response.status,
       response: response.response,
-    }
+    },
   };
 }
 
@@ -647,16 +644,13 @@ export function onAddCommentFail(): Action<Response<AddComment>> {
   };
 }
 
-export function onGetCommentRequest(
-  token: Token,
-  id: string,
-): Action<GetCommentRequest> {
+export function onGetCommentRequest(token: Token, id: string): Action<GetCommentRequest> {
   return {
     type: types.GET_COMMENT_REQUEST,
     payload: {
       token: token,
       id: id,
-    }
+    },
   };
 }
 
@@ -667,7 +661,7 @@ export function onGetCommentResponse(response: Response<GetComment>): Action<Res
       success: response.success,
       status: response.status,
       response: response.response,
-    }
+    },
   };
 }
 
