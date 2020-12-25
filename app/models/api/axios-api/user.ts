@@ -8,6 +8,7 @@ import {
   UserProfileResponse,
   AddExpense,
   GetExpense,
+  AddComment,
 } from "../../responses/axios/user";
 
 export interface userApi {
@@ -26,5 +27,6 @@ export interface userApi {
     group: string,
     notes: string,
     participants: Array<Participant>
-    ): Promise<Response<AddExpense>>;
+  ): Promise<Response<AddExpense>>;
+  addComment(text: string, created_at: number): Promise<Response<AddComment>>;
 }
