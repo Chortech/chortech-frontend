@@ -1,5 +1,5 @@
 import { Action } from "../../models/actions/action";
-import { Invitee } from "../../models/other/axios/Invitee";
+import { Participant } from "../../models/other/axios/Participant";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
 import {
@@ -8,10 +8,10 @@ import {
   GetUserProfileRequest,
   DeleteFriendRequest,
   InviteFriendsRequest,
+  AddExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
-  AddExpenseRequest,
   AddDebtRequest,
   AddParticipantRequest,
   DeleteActivityRequest,
@@ -33,10 +33,10 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  AddExpense,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
-  AddExpenseResponse,
   AddDebtResponse,
   AddParticipantResponse,
   DeleteActivityResponse,
@@ -492,37 +492,45 @@ export function onAddActivityFail(): Action<AddActivityResponse> {
 }
 
 export function onAddExpenseRequest(
-  userId: string,
-  activityName: string,
+  token: Token,
   description: string,
-  category: string,
-  totalPrice: string
+  total: number,
+  paid_at: number,
+  group: string,
+  notes: string,
+  participants: Array<Participant>
 ): Action<AddExpenseRequest> {
   return {
     type: types.ADD_EXPENSE_REQUEST,
     payload: {
-      userId: userId,
-      activityName: activityName,
-      description: description,
-      category: category,
-      totalPrice: totalPrice,
-    },
+      token,
+      description,
+      total,
+      paid_at,
+      group,
+      notes,
+      participants
+    }
   };
 }
 
-export function onAddExpenseResponse(response: AddExpenseResponse): Action<AddExpenseResponse> {
+export function onAddExpenseResponse(response: Response<AddExpense>): Action<Response<AddExpense>> {
   return {
     type: types.ADD_EXPENSE_RESPONSE,
-    payload: response,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
   };
 }
 
-export function onAddExpenseFail(): Action<AddExpenseResponse> {
+export function onAddExpenseFail(): Action<Response<AddExpense>> {
   return {
     type: types.ADD_EXPENSE_FAIL,
     payload: {
-      id: "-1",
       success: false,
+      status: -1,
     },
   };
 }
