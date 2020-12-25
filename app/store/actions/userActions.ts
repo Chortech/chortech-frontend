@@ -10,6 +10,7 @@ import {
   InviteFriendsRequest,
   AddExpenseRequest,
   GetExpenseRequest,
+  AddCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -36,6 +37,7 @@ import {
   UserProfileResponse,
   AddExpense,
   GetExpense,
+  AddComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -562,6 +564,42 @@ export function onGetExpenseResponse(response: Response<GetExpense>): Action<Res
 export function onGetExpenseFail(): Action<Response<GetExpense>> {
   return {
     type: types.GET_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onAddCommentRequest(
+  token: Token,
+  text: string,
+  created_at: number,
+): Action<AddCommentRequest> {
+  return {
+    type: types.ADD_COMMENT_REQUEST,
+    payload: {
+      token,
+      text,
+      created_at,
+    }
+  };
+}
+
+export function onAddCommentResponse(response: Response<AddComment>): Action<Response<AddComment>> {
+  return {
+    type: types.ADD_COMMENT_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onAddCommentFail(): Action<Response<AddComment>> {
+  return {
+    type: types.GET_COMMENT_FAIL,
     payload: {
       success: false,
       status: -1,
