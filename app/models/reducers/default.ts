@@ -1,4 +1,5 @@
 import { InputType } from "../../utils/inputTypes";
+import { Comment } from "../other/axios/Comment";
 import { CreditCard } from "../other/axios/CreditCard";
 import { Expense } from "../other/axios/Expense";
 import { Friend } from "../other/axios/Friend";
@@ -19,6 +20,7 @@ export interface IUserState {
   friends: Array<Friend>;
   groups: Array<Group>;
   activities: Array<Expense>;
+  comments: Array<Comment>;
   myCreditCards: Array<CreditCard>;
   otherCreditCards: Array<CreditCard>;
 }
