@@ -1,4 +1,4 @@
-import { InputType } from "../../utils/inputTypes";
+import { InputType } from "../../../utils/inputTypes";
 
 export interface GenerateCodeRequest {
   email: string;

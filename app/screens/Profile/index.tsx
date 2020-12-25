@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -9,22 +9,48 @@ import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
+import { InputType } from "../../utils/inputTypes";
 
 type IState = {
   userReducer: IUserState;
 };
 
 const Profile: React.FC = (): JSX.Element => {
-  const loggedInUserId: string = useStore().getState()["authReducer"].id;
-  const user = useSelector((state: IState) => state.userReducer);
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const user: IUserState = useSelector((state: IState) => state.userReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
   const dispatch = useDispatch();
 
   const fetchUser = () => {
-    dispatch(userActions.onGetUserRequest(loggedInUserId));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
+    } else {
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+    }
   };
+
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
-  const onLogout = () => dispatch(authActions.onLogout());
+  const onLogout = () => {
+    dispatch(userActions.onClearTokenRequest());
+    dispatch(authActions.onLogout());
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchUser();
+    setRefreshing(false);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchUser();
@@ -47,22 +73,26 @@ const Profile: React.FC = (): JSX.Element => {
             <Text style={styles.userNameText}>{user.name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.email}</Text>
+            <ScrollView
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              showsVerticalScrollIndicator={false}>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>{loggedInUser.email}</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>ایمیل</Text>
+                </View>
               </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>ایمیل</Text>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>{loggedInUser.phone}</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>تلفن همراه</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.phone}</Text>
-              </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>تلفن همراه</Text>
-              </View>
-            </View>
+            </ScrollView>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
                 <Text style={styles.buttonText}>دوستان</Text>

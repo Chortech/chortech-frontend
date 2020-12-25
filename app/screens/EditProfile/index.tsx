@@ -1,93 +1,182 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
 import * as userActions from "../../store/actions/userActions";
+import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
+import { log } from "../../utils/logger";
+import CustomInput from "../../components/CustomInput";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
   userReducer: IUserState;
 };
 
 const EditProfile: React.FC = (): JSX.Element => {
-  let user = useSelector((state: IState) => state.userReducer);
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     name: user.name,
-    email: user.email,
-    phone: user.phone,
-    password: user.password,
+    email: loggedInUser.email,
+    phone: loggedInUser.phone,
+    currentPassword: loggedInUser.password,
+    newPassword: user.password,
     validName: true,
     validEmail: true,
     validPhone: true,
-    validPassword: true,
+    validCurrentPassword: true,
+    validNewPassword: true,
+    secureTextEntry: false,
   });
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const onPressUpdateUser = () => {
-    let validInput: boolean =
-      data.validEmail &&
-      data.validPhone &&
-      (data.email != "" || data.phone != "") &&
-      data.validName &&
-      data.name != "" &&
-      data.validPassword &&
-      data.password != "";
-    if (validInput) {
-      user = {
-        ...user,
-        name: data.name,
-        password: data.password,
-        phone: data.phone,
-        email: data.email,
-      };
-      dispatch(userActions.onUpdateUserRequest(user));
+  const fetchUser = () => {
+    dispatch(
+      authActions.onLoginRequest(
+        loggedInUser.email,
+        loggedInUser.phone,
+        loggedInUser.password,
+        loggedInUser.authInputType
+      )
+    );
+  };
+
+  log(loggedInUser);
+  const onPressChangeEmail = () => {
+    log("press email");
+    if (validateToken(loggedInUser.token)) {
+      if (data.validEmail) {
+        if (data.email != loggedInUser.email) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: data.email,
+            phone: "",
+            password: loggedInUser.password,
+            inputType: InputType.Email,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("ایمیل واردشده همان ایمیل قبلی است", ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show("ایمیل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
     } else {
-      ToastAndroid.show("اطلاعات وارد شده کافی نمی‌باشد.", ToastAndroid.SHORT);
+      fetchUser();
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
     }
   };
 
-  const onChangeName = (text: string) => {
+  const onPressChangePhone = () => {
+    if (validateToken(loggedInUser.token)) {
+      if (data.validPhone) {
+        if (data.phone != loggedInUser.phone) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: "",
+            phone: data.phone,
+            password: loggedInUser.password,
+            inputType: InputType.Phone,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("شماره موبایل واردشده همان شماره موبایل قبلی است", ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show("شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
+    } else {
+      fetchUser();
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+    }
+  };
+
+  const onPressChangePassword = () => {
+    if (validateToken(loggedInUser.token)) {
+      if (data.currentPassword == loggedInUser.password) {
+        if (data.validCurrentPassword) {
+          dispatch(
+            authActions.onChangePasswordRequest(
+              loggedInUser.token,
+              loggedInUser.email,
+              loggedInUser.phone,
+              loggedInUser.authInputType,
+              data.newPassword,
+              data.currentPassword
+            )
+          );
+        } else {
+          ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show("رمز عبور فعلی شما نادرست است", ToastAndroid.SHORT);
+      }
+    } else {
+      fetchUser();
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+    }
+  };
+
+  const onChangeNameText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateName(text) == InputType.Name;
     setData({
       ...data,
       name: text,
-      validName: RegexValidator.validateName(text) == InputType.Name,
+      validName: validInput,
     });
   };
 
-  const onChangeEmail = (text: string) => {
+  const onChangeEmailText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateEmailOrPhone(text) == InputType.Email;
     setData({
       ...data,
       email: text,
-      validEmail: RegexValidator.validateEmailOrPhone(text) == InputType.Email || text == "",
+      validEmail: validInput,
     });
   };
-  const onChangePhone = (text: string) => {
+  const onChangePhoneText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateEmailOrPhone(text) == InputType.Phone;
     setData({
       ...data,
       phone: text,
-      validPhone: RegexValidator.validateEmailOrPhone(text) == InputType.Phone || text == "",
+      validPhone: validInput,
     });
   };
-  const onChangePassword = (text: string) => {
+
+  const onChangeCurrentPasswordText = (text: string) => {
+    let validInput: boolean = RegexValidator.validatePassword(text) == InputType.Password;
     setData({
       ...data,
-      password: text,
-      validPassword: RegexValidator.validatePassword(text) == InputType.Password,
+      currentPassword: text,
+      validCurrentPassword: validInput,
     });
   };
 
-  const togglePassword = (): void => {
-    setSecureTextEntry(!secureTextEntry);
+  const onChangePasswordText = (text: string) => {
+    let validInput: boolean = RegexValidator.validatePassword(text) == InputType.Password;
+    setData({
+      ...data,
+      newPassword: text,
+      validNewPassword: validInput,
+    });
   };
 
-  const cancel = () => NavigationService.goBack();
+  const clearCurrentPassword = () => {
+    setData({ ...data, currentPassword: loggedInUser.password, validCurrentPassword: true });
+  };
+
+  const clearNewPassword = () => {
+    setData({ ...data, newPassword: loggedInUser.password, validNewPassword: true });
+  };
 
   return (
     <>
@@ -100,67 +189,69 @@ const EditProfile: React.FC = (): JSX.Element => {
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>نام و نام خانوادگی</Text>
-                <View style={data.validName ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.name}
-                    placeholder="نام و نام خانوادگی"
-                    style={styles.textInput}
-                    onChangeText={onChangeName}
-                  />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>ایمیل</Text>
-                <View style={data.validEmail ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.email}
-                    placeholder="ایمیل"
-                    style={styles.textInput}
-                    onChangeText={onChangeEmail}
-                  />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>شماره تلفن</Text>
-                <View style={data.validPhone ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.phone}
-                    placeholder="شماره تلفن"
-                    style={styles.textInput}
-                    onChangeText={onChangePhone}
-                  />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>رمز عبور</Text>
-                <View
-                  style={data.validPassword ? styles.inputContainer : styles.inputContainerError}>
-                  <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
-                    {secureTextEntry ? (
-                      <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
-                    ) : (
-                      <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
-                    )}
-                  </TouchableOpacity>
-                  <TextInput
-                    defaultValue={data.password}
-                    placeholder="رمز عبور"
-                    secureTextEntry={secureTextEntry}
-                    style={styles.textInput}
-                    onChangeText={onChangePassword}
-                  />
-                </View>
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.filledButton} onPress={onPressUpdateUser}>
-                  <Text style={styles.filledButtonText}>تایید</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.outlinedButton} onPress={cancel}>
-                  <Text style={styles.outlinedButtonText}>انصراف</Text>
-                </TouchableOpacity>
-              </View>
+              <CustomInput
+                label="نام و نام خانوادگی"
+                validInput={data.validName}
+                defaultValue={data.name}
+                onChangeText={onChangeNameText}
+                confirmIcon={true}
+                cancelIcon={true}
+                onPressConfirmButton={() => {}}
+                onPressCancelButton={() => setData({ ...data, name: user.name, validName: true })}
+              />
+              {loggedInUser.authInputType == InputType.Email ? (
+                <CustomInput
+                  label="ایمیل"
+                  validInput={data.validEmail}
+                  defaultValue={data.email}
+                  placeholder="ایمیل"
+                  onChangeText={onChangeEmailText}
+                  confirmIcon={true}
+                  cancelIcon={true}
+                  onPressConfirmButton={onPressChangeEmail}
+                  onPressCancelButton={() =>
+                    setData({ ...data, email: user.email, validEmail: true })
+                  }
+                />
+              ) : // null
+              null}
+              {loggedInUser.authInputType == InputType.Phone ? (
+                <CustomInput
+                  label="شماره تلفن"
+                  validInput={data.validPhone}
+                  defaultValue={data.phone}
+                  placeholder="شماره تلفن"
+                  onChangeText={onChangePhoneText}
+                  confirmIcon={true}
+                  cancelIcon={true}
+                  onPressConfirmButton={onPressChangePhone}
+                  onPressCancelButton={() =>
+                    setData({ ...data, phone: user.phone, validPhone: true })
+                  }
+                />
+              ) : null}
+              <CustomInput
+                label="رمز عبور فعلی"
+                passwordInput={true}
+                defaultValue={data.currentPassword}
+                placeholder="رمز عبور فعلی"
+                cancelIcon={true}
+                validInput={data.validCurrentPassword}
+                onChangeText={onChangeCurrentPasswordText}
+                onPressCancelButton={clearCurrentPassword}
+              />
+              <CustomInput
+                label="رمز عبور جدید"
+                passwordInput={true}
+                defaultValue={data.newPassword}
+                placeholder="رمز عبور جدید"
+                cancelIcon={true}
+                confirmIcon={true}
+                validInput={data.validNewPassword}
+                onChangeText={onChangePasswordText}
+                onPressConfirmButton={onPressChangePassword}
+                onPressCancelButton={clearNewPassword}
+              />
             </ScrollView>
           </Animatable.View>
         </View>

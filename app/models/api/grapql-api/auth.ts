@@ -1,8 +1,8 @@
-import { LoginResponse } from "../responses/login";
-import { SignUpResponse } from "../responses/signUp";
-import { InputType } from "../../utils/inputTypes";
-import { IdentifyAccountResponse } from "../responses/identifyAccount";
-import { ResetPasswordResponse } from "../responses/resetPassword";
+import { LoginResponse } from "../../responses/graphql/login";
+import { SignUpResponse } from "../../responses/graphql/signUp";
+import { InputType } from "../../../utils/inputTypes";
+import { IdentifyAccountResponse } from "../../responses/graphql/identifyAccount";
+import { ResetPasswordResponse } from "../../responses/graphql/resetPassword";
 
 export interface AuthApi {
   login(

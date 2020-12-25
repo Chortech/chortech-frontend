@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     fontFamily: "Dirooz",
     writingDirection: "auto",
+    textAlign: "center",
   },
   inputContainer: {
     flexDirection: "row",

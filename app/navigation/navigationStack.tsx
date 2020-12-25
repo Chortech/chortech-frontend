@@ -214,7 +214,7 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen
       name="InviteFriend"
       component={InviteFriend}
-      options={{ title: "دعوت از دوستان" }}
+      options={{ title: "افزودن دوستان جدید" }}
     />
   </FriendStack.Navigator>
 );
@@ -223,6 +223,7 @@ const ProfileNavigator = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Profile">
     <LoggedInTab.Screen name="Profile" component={Profile} />
     <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
+    <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
   </ProfileStack.Navigator>
 );
 
@@ -232,7 +233,6 @@ const App: React.FC = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <StatusBar />
-
       <Stack.Navigator>
         {isLoggedIn ? (
           <Stack.Screen

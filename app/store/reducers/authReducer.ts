@@ -5,31 +5,39 @@ import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
-import { LoginRequest } from "../../models/requests/login";
-import { LoginResponse } from "../../models/responses/login";
-import { SignUpRequest } from "../../models/requests/signUp";
-import { SignUpResponse } from "../../models/responses/signUp";
 import { IUserState } from "../../models/reducers/default";
-import { IdentifyAccountRequest } from "../../models/requests/identifyAccount";
-import { IdentifyAccountResponse } from "../../models/responses/identifyAccount";
-import { GenerateCodeRequest } from "../../models/requests/codeVerification";
-import { ResetPasswordRequest } from "../../models/requests/resetPassword";
-import { ResetPasswordResponse } from "../../models/responses/resetPassword";
+import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
+import {
+  ChangeEmailOrPhone,
+  ChangePasswordRequest,
+  LoginRequest,
+  ResetPasswordRequest,
+  SignUpRequest,
+} from "../../models/requests/axios/auth";
+import { Response } from "../../models/responses/axios/response";
+import { Login, SignUp } from "../../models/responses/axios/auth";
+import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
 
 const initialState: IUserState = {
   isLoggedIn: false,
   loading: false,
   id: "-1",
+  token: {
+    access: "",
+    created: 0,
+    expires: 0,
+  },
   name: "",
   password: "",
   email: "",
   phone: "",
+  picture: "",
   authInputType: InputType.None,
-  credit: 0,
-  balance: 0,
   friends: [],
   groups: [],
   activities: [],
+  myCreditCards: [],
+  otherCreditCards: [],
 };
 
 export const authReducer = createReducer(initialState, {
@@ -42,17 +50,12 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.LOGIN_RESPONSE](state: IUserState, action: Action<LoginResponse>) {
+  [types.LOGIN_RESPONSE](state: IUserState, action: Action<Response<Login>>) {
     return {
       ...state,
       isLoggedIn: true,
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
+      id: action.payload.response?.id,
+      token: action.payload.response?.token,
     };
   },
   [types.LOGIN_FAIL](state: IUserState) {
@@ -60,6 +63,7 @@ export const authReducer = createReducer(initialState, {
       ...state,
       isLoggedIn: false,
       id: "-1",
+      token: undefined,
       email: "",
       phone: "",
       authInputType: InputType.None,
@@ -70,8 +74,8 @@ export const authReducer = createReducer(initialState, {
     return {
       ...state,
       isLoggedIn: false,
-      loading: false,
       id: "-1",
+      token: undefined,
       email: "",
       phone: "",
       authInputType: InputType.None,
@@ -88,114 +92,87 @@ export const authReducer = createReducer(initialState, {
       authInputType: action.payload.inputType,
     };
   },
-  [types.SIGNUP_RESPONSE](state: IUserState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_RESPONSE](state: IUserState, action: Action<Response<SignUp>>) {
     return {
       ...state,
       isLoggedIn: true,
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
+      id: action.payload.response?.id,
+      name: action.payload.response?.name,
+      token: action.payload.response?.token,
     };
   },
-  [types.SIGNUP_FAIL](state: IUserState, action: Action<SignUpResponse>) {
+  [types.SIGNUP_FAIL](state: IUserState, action: Action<Response<SignUp>>) {
     return {
       ...state,
+      isLoggedIn: false,
       id: "-1",
       name: "",
+      token: undefined,
       email: "",
       phone: "",
       password: "",
       authInputType: InputType.None,
     };
   },
-  [types.IDENTIFY_ACCOUNT_REQUEST](
-    state: IUserState,
-    action: Action<IdentifyAccountRequest>
-  ) {
+  [types.GENERATE_CODE_REQUEST](state: IUserState, action: Action<GenerateCodeRequest>) {
+    return state;
+  },
+  [types.GENERATE_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.GENERATE_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.VERIFY_CODE_REQUEST](state: IUserState, action: Action<VerifyCodeRequest>) {
     return {
       ...state,
-      email: action.payload.email,
-      phone: action.payload.phone,
-      authInputType: action.payload.inputType,
+      token: action.payload.token != undefined ? action.payload.token : undefined,
     };
   },
-  [types.IDENTIFY_ACCOUNT_RESPONSE](
-    state: IUserState,
-    action: Action<IdentifyAccountResponse>
-  ) {
+  [types.VERIFY_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.VERIFY_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CANCEL_CODE_REQUEST](state: IUserState, action: Action<CancelCodeRequest>) {
+    return state;
+  },
+  [types.CANCEL_CODE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CANCEL_CODE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.RESET_PASSWORD_REQUEST](state: IUserState, action: Action<ResetPasswordRequest>) {
+    return state;
+  },
+  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
+  },
+  [types.CHANGE_PASSWORD_REQUEST](state: IUserState, action: Action<ChangePasswordRequest>) {
     return {
       ...state,
-      id: action.payload.id,
+      token: action.payload.token,
     };
   },
-  [types.IDENTIFY_ACCOUNT_FAIL](
-    state: IUserState,
-    action: Action<IdentifyAccountResponse>
-  ) {
-    return {
-      ...state,
-      id: "-1",
-      email: "",
-      phone: "",
-      authInputType: InputType.None,
-      password: "",
-    };
+  [types.CHANGE_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
-  [types.GENERATE_CODE_REQUEST](
-    state: IUserState,
-    action: Action<GenerateCodeRequest>
-  ) {
-    return {
-      ...state,
-      email: action.payload.email,
-      phone: action.payload.phone,
-      authInputType: action.payload.inputType,
-    };
+  [types.CHANGE_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
-  [types.RESET_PASSWORD_REQUEST](
-    state: IUserState,
-    action: Action<ResetPasswordRequest>
-  ) {
-    return {
-      ...state,
-      id: action.payload.id,
-      password: action.payload.password,
-    };
+  [types.CHANGE_EMAIL_OR_PHONE_REQUEST](state: IUserState, action: Action<ChangeEmailOrPhone>) {
+    return state;
   },
-  [types.RESET_PASSWORD_RESPONSE](
-    state: IUserState,
-    action: Action<ResetPasswordResponse>
-  ) {
-    return {
-      ...state,
-      id: "-1",
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      authInputType: InputType.None,
-    };
+  [types.CHANGE_EMAIL_OR_PHONE_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
-  [types.RESET_PASSWORD_FAIL](
-    state: IUserState,
-    action: Action<ResetPasswordResponse>
-  ) {
-    return {
-      ...state,
-      id: "-1",
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      authInputType: InputType.None,
-    };
+  [types.CHANGE_EMAIL_OR_PHONE_FAIL](state: IUserState, action: Action<Response<null>>) {
+    return state;
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
     return {

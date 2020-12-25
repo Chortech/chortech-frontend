@@ -1,3 +1,4 @@
+import { Token } from "../models/other/axios/Token";
 import { InputType } from "../utils/inputTypes";
 
 export type RootStackParamList = {
@@ -10,10 +11,16 @@ export type RootStackParamList = {
     phone: string;
     password: string;
     inputType: InputType;
+    token?: Token;
   };
   Profile: undefined;
   EditProfile: undefined;
-  ResetPassword: undefined;
+  ResetPassword: {
+    email: string;
+    phone: string;
+    inputType: InputType;
+    parentScreen: string;
+  };
   CreditCardList: undefined;
   Friend: {
     id: string;

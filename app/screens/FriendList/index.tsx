@@ -6,7 +6,10 @@ import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as userActions from "../../store/actions/userActions";
+import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
+import { validateToken } from "../../utils/tokenValidator";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
@@ -17,14 +20,24 @@ const FriendList: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
-    setRefreshing(true);
     fetchFriends();
-    setRefreshing(false);
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    dispatch(userActions.onGetUserRequest(loggedInUser.id));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(userActions.onGetUserFriendsRequest(loggedInUser.token));
+    } else {
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+    }
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -38,8 +51,8 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={() => onFriend(item.id, item.friendName)}
-      Name={item.friendName}
+      onPressFriendItem={() => onFriend(item.id, item.name)}
+      Name={item.name}
       ImageUrl={require("../../assets/images/friend-image.jpg")}
     />
   );
@@ -57,7 +70,7 @@ const FriendList: React.FC = (): JSX.Element => {
         </Animatable.View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-            <Text style={styles.buttonText}>دعوت از دوستان</Text>
+            <Text style={styles.buttonText}>اضافه کردن دوستان جدید</Text>
           </TouchableOpacity>
         </View>
       </View>

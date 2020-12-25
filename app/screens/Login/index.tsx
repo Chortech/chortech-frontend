@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
@@ -27,16 +20,11 @@ const Login: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const onLogin = () => {
     if (data.emailOrPhone == "" || data.password == "") {
-      ToastAndroid.show(
-        "لطفا همه‌ی مقادیر ورودی را پُر کنید",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show("لطفا همه‌ی مقادیر ورودی را پُر کنید", ToastAndroid.SHORT);
     } else if (data.validEmailOrPhone && data.validPassword) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
-      dispatch(
-        loginActions.onLoginRequest(email, phone, data.password, data.inputType)
-      );
+      dispatch(loginActions.onLoginRequest(email, phone, data.password, data.inputType));
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }
@@ -58,8 +46,7 @@ const Login: React.FC = (): JSX.Element => {
     setData({
       ...data,
       emailOrPhone: text,
-      validEmailOrPhone:
-        text == "" || type == InputType.Email || type == InputType.Phone,
+      validEmailOrPhone: text == "" || type == InputType.Email || type == InputType.Phone,
       inputType: type,
     });
   };
@@ -68,9 +55,7 @@ const Login: React.FC = (): JSX.Element => {
     setData({
       ...data,
       password: text,
-      validPassword:
-        text == "" ||
-        RegexValidator.validatePassword(text) == InputType.Password,
+      validPassword: text == "" || RegexValidator.validatePassword(text) == InputType.Password,
     });
   };
 
@@ -90,10 +75,7 @@ const Login: React.FC = (): JSX.Element => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>Chortech</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={1000}
-            style={styles.footer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
             <ScrollView>
               <View style={styles.inputContainer}>
                 <TextInput
@@ -103,29 +85,16 @@ const Login: React.FC = (): JSX.Element => {
                 />
               </View>
               {!data.validEmailOrPhone ? (
-                <Animatable.Text
-                  style={styles.validationText}
-                  animation="fadeIn"
-                  duration={500}>
+                <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
                   ایمیل یا شماره موبایل وارد شده معتبر نیست
                 </Animatable.Text>
               ) : null}
               <View style={styles.inputContainer}>
-                <TouchableOpacity
-                  onPress={togglePassword}
-                  style={styles.toggleIcon}>
+                <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
                   {data.secureTextEntry ? (
-                    <FontAwesomeIcon
-                      icon="eye-slash"
-                      size={20}
-                      style={{ color: "red" }}
-                    />
+                    <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
                   ) : (
-                    <FontAwesomeIcon
-                      icon="eye"
-                      size={20}
-                      style={{ color: "#1AD927" }}
-                    />
+                    <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
                   )}
                 </TouchableOpacity>
                 <TextInput
@@ -136,33 +105,24 @@ const Login: React.FC = (): JSX.Element => {
                 />
               </View>
               {!data.validPassword ? (
-                <Animatable.Text
-                  style={styles.validationText}
-                  animation="fadeIn"
-                  duration={500}>
+                <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
                   رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
                 </Animatable.Text>
               ) : null}
               <View>
                 <TouchableOpacity onPress={onForgot}>
-                  <Text style={styles.resetPasswordText}>
-                    کلمه عبور خود را فراموش کرده‌اید؟
-                  </Text>
+                  <Text style={styles.resetPasswordText}>کلمه عبور خود را فراموش کرده‌اید؟</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.filledButton} onPress={onLogin}>
                   <Text style={styles.filledButtonText}>ورود</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.outlinedButton}
-                  onPress={onSignUp}>
+                <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
                   <Text style={styles.outlinedButtonText}>ثبت نام</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.outlinedButton}>
-                  <Text style={styles.outlinedButtonText}>
-                    قوانین حریم خصوصی
-                  </Text>
+                  <Text style={styles.outlinedButtonText}>قوانین حریم خصوصی</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>

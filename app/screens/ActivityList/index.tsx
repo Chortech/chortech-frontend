@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { Activity } from "../../models/other/Activity";
+import { Activity } from "../../models/other/graphql/Activity";
 import { IUserState } from "../../models/reducers/default";
-import { GetUserActivitiesResponse } from "../../models/responses/user";
+import { GetUserActivitiesResponse } from "../../models/responses/graphql/user";
 import NavigationService from "../../navigation/navigationService";
 import * as userActions from "../../store/actions/userActions";
 import styles from "./styles";
@@ -34,7 +34,7 @@ const ActivityList: React.FC = () => {
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const [refreshing, setRefreshing] = useState(false);
   const fetchActivities = (): void => {
-    dispatch(userActions.onGetUserRequest(loggedInUser.id));
+    // dispatch(userActions.onGetUserRequest(loggedInUser.id));
   };
 
   useEffect(() => {

@@ -1,11 +1,13 @@
 import { RouteProp } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, ToastAndroid } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import * as userActions from "../../store/actions/userActions";
+import * as authActions from "../../store/actions/authActions";
+import { validateToken } from "../../utils/tokenValidator";
 import LoadingIndicator from "../Loading";
 import { styles } from "./styles";
 
@@ -18,12 +20,25 @@ type IState = {
 };
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { id, friendName } = route.params;
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressDeleteFriend = () => {
-    dispatch(userActions.onDeleteFriendRequest(id));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(userActions.onDeleteFriendRequest(loggedInUser.token, id));
+    } else {
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+      ToastAndroid.show("دوباره تلاش کنید", ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -39,14 +54,9 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
             />
             <Text style={styles.userNameText}>{friendName}</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={onPressDeleteFriend}>
+              <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteFriend}>
                 <Text style={styles.removeButtonText}>حذف کردن از دوستان</Text>
               </TouchableOpacity>
             </View>

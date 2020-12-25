@@ -9,14 +9,18 @@ import * as userSaga from "./userSaga";
 export default function* watch() {
   yield all([
     takeLatest(types.LOGIN_REQUEST, authSaga.loginAsync),
-    takeLatest(types.IDENTIFY_ACCOUNT_REQUEST, authSaga.identifyAccountAsync),
     takeLatest(types.GENERATE_CODE_REQUEST, authSaga.generateCodeAsync),
+    takeLatest(types.VERIFY_CODE_REQUEST, authSaga.verifyCodeAsync),
+    takeLatest(types.CANCEL_CODE_REQUEST, authSaga.cancelCodeAsync),
     takeLatest(types.RESET_PASSWORD_REQUEST, authSaga.resetPasswordAsync),
+    takeLatest(types.CHANGE_PASSWORD_REQUEST, authSaga.changePasswordAsync),
+    takeLatest(types.CHANGE_EMAIL_OR_PHONE_REQUEST, authSaga.changeEmailOrPhoneAsync),
     takeLatest(types.SIGNUP_REQUEST, authSaga.signUpAsync),
     takeLatest(types.GET_USER_FRIENDS_REQUEST, userSaga.getUserFriendsAsync),
     takeLatest(types.ADD_FRIEND_REQUEST, userSaga.addFriendAsync),
     takeLatest(types.DELETE_USER_FRIEND_REQUEST, userSaga.deleteFriendAsync),
-    takeLatest(types.GET_USER_REQUEST, userSaga.fetchUserAsync),
+    takeLatest(types.INVITE_FRIEND_REQUEST, userSaga.inviteFriendAsync),
+    takeLatest(types.GET_USER_PROFILE_REQUEST, userSaga.getUserProfileAsync),
     takeLatest(types.UPDATE_USER_REQUEST, userSaga.updateUserAsync),
     takeLatest(types.ADD_GROUP_REQUEST, userSaga.addGroupAsync),
     takeLatest(types.UPDATE_GROUP_REQUEST, userSaga.updateGroupAsync),
@@ -30,13 +34,7 @@ export default function* watch() {
     takeLatest(types.DELETE_ACTIVITY_REQUEST, userSaga.deleteActivityAsync),
     takeLatest(types.DELETE_EXPENSE_REQUEST, userSaga.deleteExpenseAsync),
     takeLatest(types.DELETE_DEBT_REQUEST, userSaga.deleteDebtAsync),
-    takeLatest(
-      types.DELETE_PARTICIPANT_REQUEST,
-      userSaga.deleteParticipantAsync
-    ),
-    takeLatest(
-      types.GET_USER_ACTIVITIES_REQUEST,
-      userSaga.getUserActivitiesAsync
-    ),
+    takeLatest(types.DELETE_PARTICIPANT_REQUEST, userSaga.deleteParticipantAsync),
+    takeLatest(types.GET_USER_ACTIVITIES_REQUEST, userSaga.getUserActivitiesAsync),
   ]);
 }

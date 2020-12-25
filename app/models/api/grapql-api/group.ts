@@ -4,14 +4,10 @@ import {
   DeleteGroupResponse,
   GetGroupByIdResponse,
   GetUserGroupsResponse,
-} from "../responses/group";
+} from "../../responses/group";
 
 export interface GroupApi {
-  addGroup(
-    name: string,
-    creator: string,
-    members: Array<string>
-  ): Promise<AddGroupResponse>;
+  addGroup(name: string, creator: string, members: Array<string>): Promise<AddGroupResponse>;
   updateGroup(
     groupId: string,
     name: string,

@@ -1,20 +1,26 @@
 import { InputType } from "../../utils/inputTypes";
-import { Activity } from "../other/Activity";
-import { Friend } from "../other/Friend";
-import { Group } from "../other/Group";
+import { Comment } from "../other/axios/Comment";
+import { CreditCard } from "../other/axios/CreditCard";
+import { Expense } from "../other/axios/Expense";
+import { Friend } from "../other/axios/Friend";
+import { Token } from "../other/axios/Token";
+import { Group } from "../other/graphql/Group";
 
 export interface IUserState {
   isLoggedIn: boolean;
   loading: boolean;
   id: string;
+  token: Token;
   name: string;
-  password: string;
   email: string;
   phone: string;
+  password: string;
+  picture: string;
   authInputType: InputType;
-  credit: number;
-  balance: number;
   friends: Array<Friend>;
   groups: Array<Group>;
-  activities: Array<Activity>;
+  activities: Array<Expense>;
+  comments: Array<Comment>;
+  myCreditCards: Array<CreditCard>;
+  otherCreditCards: Array<CreditCard>;
 }

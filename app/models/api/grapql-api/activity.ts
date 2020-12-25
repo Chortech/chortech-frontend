@@ -1,4 +1,4 @@
-import { DeleteDebtRequest } from "../requests/activity";
+import { DeleteDebtRequest } from "../../requests/graphql/activity";
 import {
   AddActivityResponse,
   AddExpenseResponse,
@@ -7,8 +7,8 @@ import {
   DeleteActivityResponse,
   DeleteExpenseResponse,
   DeleteParticipantResponse,
-} from "../responses/activity";
-import { GetUserActivitiesResponse } from "../responses/user";
+} from "../../responses/graphql/activity";
+import { GetUserActivitiesResponse } from "../../responses/graphql/user";
 
 export interface ActivityApi {
   addActivity(
@@ -36,11 +36,7 @@ export interface ActivityApi {
     creditorId: string
   ): Promise<AddDebtResponse>;
 
-  addParticipant(
-    expenseId: string,
-    userId: string,
-    share: number
-  ): Promise<AddParticipantResponse>;
+  addParticipant(expenseId: string, userId: string, share: number): Promise<AddParticipantResponse>;
 
   getUserActivities(userId: string): Promise<GetUserActivitiesResponse>;
 
