@@ -9,6 +9,7 @@ import {
   InviteFriendsRequest,
   AddExpenseRequest,
   GetExpenseRequest,
+  AddCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -34,6 +35,7 @@ import {
   UserProfileResponse,
   AddExpense,
   GetExpense,
+  AddComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -304,6 +306,18 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
   [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<GetExpense>>) {
+    return state;
+  },
+  [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.ADD_COMMENT_RESPONSE](state: IUserState, action: Action<Response<AddComment>>) {
+    return state;
+  },
+  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<AddComment>>) {
     return state;
   },
   [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>) {
