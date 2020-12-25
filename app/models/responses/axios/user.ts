@@ -50,3 +50,7 @@ export interface GetExpense {
   price: number;
   you: You;
 }
+
+export interface AddComment {
+  message: string;
+}
