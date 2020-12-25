@@ -2,13 +2,11 @@ import { Comment } from "./Comment";
 import { Participant } from "./Participant";
 
 export interface Expense {
+  id: string;
   description: string;
-  participants: Array<Participant>;
   total: number;
-  comments?: Array<Comment>;
+  paid_at: number;
   group?: string;
   notes?: string;
-  paid_at: number;
-  created_at: number;
-  modified_at: number;
+  participants: Array<Participant>
 }
