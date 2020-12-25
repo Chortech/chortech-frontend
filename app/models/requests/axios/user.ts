@@ -1,5 +1,5 @@
 import { InputType } from "../../../utils/inputTypes";
-import { Invitee } from "../../other/axios/Invitee";
+import { Participant } from "../../other/axios/Participant";
 import { Token } from "../../other/axios/Token";
 
 export interface GetUserFriendsRequest {
@@ -32,4 +32,14 @@ export interface GetUserProfileRequest {
 export interface EditProfileRequest {
   picture: string;
   newName: string;
+}
+
+export interface AddExpenseRequest {
+  token: Token;
+  description: string;
+  total: number;
+  paid_at: number;
+  group: string;
+  notes: string;
+  participants: Array<Participant>
 }
