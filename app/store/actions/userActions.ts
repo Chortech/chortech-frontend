@@ -9,6 +9,7 @@ import {
   DeleteFriendRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
+  GetExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -34,6 +35,7 @@ import {
   GetUserFriends,
   UserProfileResponse,
   AddExpense,
+  GetExpense,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -528,6 +530,38 @@ export function onAddExpenseResponse(response: Response<AddExpense>): Action<Res
 export function onAddExpenseFail(): Action<Response<AddExpense>> {
   return {
     type: types.ADD_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetExpenseRequest(
+  token: Token,
+): Action<GetExpenseRequest> {
+  return {
+    type: types.GET_EXPENSE_REQUEST,
+    payload: {
+      token,
+    }
+  };
+}
+
+export function onGetExpenseResponse(response: Response<GetExpense>): Action<Response<GetExpense>> {
+  return {
+    type: types.GET_EXPENSE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetExpenseFail(): Action<Response<GetExpense>> {
+  return {
+    type: types.GET_EXPENSE_FAIL,
     payload: {
       success: false,
       status: -1,
