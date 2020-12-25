@@ -9,8 +9,10 @@ import {
   DeleteFriendRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
-  GetExpenseRequest,
+  GetExpensesRequest,
   AddCommentRequest,
+  GetExpenseRequest,
+  GetCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -36,8 +38,10 @@ import {
   GetUserFriends,
   UserProfileResponse,
   AddExpense,
-  GetExpense,
   AddComment,
+  GetExpenses,
+  GetExpense,
+  GetComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -500,20 +504,20 @@ export function onAddExpenseRequest(
   description: string,
   total: number,
   paid_at: number,
-  group: string,
-  notes: string,
-  participants: Array<Participant>
+  participants: Array<Participant>,
+  group?: string,
+  notes?: string,
 ): Action<AddExpenseRequest> {
   return {
     type: types.ADD_EXPENSE_REQUEST,
     payload: {
-      token,
-      description,
-      total,
-      paid_at,
-      group,
-      notes,
-      participants
+      token: token,
+      description: description,
+      total: total,
+      paid_at: paid_at,
+      group: group,
+      notes: notes,
+      participants: participants,
     }
   };
 }
@@ -539,13 +543,47 @@ export function onAddExpenseFail(): Action<Response<AddExpense>> {
   };
 }
 
+export function onGetExpensesRequest(
+  token: Token,
+): Action<GetExpensesRequest> {
+  return {
+    type: types.GET_EXPENSES_REQUEST,
+    payload: {
+      token: token,
+    }
+  };
+}
+
+export function onGetExpensesResponse(response: Response<GetExpenses>): Action<Response<GetExpenses>> {
+  return {
+    type: types.GET_EXPENSES_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetExpensesFail(): Action<Response<GetExpenses>> {
+  return {
+    type: types.GET_EXPENSES_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
 export function onGetExpenseRequest(
   token: Token,
+  id: string,
 ): Action<GetExpenseRequest> {
   return {
     type: types.GET_EXPENSE_REQUEST,
     payload: {
-      token,
+      token: token,
+      id: id,
     }
   };
 }
@@ -575,13 +613,15 @@ export function onAddCommentRequest(
   token: Token,
   text: string,
   created_at: number,
+  id: string,
 ): Action<AddCommentRequest> {
   return {
     type: types.ADD_COMMENT_REQUEST,
     payload: {
-      token,
-      text,
-      created_at,
+      token: token,
+      text: text,
+      created_at: created_at,
+      id: id,
     }
   };
 }
@@ -598,6 +638,40 @@ export function onAddCommentResponse(response: Response<AddComment>): Action<Res
 }
 
 export function onAddCommentFail(): Action<Response<AddComment>> {
+  return {
+    type: types.ADD_COMMENT_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetCommentRequest(
+  token: Token,
+  id: string,
+): Action<GetCommentRequest> {
+  return {
+    type: types.GET_COMMENT_REQUEST,
+    payload: {
+      token: token,
+      id: id,
+    }
+  };
+}
+
+export function onGetCommentResponse(response: Response<GetComment>): Action<Response<GetComment>> {
+  return {
+    type: types.GET_COMMENT_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetCommentFail(): Action<Response<GetComment>> {
   return {
     type: types.GET_COMMENT_FAIL,
     payload: {
