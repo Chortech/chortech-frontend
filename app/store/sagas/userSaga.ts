@@ -8,8 +8,10 @@ import {
   GetUserProfileRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
-  GetExpenseRequest,
+  GetExpensesRequest,
   AddCommentRequest,
+  GetExpenseRequest,
+  GetCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -37,6 +39,8 @@ import {
   AddExpense,
   GetExpense,
   AddComment,
+  GetExpenses,
+  GetComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -56,6 +60,7 @@ import {
 } from "../../models/responses/graphql/group";
 import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
 import { navigationRef } from "../../navigation/navigationService";
+import { ExpenseAPI } from "../../services/api/axios/expenseApi";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { InputType } from "../../utils/inputTypes";
@@ -165,19 +170,14 @@ export function* addActivityAsync(action: Action<AddActivityRequest>) {
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(userActions.onLoadingEnable());
-  const { token, description, total, paid_at, group, notes, participants } = action.payload;
+  const { token, description, total, paid_at, group, notes, participants} = action.payload;
   let response: Response<AddExpense> = {
     success: false,
     status: -1,
   };
 
-  try {
-    let api: UserAPI = new UserAPI(token);
-    response = yield api.addExpense(description, total, paid_at, group, notes, participants);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.addExpense(description, total, paid_at, participants, group, notes);
 
   yield put(userActions.onLoadingDisable());
 
@@ -191,20 +191,20 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   }
 }
 
-export function* getExpenseAsync(action: Action<GetExpenseRequest>) {
+export function* getExpensesAsync(action: Action<GetExpensesRequest>) {
   const { token } = action.payload;
-  let response: Response<GetExpense> = {
+  let response: Response<GetExpenses> = {
     success: false,
     status: -1,
   };
 
-  let api: UserAPI = new UserAPI(token);
-  response = yield api.getExpense();
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getExpenses();
 
   if (response.success) {
-    yield put(userActions.onGetExpenseResponse(response));
+    yield put(userActions.onGetExpensesResponse(response));
   } else {
-    yield put(userActions.onGetExpenseFail());
+    yield put(userActions.onGetExpensesFail());
     if (response.status == 404) {
       ToastAndroid.show("فعالیتی وجود ندارد", ToastAndroid.SHORT);
     } else {
@@ -213,17 +213,39 @@ export function* getExpenseAsync(action: Action<GetExpenseRequest>) {
   }
 }
 
+export function* getExpenseAsync(action: Action<GetExpenseRequest>) {
+  const { token, id } = action.payload;
+  let response: Response<GetExpense> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getExpense(id);
+
+  if (response.success) {
+    yield put(userActions.onGetExpenseResponse(response));
+  } else {
+    yield put(userActions.onGetExpenseFail());
+    if (response.status == 404) {
+      ToastAndroid.show("فعالیت وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+}
+
 export function* addCommentAsync(action: Action<AddCommentRequest>) {
   yield put(userActions.onLoadingEnable());
-  const { token, text, created_at } = action.payload;
+  const { token, text, created_at, id } = action.payload;
   let response: Response<AddComment> = {
     success: false,
     status: -1,
   };
 
   try {
-    let api: UserAPI = new UserAPI(token);
-    response = yield api.addComment(text, created_at);
+    let api: ExpenseAPI = new ExpenseAPI(token);
+    response = yield api.addComment(text, created_at, id);
   } catch (error) {
     console.log(JSON.stringify(error, undefined, 2));
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
@@ -235,6 +257,32 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
     yield put(userActions.onAddCommentResponse(response));
     navigationRef.current?.goBack();
     ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
+  } else {
+    yield put(userActions.onAddExpenseFail());
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+}
+
+export function* getCommentAsync(action: Action<GetCommentRequest>) {
+  yield put(userActions.onLoadingEnable());
+  const { token, id } = action.payload;
+  let response: Response<GetComment> = {
+    success: false,
+    status: -1,
+  };
+
+  try {
+    let api: ExpenseAPI = new ExpenseAPI(token);
+    response = yield api.getComment(id);
+  } catch (error) {
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+
+  yield put(userActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(userActions.onGetCommentResponse(response));
   } else {
     yield put(userActions.onAddExpenseFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
