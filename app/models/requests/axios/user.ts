@@ -48,3 +48,9 @@ export interface AddExpenseRequest {
 export interface GetExpenseRequest {
   token: Token;
 }
+
+export interface AddCommentRequest {
+  token: Token;
+  text: string;
+  created_at: number;
+}
