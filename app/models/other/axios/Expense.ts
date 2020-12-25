@@ -1,5 +1,5 @@
 import { Comment } from "./Comment";
-import { Participant } from "./Participant";
+import { Participant, PRole } from "./Participant";
 
 export interface Expense {
   id: string;
@@ -8,5 +8,13 @@ export interface Expense {
   paid_at: number;
   group?: string;
   notes?: string;
-  participants: Array<Participant>
+  participants?: Array<Participant>
+  comments?: Array<Comment>;
+  creator?: string;
+  you?: You;
+}
+
+export interface You {
+  role: PRole;
+  amount: number;
 }
