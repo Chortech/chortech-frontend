@@ -34,5 +34,7 @@ export default function* watch() {
     takeLatest(types.DELETE_DEBT_REQUEST, userSaga.deleteDebtAsync),
     takeLatest(types.DELETE_PARTICIPANT_REQUEST, userSaga.deleteParticipantAsync),
     takeLatest(types.GET_USER_ACTIVITIES_REQUEST, userSaga.getUserActivitiesAsync),
+    takeLatest(types.UPLOAD_IMAGE_REQUEST, userSaga.UploadImageAsync),
+    // takeLatest(types.EDIT_PROFILE_REQUEST, userSaga.EditProfileAsync),
   ]);
 }

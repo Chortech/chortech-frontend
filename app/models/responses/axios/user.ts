@@ -29,3 +29,8 @@ export interface EditProfileResponse {
   phone?: string;
   picture: string;
 }
+
+export interface UploadImageResponse{
+  key: string;
+  url: string;
+}

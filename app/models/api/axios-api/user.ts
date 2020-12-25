@@ -5,6 +5,7 @@ import {
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
+  UploadImageResponse,
 } from "../../responses/axios/user";
 
 export interface userApi {
@@ -15,4 +16,5 @@ export interface userApi {
   deleteFriend(friendId: string): Promise<Response<DeleteFriend>>;
   inviteFriendRequestByEmail(email: string): Promise<Response<null>>;
   inviteFriendRequestByPhone(phone: string): Promise<Response<null>>;
+  uploadImageRequest(image: string): Promise<Response<UploadImageResponse>>;
 }

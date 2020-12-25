@@ -4,9 +4,11 @@ import { IUserState } from "../../models/reducers/default";
 import {
   AddFriendRequest,
   DeleteFriendRequest,
+  EditProfileRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
   InviteFriendsRequest,
+  UploadImageRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -31,6 +33,8 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  UploadImageResponse,
+  EditProfileResponse,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -75,6 +79,35 @@ const initialState: IUserState = {
 };
 
 export const userReducer = createReducer(initialState, {
+  [types.EDIT_PROFILE_REQUEST](state: IUserState, action: Action<EditProfileRequest>) {
+    return {
+      ...state,
+      picture: action.payload.picture,
+      newName: action.payload.newName,
+    };
+  },
+  [types.EDIT_PROFILE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditProfileResponse>>
+  ) {
+    return {
+      ...state
+    };
+  },
+  [types.UPLOAD_IMAGE_REQUEST](state: IUserState, action: Action<UploadImageRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.UPLOAD_IMAGE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UploadImageResponse>>
+  ) {
+    return {
+      ...state
+    };
+  },
   [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
     return {
       ...state,
