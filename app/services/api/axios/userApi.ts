@@ -10,6 +10,7 @@ import {
   DeleteFriend,
   UserProfileResponse,
   GetExpense,
+  AddExpense,
 } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
@@ -327,7 +328,7 @@ export class UserAPI implements userApi {
           success: true,
           status: response.status,
           response: {
-            friends: response.data.friends,
+           
           },
         };
       } else {
@@ -340,6 +341,39 @@ export class UserAPI implements userApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
       } else {
         log("get expenses api error");
+        log(e.message);
+      }
+    }
+    return result;
+  }
+
+  async addExpense(description, total, paid_at, group, notes, participants): Promise<Response<AddExpense>> {
+    let result: Response<AddExpense> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.post("/expenses");
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: {
+
+          },
+        };
+      } else {
+        result.status = response.status;
+      }
+
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+      } else {
+        log("add expenses api error");
         log(e.message);
       }
     }
