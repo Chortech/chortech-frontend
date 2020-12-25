@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_USER_URL } from "../../../../local_env_vars";
 import { userApi } from "../../../models/api/axios-api/user";
-import { Invitee, InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
+import { InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
 import {

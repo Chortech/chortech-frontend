@@ -1,8 +1,9 @@
 import { InputType } from "../../utils/inputTypes";
+import { Comment } from "../other/axios/Comment";
 import { CreditCard } from "../other/axios/CreditCard";
+import { Expense } from "../other/axios/Expense";
 import { Friend } from "../other/axios/Friend";
 import { Token } from "../other/axios/Token";
-import { Activity } from "../other/graphql/Activity";
 import { Group } from "../other/graphql/Group";
 
 export interface IUserState {
@@ -18,7 +19,8 @@ export interface IUserState {
   authInputType: InputType;
   friends: Array<Friend>;
   groups: Array<Group>;
-  activities: Array<Activity>;
+  activities: Array<Expense>;
+  comments: Array<Comment>;
   myCreditCards: Array<CreditCard>;
   otherCreditCards: Array<CreditCard>;
 }

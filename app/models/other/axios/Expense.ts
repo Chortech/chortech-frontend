@@ -1,14 +1,20 @@
 import { Comment } from "./Comment";
-import { Participant } from "./Participant";
+import { Participant, PRole } from "./Participant";
 
 export interface Expense {
+  id: string;
   description: string;
-  participants: Array<Participant>;
   total: number;
-  comments?: Array<Comment>;
+  paid_at: number;
   group?: string;
   notes?: string;
-  paid_at: number;
-  created_at: number;
-  modified_at: number;
+  participants?: Array<Participant>
+  comments?: Array<Comment>;
+  creator?: string;
+  you?: You;
+}
+
+export interface You {
+  role: PRole;
+  amount: number;
 }

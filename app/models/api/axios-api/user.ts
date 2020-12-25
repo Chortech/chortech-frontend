@@ -1,4 +1,3 @@
-import { Token } from "../../other/axios/Token";
 import { Response } from "../../responses/axios/response";
 import {
   AddFriend,

@@ -1,5 +1,5 @@
 import { Action } from "../../models/actions/action";
-import { Invitee } from "../../models/other/axios/Invitee";
+import { Participant } from "../../models/other/axios/Participant";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
 import {
@@ -8,10 +8,14 @@ import {
   GetUserProfileRequest,
   DeleteFriendRequest,
   InviteFriendsRequest,
+  AddExpenseRequest,
+  GetExpensesRequest,
+  AddCommentRequest,
+  GetExpenseRequest,
+  GetCommentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
-  AddExpenseRequest,
   AddDebtRequest,
   AddParticipantRequest,
   DeleteActivityRequest,
@@ -33,10 +37,14 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  AddExpense,
+  AddComment,
+  GetExpenses,
+  GetExpense,
+  GetComment,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
-  AddExpenseResponse,
   AddDebtResponse,
   AddParticipantResponse,
   DeleteActivityResponse,
@@ -492,37 +500,183 @@ export function onAddActivityFail(): Action<AddActivityResponse> {
 }
 
 export function onAddExpenseRequest(
-  userId: string,
-  activityName: string,
+  token: Token,
   description: string,
-  category: string,
-  totalPrice: string
+  total: number,
+  paid_at: number,
+  participants: Array<Participant>,
+  group?: string,
+  notes?: string,
 ): Action<AddExpenseRequest> {
   return {
     type: types.ADD_EXPENSE_REQUEST,
     payload: {
-      userId: userId,
-      activityName: activityName,
+      token: token,
       description: description,
-      category: category,
-      totalPrice: totalPrice,
+      total: total,
+      paid_at: paid_at,
+      group: group,
+      notes: notes,
+      participants: participants,
+    }
+  };
+}
+
+export function onAddExpenseResponse(response: Response<AddExpense>): Action<Response<AddExpense>> {
+  return {
+    type: types.ADD_EXPENSE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onAddExpenseFail(): Action<Response<AddExpense>> {
+  return {
+    type: types.ADD_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
     },
   };
 }
 
-export function onAddExpenseResponse(response: AddExpenseResponse): Action<AddExpenseResponse> {
+export function onGetExpensesRequest(
+  token: Token,
+): Action<GetExpensesRequest> {
   return {
-    type: types.ADD_EXPENSE_RESPONSE,
-    payload: response,
+    type: types.GET_EXPENSES_REQUEST,
+    payload: {
+      token: token,
+    }
   };
 }
 
-export function onAddExpenseFail(): Action<AddExpenseResponse> {
+export function onGetExpensesResponse(response: Response<GetExpenses>): Action<Response<GetExpenses>> {
   return {
-    type: types.ADD_EXPENSE_FAIL,
+    type: types.GET_EXPENSES_RESPONSE,
     payload: {
-      id: "-1",
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetExpensesFail(): Action<Response<GetExpenses>> {
+  return {
+    type: types.GET_EXPENSES_FAIL,
+    payload: {
       success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetExpenseRequest(
+  token: Token,
+  id: string,
+): Action<GetExpenseRequest> {
+  return {
+    type: types.GET_EXPENSE_REQUEST,
+    payload: {
+      token: token,
+      id: id,
+    }
+  };
+}
+
+export function onGetExpenseResponse(response: Response<GetExpense>): Action<Response<GetExpense>> {
+  return {
+    type: types.GET_EXPENSE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetExpenseFail(): Action<Response<GetExpense>> {
+  return {
+    type: types.GET_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onAddCommentRequest(
+  token: Token,
+  text: string,
+  created_at: number,
+  id: string,
+): Action<AddCommentRequest> {
+  return {
+    type: types.ADD_COMMENT_REQUEST,
+    payload: {
+      token: token,
+      text: text,
+      created_at: created_at,
+      id: id,
+    }
+  };
+}
+
+export function onAddCommentResponse(response: Response<AddComment>): Action<Response<AddComment>> {
+  return {
+    type: types.ADD_COMMENT_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onAddCommentFail(): Action<Response<AddComment>> {
+  return {
+    type: types.ADD_COMMENT_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetCommentRequest(
+  token: Token,
+  id: string,
+): Action<GetCommentRequest> {
+  return {
+    type: types.GET_COMMENT_REQUEST,
+    payload: {
+      token: token,
+      id: id,
+    }
+  };
+}
+
+export function onGetCommentResponse(response: Response<GetComment>): Action<Response<GetComment>> {
+  return {
+    type: types.GET_COMMENT_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    }
+  };
+}
+
+export function onGetCommentFail(): Action<Response<GetComment>> {
+  return {
+    type: types.GET_COMMENT_FAIL,
+    payload: {
+      success: false,
+      status: -1,
     },
   };
 }

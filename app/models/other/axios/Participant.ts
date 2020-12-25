@@ -1,4 +1,5 @@
 export interface Participant {
+  name?: string;
   id: string;
   amount: number;
   role: PRole;
