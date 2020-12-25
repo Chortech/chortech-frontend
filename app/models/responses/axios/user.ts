@@ -1,4 +1,5 @@
 import { Friend } from "../../other/axios/Friend";
+import { Participant } from "../../other/axios/Participant";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -28,4 +29,14 @@ export interface EditProfileResponse {
   email?: string;
   phone?: string;
   picture: string;
+}
+
+export interface AddExpense {
+  id: string;
+  description: string;
+  total: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+  participants: Array<Participant>
 }
