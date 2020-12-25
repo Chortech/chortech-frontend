@@ -7,10 +7,11 @@ import {
   GetUserFriendsRequest,
   GetUserProfileRequest,
   InviteFriendsRequest,
+  AddExpenseRequest,
+  GetExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
-  AddExpenseRequest,
   AddDebtRequest,
   AddParticipantRequest,
   DeleteActivityRequest,
@@ -31,10 +32,11 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  AddExpense,
+  GetExpense,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
-  AddExpenseResponse,
   AddDebtResponse,
   AddParticipantResponse,
   DeleteExpenseResponse,
@@ -272,12 +274,36 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.ADD_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<AddExpense>>) {
+    state.activities.push({
+      id: action.payload.response?.id,
+      description: action.payload.response?.description,
+      total: action.payload.response?.total,
+      paid_at: action.payload.response?.paid_at,
+      group: action.payload.response?.group,
+      notes: action.payload.response?.notes,
+      participants: action.payload.response?.participants
+    })
     return state;
   },
-  [types.ADD_EXPENSE_RESPONSE](state: IUserState, action: Action<AddExpenseResponse>) {
+  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>) {
     return state;
   },
-  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<AddExpenseResponse>) {
+  [types.GET_EXPENSE_REQUEST](state: IUserState, action: Action<GetExpenseRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<GetExpense>>) {
+    return state;
+  },
+  [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<GetExpense>>) {
     return state;
   },
   [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>) {
