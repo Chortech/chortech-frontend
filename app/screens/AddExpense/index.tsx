@@ -24,6 +24,8 @@ import { Searchbar } from "react-native-paper";
 import SelectableItem from "../../components/SelectableItem";
 import { log } from "../../utils/logger";
 import { text } from "@fortawesome/fontawesome-svg-core";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 type Item = {
   id: string;
@@ -44,6 +46,14 @@ const AddExpense: React.FC = (): JSX.Element => {
     expenseAmount: "",
     isValidExpenseAmount: true,
   });
+  const categories = [{id:"0", name: "مواد غذایی", icon: "utensils"}, 
+                      {id:"1", name: "پوشاک", icon: "tshirt"}, 
+                      {id:"2", name: "هدیه", icon: "gift"},
+                      {id:"3", name: "سلامت", icon: "heartbeat"},
+                      {id:"4", name: "لوازم تحریر", icon: "utensils"},
+                      {id:"5", name: "ورزش", icon: "utensils"},
+                      {id:"6", name: "سفر", icon: "utensils"},
+                      {id:"7", name: "کالای دیجیتال", icon: "utensils"}]
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
   const [items, setItems] = useState<Array<Item>>([]);
   const selectedItems = useRef<Array<Item>>([]);
@@ -164,6 +174,18 @@ const AddExpense: React.FC = (): JSX.Element => {
       selected={item.selected}
       onPressItem={() => onSelectItem(item)}
     />
+  );
+
+  const renderCategory: any = ({ item }) => (
+    <>
+    <SelectableItem
+      id={item.id}
+      Name={item.name}
+      selected={item.selected}
+      onPressItem={() => onSelectItem(item)}
+    />
+      <FontAwesomeIcon icon={item.icon} size={20} style={{position: "relative", top:20}}/>
+    </>
   );
 
   const renderFooterComponent = (): JSX.Element => {
@@ -292,6 +314,14 @@ const AddExpense: React.FC = (): JSX.Element => {
                 style={styles.textInput}
                 keyboardType="numeric"
                 onChangeText={setExpenseAmount}
+              />
+              <FlatList
+                horizontal={true}
+                data={categories}
+                renderItem={renderCategory}
+                extraData={renderFlatList}
+                scrollEnabled={true}
+                keyExtractor={(item, index) => item.id}
               />
               <TouchableOpacity onPress={showModal} style={styles.showModalButton}>
                 <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
