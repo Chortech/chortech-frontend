@@ -1,6 +1,7 @@
 import { InputType } from "../../../utils/inputTypes";
 import { Participant } from "../../other/axios/Participant";
 import { Token } from "../../other/axios/Token";
+import { You } from "../../other/axios/You";
 
 export interface GetUserFriendsRequest {
   token: Token;
@@ -41,5 +42,9 @@ export interface AddExpenseRequest {
   paid_at: number;
   group: string;
   notes: string;
-  participants: Array<Participant>
+  participants: Array<Participant>;
+}
+
+export interface GetExpenseRequest {
+  token: Token;
 }
