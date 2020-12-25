@@ -9,9 +9,6 @@ import {
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
-  GetExpense,
-  AddExpense,
-  AddComment,
 } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
@@ -312,105 +309,6 @@ export class UserAPI implements userApi {
       }
     }
 
-    return result;
-  }
-
-  async getExpense(): Promise<Response<GetExpense>> {
-    let result: Response<GetExpense> = {
-      success: false,
-      status: -1,
-    };
-
-    try {
-      let response: AxiosResponse = await this.client.get("/expenses");
-
-      if (response.status == 200) {
-        result = {
-          success: true,
-          status: response.status,
-          response: {
-           
-          },
-        };
-      } else {
-        result.status = response.status;
-      }
-      
-    } catch (e) {
-      if (e.isAxiosError) {
-        const error: AxiosError = e as AxiosError;
-        result.status = error.response?.status != undefined ? error.response?.status : -1;
-      } else {
-        log("get expenses api error");
-        log(e.message);
-      }
-    }
-    return result;
-  }
-
-  async addExpense(description, total, paid_at, group, notes, participants): Promise<Response<AddExpense>> {
-    let result: Response<AddExpense> = {
-      success: false,
-      status: -1,
-    };
-
-    try {
-      let response: AxiosResponse = await this.client.post("/expenses");
-
-      if (response.status == 200) {
-        result = {
-          success: true,
-          status: response.status,
-          response: {
-
-          },
-        };
-      } else {
-        result.status = response.status;
-      }
-
-    } catch (e) {
-      if (e.isAxiosError) {
-        const error: AxiosError = e as AxiosError;
-        result.status = error.response?.status != undefined ? error.response?.status : -1;
-      } else {
-        log("add expenses api error");
-        log(e.message);
-      }
-    }
-    return result;
-  }
-
-  async addComment(text, created_at): Promise<Response<AddComment>> {
-    let result: Response<AddComment> = {
-      success: false,
-      status: -1,
-    };
-
-    try {
-      let response: AxiosResponse = await this.client.post(`/expenses/${ExpenseId}/comments`);
-
-      if (response.status == 200) {
-        result = {
-          success: true,
-          status: response.status,
-          response: {
-
-          },
-        };
-      } else {
-        result.status = response.status;
-      }
-
-    } catch (e) {
-      if (e.isAxiosError) {
-        const error: AxiosError = e as AxiosError;
-        result.status = error.response?.status != undefined ? error.response?.status : -1;
-      } else {
-        log("add comment api error");
-        log(e.message);
-      }
-    }
     return result;
   }
 }
