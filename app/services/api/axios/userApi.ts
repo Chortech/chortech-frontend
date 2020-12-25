@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_USER_URL } from "../../../../local_env_vars";
 import { userApi } from "../../../models/api/axios-api/user";
-import { Invitee, InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
+import { InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
 import {
@@ -9,6 +9,7 @@ import {
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
+  GetExpense,
 } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
@@ -309,6 +310,39 @@ export class UserAPI implements userApi {
       }
     }
 
+    return result;
+  }
+
+  async getExpense(): Promise<Response<GetExpense>> {
+    let result: Response<GetExpense> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get("/expenses");
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: {
+            friends: response.data.friends,
+          },
+        };
+      } else {
+        result.status = response.status;
+      }
+      
+    } catch (e) {
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+      } else {
+        log("get expenses api error");
+        log(e.message);
+      }
+    }
     return result;
   }
 }
