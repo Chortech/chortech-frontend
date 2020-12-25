@@ -45,15 +45,15 @@ const AddExpense: React.FC = (): JSX.Element => {
     activityName: "",
     expenseAmount: "",
     isValidExpenseAmount: true,
+    categories: [{id:"0", selected:false,  name: "مواد غذایی", icon: "utensils"}, 
+                    {id:"1", selected:false,  name: "پوشاک", icon: "tshirt"}, 
+                    {id:"2", selected:false,  name: "هدیه", icon: "gift"},
+                    {id:"3", selected:false,  name: "سلامت", icon: "heartbeat"},
+                    {id:"4", selected:false,  name: "لوازم تحریر", icon: "pencil-ruler"},
+                    {id:"5", selected:false,  name: "ورزش", icon: "dumbbell"},
+                    {id:"6", selected:false,  name: "سفر", icon: "suitcase-rolling"},
+                    {id:"7", selected:false,  name: "کالای دیجیتال", icon: "laptop"}]
   });
-  const categories = [{id:"0", name: "مواد غذایی", icon: "utensils"}, 
-                      {id:"1", name: "پوشاک", icon: "tshirt"}, 
-                      {id:"2", name: "هدیه", icon: "gift"},
-                      {id:"3", name: "سلامت", icon: "heartbeat"},
-                      {id:"4", name: "لوازم تحریر", icon: "utensils"},
-                      {id:"5", name: "ورزش", icon: "utensils"},
-                      {id:"6", name: "سفر", icon: "utensils"},
-                      {id:"7", name: "کالای دیجیتال", icon: "utensils"}]
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
   const [items, setItems] = useState<Array<Item>>([]);
   const selectedItems = useRef<Array<Item>>([]);
@@ -182,7 +182,10 @@ const AddExpense: React.FC = (): JSX.Element => {
       id={item.id}
       Name={item.name}
       selected={item.selected}
-      onPressItem={() => onSelectItem(item)}
+      onPressItem={() => {data.categories[item.id].selected = !data.categories[item.id].selected;
+        setRenderFlatList(!renderFlatList);
+      }
+    }
     />
       <FontAwesomeIcon icon={item.icon} size={20} style={{position: "relative", top:20}}/>
     </>
@@ -251,7 +254,6 @@ const AddExpense: React.FC = (): JSX.Element => {
       ToastAndroid.show("مقادیر وارد شده با مبلغ کل برابر نیست", ToastAndroid.SHORT);
     }
   };
-
   return (
     <>
       {loading ? (
@@ -317,11 +319,11 @@ const AddExpense: React.FC = (): JSX.Element => {
               />
               <FlatList
                 horizontal={true}
-                data={categories}
+                data={data.categories}
                 renderItem={renderCategory}
                 extraData={renderFlatList}
                 scrollEnabled={true}
-                keyExtractor={(item, index) => item.id}
+                keyExtractor={item => item.id}
               />
               <TouchableOpacity onPress={showModal} style={styles.showModalButton}>
                 <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
