@@ -85,6 +85,7 @@ const initialState: IUserState = {
   comments: [],
   myCreditCards: [],
   otherCreditCards: [],
+  imageUri: "",
 };
 
 export const userReducer = createReducer(initialState, {

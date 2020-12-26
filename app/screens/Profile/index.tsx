@@ -12,9 +12,18 @@ import { styles } from "./styles";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
 import { InputType } from "../../utils/inputTypes";
+import * as ImagePicker from 'react-native-image-picker';
 
 type IState = {
   userReducer: IUserState;
+};
+
+const options = {
+  title: 'Select Avatar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
 };
 
 const Profile: React.FC = (): JSX.Element => {
@@ -23,7 +32,9 @@ const Profile: React.FC = (): JSX.Element => {
   const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
-
+  const [data, setData] = useState({
+    imageUri: user.imageUri,
+  });
   const fetchUser = () => {
     if (validateToken(loggedInUser.token)) {
       dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
@@ -41,6 +52,20 @@ const Profile: React.FC = (): JSX.Element => {
 
   const onUploadImage = () => {
     dispatch(userActions.onUploadImageRequest(loggedInUser.token))
+  const onPressUpdateImage = () => {
+    let uri = "../../assets/images/friend-image.jpg";
+    ImagePicker.launchImageLibrary(options,
+      (response) => {
+        uri = response.uri;
+        setData({
+          ...data,
+          imageUri: uri,
+        })
+    user={
+      ...user,
+      imageUri: data.imageUri,
+    }
+    dispatch(userActions.onUpdateUserRequest(user));})
   }
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");

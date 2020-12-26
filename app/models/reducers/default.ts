@@ -23,4 +23,6 @@ export interface IUserState {
   comments: Array<Comment>;
   myCreditCards: Array<CreditCard>;
   otherCreditCards: Array<CreditCard>;
+  activities: Array<Activity>;
+  imageUri: string;
 }

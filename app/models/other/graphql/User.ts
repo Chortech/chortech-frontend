@@ -13,4 +13,5 @@ export type User = {
   friends: Array<Friend>;
   groups: Array<Group>;
   activities: Array<Activity>;
+  imageUri: string;
 };
