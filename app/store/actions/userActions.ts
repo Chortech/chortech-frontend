@@ -13,6 +13,8 @@ import {
   AddCommentRequest,
   GetExpenseRequest,
   GetCommentRequest,
+  UploadImageRequest,
+  EditProfileRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -42,6 +44,8 @@ import {
   GetExpenses,
   GetExpense,
   GetComment,
+  UploadImageResponse,
+  EditProfileResponse,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -62,6 +66,43 @@ import {
 import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
 import { InputType } from "../../utils/inputTypes";
 import * as types from "./types";
+
+export function onEditProfileRequest(response): Action<EditProfileRequest>{
+  return{
+    type: types.EDIT_PROFILE_REQUEST,
+    payload:{
+      picture: response.url,
+      newName: response.key,
+    },
+  };
+}
+
+export function onEditProfileResponse(
+  response: Response<EditProfileResponse>
+): Action<Response<EditProfileResponse>> {
+  return {
+    type: types.EDIT_PROFILE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onUploadImageRequest(token: Token): Action<UploadImageRequest>{
+  return{
+    type: types.UPLOAD_IMAGE_REQUEST,
+    payload:{
+      token: token,
+    },
+  };
+}
+
+export function onUploadImageResponse(
+  response: Response<UploadImageResponse>
+): Action<Response<UploadImageResponse>> {
+  return {
+    type: types.UPLOAD_IMAGE_RESPONSE,
+    payload: response,
+  };
+}
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
   return {

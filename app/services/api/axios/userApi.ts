@@ -9,6 +9,7 @@ import {
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
+  UploadImageResponse,
 } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
@@ -313,4 +314,73 @@ export class UserAPI implements userApi {
 
     return result;
   }
+  async changeImage(image: string): Promise<Response<UploadImageResponse>> {
+    let result: Response<UploadImageResponse> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let contentType: String=image;
+      let response: AxiosResponse = await this.client.get("/image/upload", { headers:{
+        "X-Content-Type": contentType} 
+      });
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("get upload image key");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        console.log(e);
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+      } else {
+        log("upload image api error");
+        log(e.message);
+      }
+    }
+
+    return result;
+  }
+  // async uploadImage(data): Promise<Response<UploadImageResponse>> {
+  //   let result: Response<UploadImageResponse> = {
+  //     success: false,
+  //     status: -1,
+  //   };
+
+  //   try {
+  //     let response: AxiosResponse = await this.client.put("/profile/edit", {picture: data.picture,
+  //       newName:"test",
+  //     } );
+  //     if (response.status == 200) {
+  //       result = {
+  //         success: true,
+  //         status: response.status,
+  //         response: response.data,
+  //       };
+  //     } else {
+  //       result.status = response.status;
+  //     }
+  //     log("upload image");
+  //     log(result);
+  //   } catch (e) {
+  //     if (e.isAxiosError) {
+  //       console.log(e);
+  //       const error: AxiosError = e as AxiosError;
+  //       result.status = error.response?.status != undefined ? error.response?.status : -1;
+  //     } else {
+  //       log("upload image error");
+  //       log(e.message);
+  //     }
+  //   }
+
+  //   return result;
+  // }
 }

@@ -39,6 +39,9 @@ const Profile: React.FC = (): JSX.Element => {
     }
   };
 
+  const onUploadImage = () => {
+    dispatch(userActions.onUploadImageRequest(loggedInUser.token))
+  }
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
   const onLogout = () => {
@@ -63,10 +66,12 @@ const Profile: React.FC = (): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
-            <Image
-              style={styles.profileImage}
-              source={require("../../assets/images/friend-image.jpg")}
-            />
+            <TouchableOpacity onPress={onUploadImage}>
+              <Image
+                style={styles.profileImage}
+                source={require("../../assets/images/friend-image.jpg")}
+              />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
               <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
             </TouchableOpacity>

@@ -29,6 +29,10 @@ export interface GetUserProfileRequest {
   token: Token;
 }
 
+export interface UploadImageRequest {
+  token: Token;
+}
+
 export interface EditProfileRequest {
   picture: string;
   newName: string;

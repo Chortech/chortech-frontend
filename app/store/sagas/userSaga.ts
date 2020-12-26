@@ -4,6 +4,7 @@ import { Action } from "../../models/actions/action";
 import {
   AddFriendRequest,
   DeleteFriendRequest,
+  EditProfileRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
   InviteFriendsRequest,
@@ -12,6 +13,7 @@ import {
   AddCommentRequest,
   GetExpenseRequest,
   GetCommentRequest,
+  UploadImageRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -35,6 +37,7 @@ import {
   AddFriend,
   DeleteFriend,
   GetUserFriends,
+  UploadImageResponse,
   UserProfileResponse,
   AddExpense,
   GetExpense,
@@ -66,6 +69,61 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as userActions from "../actions/userActions";
+
+// export function* EditProfileAsync(action: Action<EditProfileRequest>) {
+//   // yield put(userActions.onLoadingEnable());
+//   const token = action.payload.token;
+//   let response: Response<UploadImageResponse> = {
+//     success: false,
+//     status: -1,
+//   };
+//   const api: UserAPI = new UserAPI(token);
+//   response = yield api.changeImage("image/jpeg");
+
+//   // yield put(userActions.onLoadingDisable());
+
+//   if (response.success) {
+//     yield put(userActions.onUploadImageResponse(response));
+//     yield put(userActions.onEditProfileRequest(response));
+//   } else {
+//     console.log("fail");
+//     yield put(userActions.onGetUserProfileFail());
+//     if (response.status == 400) {
+//       ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+//     } else {
+//       console.log(response);
+//       ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+//     }
+//   }
+// }
+
+export function* UploadImageAsync(action: Action<UploadImageRequest>) {
+  // yield put(userActions.onLoadingEnable());
+  const token = action.payload.token;
+  let response: Response<UploadImageResponse> = {
+    success: false,
+    status: -1,
+  };
+  const api: UserAPI = new UserAPI(token);
+  response = yield api.changeImage("image/jpeg");
+
+  // yield put(userActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(userActions.onUploadImageResponse(response));
+    // response = yield api.uploadImage(response);
+    // yield put(userActions.onEditProfileRequest(response));
+  } else {
+    console.log("fail");
+    yield put(userActions.onGetUserProfileFail());
+    if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+    } else {
+      console.log(response);
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+}
 
 export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());

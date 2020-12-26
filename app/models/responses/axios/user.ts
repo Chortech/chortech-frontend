@@ -58,3 +58,8 @@ export interface AddComment {
 export interface GetComment {
   comments: Array<Comment>;
 }
+
+export interface UploadImageResponse{
+  key: string;
+  url: string;
+}
