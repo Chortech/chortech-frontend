@@ -12,6 +12,7 @@ import {
   UploadImageResponse,
 } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
+import {Buffer} from "buffer"; 
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
@@ -314,7 +315,7 @@ export class UserAPI implements userApi {
 
     return result;
   }
-  async changeImage(image: string): Promise<Response<UploadImageResponse>> {
+  async changeImage(image: string, data): Promise<Response<UploadImageResponse>> {
     let result: Response<UploadImageResponse> = {
       success: false,
       status: -1,
@@ -325,6 +326,22 @@ export class UserAPI implements userApi {
       let response: AxiosResponse = await this.client.get("/image/upload", { headers:{
         "X-Content-Type": contentType} 
       });
+      // console.log(response.data);
+      const buff = Buffer.from(data.base64, "base64");
+
+    let res = await axios.put(response.data.url, buff, {
+      headers: {
+        "x-amz-acl": "public-read",
+        "Content-Length": data.base64.length,
+        "Content-Type": data.type,
+        "Content-Encoding": "base64",
+      },
+    });
+    // console.log(res);
+    let lastRes: AxiosResponse = await this.client.put("/profile/edit", {
+      picture: response.data.key,
+          } );
+      // console.log(lastRes);
       if (response.status == 200) {
         result = {
           success: true,
@@ -338,49 +355,15 @@ export class UserAPI implements userApi {
       log(result);
     } catch (e) {
       if (e.isAxiosError) {
-        console.log(e);
+        console.log("axios error:", e.response);
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
       } else {
         log("upload image api error");
-        log(e.message);
-      }
-    }
-
-    return result;
-  }
-  async uploadImage(data): Promise<Response<UploadImageResponse>> {
-    let result: Response<UploadImageResponse> = {
-      success: false,
-      status: -1,
-    };
-
-    try {
-      let response: AxiosResponse = await this.client.put("/profile/edit", {picture: data.picture,
-        newName:"test",
-      } );
-      if (response.status == 200) {
-        result = {
-          success: true,
-          status: response.status,
-          response: response.data,
-        };
-      } else {
-        result.status = response.status;
-      }
-      log("upload image");
-      log(result);
-    } catch (e) {
-      if (e.isAxiosError) {
         console.log(e);
-        const error: AxiosError = e as AxiosError;
-        result.status = error.response?.status != undefined ? error.response?.status : -1;
-      } else {
-        log("upload image error");
-        log(e.message);
+        console.log("server error:", e.message);
       }
     }
-
     return result;
   }
 }

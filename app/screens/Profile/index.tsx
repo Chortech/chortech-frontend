@@ -24,11 +24,12 @@ const options = {
     skipBackup: true,
     path: 'images',
   },
+  includeBase64: true,
 };
 
 const Profile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const user: IUserState = useSelector((state: IState) => state.userReducer);
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
@@ -50,8 +51,6 @@ const Profile: React.FC = (): JSX.Element => {
     }
   };
 
-  const onUploadImage = () => {
-    dispatch(userActions.onUploadImageRequest(loggedInUser.token))
   const onPressUpdateImage = () => {
     let uri = "../../assets/images/friend-image.jpg";
     ImagePicker.launchImageLibrary(options,
@@ -65,7 +64,21 @@ const Profile: React.FC = (): JSX.Element => {
       ...user,
       imageUri: data.imageUri,
     }
-    dispatch(userActions.onUpdateUserRequest(user));})
+    if (validateToken(loggedInUser.token)) {
+      console.log("hmmm");
+      dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
+    } else {
+      console.log("getting new token");
+      dispatch(
+        authActions.onLoginRequest(
+          loggedInUser.email,
+          loggedInUser.phone,
+          loggedInUser.password,
+          loggedInUser.authInputType
+        )
+      );
+    }
+  })
   }
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
@@ -91,10 +104,10 @@ const Profile: React.FC = (): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={onUploadImage}>
+            <TouchableOpacity onPress={onPressUpdateImage}>
               <Image
                 style={styles.profileImage}
-                source={require("../../assets/images/friend-image.jpg")}
+                source={data.imageUri && data.imageUri!==""?{uri: data.imageUri}: require("../../assets/images/friend-image.jpg")}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
@@ -137,5 +150,4 @@ const Profile: React.FC = (): JSX.Element => {
     </>
   );
 };
-
 export default Profile;

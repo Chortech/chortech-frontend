@@ -105,7 +105,7 @@ export function* UploadImageAsync(action: Action<UploadImageRequest>) {
     status: -1,
   };
   const api: UserAPI = new UserAPI(token);
-  response = yield api.changeImage("image/jpeg");
+  response = yield api.changeImage("image/jpeg", action.payload.data);
 
   // yield put(userActions.onLoadingDisable());
 

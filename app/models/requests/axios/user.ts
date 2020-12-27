@@ -31,6 +31,7 @@ export interface GetUserProfileRequest {
 
 export interface UploadImageRequest {
   token: Token;
+  data: any;
 }
 
 export interface EditProfileRequest {

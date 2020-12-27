@@ -86,11 +86,12 @@ export function onEditProfileResponse(
   };
 }
 
-export function onUploadImageRequest(token: Token): Action<UploadImageRequest>{
+export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest>{
   return{
     type: types.UPLOAD_IMAGE_REQUEST,
     payload:{
       token: token,
+      data: response,
     },
   };
 }
