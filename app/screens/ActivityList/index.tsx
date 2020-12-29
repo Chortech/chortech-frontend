@@ -4,7 +4,7 @@ import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import NavigationService from "../../navigation/navigationService";
-import * as userActions from "../../store/actions/userActions";
+import * as expenseActions from "../../store/actions/expenseActions";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
 import styles from "./styles";
@@ -27,7 +27,7 @@ const ActivityList: React.FC = () => {
   const fetchActivities = (): void => {
     if (validateToken(loggedInUser.token)) {
       log("valid token in screen");
-      dispatch(userActions.onGetUserActivitiesRequest(loggedInUser.token));
+      dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
     }
   };
 

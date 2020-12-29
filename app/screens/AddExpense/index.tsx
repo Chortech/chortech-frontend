@@ -19,6 +19,8 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import * as userActions from "../../store/actions/userActions";
+import * as friendActions from "../../store/actions/friendActions";
+import * as expenseActions from "../../store/actions/expenseActions";
 import { Api } from "../../services/api/graphQL/graphqlApi";
 import { Searchbar } from "react-native-paper";
 import SelectableItem from "../../components/SelectableItem";
@@ -100,7 +102,7 @@ const AddExpense: React.FC = (): JSX.Element => {
       }
 
       dispatch(
-        userActions.onAddExpenseRequest(
+        expenseActions.onAddExpenseRequest(
           loggedInUser.token,
           data.description,
           total,
@@ -113,7 +115,7 @@ const AddExpense: React.FC = (): JSX.Element => {
 
   const fetchItems = () => {
     dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
-    dispatch(userActions.onGetUserFriendsRequest(loggedInUser.token));
+    dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
     // dispatch(userActions.onGetUserGroupsRequest(loggedInUserId));
     let items: Array<Item> = fetchedItems;
     friends.forEach((friend) => {

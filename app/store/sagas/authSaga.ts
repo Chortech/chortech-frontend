@@ -1,11 +1,12 @@
-import { call, put } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import { ToastAndroid } from "react-native";
-
 import { Action } from "../../models/actions/action";
 import { navigationRef } from "../../navigation/navigationService";
-
 import * as authActions from "../actions/authActions";
 import * as userActions from "../actions/userActions";
+import * as groupActions from "../actions/groupActions";
+import * as friendActions from "../actions/friendActions";
+import * as expenseActions from "../actions/expenseActions";
 import {
   ChangeEmailOrPhoneRequest,
   ChangePasswordRequest,
@@ -22,13 +23,6 @@ import {
 } from "../../models/responses/axios/auth";
 import { InputType } from "../../utils/inputTypes";
 import { AuthenticationApi, AuthAPI } from "../../services/api/axios/authApi";
-import { log } from "../../utils/logger";
-import { VerificationAPI } from "../../services/api/axios/verificationApi";
-import {
-  CancelCodeRequest,
-  GenerateCodeRequest,
-  VerifyCodeRequest,
-} from "../../models/requests/axios/verification";
 import configureStore from "..";
 import { IUserState } from "../../models/reducers/default";
 
@@ -49,8 +43,8 @@ export function* loginAsync(action: Action<LoginRequest>) {
   if (response.success) {
     yield put(authActions.onLoginResponse(response));
     yield put(userActions.onGetUserProfileRequest(response.response!.token));
-    yield put(userActions.onGetUserFriendsRequest(response.response!.token));
-    yield put(userActions.onGetUserActivitiesRequest(response.response!.token));
+    yield put(friendActions.onGetUserFriendsRequest(response.response!.token));
+    yield put(expenseActions.onGetUserExpensesRequest(response.response!.token));
   } else {
     yield put(authActions.onLoginFail());
     if (response.status == -2) {
@@ -95,118 +89,6 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
-  }
-}
-
-export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
-  yield put(authActions.onLoadingEnable());
-  const { token, name, email, phone, password, inputType, parentScreen } = action.payload;
-
-  yield call(cancelCodeAsync, authActions.onCancelCodeRequest(email, phone, inputType));
-
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.generateCodeRequestByEmail(email);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.generateCodeRequestByPhone(phone);
-  }
-
-  if (response.success) {
-    yield put(authActions.onGenerateCodeResponse(response));
-    ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
-  } else {
-    yield put(authActions.onGenerateCodeFail());
-    if (response.status == -2) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
-    } else if (response.status == -3) {
-      ToastAndroid.show("اطلاعات کاربر تایید شده‌است", ToastAndroid.SHORT);
-      if (parentScreen == "AccountIdentification") {
-        navigationRef.current?.navigate("ResetPassword", {
-          email: email,
-          phone: phone,
-          inputType: inputType,
-          parentScreen: parentScreen,
-        });
-      } else if (parentScreen == "EditProfile") {
-        yield put(
-          authActions.onChangeEmailOrPhoneRequest(token!, email, phone, password!, inputType)
-        );
-      } else {
-        yield put(authActions.onSignUpRequest(name!, email, phone, password!, inputType));
-      }
-    } else if (response.status == 400) {
-      ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
-    } else if (response.status == 409) {
-      ToastAndroid.show("اطلاعات کاربر تایید شده‌است", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-  yield put(authActions.onLoadingDisable());
-}
-
-export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
-  const { token, email, phone, code, inputType, parentScreen, name, password } = action.payload;
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.verifyCodeRequestByEmail(email, code);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.verifyCodeRequestByPhone(phone, code);
-  }
-
-  if (response.success) {
-    yield put(authActions.onVerifyCodeResponse(response));
-    if (parentScreen == "AccountIdentification") {
-      navigationRef.current?.navigate("ResetPassword", {
-        email: email,
-        phone: phone,
-        inputType: inputType,
-        parentScreen: parentScreen,
-      });
-    } else if (parentScreen == "EditProfile") {
-      yield put(authActions.onChangeEmailOrPhoneRequest(token!, email, phone, password, inputType));
-    } else {
-      yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
-    }
-  } else {
-    yield put(authActions.onVerifyCodeFail());
-    if (response.status == -3) {
-      ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
-    } else if (response.status == -2) {
-      ToastAndroid.show("خطایی ناشناخته در تایید کد رخ داده‌است", ToastAndroid.SHORT);
-    } else if (response.status == 400) {
-      ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-}
-
-export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
-  const { email, phone, inputType } = action.payload;
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.cancelCodeRequestByEmail(email);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.cancelCodeRequestByPhone(phone);
-  }
-
-  if (response.success) {
-    yield put(authActions.onCancelCodeResponse(response));
-  } else {
-    yield put(authActions.onCancelCodeFail());
   }
 }
 

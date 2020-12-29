@@ -4,7 +4,7 @@ import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "r
 import * as Animatable from "react-native-animatable";
 import GroupItem from "../../components/GroupItem/index";
 import NavigationService from "../../navigation/navigationService";
-import * as userActions from "../../store/actions/userActions";
+import * as groupActions from "../../store/actions/groupActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { error, log, warn } from "../../utils/logger";
@@ -27,7 +27,7 @@ const GroupList: React.FC = () => {
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    // dispatch(userActions.onGetUserRequest(loggedInUser.id));
+    // dispatch(groupActions.onGetUserRequest(loggedInUser.id));
   };
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
-import * as userActions from "../../store/actions/userActions";
+import * as groupActions from "../../store/actions/groupActions";
 import LoadingIndicator from "../Loading";
 
 type IState = {
@@ -25,7 +25,7 @@ const AddGroup: React.FC = (): JSX.Element => {
     if (groupName == "") {
       ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
     } else {
-      dispatch(userActions.onAddGroupRequest(groupName, loggedInUser.id, memberIds));
+      dispatch(groupActions.onAddGroupRequest(groupName, loggedInUser.id, memberIds));
     }
   };
 

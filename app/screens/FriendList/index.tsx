@@ -7,8 +7,7 @@ import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import * as userActions from "../../store/actions/userActions";
-import * as authActions from "../../store/actions/authActions";
+import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
@@ -30,7 +29,7 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const fetchFriends = (): void => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(userActions.onGetUserFriendsRequest(loggedInUser.token));
+      dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
     }
   };
 

@@ -7,7 +7,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as authActions from "../../store/actions/authActions";
+import * as verificationActions from "../../store/actions/verificationActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";
@@ -36,7 +36,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const dispatch = useDispatch();
   const generateCode = () => {
     dispatch(
-      authActions.onGenerateCodeRequest(
+      verificationActions.onGenerateCodeRequest(
         props.email,
         props.phone,
         props.inputType,
@@ -55,7 +55,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const onNextScreen = () => {
     if (data.validCodeLength) {
       dispatch(
-        authActions.onVerifyCodeRequest(
+        verificationActions.onVerifyCodeRequest(
           props.name,
           props.email,
           props.phone,

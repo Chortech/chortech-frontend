@@ -112,7 +112,7 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return state;
   },
-  [types.GET_USER_ACTIVITIES_REQUEST](
+  [types.GET_USER_EXPENSES_REQUEST](
     state: IUserState,
     action: Action<GetUserExpensesRequest>
   ): IUserState {
@@ -121,7 +121,7 @@ export const userReducer = createReducer(initialState, {
       token: action.payload.token,
     };
   },
-  [types.GET_USER_ACTIVITIES_RESPONSE](
+  [types.GET_USER_EXPENSES_RESPONSE](
     state: IUserState,
     action: Action<Response<UserExpenses>>
   ): IUserState {
@@ -130,55 +130,12 @@ export const userReducer = createReducer(initialState, {
       activities: action.payload.response!.expenses,
     };
   },
-  [types.GET_USER_ACTIVITIES_FAIL](
+  [types.GET_USER_EXPENSES_FAIL](
     state: IUserState,
     action: Action<Response<UserExpenses>>
   ): IUserState {
     return state;
   },
-
-  // [types.UPDATE_USER_REQUEST](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
-  //   return {
-  //     id: action.payload.user?.id,
-  //     name: action.payload.user?.name,
-  //     password: action.payload.user?.password,
-  //     email: action.payload.user?.email,
-  //     phone: action.payload.user?.phone,
-  //     credit: action.payload.user?.credit,
-  //     balance: action.payload.user?.balance,
-  //     friends: action.payload.user?.friends,
-  //     groups: action.payload.user?.groups,
-  //     activities: action.payload.user?.activities,
-  //   };
-  // },
-  // [types.UPDATE_USER_RESPONSE](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
-  //   return {
-  //     id: action.payload.user?.id,
-  //     name: action.payload.user?.name,
-  //     password: action.payload.user?.password,
-  //     email: action.payload.user?.email,
-  //     phone: action.payload.user?.phone,
-  //     credit: action.payload.user?.credit,
-  //     balance: action.payload.user?.balance,
-  //     friends: action.payload.user?.friends,
-  //     groups: action.payload.user?.groups,
-  //     activities: action.payload.user?.activities,
-  //   };
-  // },
-  // [types.UPDATE_USER_FAIL](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
-  //   return {
-  //     id: action.payload.user?.id,
-  //     name: action.payload.user?.name,
-  //     password: action.payload.user?.password,
-  //     email: action.payload.user?.email,
-  //     phone: action.payload.user?.phone,
-  //     credit: action.payload.user?.credit,
-  //     balance: action.payload.user?.balance,
-  //     friends: action.payload.user?.friends,
-  //     groups: action.payload.user?.groups,
-  //     activities: action.payload.user?.activities,
-  //   };
-  // },
   [types.ADD_GROUP_REQUEST](state: IUserState, action: Action<AddGroupRequest>): IUserState {
     return state;
   },
@@ -230,12 +187,6 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return state;
   },
-  // [types.GET_USER_GROUPS_REQUEST](state: IUserState, action: Action<GetUserGroupsRequest>): IUserState {
-  //   return {
-  //     ...state,
-  //     userId: action.payload.userId,
-  //   };
-  // },
   [types.GET_USER_GROUPS_RESPONSE](
     state: IUserState,
     action: Action<GetUserGroupsResponse>
@@ -326,19 +277,6 @@ export const userReducer = createReducer(initialState, {
   [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>): IUserState {
-    return state;
-  },
-  [types.ADD_ACTIVITY_RESPONSE](
-    state: IUserState,
-    action: Action<AddActivityResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<AddActivityResponse>): IUserState {
-    return state;
-  },
-
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
     return {
       ...state,
@@ -355,20 +293,26 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
 
-  [types.GET_EXPENSE_REQUEST](state: IUserState, action: Action<GetExpenseRequest>): IUserState {
+  [types.GET_USER_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<GetExpenseRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.GET_EXPENSE_RESPONSE](
+  [types.GET_USER_EXPENSE_RESPONSE](
     state: IUserState,
     action: Action<Response<UserExpense>>
   ): IUserState {
     state.activities.push(action.payload.response!.expense);
     return state;
   },
-  [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<UserExpense>>): IUserState {
+  [types.GET_USER_EXPENSE_FAIL](
+    state: IUserState,
+    action: Action<Response<UserExpense>>
+  ): IUserState {
     return state;
   },
 
@@ -406,34 +350,6 @@ export const userReducer = createReducer(initialState, {
   [types.GET_COMMENT_FAIL](state: IUserState, action: Action<Response<GetComment>>): IUserState {
     return state;
   },
-
-  [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>): IUserState {
-    return state;
-  },
-  [types.ADD_DEBT_RESPONSE](state: IUserState, action: Action<AddDebtResponse>): IUserState {
-    return state;
-  },
-  [types.ADD_DEBT_FAIL](state: IUserState, action: Action<AddDebtResponse>): IUserState {
-    return state;
-  },
-  [types.ADD_PARTICIPANT_REQUEST](
-    state: IUserState,
-    action: Action<AddParticipantRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_PARTICIPANT_RESPONSE](
-    state: IUserState,
-    action: Action<AddParticipantResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_PARTICIPANT_FAIL](
-    state: IUserState,
-    action: Action<AddParticipantResponse>
-  ): IUserState {
-    return state;
-  },
   [types.DELETE_ACTIVITY_REQUEST](
     state: IUserState,
     action: Action<DeleteActivityRequest>
@@ -467,33 +383,6 @@ export const userReducer = createReducer(initialState, {
   [types.DELETE_EXPENSE_FAIL](
     state: IUserState,
     action: Action<DeleteExpenseResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_DEBT_REQUEST](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
-    return state;
-  },
-  [types.DELETE_DEBT_RESPONSE](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
-    return state;
-  },
-  [types.DELETE_DEBT_FAIL](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
-    return state;
-  },
-  [types.DELETE_PARTICIPANT_REQUEST](
-    state: IUserState,
-    action: Action<DeleteParticipantRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_PARTICIPANT_RESPONSE](
-    state: IUserState,
-    action: Action<DeleteParticipantResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_PARTICIPANT_FAIL](
-    state: IUserState,
-    action: Action<DeleteDebtResponse>
   ): IUserState {
     return state;
   },
