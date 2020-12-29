@@ -44,7 +44,7 @@ export interface AddExpenseRequest {
   participants: Array<Participant>;
 }
 
-export interface GetExpensesRequest {
+export interface GetUserExpensesRequest {
   token: Token;
 }
 

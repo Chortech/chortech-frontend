@@ -181,7 +181,7 @@ const ActivityNavigator = () => (
     <LoggedInTab.Screen
       name="AddExpense"
       component={AddExpense}
-      options={{ title: "افزودن فعالیت جدید" }}
+      options={{ title: "افزودن هزینه جدید" }}
     />
     <LoggedInTab.Screen
       name="AddComment"

@@ -8,7 +8,7 @@ import {
   GetUserProfileRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
-  GetExpensesRequest,
+  GetUserExpensesRequest,
   AddCommentRequest,
   GetExpenseRequest,
   GetCommentRequest,
@@ -37,8 +37,8 @@ import {
   UserProfileResponse,
   AddExpense,
   AddComment,
-  GetExpenses,
-  GetExpense,
+  UserExpenses,
+  UserExpense,
   GetComment,
 } from "../../models/responses/axios/user";
 import {
@@ -58,6 +58,7 @@ import {
 } from "../../models/responses/graphql/group";
 import { GetUserActivitiesResponse } from "../../models/responses/graphql/user";
 import { InputType } from "../../utils/inputTypes";
+import { log } from "../../utils/logger";
 import * as types from "../actions/types";
 
 const initialState: IUserState = {
@@ -84,7 +85,10 @@ const initialState: IUserState = {
 };
 
 export const userReducer = createReducer(initialState, {
-  [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
+  [types.GET_USER_PROFILE_REQUEST](
+    state: IUserState,
+    action: Action<GetUserProfileRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
@@ -93,351 +97,423 @@ export const userReducer = createReducer(initialState, {
   [types.GET_USER_PROFILE_RESPONSE](
     state: IUserState,
     action: Action<Response<UserProfileResponse>>
-  ) {
+  ): IUserState {
     return {
       ...state,
-      name: action.payload.response?.name,
-      email: action.payload.response?.email,
-      phone: action.payload.response?.phone,
-      picture: action.payload.response?.picture,
+      name: action.payload.response!.name,
+      email: action.payload.response!.email,
+      phone: action.payload.response!.phone,
+      picture: action.payload.response!.picture,
     };
   },
-  [types.GET_USER_PROFILE_FAIL](state: IUserState, action: Action<Response<UserProfileResponse>>) {
+  [types.GET_USER_PROFILE_FAIL](
+    state: IUserState,
+    action: Action<Response<UserProfileResponse>>
+  ): IUserState {
     return state;
   },
-  [types.GET_USER_ACTIVITIES_REQUEST](state: IUserState, action: Action<GetUserActivitiesRequest>) {
+  [types.GET_USER_ACTIVITIES_REQUEST](
+    state: IUserState,
+    action: Action<GetUserExpensesRequest>
+  ): IUserState {
     return {
       ...state,
-      id: action.payload.userId,
+      token: action.payload.token,
     };
   },
   [types.GET_USER_ACTIVITIES_RESPONSE](
     state: IUserState,
-    action: Action<GetUserActivitiesResponse>
-  ) {
+    action: Action<Response<UserExpenses>>
+  ): IUserState {
     return {
       ...state,
-      id: action.payload.userId,
-      activities: action.payload.activities,
+      activities: action.payload.response!.expenses,
     };
   },
-  [types.GET_USER_ACTIVITIES_FAIL](state: IUserState, action: Action<GetUserActivitiesResponse>) {
+  [types.GET_USER_ACTIVITIES_FAIL](
+    state: IUserState,
+    action: Action<Response<UserExpenses>>
+  ): IUserState {
     return state;
   },
-  [types.UPDATE_USER_REQUEST](state: IUserState, action: Action<UpdateUserRequest>) {
-    return {
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
-    };
-  },
-  [types.UPDATE_USER_RESPONSE](state: IUserState, action: Action<UpdateUserRequest>) {
-    return {
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
-    };
-  },
-  [types.UPDATE_USER_FAIL](state: IUserState, action: Action<UpdateUserRequest>) {
-    return {
-      id: action.payload.user?.id,
-      name: action.payload.user?.name,
-      password: action.payload.user?.password,
-      email: action.payload.user?.email,
-      phone: action.payload.user?.phone,
-      credit: action.payload.user?.credit,
-      balance: action.payload.user?.balance,
-      friends: action.payload.user?.friends,
-      groups: action.payload.user?.groups,
-      activities: action.payload.user?.activities,
-    };
-  },
-  [types.ADD_GROUP_REQUEST](state: IUserState, action: Action<AddGroupRequest>) {
+
+  // [types.UPDATE_USER_REQUEST](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
+  //   return {
+  //     id: action.payload.user?.id,
+  //     name: action.payload.user?.name,
+  //     password: action.payload.user?.password,
+  //     email: action.payload.user?.email,
+  //     phone: action.payload.user?.phone,
+  //     credit: action.payload.user?.credit,
+  //     balance: action.payload.user?.balance,
+  //     friends: action.payload.user?.friends,
+  //     groups: action.payload.user?.groups,
+  //     activities: action.payload.user?.activities,
+  //   };
+  // },
+  // [types.UPDATE_USER_RESPONSE](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
+  //   return {
+  //     id: action.payload.user?.id,
+  //     name: action.payload.user?.name,
+  //     password: action.payload.user?.password,
+  //     email: action.payload.user?.email,
+  //     phone: action.payload.user?.phone,
+  //     credit: action.payload.user?.credit,
+  //     balance: action.payload.user?.balance,
+  //     friends: action.payload.user?.friends,
+  //     groups: action.payload.user?.groups,
+  //     activities: action.payload.user?.activities,
+  //   };
+  // },
+  // [types.UPDATE_USER_FAIL](state: IUserState, action: Action<UpdateUserRequest>): IUserState {
+  //   return {
+  //     id: action.payload.user?.id,
+  //     name: action.payload.user?.name,
+  //     password: action.payload.user?.password,
+  //     email: action.payload.user?.email,
+  //     phone: action.payload.user?.phone,
+  //     credit: action.payload.user?.credit,
+  //     balance: action.payload.user?.balance,
+  //     friends: action.payload.user?.friends,
+  //     groups: action.payload.user?.groups,
+  //     activities: action.payload.user?.activities,
+  //   };
+  // },
+  [types.ADD_GROUP_REQUEST](state: IUserState, action: Action<AddGroupRequest>): IUserState {
     return state;
   },
-  [types.ADD_GROUP_RESPONSE](state: IUserState, action: Action<AddGroupResponse>) {
+  [types.ADD_GROUP_RESPONSE](state: IUserState, action: Action<AddGroupResponse>): IUserState {
     return state;
   },
-  [types.ADD_GROUP_FAIL](state: IUserState, action: Action<AddGroupResponse>) {
+  [types.ADD_GROUP_FAIL](state: IUserState, action: Action<AddGroupResponse>): IUserState {
     return state;
   },
-  [types.UPDATE_GROUP_REQUEST](state: IUserState, action: Action<UpdateGroupRequest>) {
+  [types.UPDATE_GROUP_REQUEST](state: IUserState, action: Action<UpdateGroupRequest>): IUserState {
     return state;
   },
-  [types.UPDATE_GROUP_RESPONSE](state: IUserState, action: Action<UpdateGroupResponse>) {
+  [types.UPDATE_GROUP_RESPONSE](
+    state: IUserState,
+    action: Action<UpdateGroupResponse>
+  ): IUserState {
     return state;
   },
-  [types.UPDATE_GROUP_FAIL](state: IUserState, action: Action<UpdateGroupResponse>) {
+  [types.UPDATE_GROUP_FAIL](state: IUserState, action: Action<UpdateGroupResponse>): IUserState {
     return state;
   },
-  [types.DELETE_GROUP_REQUEST](state: IUserState, action: Action<DeleteGroupRequest>) {
+  [types.DELETE_GROUP_REQUEST](state: IUserState, action: Action<DeleteGroupRequest>): IUserState {
     return state;
   },
-  [types.DELETE_GROUP_RESPONSE](state: IUserState, action: Action<DeleteGroupResponse>) {
+  [types.DELETE_GROUP_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteGroupResponse>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_GROUP_FAIL](state: IUserState, action: Action<DeleteGroupResponse>) {
+  [types.DELETE_GROUP_FAIL](state: IUserState, action: Action<DeleteGroupResponse>): IUserState {
     return state;
   },
-  [types.GET_GROUP_BY_ID_REQUEST](state: IUserState, action: Action<GetGroupByIdRequest>) {
+  [types.GET_GROUP_BY_ID_REQUEST](
+    state: IUserState,
+    action: Action<GetGroupByIdRequest>
+  ): IUserState {
     return state;
   },
-  [types.GET_GROUP_BY_ID_RESPONSE](state: IUserState, action: Action<GetGroupByIdResponse>) {
+  [types.GET_GROUP_BY_ID_RESPONSE](
+    state: IUserState,
+    action: Action<GetGroupByIdResponse>
+  ): IUserState {
     return state;
   },
-  [types.GET_GROUP_BY_ID_FAIL](state: IUserState, action: Action<GetGroupByIdResponse>) {
+  [types.GET_GROUP_BY_ID_FAIL](
+    state: IUserState,
+    action: Action<GetGroupByIdResponse>
+  ): IUserState {
     return state;
   },
-  [types.GET_USER_GROUPS_REQUEST](state: IUserState, action: Action<GetUserGroupsRequest>) {
-    return {
-      ...state,
-      userId: action.payload.userId,
-    };
-  },
-  [types.GET_USER_GROUPS_RESPONSE](state: IUserState, action: Action<GetUserGroupsResponse>) {
+  // [types.GET_USER_GROUPS_REQUEST](state: IUserState, action: Action<GetUserGroupsRequest>): IUserState {
+  //   return {
+  //     ...state,
+  //     userId: action.payload.userId,
+  //   };
+  // },
+  [types.GET_USER_GROUPS_RESPONSE](
+    state: IUserState,
+    action: Action<GetUserGroupsResponse>
+  ): IUserState {
     return {
       ...state,
       groups: action.payload.groups,
     };
   },
-  [types.GET_USER_GROUPS_FAIL](state: IUserState, action: Action<GetUserGroupsResponse>) {
+  [types.GET_USER_GROUPS_FAIL](
+    state: IUserState,
+    action: Action<GetUserGroupsResponse>
+  ): IUserState {
     return {
       ...state,
       groups: action.payload.groups,
     };
   },
-  [types.GET_USER_FRIENDS_REQUEST](state: IUserState, action: Action<GetUserFriendsRequest>) {
+  [types.GET_USER_FRIENDS_REQUEST](
+    state: IUserState,
+    action: Action<GetUserFriendsRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.GET_USER_FRIENDS_RESPONSE](state: IUserState, action: Action<Response<GetUserFriends>>) {
+  [types.GET_USER_FRIENDS_RESPONSE](
+    state: IUserState,
+    action: Action<Response<GetUserFriends>>
+  ): IUserState {
     return {
       ...state,
-      friends: action.payload.response?.friends,
+      friends: action.payload.response!.friends,
     };
   },
-  [types.GET_USER_FRIENDS_FAIL](state: IUserState, action: Action<Response<GetUserFriends>>) {
+  [types.GET_USER_FRIENDS_FAIL](
+    state: IUserState,
+    action: Action<Response<GetUserFriends>>
+  ): IUserState {
     return state;
   },
-  [types.ADD_FRIEND_REQUEST](state: IUserState, action: Action<AddFriendRequest>) {
+  [types.ADD_FRIEND_REQUEST](state: IUserState, action: Action<AddFriendRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.ADD_FRIEND_RESPONSE](state: IUserState, action: Action<Response<AddFriend>>) {
+  [types.ADD_FRIEND_RESPONSE](state: IUserState, action: Action<Response<AddFriend>>): IUserState {
     return {
       ...state,
-      friends: action.payload.response?.friends,
+      friends: action.payload.response!.friends,
     };
   },
-  [types.ADD_FRIEND_FAIL](state: IUserState, action: Action<Response<AddFriend>>) {
+  [types.ADD_FRIEND_FAIL](state: IUserState, action: Action<Response<AddFriend>>): IUserState {
     return state;
   },
-  [types.DELETE_USER_FRIEND_REQUEST](state: IUserState, action: Action<DeleteFriendRequest>) {
+  [types.DELETE_USER_FRIEND_REQUEST](
+    state: IUserState,
+    action: Action<DeleteFriendRequest>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_USER_FRIEND_RESPONSE](state: IUserState, action: Action<Response<DeleteFriend>>) {
+  [types.DELETE_USER_FRIEND_RESPONSE](
+    state: IUserState,
+    action: Action<Response<DeleteFriend>>
+  ): IUserState {
     return {
       ...state,
-      friends: action.payload.response?.friends,
+      friends: action.payload.response!.friends,
     };
   },
-  [types.DELETE_USER_FRIEND_FAIL](state: IUserState, action: Action<Response<DeleteFriend>>) {
+  [types.DELETE_USER_FRIEND_FAIL](
+    state: IUserState,
+    action: Action<Response<DeleteFriend>>
+  ): IUserState {
     return state;
   },
-  [types.INVITE_FRIEND_REQUEST](state: IUserState, action: Action<InviteFriendsRequest>) {
+  [types.INVITE_FRIEND_REQUEST](
+    state: IUserState,
+    action: Action<InviteFriendsRequest>
+  ): IUserState {
     return state;
   },
-  [types.INVITE_FRIEND_RESPONSE](state: IUserState, action: Action<Response<null>>) {
+  [types.INVITE_FRIEND_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>) {
+  [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>) {
+  [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>): IUserState {
     return state;
   },
-  [types.ADD_ACTIVITY_RESPONSE](state: IUserState, action: Action<AddActivityResponse>) {
+  [types.ADD_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<AddActivityResponse>
+  ): IUserState {
     return state;
   },
-  [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<AddActivityResponse>) {
+  [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<AddActivityResponse>): IUserState {
     return state;
   },
 
-  [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>) {
+  [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.ADD_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<AddExpense>>) {
-    state.activities.push({
-      id: action.payload.response!.id,
-      description: action.payload.response!.description,
-      total: action.payload.response!.total,
-      paid_at: action.payload.response!.paid_at,
-      group: action.payload.response?.group,
-      notes: action.payload.response?.notes,
-      participants: action.payload.response!.participants
-    })
+  [types.ADD_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddExpense>>
+  ): IUserState {
     return state;
   },
-  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>) {
+  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>): IUserState {
     return state;
   },
 
-  [types.GET_EXPENSES_REQUEST](state: IUserState, action: Action<GetExpensesRequest>) {
+  [types.GET_EXPENSE_REQUEST](state: IUserState, action: Action<GetExpenseRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.GET_EXPENSES_RESPONSE](state: IUserState, action: Action<Response<GetExpenses>>) {
-    return {
-      ...state,
-      activities: action.payload.response?.expenses,
-    }; 
+  [types.GET_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserExpense>>
+  ): IUserState {
+    state.activities.push(action.payload.response!.expense);
+    return state;
   },
-  [types.GET_EXPENSES_FAIL](state: IUserState, action: Action<Response<GetExpenses>>) {
+  [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<UserExpense>>): IUserState {
     return state;
   },
 
-  [types.GET_EXPENSE_REQUEST](state: IUserState, action: Action<GetExpenseRequest>) {
+  [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.GET_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<GetExpense>>) {
-    return {
-      ...state,
-      activities: action.payload.response?.expense
-    }  
+  [types.ADD_COMMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddComment>>
+  ): IUserState {
+    return state;
   },
-  [types.GET_EXPENSE_FAIL](state: IUserState, action: Action<Response<GetExpense>>) {
+  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<AddComment>>): IUserState {
     return state;
   },
 
-  [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>) {
+  [types.GET_COMMENT_REQUEST](state: IUserState, action: Action<GetCommentRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.ADD_COMMENT_RESPONSE](state: IUserState, action: Action<Response<AddComment>>) {
-    return state;
-  },
-  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<AddComment>>) {
-    return state;
-  },
-
-  [types.GET_COMMENT_REQUEST](state: IUserState, action: Action<GetCommentRequest>) {
+  [types.GET_COMMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<GetComment>>
+  ): IUserState {
     return {
       ...state,
-      token: action.payload.token,
+      comments: action.payload.response!.comments,
     };
   },
-  [types.GET_COMMENT_RESPONSE](state: IUserState, action: Action<Response<GetComment>>) {
-    return {
-      ...state,
-      comments: action.payload.response?.comments,
-    };   
-  },
-  [types.GET_COMMENT_FAIL](state: IUserState, action: Action<Response<GetComment>>) {
+  [types.GET_COMMENT_FAIL](state: IUserState, action: Action<Response<GetComment>>): IUserState {
     return state;
   },
 
-  [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>) {
+  [types.ADD_DEBT_REQUEST](state: IUserState, action: Action<AddDebtRequest>): IUserState {
     return state;
   },
-  [types.ADD_DEBT_RESPONSE](state: IUserState, action: Action<AddDebtResponse>) {
+  [types.ADD_DEBT_RESPONSE](state: IUserState, action: Action<AddDebtResponse>): IUserState {
     return state;
   },
-  [types.ADD_DEBT_FAIL](state: IUserState, action: Action<AddDebtResponse>) {
+  [types.ADD_DEBT_FAIL](state: IUserState, action: Action<AddDebtResponse>): IUserState {
     return state;
   },
-  [types.ADD_PARTICIPANT_REQUEST](state: IUserState, action: Action<AddParticipantRequest>) {
+  [types.ADD_PARTICIPANT_REQUEST](
+    state: IUserState,
+    action: Action<AddParticipantRequest>
+  ): IUserState {
     return state;
   },
-  [types.ADD_PARTICIPANT_RESPONSE](state: IUserState, action: Action<AddParticipantResponse>) {
+  [types.ADD_PARTICIPANT_RESPONSE](
+    state: IUserState,
+    action: Action<AddParticipantResponse>
+  ): IUserState {
     return state;
   },
-  [types.ADD_PARTICIPANT_FAIL](state: IUserState, action: Action<AddParticipantResponse>) {
+  [types.ADD_PARTICIPANT_FAIL](
+    state: IUserState,
+    action: Action<AddParticipantResponse>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_ACTIVITY_REQUEST](state: IUserState, action: Action<DeleteActivityRequest>) {
+  [types.DELETE_ACTIVITY_REQUEST](
+    state: IUserState,
+    action: Action<DeleteActivityRequest>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_ACTIVITY_RESPONSE](state: IUserState, action: Action<DeleteActivityRequest>) {
+  [types.DELETE_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteActivityRequest>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_ACTIVITY_FAIL](state: IUserState, action: Action<DeleteActivityRequest>) {
+  [types.DELETE_ACTIVITY_FAIL](
+    state: IUserState,
+    action: Action<DeleteActivityRequest>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_EXPENSE_REQUEST](state: IUserState, action: Action<DeleteExpenseRequest>) {
+  [types.DELETE_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<DeleteExpenseRequest>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_EXPENSE_RESPONSE](state: IUserState, action: Action<DeleteExpenseResponse>) {
+  [types.DELETE_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<DeleteExpenseResponse>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_EXPENSE_FAIL](state: IUserState, action: Action<DeleteExpenseResponse>) {
+  [types.DELETE_EXPENSE_FAIL](
+    state: IUserState,
+    action: Action<DeleteExpenseResponse>
+  ): IUserState {
     return state;
   },
-  [types.DELETE_DEBT_REQUEST](state: IUserState, action: Action<DeleteDebtResponse>) {
+  [types.DELETE_DEBT_REQUEST](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
     return state;
   },
-  [types.DELETE_DEBT_RESPONSE](state: IUserState, action: Action<DeleteDebtResponse>) {
+  [types.DELETE_DEBT_RESPONSE](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
     return state;
   },
-  [types.DELETE_DEBT_FAIL](state: IUserState, action: Action<DeleteDebtResponse>) {
+  [types.DELETE_DEBT_FAIL](state: IUserState, action: Action<DeleteDebtResponse>): IUserState {
     return state;
   },
-  [types.DELETE_PARTICIPANT_REQUEST](state: IUserState, action: Action<DeleteParticipantRequest>) {
+  [types.DELETE_PARTICIPANT_REQUEST](
+    state: IUserState,
+    action: Action<DeleteParticipantRequest>
+  ): IUserState {
     return state;
   },
   [types.DELETE_PARTICIPANT_RESPONSE](
     state: IUserState,
     action: Action<DeleteParticipantResponse>
-  ) {
+  ): IUserState {
     return state;
   },
-  [types.DELETE_PARTICIPANT_FAIL](state: IUserState, action: Action<DeleteDebtResponse>) {
+  [types.DELETE_PARTICIPANT_FAIL](
+    state: IUserState,
+    action: Action<DeleteDebtResponse>
+  ): IUserState {
     return state;
   },
-  [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>) {
+  [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,
       token: {
         access: "",
-        created: 0,
-        expired: 0,
+        created: -1,
+        expires: -1,
       },
     };
   },
-  [types.LOADING_ENABLED](state: IUserState, action: Action<any>) {
+  [types.LOADING_ENABLED](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,
       loading: true,
     };
   },
-  [types.LOADING_DISABLED](state: IUserState, action: Action<any>) {
+  [types.LOADING_DISABLED](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,
       loading: false,

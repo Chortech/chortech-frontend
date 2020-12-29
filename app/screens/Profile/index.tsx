@@ -26,16 +26,7 @@ const Profile: React.FC = (): JSX.Element => {
 
   const fetchUser = () => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
+      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
     }
   };
 
@@ -76,22 +67,26 @@ const Profile: React.FC = (): JSX.Element => {
             <ScrollView
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}>
-              <View style={styles.textWrapper}>
-                <View style={styles.textContainerLeft}>
-                  <Text style={styles.textInfo}>{loggedInUser.email}</Text>
+              {loggedInUser.authInputType == InputType.Email ? (
+                <View style={styles.textWrapper}>
+                  <View style={styles.textContainerLeft}>
+                    <Text style={styles.textInfo}>{loggedInUser.email}</Text>
+                  </View>
+                  <View style={styles.textContainerRight}>
+                    <Text style={styles.textInfo}>ایمیل</Text>
+                  </View>
                 </View>
-                <View style={styles.textContainerRight}>
-                  <Text style={styles.textInfo}>ایمیل</Text>
+              ) : null}
+              {loggedInUser.authInputType == InputType.Phone ? (
+                <View style={styles.textWrapper}>
+                  <View style={styles.textContainerLeft}>
+                    <Text style={styles.textInfo}>{loggedInUser.phone}</Text>
+                  </View>
+                  <View style={styles.textContainerRight}>
+                    <Text style={styles.textInfo}>تلفن همراه</Text>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.textWrapper}>
-                <View style={styles.textContainerLeft}>
-                  <Text style={styles.textInfo}>{loggedInUser.phone}</Text>
-                </View>
-                <View style={styles.textContainerRight}>
-                  <Text style={styles.textInfo}>تلفن همراه</Text>
-                </View>
-              </View>
+              ) : null}
             </ScrollView>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>

@@ -4,13 +4,17 @@ import { userApi } from "../../../models/api/axios-api/user";
 import { InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
+import * as authActions from "../../../store/actions/authActions";
 import {
   AddFriend,
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
 } from "../../../models/responses/axios/user";
+import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
+import { validateToken } from "../../../utils/tokenValidator";
+import { IUserState } from "../../../models/reducers/default";
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
@@ -21,7 +25,7 @@ export class UserAPI implements userApi {
     });
 
     this.client.interceptors.request.use(function (config) {
-      if (token != undefined && token != null) {
+      if (validateToken(token)) {
         config.headers["Authorization"] = `Bearer ${token.access}`;
       }
       return config;
@@ -49,12 +53,13 @@ export class UserAPI implements userApi {
       log("get user profile api result");
       log(result);
     } catch (e) {
+      log("get user profile api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
       } else {
-        log("get user profile api error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -82,14 +87,15 @@ export class UserAPI implements userApi {
         result.status = response.status;
       }
       log("get user friends api result");
-      // log(result);
+      log(result);
     } catch (e) {
+      log("get user friends api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
       } else {
-        log("get user friends api error");
-        log(e.message);
+        log(e.response);
       }
     }
     return result;
@@ -118,6 +124,7 @@ export class UserAPI implements userApi {
       log("add user friend api(email) result");
       log(result);
     } catch (e) {
+      log("add user friend api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -129,9 +136,9 @@ export class UserAPI implements userApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("add user friend api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -160,6 +167,7 @@ export class UserAPI implements userApi {
       log("add user friend api(phone) result");
       log(result);
     } catch (e) {
+      log("add user friend api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -171,9 +179,9 @@ export class UserAPI implements userApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("add user friend api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -200,6 +208,7 @@ export class UserAPI implements userApi {
       log("delete friend api result");
       log(result);
     } catch (e) {
+      log("delete friend api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -211,9 +220,9 @@ export class UserAPI implements userApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("delete friend api error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -247,6 +256,7 @@ export class UserAPI implements userApi {
       log("invite friend api (email) result");
       log(result);
     } catch (e) {
+      log("invite friend api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -259,9 +269,9 @@ export class UserAPI implements userApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("invite friend api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -293,6 +303,7 @@ export class UserAPI implements userApi {
       log("invite friend api (email) result");
       log(result);
     } catch (e) {
+      log("invite friend api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -305,9 +316,9 @@ export class UserAPI implements userApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("invite friend api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 

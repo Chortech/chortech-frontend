@@ -43,11 +43,11 @@ export interface AddExpense {
   participants: Array<Participant>;
 }
 
-export interface GetExpenses {
+export interface UserExpenses {
   expenses: Array<Expense>;
 }
 
-export interface GetExpense {
+export interface UserExpense {
   expense: Expense;
 }
 

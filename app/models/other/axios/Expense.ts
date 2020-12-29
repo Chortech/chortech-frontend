@@ -8,7 +8,7 @@ export interface Expense {
   paid_at: number;
   group?: string;
   notes?: string;
-  participants?: Array<Participant>
+  participants?: Array<Participant>;
   comments?: Array<Comment>;
   creator?: string;
   you?: You;

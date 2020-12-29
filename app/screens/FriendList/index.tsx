@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
+// import cron from "node-cron";
+
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
@@ -10,6 +12,7 @@ import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
+import { take } from "redux-saga/effects";
 
 type IState = {
   userReducer: IUserState;
@@ -28,15 +31,6 @@ const FriendList: React.FC = (): JSX.Element => {
   const fetchFriends = (): void => {
     if (validateToken(loggedInUser.token)) {
       dispatch(userActions.onGetUserFriendsRequest(loggedInUser.token));
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
     }
   };
 

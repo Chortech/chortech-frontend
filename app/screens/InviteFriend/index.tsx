@@ -39,15 +39,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
       } else {
         ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
     }
   };
 
@@ -66,15 +57,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
       } else {
         ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
     }
   };
 

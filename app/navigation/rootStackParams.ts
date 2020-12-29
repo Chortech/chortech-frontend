@@ -35,8 +35,5 @@ export type RootStackParamList = {
   Activity: {
     id: string;
     activityName: string;
-    activityType: string;
-    expenseId?: string;
-    debtId?: string;
   };
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, ScrollView, ToastAndroid } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
@@ -10,13 +10,16 @@ import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
+import { log } from "../../utils/logger";
 
 interface IState {
   authReducer: IUserState;
 }
 
 const Login: React.FC = (): JSX.Element => {
-  const { loading } = useSelector((state: IState) => state.authReducer);
+  const state = useSelector((state: IState) => state.authReducer);
+  log(state);
+
   const dispatch = useDispatch();
   const onLogin = () => {
     if (data.emailOrPhone == "" || data.password == "") {
@@ -68,7 +71,7 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {loading ? (
+      {state.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>

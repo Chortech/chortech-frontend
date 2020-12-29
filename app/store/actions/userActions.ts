@@ -9,7 +9,7 @@ import {
   DeleteFriendRequest,
   InviteFriendsRequest,
   AddExpenseRequest,
-  GetExpensesRequest,
+  GetUserExpensesRequest,
   AddCommentRequest,
   GetExpenseRequest,
   GetCommentRequest,
@@ -39,8 +39,8 @@ import {
   UserProfileResponse,
   AddExpense,
   AddComment,
-  GetExpenses,
-  GetExpense,
+  UserExpenses,
+  UserExpense,
   GetComment,
 } from "../../models/responses/axios/user";
 import {
@@ -61,6 +61,7 @@ import {
 } from "../../models/responses/graphql/group";
 import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
 import { InputType } from "../../utils/inputTypes";
+import { log } from "../../utils/logger";
 import * as types from "./types";
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
@@ -91,38 +92,69 @@ export function onGetUserProfileFail(): Action<Response<UserProfileResponse>> {
   };
 }
 
-export function onGetUserActivitiesRequest(userId: string): Action<GetUserActivitiesRequest> {
+export function onGetUserActivitiesRequest(token: Token): Action<GetUserExpensesRequest> {
   return {
     type: types.GET_USER_ACTIVITIES_REQUEST,
     payload: {
-      userId: userId,
+      token: token,
     },
   };
 }
 
 export function onGetUserActivitiesResponse(
-  response: GetUserActivitiesResponse
-): Action<GetUserActivitiesResponse> {
+  response: Response<UserExpenses>
+): Action<Response<UserExpenses>> {
   return {
     type: types.GET_USER_ACTIVITIES_RESPONSE,
     payload: {
       success: response.success,
-      userId: response.userId,
-      activities: response.activities,
+      status: response.status,
+      response: response.response,
     },
   };
 }
 
-export function onGetUserActivitiesFail(): Action<GetUserActivitiesResponse> {
+export function onGetUserActivitiesFail(): Action<Response<UserExpenses>> {
   return {
-    type: types.GET_USER_ACTIVITIES_RESPONSE,
+    type: types.GET_USER_ACTIVITIES_FAIL,
     payload: {
       success: false,
-      userId: "-1",
-      activities: [],
+      status: -1,
     },
   };
 }
+
+// export function onGetExpensesRequest(token: Token): Action<GetUserExpensesRequest> {
+//   return {
+//     type: types.GET_EXPENSES_REQUEST,
+//     payload: {
+//       token: token,
+//     },
+//   };
+// }
+
+// export function onGetExpensesResponse(
+//   response: Response<UserExpenses>
+// ): Action<Response<UserExpenses>> {
+//   return {
+//     type: types.GET_EXPENSES_RESPONSE,
+//     payload: {
+//       success: response.success,
+//       status: response.status,
+//       response: response.response,
+//     },
+//   };
+// }
+
+// export function onGetExpensesFail(): Action<Response<UserExpenses>> {
+//   return {
+//     type: types.GET_EXPENSES_FAIL,
+//     payload: {
+//       success: false,
+//       status: -1,
+//     },
+//   };
+// }
 
 export function onUpdateUserRequest(user: User): Action<UpdateUserRequest> {
   return {
@@ -543,38 +575,6 @@ export function onAddExpenseFail(): Action<Response<AddExpense>> {
   };
 }
 
-export function onGetExpensesRequest(token: Token): Action<GetExpensesRequest> {
-  return {
-    type: types.GET_EXPENSES_REQUEST,
-    payload: {
-      token: token,
-    },
-  };
-}
-
-export function onGetExpensesResponse(
-  response: Response<GetExpenses>
-): Action<Response<GetExpenses>> {
-  return {
-    type: types.GET_EXPENSES_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onGetExpensesFail(): Action<Response<GetExpenses>> {
-  return {
-    type: types.GET_EXPENSES_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onGetExpenseRequest(token: Token, id: string): Action<GetExpenseRequest> {
   return {
     type: types.GET_EXPENSE_REQUEST,
@@ -585,7 +585,9 @@ export function onGetExpenseRequest(token: Token, id: string): Action<GetExpense
   };
 }
 
-export function onGetExpenseResponse(response: Response<GetExpense>): Action<Response<GetExpense>> {
+export function onGetExpenseResponse(
+  response: Response<UserExpense>
+): Action<Response<UserExpense>> {
   return {
     type: types.GET_EXPENSE_RESPONSE,
     payload: {
@@ -596,7 +598,7 @@ export function onGetExpenseResponse(response: Response<GetExpense>): Action<Res
   };
 }
 
-export function onGetExpenseFail(): Action<Response<GetExpense>> {
+export function onGetExpenseFail(): Action<Response<UserExpense>> {
   return {
     type: types.GET_EXPENSE_FAIL,
     payload: {

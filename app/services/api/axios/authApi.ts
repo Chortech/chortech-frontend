@@ -2,9 +2,15 @@ import { SERVER_AUTH_URL } from "../../../../local_env_vars";
 import { AuthApi } from "../../../models/api/axios-api/auth";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { Token } from "../../../models/other/axios/Token";
-import { Login, SignUp } from "../../../models/responses/axios/auth";
+import {
+  ChangeEmailOrPhone,
+  ChangePassword,
+  Login,
+  SignUp,
+} from "../../../models/responses/axios/auth";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
+import { InputType } from "../../../utils/inputTypes";
 
 export class AuthenticationApi implements AuthApi {
   client: AxiosInstance;
@@ -37,7 +43,12 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: data.status,
-          response: response,
+          response: {
+            ...response,
+            email: email,
+            password: password,
+            inputType: InputType.Email,
+          },
         };
       } else {
         result.status = data.status;
@@ -45,6 +56,7 @@ export class AuthenticationApi implements AuthApi {
       log("login api (email) result");
       log(result);
     } catch (e) {
+      log("login api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -52,9 +64,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("login api (email) error");
-        log(e);
+        log(e.response);
       }
     }
 
@@ -78,7 +90,13 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: data.status,
-          response: response,
+          response: {
+            ...response,
+            phone: phone,
+            password: password,
+
+            inputType: InputType.Phone,
+          },
         };
       } else {
         result.status = data.status;
@@ -86,6 +104,7 @@ export class AuthenticationApi implements AuthApi {
       log("login api (phone) result");
       log(result);
     } catch (e) {
+      log("login api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -93,9 +112,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("login api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -119,7 +138,14 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: response.status,
-          response: data,
+          response: {
+            ...data,
+            name: name,
+            email: email,
+            password: password,
+
+            inputType: InputType.Email,
+          },
         };
       } else {
         result.status = response.status;
@@ -127,6 +153,7 @@ export class AuthenticationApi implements AuthApi {
       log("signup api (email) result");
       log(result);
     } catch (e) {
+      log("signup api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -134,9 +161,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("signup api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -160,7 +187,14 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: response.status,
-          response: data,
+          response: {
+            ...data,
+            name: name,
+            phone: phone,
+            password: password,
+
+            inputType: InputType.Email,
+          },
         };
       } else {
         result.status = response.status;
@@ -168,6 +202,7 @@ export class AuthenticationApi implements AuthApi {
       log("signup api (email) result");
       log(result);
     } catch (e) {
+      log("signup api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -175,9 +210,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("signup api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -203,7 +238,10 @@ export class AuthenticationApi implements AuthApi {
       } else {
         result.status = response.status;
       }
+      log("reset password by email api (result)");
+      log(result);
     } catch (e) {
+      log("reset password api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -215,9 +253,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("reset password api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -243,7 +281,10 @@ export class AuthenticationApi implements AuthApi {
       } else {
         result.status = response.status;
       }
+      log("reset password by phone api result");
+      log(result);
     } catch (e) {
+      log("reset password api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -255,17 +296,20 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("reset password api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
     return result;
   }
 
-  async changePassword(oldPassowrd: string, newPassword: string): Promise<Response<null>> {
-    let result: Response<null> = {
+  async changePassword(
+    oldPassowrd: string,
+    newPassword: string
+  ): Promise<Response<ChangePassword>> {
+    let result: Response<ChangePassword> = {
       success: false,
       status: -1,
     };
@@ -280,6 +324,9 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: response.status,
+          response: {
+            newPassword: newPassword,
+          },
         };
       } else {
         result.status = response.status;
@@ -287,20 +334,21 @@ export class AuthenticationApi implements AuthApi {
       log("change password api result");
       log(result);
     } catch (e) {
+      log("change password api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
       } else {
-        log("change password api error");
-        log(e.message);
+        log(e.response);
       }
     }
 
     return result;
   }
 
-  async changeEmail(newEmail: string): Promise<Response<null>> {
-    let result: Response<null> = {
+  async changeEmail(newEmail: string): Promise<Response<ChangeEmailOrPhone>> {
+    let result: Response<ChangeEmailOrPhone> = {
       success: false,
       status: -1,
     };
@@ -314,12 +362,19 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: response.status,
+          response: {
+            newEmail: newEmail,
+            newPhone: "",
+            inputType: InputType.Email,
+          },
         };
       } else {
         result.status = response.status;
       }
+      log("change email api result");
+      log(result);
     } catch (e) {
-      log(e.response);
+      log("change email api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -330,17 +385,17 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("change email api error");
-        log(e.message);
+        log(e.response);
       }
     }
 
     return result;
   }
 
-  async changePhone(newPhone: string): Promise<Response<null>> {
-    let result: Response<null> = {
+  async changePhone(newPhone: string): Promise<Response<ChangeEmailOrPhone>> {
+    let result: Response<ChangeEmailOrPhone> = {
       success: false,
       status: -1,
     };
@@ -354,11 +409,19 @@ export class AuthenticationApi implements AuthApi {
         result = {
           success: true,
           status: response.status,
+          response: {
+            newPhone: newPhone,
+            newEmail: "",
+            inputType: InputType.Email,
+          },
         };
       } else {
         result.status = response.status;
       }
+      log("change phone api result");
+      log(result);
     } catch (e) {
+      log("change email api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         let message: string =
@@ -369,9 +432,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("change email api error");
-        log(e.message);
+        log(e.response);
       }
     }
 
