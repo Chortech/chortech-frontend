@@ -11,6 +11,9 @@ import {
   AddComment,
   UserExpense,
   GetComment,
+  EditExpense,
+  FriendRelation,
+  FriendRelations,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -59,7 +62,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response);
       } else {
-        log(e.message);
+        log(e.response);
       }
     }
     return result;
@@ -92,9 +95,40 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.message);
+        log(e.response);
       }
     }
+    return result;
+  }
+
+  async getFriendRelations(): Promise<Response<FriendRelations>> {
+    let result: Response<FriendRelations> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get("/friends");
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else result.status = response.status;
+      log("get friend relations api result");
+      log(result);
+    } catch (e) {
+      log("get friend relations api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
     return result;
   }
 
@@ -139,9 +173,91 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.message);
+        log(e.response);
       }
     }
+    return result;
+  }
+
+  async updateExpense(
+    expenseId: string,
+    description: string,
+    total: number,
+    paid_at: number,
+    participants: Array<Participant>,
+    group?: string,
+    notes?: string
+  ): Promise<Response<EditExpense>> {
+    let result: Response<EditExpense> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put(`/${expenseId}`, {
+        description: description,
+        total: total,
+        paid_at: paid_at,
+        group: group,
+        notes: notes,
+        participants: participants,
+      });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("update expense api result");
+      log(result);
+    } catch (e) {
+      log("update expenses api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+    return result;
+  }
+
+  async deleteExpense(expenseId: string): Promise<Response<null>> {
+    let result: Response<null> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.delete(`/${expenseId}`);
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("delete expense api result");
+      log(result);
+    } catch (e) {
+      log("delete expense api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
     return result;
   }
 
@@ -179,7 +295,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.message);
+        log(e.response);
       }
     }
     return result;
@@ -212,7 +328,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.message);
+        log(e.response);
       }
     }
     return result;

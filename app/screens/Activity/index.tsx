@@ -10,6 +10,7 @@ import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 
 import { styles } from "./styles";
+import { log } from "../../utils/logger";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Activity">;
@@ -20,22 +21,14 @@ type IState = {
 };
 
 const Activity: React.FC<Props> = ({ route }: Props) => {
-  const { id, activityName, activityType, expenseId, debtId } = route.params;
+  const params = route.params;
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressAddComment = () => NavigationService.navigate("AddComment");
 
   const onPressDeleteActivity = () => {
-    if (activityType == "debt") {
-      let targetid: string = debtId != undefined ? debtId : "-1";
-      dispatch(userActions.onDeleteDebtRequest(targetid));
-      dispatch(userActions.onDeleteActivityRequest(id));
-    } else {
-      let targetId: string = expenseId != undefined ? expenseId : "-1";
-      dispatch(userActions.onDeleteExpenseRequest(targetId));
-      dispatch(userActions.onDeleteActivityRequest(id));
-    }
+    log(params);
   };
 
   return (
@@ -49,7 +42,7 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
               style={styles.activityImage}
               source={require("../../assets/images/category-image.jpg")}
             />
-            <Text style={styles.activityNameText}>{activityName}</Text>
+            <Text style={styles.activityNameText}>{params.activityName}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.textWrapper}>

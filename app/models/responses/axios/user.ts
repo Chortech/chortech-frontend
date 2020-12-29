@@ -1,7 +1,7 @@
 import { Comment } from "../../other/axios/Comment";
 import { Expense } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
-import { Participant } from "../../other/axios/Participant";
+import { Participant, PRole } from "../../other/axios/Participant";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -43,12 +43,35 @@ export interface AddExpense {
   participants: Array<Participant>;
 }
 
+export interface EditExpense {
+  id: string;
+  description: string;
+  total: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+  participants: Array<Participant>;
+}
+
 export interface UserExpenses {
   expenses: Array<Expense>;
 }
 
 export interface UserExpense {
   expense: Expense;
+}
+
+export interface FriendRelations {
+  relations: Array<FriendRelation>;
+}
+
+export interface FriendRelation {
+  to: {
+    id: string;
+    name: string;
+  };
+  amount: string;
+  role: PRole;
 }
 
 export interface AddComment {
