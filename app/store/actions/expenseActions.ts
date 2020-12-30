@@ -16,6 +16,7 @@ import {
   AddComment,
   GetComment,
   EditExpense,
+  DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
@@ -144,6 +145,39 @@ export function onEditExpenseFail(): Action<Response<EditExpense>> {
   };
 }
 
+export function onDeleteExpenseRequest(
+  token: Token,
+  expenseId: string
+): Action<DeleteExpenseRequest> {
+  return {
+    type: types.DELETE_EXPENSE_REQUEST,
+    payload: {
+      expenseId: expenseId,
+      token: token,
+    },
+  };
+}
+
+export function onDeleteExpenseResponse(response: Response<null>): Action<Response<null>> {
+  return {
+    type: types.DELETE_EXPENSE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+    },
+  };
+}
+
+export function onDeleteExpenseFail(): Action<Response<null>> {
+  return {
+    type: types.DELETE_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
 export function onGetUserExpenseRequest(token: Token, id: string): Action<GetExpenseRequest> {
   return {
     type: types.GET_USER_EXPENSE_REQUEST,
@@ -245,37 +279,6 @@ export function onGetCommentFail(): Action<Response<GetComment>> {
     },
   };
 }
-
-// export function onDeleteExpenseRequest(id: string): Action<DeleteExpenseRequest> {
-//   return {
-//     type: types.DELETE_EXPENSE_REQUEST,
-//     payload: {
-//       id: id,
-//     },
-//   };
-// }
-
-// export function onDeleteExpenseResponse(
-//   response: DeleteExpenseResponse
-// ): Action<DeleteExpenseResponse> {
-//   return {
-//     type: types.DELETE_EXPENSE_RESPONSE,
-//     payload: {
-//       id: response.id,
-//       success: response.success,
-//     },
-//   };
-// }
-
-// export function onDeleteExpenseFail(): Action<DeleteExpenseResponse> {
-//   return {
-//     type: types.DELETE_EXPENSE_FAIL,
-//     payload: {
-//       id: "-1",
-//       success: false,
-//     },
-//   };
-// }
 
 export function onLoadingEnable(): Action<any> {
   return {

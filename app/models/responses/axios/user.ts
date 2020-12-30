@@ -2,6 +2,7 @@ import { Comment } from "../../other/axios/Comment";
 import { Expense } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
+import { Token } from "../../other/axios/Token";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -51,6 +52,11 @@ export interface EditExpense {
   group?: string;
   notes?: string;
   participants?: Array<Participant>;
+}
+
+export interface DeleteExpenseRequest {
+  expenseId: string;
+  token: Token;
 }
 
 export interface UserExpenses {

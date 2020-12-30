@@ -35,6 +35,7 @@ export default function* watch() {
     takeLatest(types.GET_USER_EXPENSE_REQUEST, expenseSaga.getUserExpenseAsync),
     takeLatest(types.ADD_EXPENSE_REQUEST, expenseSaga.addExpenseAsync),
     takeLatest(types.EDIT_EXPENSE_REQUEST, expenseSaga.editExpenseAsync),
+    takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
     takeLatest(types.ADD_COMMENT_REQUEST, expenseSaga.addCommentAsync),
     takeLatest(types.GET_COMMENT_REQUEST, expenseSaga.getCommentAsync),
   ]);

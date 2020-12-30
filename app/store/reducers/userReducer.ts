@@ -19,7 +19,6 @@ import {
   AddDebtRequest,
   AddParticipantRequest,
   DeleteActivityRequest,
-  DeleteExpenseRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
 import {
@@ -42,6 +41,7 @@ import {
   UserExpense,
   GetComment,
   EditExpense,
+  DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -310,6 +310,19 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
 
+  [types.DELETE_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<DeleteExpenseRequest>
+  ): IUserState {
+    return { ...state, token: action.payload.token };
+  },
+  [types.DELETE_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.DELETE_EXPENSE_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+
   [types.GET_USER_EXPENSE_REQUEST](
     state: IUserState,
     action: Action<GetExpenseRequest>
@@ -390,24 +403,6 @@ export const userReducer = createReducer(initialState, {
   [types.DELETE_ACTIVITY_FAIL](
     state: IUserState,
     action: Action<DeleteActivityRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_EXPENSE_REQUEST](
-    state: IUserState,
-    action: Action<DeleteExpenseRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_EXPENSE_RESPONSE](
-    state: IUserState,
-    action: Action<DeleteExpenseResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_EXPENSE_FAIL](
-    state: IUserState,
-    action: Action<DeleteExpenseResponse>
   ): IUserState {
     return state;
   },

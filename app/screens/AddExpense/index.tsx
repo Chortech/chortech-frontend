@@ -271,7 +271,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     } else {
       if (item.id == loggedInUser.id) return;
       const index = selectedItems.current.findIndex((element) => element.id == item.id);
-      log(index);
       if (index > -1) {
         selectedItems.current.splice(index, 1);
       }
@@ -322,25 +321,31 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const showCreditorModal = () => {
     if (Number(data.expenseAmount) > 0) {
-      let item: Item = {
+      let userItem: Item = {
         id: loggedInUser.id,
         name: name,
         amount: Number(data.expenseAmount),
       };
       setModalMode("Creditor");
-      onSelectItem(item);
+      onSelectItem(userItem);
       selectedItems.current.forEach((element: Item) => {
         if (creditors.current.find((item) => item.id == element.id) == undefined) {
           let item: Item = { ...element };
           if (element.role == undefined) {
             creditors.current.push(item);
           } else {
-            if (element.role == PRole.Creditor) {
-              creditors.current.push(item);
+            if (element.role != PRole.Creditor) {
+              item.amount = 0;
+              item.role = undefined;
             }
+            creditors.current.push(item);
           }
         }
       });
+      if (creditors.current.findIndex((creditor) => creditor.id == userItem.id) < 0) {
+        creditors.current.push(userItem);
+      }
+
       setModalVisibility(true);
       setRenderFlatList(!renderFlatList);
     } else {
@@ -350,25 +355,30 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const showDebtorModal = () => {
     if (Number(data.expenseAmount) > 0) {
-      let item: Item = {
+      let userItem: Item = {
         id: loggedInUser.id,
         name: name,
         amount: 0,
       };
       setModalMode("Debtor");
-      onSelectItem(item);
+      onSelectItem(userItem);
       selectedItems.current.forEach((element: Item) => {
         if (debtors.current.find((item) => item.id == element.id) == undefined) {
           let item: Item = { ...element };
           if (element.role == undefined) {
             debtors.current.push(item);
           } else {
-            if (element.role == PRole.Debtor) {
-              debtors.current.push(item);
+            if (element.role != PRole.Debtor) {
+              item.amount = 0;
+              item.role = undefined;
             }
+            debtors.current.push(item);
           }
         }
       });
+      if (debtors.current.findIndex((debtor) => debtor.id == userItem.id) < 0) {
+        debtors.current.push(userItem);
+      }
       setModalVisibility(true);
       setRenderFlatList(!renderFlatList);
     } else {

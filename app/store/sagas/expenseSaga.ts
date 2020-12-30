@@ -16,6 +16,7 @@ import {
   AddComment,
   GetComment,
   EditExpense,
+  DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
@@ -129,6 +130,25 @@ export function* editExpenseAsync(action: Action<EditExpenseRequest>) {
     ToastAndroid.show("هزینه با موفقیت ویرایش شد", ToastAndroid.SHORT);
   } else {
     yield put(expenseActions.onEditExpenseFail());
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { expenseId, token } = action.payload;
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  let response: Response<null> = yield api.deleteExpense(expenseId);
+
+  if (response.success) {
+    yield put(expenseActions.onDeleteExpenseResponse(response));
+    yield call(getUserExpensesAsync, expenseActions.onGetUserExpensesRequest(token));
+    ToastAndroid.show("هزینه با موفقیت حذف شد", ToastAndroid.SHORT);
+    navigationRef.current?.goBack();
+  } else {
+    yield put(expenseActions.onDeleteExpenseFail());
     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
   yield put(expenseActions.onLoadingDisable());

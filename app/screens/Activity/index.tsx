@@ -1,6 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
@@ -15,6 +15,7 @@ import { log } from "../../utils/logger";
 import { Item } from "../../models/other/axios/Item";
 import { PRole } from "../../models/other/axios/Participant";
 import { faIdeal } from "@fortawesome/free-brands-svg-icons";
+import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Activity">;
@@ -37,7 +38,11 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
   const onPressAddComment = () => NavigationService.navigate("AddComment");
 
   const onPressDeleteActivity = () => {
-    log(params);
+    if (validateToken(loggedInUser.token)) {
+      dispatch(expenseActions.onDeleteExpenseRequest(loggedInUser.token, params.id));
+    } else {
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+    }
   };
 
   const getItems = (): Array<Item> => {
