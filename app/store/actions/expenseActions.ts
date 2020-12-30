@@ -7,6 +7,7 @@ import {
   GetExpenseRequest,
   AddCommentRequest,
   GetCommentRequest,
+  EditExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   UserExpenses,
@@ -14,6 +15,7 @@ import {
   UserExpense,
   AddComment,
   GetComment,
+  EditExpense,
 } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
@@ -87,6 +89,54 @@ export function onAddExpenseResponse(response: Response<AddExpense>): Action<Res
 export function onAddExpenseFail(): Action<Response<AddExpense>> {
   return {
     type: types.ADD_EXPENSE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onEditExpenseRequest(
+  expenseId: string,
+  token: Token,
+  description: string,
+  total: number,
+  paid_at: number,
+  participants: Array<Participant>,
+  group?: string,
+  notes?: string
+): Action<EditExpenseRequest> {
+  return {
+    type: types.EDIT_EXPENSE_REQUEST,
+    payload: {
+      expenseId: expenseId,
+      token: token,
+      description: description,
+      total: total,
+      paid_at: paid_at,
+      group: group,
+      notes: notes,
+      participants: participants,
+    },
+  };
+}
+
+export function onEditExpenseResponse(
+  response: Response<EditExpense>
+): Action<Response<EditExpense>> {
+  return {
+    type: types.EDIT_EXPENSE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    },
+  };
+}
+
+export function onEditExpenseFail(): Action<Response<EditExpense>> {
+  return {
+    type: types.EDIT_EXPENSE_FAIL,
     payload: {
       success: false,
       status: -1,

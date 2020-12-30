@@ -29,24 +29,24 @@ import { text } from "@fortawesome/fontawesome-svg-core";
 import { Participant, PRole } from "../../models/other/axios/Participant";
 import { faElementor } from "@fortawesome/free-brands-svg-icons";
 import { lightGreenA700 } from "react-native-paper/lib/typescript/src/styles/colors";
+import { Item } from "../../models/other/axios/Item";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigation/rootStackParams";
 
-type Item = {
-  id: string;
-  name: string;
-  amount: number;
-  selected?: boolean;
-  role?: PRole;
+type Props = {
+  route: RouteProp<RootStackParamList, "AddExpense">;
 };
 
 type IState = {
   userReducer: IUserState;
 };
 
-const AddExpense: React.FC = (): JSX.Element => {
+const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const params = route.params;
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const [data, setData] = useState({
-    description: "",
-    expenseAmount: "",
+    description: params.description != undefined ? params.description : "",
+    expenseAmount: params.total != undefined ? params.total : "",
     isValidExpenseAmount: true,
   });
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
@@ -80,6 +80,10 @@ const AddExpense: React.FC = (): JSX.Element => {
       let total: number = Number(data.expenseAmount);
       let date: number = Math.floor(Date.now() / 1000);
 
+      if (selectedItems.current.length < 2) {
+        ToastAndroid.show("تعداد افراد نمی‌تواند کمتر از دو نفر باشد", ToastAndroid.SHORT);
+        return;
+      }
       creditors.current.forEach((element) => {
         if (element.selected) {
           creditorsSum += element.amount;
@@ -92,44 +96,110 @@ const AddExpense: React.FC = (): JSX.Element => {
           participants.push({ id: element.id, amount: element.amount, role: PRole.Debtor });
         }
       });
+
       if (creditorsSum != debtorsSum) {
         ToastAndroid.show("مبالغ تقسیم‌شده بین بدهکاران و طلبکاران برابر نیست", ToastAndroid.SHORT);
         return;
       }
+
       if (creditorsSum != total) {
         ToastAndroid.show("مبالغ تقسیم‌شده با مبلغ کل هزینه برابر نیست", ToastAndroid.SHORT);
         return;
       }
+      log("confirmed");
 
-      dispatch(
-        expenseActions.onAddExpenseRequest(
-          loggedInUser.token,
-          data.description,
-          total,
-          date,
-          participants
-        )
-      );
+      if (params.parentScreen == "ActivityList") {
+        dispatch(
+          expenseActions.onAddExpenseRequest(
+            loggedInUser.token,
+            data.description!,
+            total,
+            date,
+            participants
+          )
+        );
+      } else {
+        dispatch(
+          expenseActions.onEditExpenseRequest(
+            params.id!,
+            loggedInUser.token,
+            data.description!,
+            total,
+            date,
+            participants
+          )
+        );
+      }
     }
   };
 
   const fetchItems = () => {
     dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
-    dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
+
+    if (params.parentScreen == "ActivityList") {
+      // let data: Array<Item> = [];
+      // friends.forEach((element) => {
+      //   data.push({ id: element.id, name: element.name, amount: 0 });
+      // });
+      // data.forEach((item) => {
+      //   if (fetchedItems.find((element) => element.id == item.id) == undefined) {
+      //     selectedItems.current.push({ id: item.id, name: item.name, amount: 0, selected: false })
+      //   }
+      // });
+
+      setFetchedItems(params.items);
+      setItems(params.items);
+    } else if (params.parentScreen == "Activity") {
+      params.items.forEach((item) => {
+        if (item.selected) {
+          if (selectedItems.current.find((selected) => selected.id == item.id) == undefined) {
+            selectedItems.current.push(item);
+          }
+          if (item.role == "creditor") {
+            if (creditors.current.find((creditor) => creditor.id == item.id) == undefined) {
+              creditors.current.push(item);
+            }
+          } else {
+            if (debtors.current.find((debtor) => debtor.id == item.id) == undefined) {
+              debtors.current.push(item);
+            }
+          }
+        }
+      });
+      log("fetch creditors");
+      log(creditors);
+      log("fetch debtors");
+      log(debtors);
+      let items: Array<Item> = [];
+      params.items.forEach((element) => {
+        if (items.findIndex((item) => item.id == element.id) < 0) {
+          items.push({
+            id: element.id,
+            amount: element.amount,
+            name: element.name,
+            selected: element.selected,
+          });
+        }
+      });
+
+      setItems(items);
+      setFetchedItems(items);
+    }
+    // dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
     // dispatch(userActions.onGetUserGroupsRequest(loggedInUserId));
-    let items: Array<Item> = fetchedItems;
-    friends.forEach((friend) => {
-      if (items.find((element) => element.id == friend.id) == undefined) {
-        let item: Item = {
-          id: friend.id,
-          name: friend.name,
-          amount: 0,
-        };
-        items.push(item);
-      }
-    });
-    setFetchedItems(items);
-    setItems(items);
+    // let items: Array<Item> = fetchedItems;
+    // friends.forEach((friend) => {
+    //   if (items.find((element) => element.id == friend.id) == undefined) {
+    //     let item: Item = {
+    //       id: friend.id,
+    //       name: friend.name,
+    //       amount: 0,
+    //     };
+    //     items.push(item);
+    //   }
+    // });
+    // setFetchedItems(items);
+    // setItems(items);
     setRenderFlatList(!renderFlatList);
   };
 
@@ -166,22 +236,25 @@ const AddExpense: React.FC = (): JSX.Element => {
 
   const cancel = () => NavigationService.goBack();
 
-  const renderSelectableItem: any = ({ item }) => (
-    <SelectableItem
-      id={item.id}
-      Name={item.name}
-      selected={item.selected}
-      hasBottomBorder={true}
-      onPressItem={() => onSelectItem(item)}
-    />
-  );
+  const renderSelectableItem: any = ({ item }) =>
+    item.id != loggedInUser.id ? (
+      <SelectableItem
+        id={item.id}
+        Name={item.name}
+        selected={item.selected}
+        hasBottomBorder={true}
+        onPressItem={() => onSelectItem(item)}
+      />
+    ) : null;
 
   const renderFooterComponent = (): JSX.Element => {
     return (
       <View style={styles.footerComponent}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.addButton} onPress={confirm}>
-            <Text style={styles.addButtonText}>ایجاد هزینه</Text>
+            <Text style={styles.addButtonText}>
+              {params.parentScreen == "ActivityList" ? "ایجاد هزینه" : "ویرایش هزینه"}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.removeButton} onPress={cancel}>
             <Text style={styles.removeButtonText}>انصراف</Text>
@@ -194,14 +267,21 @@ const AddExpense: React.FC = (): JSX.Element => {
   const onSelectItem: any = (item: Item) => {
     item.selected = !item.selected;
     if (selectedItems.current.find((element) => element.id == item.id) == undefined) {
-      selectedItems.current.push(item);
+      selectedItems.current.push({ ...item, role: undefined, amount: 0 });
     } else {
       if (item.id == loggedInUser.id) return;
-
       const index = selectedItems.current.findIndex((element) => element.id == item.id);
       log(index);
       if (index > -1) {
         selectedItems.current.splice(index, 1);
+      }
+      const creditorIndex = creditors.current.findIndex((creditor) => creditor.id == item.id);
+      if (index > -1) {
+        creditors.current.splice(creditorIndex, 1);
+      }
+      const debtorIndex = debtors.current.findIndex((debtor) => debtor.id == item.id);
+      if (index > -1) {
+        debtors.current.splice(debtorIndex, 1);
       }
     }
     setRenderFlatList(!renderFlatList);
@@ -213,7 +293,7 @@ const AddExpense: React.FC = (): JSX.Element => {
       creditors.current.push(item);
       setDivideEqual(false);
     } else {
-      item.amount = 0;
+      // item.amount = 0;
       setDivideEqual(false);
     }
     setRenderFlatList(!renderFlatList);
@@ -225,7 +305,7 @@ const AddExpense: React.FC = (): JSX.Element => {
       debtors.current.push(item);
       setDivideEqual(false);
     } else {
-      item.amount = 0;
+      // item.amount = 0;
       setDivideEqual(false);
     }
     setRenderFlatList(!renderFlatList);
@@ -247,13 +327,18 @@ const AddExpense: React.FC = (): JSX.Element => {
         name: name,
         amount: Number(data.expenseAmount),
       };
-      log("show creditor modal");
       setModalMode("Creditor");
       onSelectItem(item);
       selectedItems.current.forEach((element: Item) => {
         if (creditors.current.find((item) => item.id == element.id) == undefined) {
           let item: Item = { ...element };
-          creditors.current.push(item);
+          if (element.role == undefined) {
+            creditors.current.push(item);
+          } else {
+            if (element.role == PRole.Creditor) {
+              creditors.current.push(item);
+            }
+          }
         }
       });
       setModalVisibility(true);
@@ -270,13 +355,18 @@ const AddExpense: React.FC = (): JSX.Element => {
         name: name,
         amount: 0,
       };
-      log("show debtor modal");
       setModalMode("Debtor");
       onSelectItem(item);
       selectedItems.current.forEach((element: Item) => {
         if (debtors.current.find((item) => item.id == element.id) == undefined) {
-          let item: Item = { ...element, amount: 0 };
-          debtors.current.push(item);
+          let item: Item = { ...element };
+          if (element.role == undefined) {
+            debtors.current.push(item);
+          } else {
+            if (element.role == PRole.Debtor) {
+              debtors.current.push(item);
+            }
+          }
         }
       });
       setModalVisibility(true);
@@ -349,17 +439,21 @@ const AddExpense: React.FC = (): JSX.Element => {
 
   const discardModalChanges = () => {
     if (modalMode == "Creditor") {
-      creditors.current = [];
-      selectedItems.current.forEach((element: Item) => {
-        let item: Item = { ...element, selected: !element.selected };
-        onSelectCreditorItem(item);
-      });
+      // creditors.current = [];
+      // selectedItems.current.forEach((element: Item) => {
+      //   let item: Item = { ...element, selected: !element.selected };
+      //   if (item.role == PRole.Creditor || item.role == undefined) {
+      //     onSelectCreditorItem(item);
+      //   }
+      // });
     } else {
-      debtors.current = [];
-      selectedItems.current.forEach((element: Item) => {
-        let item: Item = { ...element, selected: !element.selected };
-        onSelectDebtorItem(item);
-      });
+      // debtors.current = [];
+      // selectedItems.current.forEach((element: Item) => {
+      //   let item: Item = { ...element, selected: !element.selected };
+      //   if (item.role == PRole.Debtor || item.role == undefined) {
+      //     onSelectDebtorItem(item);
+      //   }
+      // });
     }
 
     setDivideEqual(false);

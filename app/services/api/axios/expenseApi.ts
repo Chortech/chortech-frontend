@@ -81,7 +81,7 @@ export class ExpenseAPI implements expenseApi {
         result = {
           success: true,
           status: response.status,
-          response: response.data,
+          response: { expense: response.data },
         };
       } else {
         result.status = response.status;
@@ -165,7 +165,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("add expense api result");
-      log(result);
+      log(result.response);
     } catch (e) {
       log("add expenses api error");
       if (e.isAxiosError) {
@@ -213,7 +213,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("update expense api result");
-      log(result);
+      log(result.response);
     } catch (e) {
       log("update expenses api error");
       if (e.isAxiosError) {

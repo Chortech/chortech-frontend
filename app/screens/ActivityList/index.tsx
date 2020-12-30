@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import { Item } from "../../models/other/axios/Item";
 import { IUserState } from "../../models/reducers/default";
 import NavigationService from "../../navigation/navigationService";
 import * as expenseActions from "../../store/actions/expenseActions";
@@ -17,20 +18,27 @@ const ActivityList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const user = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
-  const onPressActivityItem = (id: string, name: string) =>
+  const onPressActivityItem = (id: string, name: string, category: string, total: number) =>
     NavigationService.navigate("Activity", {
       id: id,
       activityName: name,
+      category: category,
+      total: total.toString(),
     });
-  const onAddExpense = () => NavigationService.navigate("AddExpense");
+  const onAddExpense = () => {
+    let items: Array<Item> = [];
+
+    user.friends.forEach((element) => {
+      items.push({ id: element.id, name: element.name, amount: 0, selected: false });
+    });
+    NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
+  };
   const [refreshing, setRefreshing] = useState(false);
   const fetchActivities = (): void => {
     if (validateToken(loggedInUser.token)) {
-      log("valid token in screen");
       dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
     }
   };
-
   useEffect(() => {
     fetchActivities();
   }, [dispatch]);
@@ -54,7 +62,7 @@ const ActivityList: React.FC = () => {
                 <View>
                   <TouchableOpacity
                     style={styles.activityContainer}
-                    onPress={() => onPressActivityItem(item.id, item.description)}>
+                    onPress={() => onPressActivityItem(item.id, item.description, "", item.total)}>
                     <Text style={styles.activityText}>{item.description}</Text>
                     <Image
                       style={styles.activityImage}

@@ -44,13 +44,13 @@ export interface AddExpense {
 }
 
 export interface EditExpense {
-  id: string;
-  description: string;
-  total: number;
-  paid_at: number;
+  id?: string;
+  description?: string;
+  total?: number;
+  paid_at?: number;
   group?: string;
   notes?: string;
-  participants: Array<Participant>;
+  participants?: Array<Participant>;
 }
 
 export interface UserExpenses {

@@ -45,6 +45,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
+    marginBottom: 5,
   },
   addButtonText: {
     fontSize: 16,
@@ -68,9 +70,11 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "red",
     borderRadius: 5,
-    marginVertical: 10,
+    // marginVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
+    marginBottom: 5,
   },
   removeButtonText: {
     fontSize: 16,

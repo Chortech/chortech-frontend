@@ -12,6 +12,7 @@ import {
   AddCommentRequest,
   GetExpenseRequest,
   GetCommentRequest,
+  EditExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -40,6 +41,7 @@ import {
   UserExpenses,
   UserExpense,
   GetComment,
+  EditExpense,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -292,6 +294,21 @@ export const userReducer = createReducer(initialState, {
   [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>): IUserState {
     return state;
   },
+  [types.EDIT_EXPENSE_REQUEST](state: IUserState, action: Action<EditExpenseRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.EDIT_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditExpense>>
+  ): IUserState {
+    return state;
+  },
+  [types.EDIT_EXPENSE_FAIL](state: IUserState, action: Action<Response<EditExpense>>): IUserState {
+    return state;
+  },
 
   [types.GET_USER_EXPENSE_REQUEST](
     state: IUserState,
@@ -306,7 +323,15 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<UserExpense>>
   ): IUserState {
-    state.activities.push(action.payload.response!.expense);
+    const expense = action.payload.response?.expense;
+    const index = state.activities.findIndex((ex) => ex.id == expense?.id);
+    if (index > -1) {
+      state.activities[index].participants =
+        expense?.participants != undefined ? expense.participants : [];
+    }
+    log("state activities");
+    log(index);
+    log(state.activities);
     return state;
   },
   [types.GET_USER_EXPENSE_FAIL](
