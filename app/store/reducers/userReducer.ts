@@ -13,8 +13,9 @@ import {
   AddCommentRequest,
   GetExpenseRequest,
   GetExpenseCommentsRequest,
-  EditExpenseRequest,
   UploadImageRequest,
+  EditExpenseRequest,
+  DeleteExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -36,25 +37,15 @@ import {
   AddFriend,
   DeleteFriend,
   GetUserFriends,
-  UserProfileResponse,
+  UserProfile,
   AddExpense,
   UserExpenses,
   UserExpense,
   ExpenseComments,
   EditExpense,
-  DeleteExpenseRequest,
-  AddComment,
-  UploadImageResponse,
-  EditProfileResponse,
+  UploadImage,
+  EditProfile,
 } from "../../models/responses/axios/user";
-import {
-  AddActivityResponse,
-  AddDebtResponse,
-  AddParticipantResponse,
-  DeleteExpenseResponse,
-  DeleteDebtResponse,
-  DeleteParticipantResponse,
-} from "../../models/responses/graphql/activity";
 import {
   AddGroupResponse,
   UpdateGroupResponse,
@@ -62,7 +53,6 @@ import {
   GetGroupByIdResponse,
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
-import { GetUserActivitiesResponse } from "../../models/responses/graphql/user";
 import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as types from "../actions/types";
@@ -91,7 +81,10 @@ const initialState: IUserState = {
 };
 
 export const userReducer = createReducer(initialState, {
-  [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
+  [types.GET_USER_PROFILE_REQUEST](
+    state: IUserState,
+    action: Action<GetUserProfileRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
@@ -99,8 +92,9 @@ export const userReducer = createReducer(initialState, {
   },
   [types.GET_USER_PROFILE_RESPONSE](
     state: IUserState,
-    action: Action<Response<UserProfileResponse>>
+    action: Action<Response<UserProfile>>
   ): IUserState {
+    log(action.payload.response);
     return {
       ...state,
       name: action.payload.response!.name,
@@ -111,27 +105,38 @@ export const userReducer = createReducer(initialState, {
   },
   [types.GET_USER_PROFILE_FAIL](
     state: IUserState,
-    action: Action<Response<UserProfileResponse>>
+    action: Action<Response<UserProfile>>
   ): IUserState {
     return state;
   },
 
-  [types.EDIT_PROFILE_REQUEST](state: IUserState, action: Action<EditProfileRequest>) {
+  [types.EDIT_USER_PROFILE_REQUEST](
+    state: IUserState,
+    action: Action<EditProfileRequest>
+  ): IUserState {
+    return { ...state, token: action.payload.token };
+  },
+  [types.EDIT_USER_PROFILE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditProfile>>
+  ): IUserState {
+    const email = action.payload.response?.email != undefined ? action.payload.response.email : "";
+    const phone = action.payload.response?.phone != undefined ? action.payload.response.phone : "";
     return {
       ...state,
-      picture: action.payload.picture,
-      newName: action.payload.newName,
+      name: action.payload.response?.name!,
+      picture: action.payload.response?.picture!,
+      email: email,
+      phone: phone,
     };
   },
-  [types.EDIT_PROFILE_RESPONSE](
+  [types.EDIT_USER_PROFILE_FAIL](
     state: IUserState,
-    action: Action<Response<EditProfileResponse>>
-  ) {
-    return {
-      ...state
-    };
+    action: Action<Response<EditProfile>>
+  ): IUserState {
+    return state;
   },
-  [types.UPLOAD_IMAGE_REQUEST](state: IUserState, action: Action<UploadImageRequest>) {
+  [types.UPLOAD_IMAGE_REQUEST](state: IUserState, action: Action<UploadImageRequest>): IUserState {
     return {
       ...state,
       token: action.payload.token,
@@ -139,11 +144,14 @@ export const userReducer = createReducer(initialState, {
   },
   [types.UPLOAD_IMAGE_RESPONSE](
     state: IUserState,
-    action: Action<Response<UploadImageResponse>>
-  ) {
-    return {
-      ...state
-    };
+    action: Action<Response<UploadImage>>
+  ): IUserState {
+    let imageUrl: string =
+      action.payload.response?.url != undefined ? action.payload.response.url : "";
+    return { ...state, imageUri: imageUrl };
+  },
+  [types.UPLOAD_IMAGE_FAIL](state: IUserState, action: Action<Response<UploadImage>>): IUserState {
+    return state;
   },
   [types.GET_USER_EXPENSES_REQUEST](
     state: IUserState,

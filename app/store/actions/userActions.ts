@@ -2,84 +2,34 @@ import { Action } from "../../models/actions/action";
 import { Token } from "../../models/other/axios/Token";
 import { User } from "../../models/other/graphql/User";
 import {
-  AddFriendRequest,
-  GetUserFriendsRequest,
   GetUserProfileRequest,
-  DeleteFriendRequest,
-  InviteFriendsRequest,
-  AddExpenseRequest,
-  GetExpensesRequest,
-  AddCommentRequest,
-  GetExpenseRequest,
-  GetCommentRequest,
   UploadImageRequest,
   EditProfileRequest,
 } from "../../models/requests/axios/user";
-import {
-  DeleteActivityRequest,
-  DeleteExpenseRequest,
-} from "../../models/requests/graphql/activity";
 import { UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
-import {
-  AddFriend,
-  DeleteFriend,
-  GetUserFriends,
-  UserProfileResponse,
-  AddExpense,
-  AddComment,
-  GetExpenses,
-  GetExpense,
-  GetComment,
-  UploadImageResponse,
-  EditProfileResponse,
-} from "../../models/responses/axios/user";
-import {
-  DeleteActivityResponse,
-  DeleteExpenseResponse,
-} from "../../models/responses/graphql/activity";
-import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/responses/graphql/user";
-import { InputType } from "../../utils/inputTypes";
-import { log } from "../../utils/logger";
+import { UserProfile, UploadImage, EditProfile } from "../../models/responses/axios/user";
+import { UpdateUserResponse } from "../../models/responses/graphql/user";
 import * as types from "./types";
 
-export function onEditProfileRequest(response): Action<EditProfileRequest>{
-  return{
-    type: types.EDIT_PROFILE_REQUEST,
-    payload:{
-      picture: response.url,
-      newName: response.key,
-    },
-  };
-}
+// export function onEditProfileRequest(response): Action<EditProfileRequest> {
+//   return {
+//     type: types.EDIT_PROFILE_REQUEST,
+//     payload: {
+//       picture: response.url,
+//       newName: response.key,
+//     },
+//   };
+// }
 
-export function onEditProfileResponse(
-  response: Response<EditProfileResponse>
-): Action<Response<EditProfileResponse>> {
-  return {
-    type: types.EDIT_PROFILE_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest>{
-  return{
-    type: types.UPLOAD_IMAGE_REQUEST,
-    payload:{
-      token: token,
-      data: response,
-    },
-  };
-}
-
-export function onUploadImageResponse(
-  response: Response<UploadImageResponse>
-): Action<Response<UploadImageResponse>> {
-  return {
-    type: types.UPLOAD_IMAGE_RESPONSE,
-    payload: response,
-  };
-}
+// export function onEditProfileResponse(
+//   response: Response<EditProfile>
+// ): Action<Response<EditProfile>> {
+//   return {
+//     type: types.EDIT_PROFILE_RESPONSE,
+//     payload: response,
+//   };
+// }
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
   return {
@@ -91,15 +41,15 @@ export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequ
 }
 
 export function onGetUserProfileResponse(
-  response: Response<UserProfileResponse>
-): Action<Response<UserProfileResponse>> {
+  response: Response<UserProfile>
+): Action<Response<UserProfile>> {
   return {
     type: types.GET_USER_PROFILE_RESPONSE,
     payload: response,
   };
 }
 
-export function onGetUserProfileFail(): Action<Response<UserProfileResponse>> {
+export function onGetUserProfileFail(): Action<Response<UserProfile>> {
   return {
     type: types.GET_USER_PROFILE_FAIL,
     payload: {
@@ -141,31 +91,73 @@ export function onGetUserProfileFail(): Action<Response<UserProfileResponse>> {
 //   };
 // }
 
-export function onUpdateUserRequest(user: User): Action<UpdateUserRequest> {
+export function onEditUserProfileRequest(
+  token: Token,
+  newName: string,
+  picture: string
+): Action<EditProfileRequest> {
   return {
-    type: types.UPDATE_USER_REQUEST,
+    type: types.EDIT_USER_PROFILE_REQUEST,
     payload: {
-      user: user,
+      token: token,
+      newName: newName,
+      picture: picture,
     },
   };
 }
 
-export function onUpdateUserResponse(response: UpdateUserResponse): Action<UpdateUserResponse> {
+export function onEditUserProfileResponse(
+  response: Response<EditProfile>
+): Action<Response<EditProfile>> {
   return {
-    type: types.UPDATE_USER_RESPONSE,
+    type: types.EDIT_USER_PROFILE_RESPONSE,
     payload: {
       success: response.success,
-      user: response.user,
+      status: response.status,
+      response: response.response,
     },
   };
 }
 
-export function onUpdateUserFail(): Action<UpdateUserResponse> {
+export function onEditUserProfileFail(): Action<Response<EditProfile>> {
   return {
-    type: types.UPDATE_USER_FAIL,
+    type: types.EDIT_USER_PROFILE_FAIL,
     payload: {
       success: false,
-      user: undefined,
+      status: -1,
+    },
+  };
+}
+
+export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest> {
+  return {
+    type: types.UPLOAD_IMAGE_REQUEST,
+    payload: {
+      token: token,
+      data: response,
+    },
+  };
+}
+
+export function onUploadImageResponse(
+  response: Response<UploadImage>
+): Action<Response<UploadImage>> {
+  return {
+    type: types.UPLOAD_IMAGE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    },
+  };
+}
+
+export function onUploadImageFail(): Action<Response<UploadImage>> {
+  return {
+    type: types.UPLOAD_IMAGE_RESPONSE,
+    payload: {
+      success: false,
+      status: -1,
     },
   };
 }

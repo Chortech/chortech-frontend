@@ -12,17 +12,17 @@ import { styles } from "./styles";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
 import { InputType } from "../../utils/inputTypes";
-import * as ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from "react-native-image-picker";
 
 type IState = {
   userReducer: IUserState;
 };
 
 const options = {
-  title: 'Select Avatar',
+  title: "Select Avatar",
   storageOptions: {
     skipBackup: true,
-    path: 'images',
+    path: "images",
   },
   includeBase64: true,
 };
@@ -31,6 +31,8 @@ const Profile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
+
+  log(user.picture);
 
   const dispatch = useDispatch();
   const [data, setData] = useState({
@@ -44,33 +46,32 @@ const Profile: React.FC = (): JSX.Element => {
 
   const onPressUpdateImage = () => {
     let uri = "../../assets/images/friend-image.jpg";
-    ImagePicker.launchImageLibrary(options,
-      (response) => {
-        uri = response.uri;
-        setData({
-          ...data,
-          imageUri: uri,
-        })
-    user={
-      ...user,
-      imageUri: data.imageUri,
-    }
-    if (validateToken(loggedInUser.token)) {
-      console.log("hmmm");
-      dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
-    } else {
-      console.log("getting new token");
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
-    }
-  })
-  }
+    ImagePicker.launchImageLibrary(options, (response) => {
+      uri = response.uri;
+      setData({
+        ...data,
+        imageUri: uri,
+      });
+      user = {
+        ...user,
+        imageUri: data.imageUri,
+      };
+      if (validateToken(loggedInUser.token)) {
+        console.log("hmmm");
+        dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
+      } else {
+        console.log("getting new token");
+        dispatch(
+          authActions.onLoginRequest(
+            loggedInUser.email,
+            loggedInUser.phone,
+            loggedInUser.password,
+            loggedInUser.authInputType
+          )
+        );
+      }
+    });
+  };
   const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
   const onLogout = () => {
@@ -98,7 +99,11 @@ const Profile: React.FC = (): JSX.Element => {
             <TouchableOpacity onPress={onPressUpdateImage}>
               <Image
                 style={styles.profileImage}
-                source={data.imageUri && data.imageUri!==""?{uri: data.imageUri}: require("../../assets/images/friend-image.jpg")}
+                source={
+                  data.imageUri && data.imageUri !== ""
+                    ? { uri: data.imageUri }
+                    : require("../../assets/images/friend-image.jpg")
+                }
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>

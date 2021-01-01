@@ -22,6 +22,5 @@ export interface IUserState {
   activities: Array<Expense>;
   myCreditCards: Array<CreditCard>;
   otherCreditCards: Array<CreditCard>;
-  activities: Array<Activity>;
   imageUri: string;
 }

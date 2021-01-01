@@ -35,6 +35,7 @@ export interface UploadImageRequest {
 }
 
 export interface EditProfileRequest {
+  token: Token;
   picture: string;
   newName: string;
 }
@@ -58,6 +59,11 @@ export interface EditExpenseRequest {
   group?: string;
   notes?: string;
   participants: Array<Participant>;
+}
+
+export interface DeleteExpenseRequest {
+  expenseId: string;
+  token: Token;
 }
 
 export interface GetUserExpensesRequest {

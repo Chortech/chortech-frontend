@@ -6,6 +6,7 @@ import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
 import * as authActions from "../../store/actions/authActions";
+import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
@@ -34,6 +35,22 @@ const EditProfile: React.FC = (): JSX.Element => {
     validNewPassword: true,
     secureTextEntry: false,
   });
+
+  const onPressChangeName = () => {
+    if (!data.validName) {
+      ToastAndroid.show("نام واردشده معتبر نیست", ToastAndroid.SHORT);
+      return;
+    }
+    if (data.name == user.name) {
+      ToastAndroid.show("نام واردشده تکراری است", ToastAndroid.SHORT);
+      return;
+    }
+    if (!validateToken(loggedInUser.token)) {
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+      return;
+    }
+    dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
+  };
 
   const onPressChangeEmail = () => {
     if (validateToken(loggedInUser.token)) {
@@ -169,7 +186,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                 onChangeText={onChangeNameText}
                 confirmIcon={true}
                 cancelIcon={true}
-                onPressConfirmButton={() => {}}
+                onPressConfirmButton={onPressChangeName}
                 onPressCancelButton={() => setData({ ...data, name: user.name, validName: true })}
               />
               {loggedInUser.authInputType == InputType.Email ? (
@@ -186,8 +203,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                     setData({ ...data, email: user.email, validEmail: true })
                   }
                 />
-              ) : // null
-              null}
+              ) : null}
               {loggedInUser.authInputType == InputType.Phone ? (
                 <CustomInput
                   label="شماره تلفن"

@@ -9,15 +9,16 @@ import {
   AddFriend,
   GetUserFriends,
   DeleteFriend,
-  UserProfileResponse,
-  UploadImageResponse,
+  UserProfile,
+  UploadImage,
+  EditProfile,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
 import { validateToken } from "../../../utils/tokenValidator";
 import { IUserState } from "../../../models/reducers/default";
 
-import {Buffer} from "buffer"; 
+import { Buffer } from "buffer";
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
@@ -35,8 +36,8 @@ export class UserAPI implements userApi {
     });
   }
 
-  async getUserProfile(): Promise<Response<UserProfileResponse>> {
-    let result: Response<UserProfileResponse> = {
+  async getUserProfile(): Promise<Response<UserProfile>> {
+    let result: Response<UserProfile> = {
       success: false,
       status: -1,
     };
@@ -61,6 +62,42 @@ export class UserAPI implements userApi {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
+    return result;
+  }
+
+  async editUserProfile(newName: string, picture: string): Promise<Response<EditProfile>> {
+    let result: Response<EditProfile> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.put("/profile/edit", {
+        newName: newName,
+        picture: picture,
+      });
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("edit profile api result");
+      log(result);
+    } catch (e) {
+      log("edit profile api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response != undefined ? error.response.status : -1;
       } else {
         log(e.response);
       }
@@ -327,33 +364,32 @@ export class UserAPI implements userApi {
 
     return result;
   }
-  async changeImage(image: string, data): Promise<Response<UploadImageResponse>> {
-    let result: Response<UploadImageResponse> = {
+  async uploadImageRequest(image: string, data: any): Promise<Response<UploadImage>> {
+    let result: Response<UploadImage> = {
       success: false,
       status: -1,
     };
 
     try {
-      let contentType: String=image;
-      let response: AxiosResponse = await this.client.get("/image/upload", { headers:{
-        "X-Content-Type": contentType} 
+      let contentType: String = image;
+      let response: AxiosResponse = await this.client.get("/image/upload", {
+        headers: {
+          "X-Content-Type": contentType,
+        },
       });
-      // console.log(response.data);
       const buff = Buffer.from(data.base64, "base64");
 
-    let res = await axios.put(response.data.url, buff, {
-      headers: {
-        "x-amz-acl": "public-read",
-        "Content-Length": data.base64.length,
-        "Content-Type": data.type,
-        "Content-Encoding": "base64",
-      },
-    });
-    // console.log(res);
-    let lastRes: AxiosResponse = await this.client.put("/profile/edit", {
-      picture: response.data.key,
-          } );
-      // console.log(lastRes);
+      let res = await axios.put(response.data.url, buff, {
+        headers: {
+          "x-amz-acl": "public-read",
+          "Content-Length": data.base64.length,
+          "Content-Type": data.type,
+          "Content-Encoding": "base64",
+        },
+      });
+      let lastRes: AxiosResponse = await this.client.put("/profile/edit", {
+        picture: response.data.key,
+      });
       if (response.status == 200) {
         result = {
           success: true,
@@ -363,7 +399,7 @@ export class UserAPI implements userApi {
       } else {
         result.status = response.status;
       }
-      log("get upload image key");
+      log("upload image api result");
       log(result);
     } catch (e) {
       if (e.isAxiosError) {

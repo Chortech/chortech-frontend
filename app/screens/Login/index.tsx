@@ -20,6 +20,7 @@ const Login: React.FC = (): JSX.Element => {
   const state = useSelector((state: IState) => state.authReducer);
 
   const dispatch = useDispatch();
+
   const onLogin = () => {
     if (data.emailOrPhone == "" || data.password == "") {
       ToastAndroid.show("لطفا همه‌ی مقادیر ورودی را پُر کنید", ToastAndroid.SHORT);

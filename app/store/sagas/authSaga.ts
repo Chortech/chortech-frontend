@@ -25,6 +25,7 @@ import { InputType } from "../../utils/inputTypes";
 import { AuthenticationApi, AuthAPI } from "../../services/api/axios/authApi";
 import configureStore from "..";
 import { IUserState } from "../../models/reducers/default";
+import { log } from "../../utils/logger";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -34,7 +35,10 @@ export function* loginAsync(action: Action<LoginRequest>) {
     status: -1,
   };
 
+  log(action.payload);
+
   if (inputType == InputType.Email) {
+    log("call");
     response = yield AuthAPI.loginByEmail(email, password);
   } else if (inputType == InputType.Phone) {
     response = yield AuthAPI.loginByPhone(phone, password);

@@ -20,14 +20,14 @@ export interface DeleteFriend {
   friends: Array<Friend>;
 }
 
-export interface UserProfileResponse {
+export interface UserProfile {
   name: string;
   email: string;
   phone: string;
   picture: string;
 }
 
-export interface EditProfileResponse {
+export interface EditProfile {
   name: string;
   email?: string;
   phone?: string;
@@ -52,11 +52,6 @@ export interface EditExpense {
   group?: string;
   notes?: string;
   participants?: Array<Participant>;
-}
-
-export interface DeleteExpenseRequest {
-  expenseId: string;
-  token: Token;
 }
 
 export interface UserExpenses {
@@ -85,7 +80,7 @@ export interface ExpenseComments {
   comments: Array<Comment>;
 }
 
-export interface UploadImageResponse{
+export interface UploadImage {
   key: string;
   url: string;
 }
