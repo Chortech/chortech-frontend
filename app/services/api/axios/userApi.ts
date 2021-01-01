@@ -10,11 +10,14 @@ import {
   GetUserFriends,
   DeleteFriend,
   UserProfileResponse,
+  UploadImageResponse,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
 import { validateToken } from "../../../utils/tokenValidator";
 import { IUserState } from "../../../models/reducers/default";
+
+import {Buffer} from "buffer"; 
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
@@ -322,6 +325,57 @@ export class UserAPI implements userApi {
       }
     }
 
+    return result;
+  }
+  async changeImage(image: string, data): Promise<Response<UploadImageResponse>> {
+    let result: Response<UploadImageResponse> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let contentType: String=image;
+      let response: AxiosResponse = await this.client.get("/image/upload", { headers:{
+        "X-Content-Type": contentType} 
+      });
+      // console.log(response.data);
+      const buff = Buffer.from(data.base64, "base64");
+
+    let res = await axios.put(response.data.url, buff, {
+      headers: {
+        "x-amz-acl": "public-read",
+        "Content-Length": data.base64.length,
+        "Content-Type": data.type,
+        "Content-Encoding": "base64",
+      },
+    });
+    // console.log(res);
+    let lastRes: AxiosResponse = await this.client.put("/profile/edit", {
+      picture: response.data.key,
+          } );
+      // console.log(lastRes);
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("get upload image key");
+      log(result);
+    } catch (e) {
+      if (e.isAxiosError) {
+        console.log("axios error:", e.response);
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+      } else {
+        log("upload image api error");
+        console.log(e);
+        console.log("server error:", e.message);
+      }
+    }
     return result;
   }
 }

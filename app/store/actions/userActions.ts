@@ -7,6 +7,13 @@ import {
   GetUserProfileRequest,
   DeleteFriendRequest,
   InviteFriendsRequest,
+  AddExpenseRequest,
+  GetExpensesRequest,
+  AddCommentRequest,
+  GetExpenseRequest,
+  GetCommentRequest,
+  UploadImageRequest,
+  EditProfileRequest,
 } from "../../models/requests/axios/user";
 import {
   DeleteActivityRequest,
@@ -19,6 +26,13 @@ import {
   DeleteFriend,
   GetUserFriends,
   UserProfileResponse,
+  AddExpense,
+  AddComment,
+  GetExpenses,
+  GetExpense,
+  GetComment,
+  UploadImageResponse,
+  EditProfileResponse,
 } from "../../models/responses/axios/user";
 import {
   DeleteActivityResponse,
@@ -28,6 +42,44 @@ import { GetUserActivitiesResponse, UpdateUserResponse } from "../../models/resp
 import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as types from "./types";
+
+export function onEditProfileRequest(response): Action<EditProfileRequest>{
+  return{
+    type: types.EDIT_PROFILE_REQUEST,
+    payload:{
+      picture: response.url,
+      newName: response.key,
+    },
+  };
+}
+
+export function onEditProfileResponse(
+  response: Response<EditProfileResponse>
+): Action<Response<EditProfileResponse>> {
+  return {
+    type: types.EDIT_PROFILE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest>{
+  return{
+    type: types.UPLOAD_IMAGE_REQUEST,
+    payload:{
+      token: token,
+      data: response,
+    },
+  };
+}
+
+export function onUploadImageResponse(
+  response: Response<UploadImageResponse>
+): Action<Response<UploadImageResponse>> {
+  return {
+    type: types.UPLOAD_IMAGE_RESPONSE,
+    payload: response,
+  };
+}
 
 export function onGetUserProfileRequest(token: Token): Action<GetUserProfileRequest> {
   return {

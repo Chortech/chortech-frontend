@@ -4,6 +4,7 @@ import { IUserState } from "../../models/reducers/default";
 import {
   AddFriendRequest,
   DeleteFriendRequest,
+  EditProfileRequest,
   GetUserFriendsRequest,
   GetUserProfileRequest,
   InviteFriendsRequest,
@@ -13,6 +14,7 @@ import {
   GetExpenseRequest,
   GetExpenseCommentsRequest,
   EditExpenseRequest,
+  UploadImageRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -41,6 +43,9 @@ import {
   ExpenseComments,
   EditExpense,
   DeleteExpenseRequest,
+  AddComment,
+  UploadImageResponse,
+  EditProfileResponse,
 } from "../../models/responses/axios/user";
 import {
   AddActivityResponse,
@@ -82,13 +87,11 @@ const initialState: IUserState = {
   activities: [],
   myCreditCards: [],
   otherCreditCards: [],
+  imageUri: "",
 };
 
 export const userReducer = createReducer(initialState, {
-  [types.GET_USER_PROFILE_REQUEST](
-    state: IUserState,
-    action: Action<GetUserProfileRequest>
-  ): IUserState {
+  [types.GET_USER_PROFILE_REQUEST](state: IUserState, action: Action<GetUserProfileRequest>) {
     return {
       ...state,
       token: action.payload.token,
@@ -111,6 +114,36 @@ export const userReducer = createReducer(initialState, {
     action: Action<Response<UserProfileResponse>>
   ): IUserState {
     return state;
+  },
+
+  [types.EDIT_PROFILE_REQUEST](state: IUserState, action: Action<EditProfileRequest>) {
+    return {
+      ...state,
+      picture: action.payload.picture,
+      newName: action.payload.newName,
+    };
+  },
+  [types.EDIT_PROFILE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditProfileResponse>>
+  ) {
+    return {
+      ...state
+    };
+  },
+  [types.UPLOAD_IMAGE_REQUEST](state: IUserState, action: Action<UploadImageRequest>) {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.UPLOAD_IMAGE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UploadImageResponse>>
+  ) {
+    return {
+      ...state
+    };
   },
   [types.GET_USER_EXPENSES_REQUEST](
     state: IUserState,

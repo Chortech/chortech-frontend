@@ -38,5 +38,6 @@ export default function* watch() {
     takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
     takeLatest(types.ADD_COMMENT_REQUEST, expenseSaga.addCommentAsync),
     takeLatest(types.GET_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
+    takeLatest(types.UPLOAD_IMAGE_REQUEST, userSaga.UploadImageAsync),
   ]);
 }

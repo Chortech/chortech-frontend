@@ -84,3 +84,8 @@ export interface ExpenseComments {
   expenseId: string;
   comments: Array<Comment>;
 }
+
+export interface UploadImageResponse{
+  key: string;
+  url: string;
+}
