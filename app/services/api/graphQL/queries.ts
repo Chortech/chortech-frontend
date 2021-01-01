@@ -35,6 +35,9 @@ export const COMPLETE_USER_BY_ID = gql`
         data {
           _id
           name
+          creator {
+            _id
+          }
         }
       }
       activities {

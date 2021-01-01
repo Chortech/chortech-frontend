@@ -1,76 +1,79 @@
 import React, { useState } from "react";
-import { ToastAndroid, View } from "react-native";
+import { Text, ToastAndroid, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Searchbar } from "react-native-paper";
 import { styles } from "./styles";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { InputType } from "../../utils/inputTypes";
 import { RegexValidator } from "../../utils/regexValidator";
 import { Api } from "../../services/api/graphQL/graphqlApi";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as friendActions from "../../store/actions/friendActions";
+import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import LoadingIndicator from "../Loading";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
-  friendReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const InviteFriend: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading } = useSelector((state: IState) => state.friendReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [inputType, setInputType] = useState(InputType.None);
-  const [fetchedUsers, setFetchedUsers] = useState<Array<User>>([]);
+  const [validInput, setValidInput] = useState(true);
   const dispatch = useDispatch();
 
-  const onChangeSearchQuery = (text: string) => {
-    const type = RegexValidator.validateEmailOrPhone(text);
-    setEmailOrPhone(text);
-    setInputType(type);
-  };
-
-  const onPressSearchButton = (): void => {
-    if (inputType == InputType.Email || inputType == InputType.Phone) {
-      Api.getFilteredUser(emailOrPhone, inputType).then((data) => {
-        if (data.success) {
-          if (fetchedUsers.length > 0) {
-            setFetchedUsers([]);
-          }
-          setFetchedUsers([data.user]);
-        } else {
-          ToastAndroid.show(
-            "کاربر با این مشخصات وجود ندارد",
-            ToastAndroid.SHORT
+  const onPressAddFriend = (): void => {
+    if (validateToken(loggedInUser.token)) {
+      if (validInput) {
+        if (inputType == InputType.Email) {
+          dispatch(
+            friendActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
+          );
+        } else if (inputType == InputType.Phone) {
+          dispatch(
+            friendActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
           );
         }
-      });
-    } else {
-      ToastAndroid.show("اطلاعات وارد شده نامعتبر است", ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
     }
   };
 
-  const onPressAddFriend = (): void => {
-    let searchedUser = fetchedUsers[0];
-    dispatch(
-      friendActions.onAddFriendRequest(
-        loggedInUser.id,
-        searchedUser.id,
-        searchedUser.name
-      )
-    );
-    setFetchedUsers([]);
+  const onPressInviteFriend = (): void => {
+    if (validateToken(loggedInUser.token)) {
+      if (validInput) {
+        if (inputType == InputType.Email) {
+          dispatch(
+            friendActions.onInviteFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
+          );
+        } else if (inputType == InputType.Phone) {
+          dispatch(
+            friendActions.onInviteFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
+          );
+        }
+      } else {
+        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
+    }
   };
 
-  const renderSelectedItems: any = ({ item }) => (
-    <SearchedUserItem
-      id={item.id}
-      name={item.name}
-      onPress={onPressAddFriend}
-    />
-  );
+  const setInfo = (text: string) => {
+    let type: InputType = RegexValidator.validateEmailOrPhone(text);
+    setEmailOrPhone(text);
+    setInputType(type);
+    if (type == InputType.Email || type == InputType.Phone) {
+      setValidInput(true);
+    } else {
+      setValidInput(false);
+    }
+  };
 
   return (
     <>
@@ -78,21 +81,24 @@ const InviteFriend: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <Animatable.View
-            animation="slideInUp"
-            duration={500}
-            style={styles.infoContainer}>
-            <Searchbar
+          <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
+            <TextInput
               placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-              style={styles.searchBar}
-              inputStyle={styles.searchInput}
-              onChangeText={onChangeSearchQuery}
-              value={emailOrPhone}
-              iconColor="#1AD927"
-              onIconPress={onPressSearchButton}
+              style={{
+                ...styles.friendEmailOrPhoneInput,
+                borderColor: validInput || emailOrPhone == "" ? "lightgreen" : "red",
+              }}
+              onChangeText={(text) => setInfo(text)}
             />
           </Animatable.View>
-          <FlatList data={fetchedUsers} renderItem={renderSelectedItems} />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={onPressAddFriend}>
+              <Text style={styles.buttonText}>افزودن به دوستان</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={onPressInviteFriend}>
+              <Text style={styles.buttonText}>ارسال دعوت‌نامه</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </>

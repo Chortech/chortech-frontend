@@ -1,60 +1,52 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
 
-import * as identifyAccountActions from "../../store/actions/identifyAccountActions";
+import * as authActions from "../../store/actions/authActions";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
+import NavigationService from "../../navigation/navigationService";
 
 interface IState {
-  IdentifyAccountReducer: IUserState;
+  authReducer: IUserState;
 }
 
 const AccountIdentification: React.FC = () => {
-  const { loading } = useSelector(
-    (state: IState) => state.IdentifyAccountReducer
-  );
+  const { loading } = useSelector((state: IState) => state.authReducer);
   const dispatch = useDispatch();
-  const onVerify = () => {
-    if (data.emailOrPhone != "" && data.validEmailOrPhone) {
-      const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
-      const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
-      dispatch(
-        identifyAccountActions.onIdentifyAccountRequest(
-          email,
-          phone,
-          data.inputType
-        )
-      );
-    } else {
-      ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
-    }
-  };
-
   const [data, setData] = useState({
     emailOrPhone: "",
     validEmailOrPhone: true,
     inputType: InputType.None,
   });
 
+  const onVerify = () => {
+    if (data.emailOrPhone != "" && data.validEmailOrPhone) {
+      const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
+      const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
+      NavigationService.navigate("CodeVerification", {
+        parentScreen: "AccountIdentification",
+        name: "",
+        email: email,
+        phone: phone,
+        password: "",
+        inputType: data.inputType,
+      });
+    } else {
+      ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
+    }
+  };
+
   const setEmailOrPhone = (text: string): void => {
     const type = RegexValidator.validateEmailOrPhone(text);
     setData({
       ...data,
       emailOrPhone: text,
-      validEmailOrPhone:
-        text == "" || type == InputType.Email || type == InputType.Phone,
+      validEmailOrPhone: text == "" || type == InputType.Email || type == InputType.Phone,
       inputType: type,
     });
   };
@@ -69,10 +61,7 @@ const AccountIdentification: React.FC = () => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>Chortech</Text>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={1000}
-            style={styles.footer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
@@ -81,20 +70,13 @@ const AccountIdentification: React.FC = () => {
               />
             </View>
             {!data.validEmailOrPhone ? (
-              <Animatable.Text
-                style={styles.validationText}
-                animation="fadeIn"
-                duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
                 ایمیل یا شماره موبایل وارد شده معتبر نیست
               </Animatable.Text>
             ) : null}
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.verifyScreenButton}
-                onPress={onVerify}>
-                <Text style={styles.verifyScreenButtonText}>
-                  ادامه و دریافت کد تایید
-                </Text>
+              <TouchableOpacity style={styles.verifyScreenButton} onPress={onVerify}>
+                <Text style={styles.verifyScreenButtonText}>ادامه و دریافت کد تایید</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

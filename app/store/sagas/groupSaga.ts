@@ -1,23 +1,23 @@
+import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
-import { Alert, ToastAndroid } from "react-native";
 import { Action } from "../../models/actions/action";
-import { Api } from "../../services/api/graphQL/graphqlApi";
 import {
   AddGroupRequest,
-  UpdateGroupRequest,
   DeleteGroupRequest,
   GetGroupByIdRequest,
   GetUserGroupsRequest,
-} from "../../models/requests/group";
+  UpdateGroupRequest,
+} from "../../models/requests/graphql/group";
 import {
   AddGroupResponse,
+  UpdateGroupResponse,
   DeleteGroupResponse,
   GetGroupByIdResponse,
   GetUserGroupsResponse,
-  UpdateGroupResponse,
-} from "../../models/responses/group";
-import * as groupActions from "../actions/groupActions";
+} from "../../models/responses/graphql/group";
 import { navigationRef } from "../../navigation/navigationService";
+import { Api } from "../../services/api/graphQL/graphqlApi";
+import * as groupActions from "../actions/groupActions";
 
 export function* addGroupAsync(action: Action<AddGroupRequest>) {
   yield put(groupActions.onLoadingEnable());
@@ -30,7 +30,8 @@ export function* addGroupAsync(action: Action<AddGroupRequest>) {
   try {
     response = yield Api.addGroup(name, creator, members);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -55,7 +56,8 @@ export function* updateGroupAsync(action: Action<UpdateGroupRequest>) {
   try {
     response = yield Api.updateGroup(groupId, name, creator, members);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -78,7 +80,8 @@ export function* deleteGroupAsync(action: Action<DeleteGroupRequest>) {
   try {
     response = yield Api.deleteGroup(groupId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());
@@ -109,7 +112,8 @@ export function* getGroupByIdAsync(action: Action<GetGroupByIdRequest>) {
   try {
     response = yield Api.getGroupById(groupId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
   yield put(groupActions.onLoadingDisable());
   if (response.success) {
@@ -132,7 +136,8 @@ export function* getUserGroups(action: Action<GetUserGroupsRequest>) {
   try {
     response = yield Api.getUserGroups(userId);
   } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+    console.log(JSON.stringify(error, undefined, 2));
+    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
   }
 
   yield put(groupActions.onLoadingDisable());

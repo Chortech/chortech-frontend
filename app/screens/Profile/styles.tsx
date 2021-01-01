@@ -1,3 +1,4 @@
+import { transform } from "@babel/core";
 import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -6,26 +7,41 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1AD927",
   },
   header: {
-    flex: 3,
-    alignItems: "center",
+    flex: 2,
     paddingTop: 10,
   },
   profileImage: {
     height: 80,
     width: 80,
     marginTop: 10,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: "#fff",
+  },
+  logoutIcon: {
+    margin: 20,
+    borderWidth: 2,
+    borderColor: "#ff0000",
+    borderRadius: 10,
+    padding: 5,
+    position: "absolute",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    transform: [{ rotate: "180deg" }],
   },
   userNameText: {
     fontSize: 20,
-    marginVertical: 10,
-    padding: 5,
+    marginTop: 5,
     color: "#fff",
+    alignSelf: "center",
     alignItems: "center",
     fontFamily: "IRANSansWeb_Bold",
   },
   infoContainer: {
-    flex: 8,
+    flex: 6,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     borderTopRightRadius: 30,
@@ -55,9 +71,9 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
   },
   buttonContainer: {
-    flex: 5,
-    justifyContent: "flex-end",
-    margin: 20,
+    justifyContent: "space-between",
+    marginHorizontal: 10,
+    marginTop: 70,
   },
   button: {
     elevation: 1,

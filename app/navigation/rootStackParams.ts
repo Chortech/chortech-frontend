@@ -1,12 +1,27 @@
+import { Item } from "../models/other/axios/Item";
+import { Token } from "../models/other/axios/Token";
+import { InputType } from "../utils/inputTypes";
+
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   CodeVerification: {
     parentScreen: string;
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    inputType: InputType;
+    token?: Token;
   };
   Profile: undefined;
   EditProfile: undefined;
-  ResetPassword: undefined;
+  ResetPassword: {
+    email: string;
+    phone: string;
+    inputType: InputType;
+    parentScreen: string;
+  };
   CreditCardList: undefined;
   Friend: {
     id: string;
@@ -21,8 +36,17 @@ export type RootStackParamList = {
   Activity: {
     id: string;
     activityName: string;
-    activityType: string;
+    category: string;
+    total: string;
+  };
+  AddExpense: {
+    parentScreen: string;
+    items: Array<Item>;
+    id?: string;
+    description?: string;
+    total?: string;
+  };
+  AddComment: {
     expenseId?: string;
-    debtId?: string;
   };
 };

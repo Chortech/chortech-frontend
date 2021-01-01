@@ -43,9 +43,10 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#1AD927",
     borderRadius: 5,
-    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
+    marginBottom: 5,
   },
   addButtonText: {
     fontSize: 16,
@@ -69,9 +70,11 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "red",
     borderRadius: 5,
-    marginVertical: 10,
+    // marginVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
+    marginBottom: 5,
   },
   removeButtonText: {
     fontSize: 16,
@@ -101,5 +104,21 @@ export const styles = StyleSheet.create({
     color: "#053751",
     writingDirection: "auto",
     fontFamily: "IRANSansWeb_Bold",
+  },
+  textWrapper: {
+    flexDirection: "row",
+  },
+  textContainerRight: {
+    padding: 15,
+    borderBottomColor: "#EBE8E8",
+    borderBottomWidth: 1,
+    justifyContent: "flex-start",
+  },
+  textContainerLeft: {
+    flex: 5,
+    padding: 15,
+    borderBottomColor: "#EBE8E8",
+    borderBottomWidth: 1,
+    justifyContent: "flex-end",
   },
 });

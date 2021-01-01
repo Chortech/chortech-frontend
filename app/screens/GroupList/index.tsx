@@ -1,35 +1,24 @@
 import { useDispatch, useSelector, useStore } from "react-redux";
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import GroupItem from "../../components/GroupItem/index";
 import NavigationService from "../../navigation/navigationService";
 import * as groupActions from "../../store/actions/groupActions";
-import * as userActions from "../../store/actions/userActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
-import { Api } from "../../services/api/graphQL/graphqlApi";
-import { GetUserGroupsResponse } from "../../models/responses/group";
-import { Group } from "../../models/other/Group";
+import { error, log, warn } from "../../utils/logger";
 
 type IState = {
-  groupReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { groups } = useSelector((state: IState) => state.groupReducer);
+  const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
-  const onProfile = () => NavigationService.navigate("Profile");
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -38,8 +27,9 @@ const GroupList: React.FC = () => {
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.id));
+    // dispatch(groupActions.onGetUserRequest(loggedInUser.id));
   };
+
   useEffect(() => {
     fetchGroups();
   }, [dispatch]);
@@ -60,23 +50,9 @@ const GroupList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContent}>
-        <TouchableOpacity onPress={onProfile}>
-          <Image
-            style={styles.avatar}
-            source={require("../../assets/images/friend-image.jpg")}
-          />
-        </TouchableOpacity>
-        <Text style={styles.name}>{loggedInUser.name}</Text>
-      </View>
-      <Animatable.View
-        animation="slideInUp"
-        duration={600}
-        style={styles.infoContainer}>
+      <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
         <FlatList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           data={groups}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}

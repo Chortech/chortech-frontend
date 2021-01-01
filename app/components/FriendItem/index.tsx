@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  ImageSourcePropType,
-  Text,
-  View,
-} from "react-native";
+import { GestureResponderEvent, Image, ImageSourcePropType, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { styles } from "./styles";
 
@@ -18,9 +12,7 @@ type Props = {
 const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <View>
-      <TouchableOpacity
-        style={styles.friendContainer}
-        onPress={props.onPressFriendItem}>
+      <TouchableOpacity style={styles.friendContainer} onPress={props.onPressFriendItem}>
         <Text style={styles.friendText}>{props.Name}</Text>
         <Image style={styles.friendImage} source={props.ImageUrl} />
       </TouchableOpacity>

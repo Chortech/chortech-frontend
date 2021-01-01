@@ -1,36 +1,36 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-} from "react-native";
+import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
+// import cron from "node-cron";
+
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
+import { validateToken } from "../../utils/tokenValidator";
+import { log } from "../../utils/logger";
+import { take } from "redux-saga/effects";
 
 type IState = {
-  friendReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { friends } = useSelector((state: IState) => state.friendReducer);
+  const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
-    setRefreshing(true);
     fetchFriends();
-    setRefreshing(false);
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.id));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
+    }
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -44,8 +44,8 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={() => onFriend(item.id, item.friendName)}
-      Name={item.friendName}
+      onPressFriendItem={() => onFriend(item.id, item.name)}
+      Name={item.name}
       ImageUrl={require("../../assets/images/friend-image.jpg")}
     />
   );
@@ -53,24 +53,17 @@ const FriendList: React.FC = (): JSX.Element => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.textHeader}>دوستان</Text>
-        </View>
-        <Animatable.View
-          animation="slideInUp"
-          duration={600}
-          style={styles.infoContainer}>
+        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
           <FlatList
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             data={friends}
             renderItem={renderFriendItem}
+            showsVerticalScrollIndicator={false}
           />
         </Animatable.View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-            <Text style={styles.buttonText}>دعوت از دوستان</Text>
+            <Text style={styles.buttonText}>اضافه کردن دوستان جدید</Text>
           </TouchableOpacity>
         </View>
       </View>

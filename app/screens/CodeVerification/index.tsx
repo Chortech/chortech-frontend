@@ -1,71 +1,86 @@
 import { RouteProp } from "@react-navigation/native";
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-  ToastAndroid,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as signUpActions from "../../store/actions/authActions";
-import * as codeVerificationActions from "../../store/actions/codeVerificationActions";
-import { ILoginState } from "../../models/reducers/login";
+import * as verificationActions from "../../store/actions/verificationActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
+import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
 };
 
 type IState = {
-  codeVerificationReducer: IUserState;
+  authReducer: IUserState;
 };
 
 const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const state: IUserState = useStore().getState()["authReducer"];
-  console.log(JSON.stringify(state, undefined, 2));
-  const [user, setUser] = useState<User | null>(null);
-  const { parentScreen } = route.params;
-  const { phone, email, authInputType, loading } = useSelector(
-    (state: IState) => state.codeVerificationReducer
-  );
-  const [ref, setRef] = useState(null);
+  const props = route.params;
+  const { loading } = useSelector((state: IState) => state.authReducer);
+  const [ref, setRef] = useState<any>(null);
+  const [timerFinished, setTimerFinished] = useState<boolean>(false);
   const [data, setData] = useState({
     verificationCode: "",
-    validCode: false,
+    validCodeLength: false,
   });
+
   const dispatch = useDispatch();
+  const generateCode = () => {
+    dispatch(
+      verificationActions.onGenerateCodeRequest(
+        props.email,
+        props.phone,
+        props.inputType,
+        props.parentScreen,
+        props.name,
+        props.password,
+        state.token
+      )
+    );
+  };
+
+  useEffect(() => {
+    generateCode();
+  }, [dispatch]);
 
   const onNextScreen = () => {
-    if (data.validCode) {
-      if (parentScreen == "AccountIdentification") {
-        NavigationService.navigate("ResetPassword");
-      } else {
-      }
+    if (data.validCodeLength) {
+      dispatch(
+        verificationActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen,
+          state.token
+        )
+      );
     } else {
-      ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
+      ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }
   };
 
   const regenerateCode = (): void => {
-    dispatch(
-      codeVerificationActions.onGenerateCodeRequest(email, phone, authInputType)
-    );
+    generateCode();
     ref.resetCountDown();
+    setTimerFinished(false);
   };
 
   const setCode = (code: string): void => {
     setData({
       verificationCode: code,
-      validCode: code === "12345",
+      validCodeLength: code.length == 6,
     });
   };
 
@@ -79,27 +94,25 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>Chortech</Text>
           </View>
-          <Animatable.View
-            animation="fadeInUpBig"
-            duration={500}
-            style={styles.footer}>
+          <Animatable.View animation="fadeInUpBig" duration={500} style={styles.footer}>
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="لطفا کد فعال‌سازی را وارد کنید"
                 style={styles.textInput}
                 keyboardType="number-pad"
+                maxLength={6}
                 onChangeText={(text) => setCode(text)}
               />
             </View>
             <View style={styles.timerContainer}>
               <CountDown
-                ref={(ref) => {
+                ref={(ref: any) => {
                   setRef(ref);
                 }}
                 initialSeconds={120}
                 digitFontSize={20}
                 labelFontSize={20}
-                onTimeOut={(): void => {}}
+                onTimeOut={(): void => setTimerFinished(true)}
                 showHours={false}
                 showSeparator
                 separatorStyle={styles.seperatorLabel}
@@ -108,16 +121,14 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 width="40%"
                 height={40}
               />
-              <View>
+              <Animatable.View animation="bounceIn" duration={500}>
                 <TouchableOpacity onPress={regenerateCode}>
                   <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
                 </TouchableOpacity>
-              </View>
+              </Animatable.View>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={onNextScreen}>
+              <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>
                 <Text style={styles.confirmButtonText}>تایید</Text>
               </TouchableOpacity>
             </View>

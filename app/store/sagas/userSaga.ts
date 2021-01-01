@@ -2,89 +2,113 @@ import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
 import {
-  GetUserActivitiesRequest,
-  GetUserRequest,
-  UpdateUserRequest,
-} from "../../models/requests/user";
-import {
-  GetUserActivitiesResponse,
-  GetUserResponse,
-  UpdateUserResponse,
-} from "../../models/responses/user";
-import { Api } from "../../services/api/graphQL/graphqlApi";
+  EditProfileRequest,
+  GetUserProfileRequest,
+  UploadImageRequest,
+} from "../../models/requests/axios/user";
+import { Response } from "../../models/responses/axios/response";
+import { EditProfile, UploadImage, UserProfile } from "../../models/responses/axios/user";
+import { UserAPI } from "../../services/api/axios/userApi";
 import * as userActions from "../actions/userActions";
 
-export function* fetchUserAsync(action: Action<GetUserRequest>) {
+// export function* EditProfileAsync(action: Action<EditProfileRequest>) {
+//   // yield put(userActions.onLoadingEnable());
+//   const token = action.payload.token;
+//   let response: Response<UploadImage> = {
+//     success: false,
+//     status: -1,
+//   };
+//   const api: UserAPI = new UserAPI(token);
+//   response = yield api.changeImage("image/jpeg");
+
+//   // yield put(userActions.onLoadingDisable());
+
+//   if (response.success) {
+//     yield put(userActions.onUploadImageResponse(response));
+//     yield put(userActions.onEditProfileRequest(response));
+//   } else {
+//     console.log("fail");
+//     yield put(userActions.onGetUserProfileFail());
+//     if (response.status == 400) {
+//       ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+//     } else {
+//       console.log(response);
+//       ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+//     }
+//   }
+// }
+
+export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());
-  const id = action.payload.id;
-  let response: GetUserResponse = {
+  const token = action.payload.token;
+  let response: Response<UserProfile> = {
     success: false,
-    user: undefined,
+    status: -1,
   };
 
-  try {
-    response = yield Api.getUser(id);
-  } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
-  }
+  const api: UserAPI = new UserAPI(token);
+  response = yield api.getUserProfile();
 
   yield put(userActions.onLoadingDisable());
 
   if (response.success) {
-    yield put(userActions.onGetUserResponse(response));
+    yield put(userActions.onGetUserProfileResponse(response));
   } else {
-    yield put(userActions.onGetUserFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    yield put(userActions.onGetUserProfileFail());
+    if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }
 
-export function* updateUserAsync(action: Action<UpdateUserRequest>) {
+export function* editUserProfileAsync(action: Action<EditProfileRequest>) {
   yield put(userActions.onLoadingEnable());
-  const user = action.payload.user;
-  let response: UpdateUserResponse = {
-    success: false,
-    user: undefined,
-  };
+  const { token, newName, picture } = action.payload;
 
-  try {
-    response = yield Api.updateUser(user);
-  } catch (error) {
-    console.error(JSON.stringify(error, undefined, 2));
+  let api: UserAPI = new UserAPI(token);
+  let response: Response<EditProfile> = yield api.editUserProfile(newName, picture);
+
+  if (response.success) {
+    yield put(userActions.onEditUserProfileResponse(response));
+    ToastAndroid.show("ویرایش اطلاعات شما با موفقیت انجام شد", ToastAndroid.SHORT);
+  } else {
+    yield put(userActions.onEditUserProfileFail());
+    if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+    } else if (response.status == 401 || response.status == 403) {
+      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+    }
   }
 
   yield put(userActions.onLoadingDisable());
-
-  if (response.success) {
-    yield put(userActions.onUpdateUserResponse(response));
-  } else {
-    yield put(userActions.onUpdateUserFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
 }
 
-export function* getUserActivitiesAsync(
-  action: Action<GetUserActivitiesRequest>
-) {
-  yield put(userActions.onLoadingEnable());
-  const { userId } = action.payload;
-  let response: GetUserActivitiesResponse = {
+export function* uploadImageAsync(action: Action<UploadImageRequest>) {
+  // yield put(userActions.onLoadingEnable());
+  const token = action.payload.token;
+  let response: Response<UploadImage> = {
     success: false,
-    userId: "-1",
-    activities: [],
+    status: -1,
   };
+  const api: UserAPI = new UserAPI(token);
+  response = yield api.uploadImageRequest("image/jpeg", action.payload.data);
 
-  try {
-    response = yield Api.getUserActivities(userId);
-  } catch (error) {
-    console.error(JSON.stringify(error));
-  }
-
-  yield put(userActions.onLoadingDisable());
+  // yield put(userActions.onLoadingDisable());
 
   if (response.success) {
-    yield put(userActions.onGetUserActivitiesResponse(response));
+    yield put(userActions.onUploadImageResponse(response));
+    // response = yield api.uploadImage(response);
+    // yield put(userActions.onEditProfileRequest(response));
   } else {
-    yield put(userActions.onGetUserActivitiesFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    console.log("fail");
+    yield put(userActions.onGetUserProfileFail());
+    if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+    } else {
+      console.log(response);
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
 }

@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as Animatable from "react-native-animatable";
@@ -16,12 +10,12 @@ import * as groupActions from "../../store/actions/groupActions";
 import LoadingIndicator from "../Loading";
 
 type IState = {
-  groupReducer: IUserState;
+  userReducer: IUserState;
 };
 
 const AddGroup: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading } = useSelector((state: IState) => state.groupReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [groupName, setGroupName] = useState("");
   const [memberIds, setMemberIds] = useState<Array<string>>([]);
@@ -31,9 +25,7 @@ const AddGroup: React.FC = (): JSX.Element => {
     if (groupName == "") {
       ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
     } else {
-      dispatch(
-        groupActions.onAddGrouptRequest(groupName, loggedInUser.id, memberIds)
-      );
+      dispatch(groupActions.onAddGroupRequest(groupName, loggedInUser.id, memberIds));
     }
   };
 
@@ -60,10 +52,7 @@ const AddGroup: React.FC = (): JSX.Element => {
               />
             </View>
           </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={1000}
-            style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
             <Searchbar
               placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
               style={styles.searchBar}

@@ -1,22 +1,21 @@
-import * as types from "./types";
 import { Action } from "../../models/actions/action";
-import {
-  AddGroupResponse,
-  UpdateGroupResponse,
-  DeleteGroupResponse,
-  GetUserGroupsResponse,
-  GetGroupByIdResponse,
-} from "../../models/responses/group";
-
 import {
   AddGroupRequest,
   UpdateGroupRequest,
   DeleteGroupRequest,
   GetGroupByIdRequest,
   GetUserGroupsRequest,
-} from "../../models/requests/group";
+} from "../../models/requests/graphql/group";
+import {
+  AddGroupResponse,
+  UpdateGroupResponse,
+  DeleteGroupResponse,
+  GetGroupByIdResponse,
+  GetUserGroupsResponse,
+} from "../../models/responses/graphql/group";
+import * as types from "./types";
 
-export function onAddGrouptRequest(
+export function onAddGroupRequest(
   name: string,
   creatorId: string,
   membersIds: Array<string>
@@ -31,9 +30,7 @@ export function onAddGrouptRequest(
   };
 }
 
-export function onAddGroupResponse(
-  response: AddGroupResponse
-): Action<AddGroupResponse> {
+export function onAddGroupResponse(response: AddGroupResponse): Action<AddGroupResponse> {
   return {
     type: types.ADD_GROUP_RESPONSE,
     payload: {
@@ -70,9 +67,7 @@ export function onUpdateGroupRequest(
   };
 }
 
-export function onUpdateGroupResponse(
-  response: UpdateGroupResponse
-): Action<UpdateGroupResponse> {
+export function onUpdateGroupResponse(response: UpdateGroupResponse): Action<UpdateGroupResponse> {
   return {
     type: types.UPDATE_GROUP_RESPONSE,
     payload: {
@@ -92,9 +87,7 @@ export function onUpdateGroupFail(): Action<UpdateGroupResponse> {
   };
 }
 
-export function onDeleteGroupRequest(
-  groupId: string
-): Action<DeleteGroupRequest> {
+export function onDeleteGroupRequest(groupId: string): Action<DeleteGroupRequest> {
   return {
     type: types.DELETE_GROUP_REQUEST,
     payload: {
@@ -103,9 +96,7 @@ export function onDeleteGroupRequest(
   };
 }
 
-export function onDeleteGroupResponse(
-  response: DeleteGroupResponse
-): Action<DeleteGroupResponse> {
+export function onDeleteGroupResponse(response: DeleteGroupResponse): Action<DeleteGroupResponse> {
   return {
     type: types.DELETE_GROUP_RESPONSE,
     payload: {
@@ -125,9 +116,7 @@ export function onDeleteGroupFail(): Action<DeleteGroupResponse> {
   };
 }
 
-export function onGetGroupByIdRequest(
-  groupId: string
-): Action<GetGroupByIdRequest> {
+export function onGetGroupByIdRequest(groupId: string): Action<GetGroupByIdRequest> {
   return {
     type: types.GET_GROUP_BY_ID_REQUEST,
     payload: {
@@ -166,9 +155,7 @@ export function onGetGroupByIdFail(): Action<GetGroupByIdResponse> {
   };
 }
 
-export function onGetUserGroupsRequest(
-  userId: string
-): Action<GetUserGroupsRequest> {
+export function onGetUserGroupsRequest(userId: string): Action<GetUserGroupsRequest> {
   return {
     type: types.GET_USER_GROUPS_REQUEST,
     payload: {
@@ -200,7 +187,6 @@ export function onGetUserGroupsFail(): Action<GetUserGroupsResponse> {
     },
   };
 }
-
 export function onLoadingEnable(): Action<any> {
   return {
     type: types.LOADING_ENABLED,
