@@ -9,7 +9,7 @@ export interface AuthApi {
   signUpByPhone(name: string, phone: string, password: string): Promise<Response<SignUp>>;
   resetPasswordByEmail(email: string, newPassword: string): Promise<Response<null>>;
   resetPasswordByPhone(phone: string, newPassword: string): Promise<Response<null>>;
-  changePassword(oldPassowrd: string, newPassword: string): Promise<Response<ChangePassword>>;
   changeEmail(newEmail: string): Promise<Response<ChangeEmailOrPhone>>;
   changePhone(newPhone: string): Promise<Response<ChangeEmailOrPhone>>;
+  changePassword(oldPassowrd: string, newPassword: string): Promise<Response<ChangePassword>>;
 }

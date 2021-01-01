@@ -35,8 +35,6 @@ export function* loginAsync(action: Action<LoginRequest>) {
     status: -1,
   };
 
-  log(action.payload);
-
   if (inputType == InputType.Email) {
     log("call");
     response = yield AuthAPI.loginByEmail(email, password);
@@ -134,31 +132,6 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
   }
 }
 
-export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
-  const { token, newpass, oldpass, email, phone, inputType } = action.payload;
-  let response: Response<ChangePassword> = {
-    success: false,
-    status: -1,
-  };
-
-  let api: AuthenticationApi = new AuthenticationApi(token);
-  response = yield api.changePassword(oldpass, newpass);
-
-  if (response.success) {
-    yield put(authActions.onChangePasswordResponse(response));
-    ToastAndroid.show("رمز عبور با موفقیت ویرایش شد", ToastAndroid.SHORT);
-  } else {
-    yield put(authActions.onChangePasswordFail());
-    if (response.status == 401) {
-      ToastAndroid.show("ایمیل یا شماره موبایل شما تایید نشده است", ToastAndroid.SHORT);
-    } else if (response.status == 403) {
-      ToastAndroid.show("شما اجازه دسترسی به این منبع را ندارید", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-}
-
 export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhoneRequest>) {
   const { token, newEmail, newPhone, inputType, password } = action.payload;
   const state: IUserState = configureStore().store.getState()["authReducer"];
@@ -197,6 +170,31 @@ export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhoneReques
       ToastAndroid.show("اجازه دسترسی به سرور قطع شده‌است", ToastAndroid.SHORT);
     } else if (response.status == 409) {
       ToastAndroid.show("ایمیل یا شماره موبایل وارد شده تکراری است", ToastAndroid.SHORT);
+    }
+  }
+}
+
+export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
+  const { token, newpass, oldpass, email, phone, inputType } = action.payload;
+  let response: Response<ChangePassword> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: AuthenticationApi = new AuthenticationApi(token);
+  response = yield api.changePassword(oldpass, newpass);
+
+  if (response.success) {
+    yield put(authActions.onChangePasswordResponse(response));
+    ToastAndroid.show("رمز عبور با موفقیت ویرایش شد", ToastAndroid.SHORT);
+  } else {
+    yield put(authActions.onChangePasswordFail());
+    if (response.status == 401) {
+      ToastAndroid.show("ایمیل یا شماره موبایل شما تایید نشده است", ToastAndroid.SHORT);
+    } else if (response.status == 403) {
+      ToastAndroid.show("شما اجازه دسترسی به این منبع را ندارید", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
     }
   }
 }

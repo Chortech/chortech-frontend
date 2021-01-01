@@ -101,6 +101,7 @@ export const userReducer = createReducer(initialState, {
       email: action.payload.response!.email,
       phone: action.payload.response!.phone,
       picture: action.payload.response!.picture,
+      imageUri: action.payload.response!.picture,
     };
   },
   [types.GET_USER_PROFILE_FAIL](
@@ -174,6 +175,34 @@ export const userReducer = createReducer(initialState, {
   [types.GET_USER_EXPENSES_FAIL](
     state: IUserState,
     action: Action<Response<UserExpenses>>
+  ): IUserState {
+    return state;
+  },
+
+  [types.GET_USER_EXPENSE_REQUEST](
+    state: IUserState,
+    action: Action<GetExpenseRequest>
+  ): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserExpense>>
+  ): IUserState {
+    const expense = action.payload.response?.expense;
+    const index = state.activities.findIndex((ex) => ex.id == expense?.id);
+    if (index > -1) {
+      state.activities[index].participants =
+        expense?.participants != undefined ? expense.participants : [];
+    }
+    return state;
+  },
+  [types.GET_USER_EXPENSE_FAIL](
+    state: IUserState,
+    action: Action<Response<UserExpense>>
   ): IUserState {
     return state;
   },
@@ -358,35 +387,6 @@ export const userReducer = createReducer(initialState, {
   [types.DELETE_EXPENSE_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-
-  [types.GET_USER_EXPENSE_REQUEST](
-    state: IUserState,
-    action: Action<GetExpenseRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.GET_USER_EXPENSE_RESPONSE](
-    state: IUserState,
-    action: Action<Response<UserExpense>>
-  ): IUserState {
-    const expense = action.payload.response?.expense;
-    const index = state.activities.findIndex((ex) => ex.id == expense?.id);
-    if (index > -1) {
-      state.activities[index].participants =
-        expense?.participants != undefined ? expense.participants : [];
-    }
-    return state;
-  },
-  [types.GET_USER_EXPENSE_FAIL](
-    state: IUserState,
-    action: Action<Response<UserExpense>>
-  ): IUserState {
-    return state;
-  },
-
   [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>): IUserState {
     return {
       ...state,
@@ -424,24 +424,6 @@ export const userReducer = createReducer(initialState, {
   [types.GET_COMMENTS_FAIL](
     state: IUserState,
     action: Action<Response<ExpenseComments>>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_ACTIVITY_REQUEST](
-    state: IUserState,
-    action: Action<DeleteActivityRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_ACTIVITY_RESPONSE](
-    state: IUserState,
-    action: Action<DeleteActivityRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_ACTIVITY_FAIL](
-    state: IUserState,
-    action: Action<DeleteActivityRequest>
   ): IUserState {
     return state;
   },

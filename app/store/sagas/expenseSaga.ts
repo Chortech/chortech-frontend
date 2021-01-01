@@ -8,6 +8,7 @@ import {
   AddCommentRequest,
   GetExpenseCommentsRequest,
   EditExpenseRequest,
+  DeleteExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
@@ -15,7 +16,6 @@ import {
   UserExpense,
   ExpenseComments,
   EditExpense,
-  DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
@@ -68,6 +68,34 @@ export function* getUserExpenseAsync(action: Action<GetExpenseRequest>) {
     yield put(expenseActions.onGetUserExpenseFail());
     if (response.status == 404) {
       ToastAndroid.show("فعالیت وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token, expenseId } = action.payload;
+  let response: Response<ExpenseComments> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getExpenseComments(expenseId);
+
+  if (response.success) {
+    yield put(expenseActions.onGetExpenseCommentsResponse(response));
+  } else {
+    yield put(expenseActions.onAddExpenseFail());
+    if (response.status == 401) {
+      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+    } else if (response.status == 403) {
+      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("هزینه با این مشخصات وجود ندارد", ToastAndroid.SHORT);
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
@@ -177,34 +205,6 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
       ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
     } else if (response.status == 404) {
       ToastAndroid.show("این هزینه وجود ندارد", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-  yield put(expenseActions.onLoadingDisable());
-}
-
-export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsRequest>) {
-  yield put(expenseActions.onLoadingEnable());
-  const { token, expenseId } = action.payload;
-  let response: Response<ExpenseComments> = {
-    success: false,
-    status: -1,
-  };
-
-  let api: ExpenseAPI = new ExpenseAPI(token);
-  response = yield api.getExpenseComments(expenseId);
-
-  if (response.success) {
-    yield put(expenseActions.onGetExpenseCommentsResponse(response));
-  } else {
-    yield put(expenseActions.onAddExpenseFail());
-    if (response.status == 401) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
-    } else if (response.status == 403) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
-    } else if (response.status == 404) {
-      ToastAndroid.show("هزینه با این مشخصات وجود ندارد", ToastAndroid.SHORT);
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }

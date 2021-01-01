@@ -15,11 +15,6 @@ import {
   SignUp,
 } from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
-import {
-  CancelCodeRequest,
-  GenerateCodeRequest,
-  VerifyCodeRequest,
-} from "../../models/requests/axios/verification";
 import { Token } from "../../models/other/axios/Token";
 
 export function onLoginRequest(
@@ -136,6 +131,48 @@ export function onResetPasswordFail(): Action<Response<null>> {
   };
 }
 
+export function onChangeEmailOrPhoneRequest(
+  token: Token,
+  newEmail: string,
+  newPhone: string,
+  password: string,
+  inputType: InputType
+): Action<ChangeEmailOrPhoneRequest> {
+  return {
+    type: types.CHANGE_EMAIL_OR_PHONE_REQUEST,
+    payload: {
+      token: token,
+      newEmail: newEmail,
+      newPhone: newPhone,
+      inputType: inputType,
+      password: password,
+    },
+  };
+}
+
+export function onChangeEmailOrPhoneResponse(
+  response: Response<ChangeEmailOrPhone>
+): Action<Response<ChangeEmailOrPhone>> {
+  return {
+    type: types.CHANGE_EMAIL_OR_PHONE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    },
+  };
+}
+
+export function onChangeEmailOrPhoneFail(): Action<Response<ChangeEmailOrPhone>> {
+  return {
+    type: types.CHANGE_EMAIL_OR_PHONE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
 export function onChangePasswordRequest(
   token: Token,
   email: string,
@@ -173,48 +210,6 @@ export function onChangePasswordResponse(
 export function onChangePasswordFail(): Action<Response<ChangePassword>> {
   return {
     type: types.CHANGE_PASSWORD_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onChangeEmailOrPhoneRequest(
-  token: Token,
-  newEmail: string,
-  newPhone: string,
-  password: string,
-  inputType: InputType
-): Action<ChangeEmailOrPhoneRequest> {
-  return {
-    type: types.CHANGE_EMAIL_OR_PHONE_REQUEST,
-    payload: {
-      token: token,
-      newEmail: newEmail,
-      newPhone: newPhone,
-      inputType: inputType,
-      password: password,
-    },
-  };
-}
-
-export function onChangeEmailOrPhoneResponse(
-  response: Response<ChangeEmailOrPhone>
-): Action<Response<ChangeEmailOrPhone>> {
-  return {
-    type: types.CHANGE_EMAIL_OR_PHONE_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onChangeEmailOrPhoneFail(): Action<Response<ChangeEmailOrPhone>> {
-  return {
-    type: types.CHANGE_EMAIL_OR_PHONE_FAIL,
     payload: {
       success: false,
       status: -1,

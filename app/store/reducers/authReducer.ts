@@ -128,6 +128,60 @@ export const authReducer = createReducer(initialState, {
       authInputType: InputType.None,
     };
   },
+  [types.RESET_PASSWORD_REQUEST](
+    state: IUserState,
+    action: Action<ResetPasswordRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_REQUEST](
+    state: IUserState,
+    action: Action<ChangeEmailOrPhoneRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<ChangeEmailOrPhone>>
+  ): IUserState {
+    const input = action.payload.response!.inputType;
+    const newEmail = input == InputType.Email ? action.payload.response!.newEmail : "";
+    const newPhone = input == InputType.Phone ? action.payload.response!.newPhone : "";
+    return { ...state, email: newEmail, phone: newPhone, authInputType: input };
+  },
+  [types.CHANGE_EMAIL_OR_PHONE_FAIL](
+    state: IUserState,
+    action: Action<Response<ChangeEmailOrPhone>>
+  ): IUserState {
+    return state;
+  },
+  [types.CHANGE_PASSWORD_REQUEST](
+    state: IUserState,
+    action: Action<ChangePasswordRequest>
+  ): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.CHANGE_PASSWORD_RESPONSE](
+    state: IUserState,
+    action: Action<Response<ChangePassword>>
+  ): IUserState {
+    return { ...state, password: action.payload.response!.newPassword };
+  },
+  [types.CHANGE_PASSWORD_FAIL](
+    state: IUserState,
+    action: Action<Response<ChangePassword>>
+  ): IUserState {
+    return state;
+  },
   [types.GENERATE_CODE_REQUEST](
     state: IUserState,
     action: Action<GenerateCodeRequest>
@@ -156,60 +210,6 @@ export const authReducer = createReducer(initialState, {
     return state;
   },
   [types.CANCEL_CODE_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.RESET_PASSWORD_REQUEST](
-    state: IUserState,
-    action: Action<ResetPasswordRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.RESET_PASSWORD_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.RESET_PASSWORD_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.CHANGE_PASSWORD_REQUEST](
-    state: IUserState,
-    action: Action<ChangePasswordRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.CHANGE_PASSWORD_RESPONSE](
-    state: IUserState,
-    action: Action<Response<ChangePassword>>
-  ): IUserState {
-    return { ...state, password: action.payload.response!.newPassword };
-  },
-  [types.CHANGE_PASSWORD_FAIL](
-    state: IUserState,
-    action: Action<Response<ChangePassword>>
-  ): IUserState {
-    return state;
-  },
-  [types.CHANGE_EMAIL_OR_PHONE_REQUEST](
-    state: IUserState,
-    action: Action<ChangeEmailOrPhoneRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.CHANGE_EMAIL_OR_PHONE_RESPONSE](
-    state: IUserState,
-    action: Action<Response<ChangeEmailOrPhone>>
-  ): IUserState {
-    const input = action.payload.response!.inputType;
-    const newEmail = input == InputType.Email ? action.payload.response!.newEmail : "";
-    const newPhone = input == InputType.Phone ? action.payload.response!.newPhone : "";
-    return { ...state, email: newEmail, phone: newPhone, authInputType: input };
-  },
-  [types.CHANGE_EMAIL_OR_PHONE_FAIL](
-    state: IUserState,
-    action: Action<Response<ChangeEmailOrPhone>>
-  ): IUserState {
     return state;
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>): IUserState {

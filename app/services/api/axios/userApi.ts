@@ -402,14 +402,14 @@ export class UserAPI implements userApi {
       log("upload image api result");
       log(result);
     } catch (e) {
+      log("upload image api error");
       if (e.isAxiosError) {
         console.log("axios error:", e.response);
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
       } else {
-        log("upload image api error");
-        console.log(e);
-        console.log("server error:", e.message);
+        log(e.response);
       }
     }
     return result;
