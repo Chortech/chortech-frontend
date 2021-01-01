@@ -1,6 +1,7 @@
 import { User } from "../../other/graphql/User";
 import { Activity } from "../../other/graphql/Activity";
 import { Friend } from "../../other/graphql/Friend";
+import { Expense } from "../../other/axios/Expense";
 
 export interface GetUserResponse {
   success: boolean;
@@ -10,7 +11,7 @@ export interface GetUserResponse {
 export interface GetUserActivitiesResponse {
   userId: string;
   success: boolean;
-  activities: Array<Activity>;
+  activities: Array<Expense>;
 }
 
 export interface GetUserFriendsResponse {

@@ -177,11 +177,15 @@ const ActivityNavigator = () => (
       component={ActivityList}
       options={{ title: "فعالیت‌ها" }}
     />
-    <LoggedInTab.Screen name="Activity" component={Activity} />
+    <LoggedInTab.Screen
+      name="Activity"
+      component={Activity}
+      options={({ route }) => ({ title: route.params.activityName })}
+    />
     <LoggedInTab.Screen
       name="AddExpense"
       component={AddExpense}
-      options={{ title: "افزودن فعالیت جدید" }}
+      options={{ title: "افزودن هزینه جدید" }}
     />
     <LoggedInTab.Screen
       name="AddComment"

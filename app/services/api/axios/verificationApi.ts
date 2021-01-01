@@ -34,19 +34,22 @@ class CodeVerificationAPI implements VerificationApi {
       log("generate code api (email) result");
       log(result);
     } catch (e) {
-      log("generate error");
-      log(e.response);
+      log("generate code api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        if (error.response?.data.errors[0].message == "Something went wrong") {
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+        if (message == "Something went wrong") {
           result.status = -2;
+        } else if (message == "User is already verified!") {
+          result.status = -3;
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
         result.response = error.response != undefined ? error.response.data : result.response;
+        log(error.response?.data);
       } else {
-        log("generate code api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -72,6 +75,7 @@ class CodeVerificationAPI implements VerificationApi {
       log("generate code api (phone) result");
       log(result);
     } catch (e) {
+      log("generate code api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -79,9 +83,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("generate code api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -109,6 +113,7 @@ class CodeVerificationAPI implements VerificationApi {
       log("verify code api (email) result");
       log(result);
     } catch (e) {
+      log("verify code api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -118,9 +123,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("verify code api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -148,6 +153,7 @@ class CodeVerificationAPI implements VerificationApi {
       log("verify code api (phone) result");
       log(result);
     } catch (e) {
+      log("verify code api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -157,9 +163,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("verify code api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
     return result;
@@ -187,6 +193,7 @@ class CodeVerificationAPI implements VerificationApi {
       log("cancel code api(email) result");
       log(result);
     } catch (e) {
+      log("cancel code api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -194,9 +201,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("cancel code api (email) error");
-        log(e.message);
+        log(e.response);
       }
     }
 
@@ -224,6 +231,7 @@ class CodeVerificationAPI implements VerificationApi {
       log("cancel code api (phone) result");
       log(result);
     } catch (e) {
+      log("cancel code api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         if (error.response?.data.errors[0].message == "Something went wrong") {
@@ -231,9 +239,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
+        log(error.response?.data);
       } else {
-        log("cancel code api (phone) error");
-        log(e.message);
+        log(e.response);
       }
     }
 

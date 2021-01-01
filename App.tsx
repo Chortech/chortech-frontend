@@ -8,10 +8,23 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 
 import Navigator from "./app/navigation/navigationStack";
 import configureStore from "./app/store";
+import { cronJob } from "./app/utils/cronJob";
+import * as authActions from "./app/store/actions/authActions";
+import { log } from "./app/utils/logger";
+import { IUserState } from "./app/models/reducers/default";
 
 library.add(fab, fas);
 
 const { persistor, store } = configureStore();
+
+cronJob.init(() => {
+  let state: IUserState = store.getState()["authReducer"];
+  if (!state.isLoggedIn) return;
+  store.dispatch(
+    authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
+  );
+  log("cron job called");
+}, "*/50 * * * *");
 
 // initializing navigation and redux store and persist
 const RootNavigation: React.FC = () => {

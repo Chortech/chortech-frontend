@@ -37,7 +37,7 @@ export interface ChangePasswordRequest {
 }
 
 // change email and phone request models
-export interface ChangeEmailOrPhone {
+export interface ChangeEmailOrPhoneRequest {
   token: Token;
   newEmail: string;
   newPhone: string;

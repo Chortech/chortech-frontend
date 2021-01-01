@@ -49,7 +49,18 @@ export interface AddExpenseRequest {
   participants: Array<Participant>;
 }
 
-export interface GetExpensesRequest {
+export interface EditExpenseRequest {
+  expenseId: string;
+  token: Token;
+  description: string;
+  total: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+  participants: Array<Participant>;
+}
+
+export interface GetUserExpensesRequest {
   token: Token;
 }
 
@@ -65,7 +76,7 @@ export interface AddCommentRequest {
   id: string;
 }
 
-export interface GetCommentRequest {
+export interface GetExpenseCommentsRequest {
   token: Token;
-  id: string;
+  expenseId: string;
 }

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
-import * as userActions from "../../store/actions/userActions";
 import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
@@ -27,8 +25,8 @@ const EditProfile: React.FC = (): JSX.Element => {
     name: user.name,
     email: loggedInUser.email,
     phone: loggedInUser.phone,
-    currentPassword: loggedInUser.password,
-    newPassword: user.password,
+    currentPassword: "",
+    newPassword: "",
     validName: true,
     validEmail: true,
     validPhone: true,
@@ -37,20 +35,7 @@ const EditProfile: React.FC = (): JSX.Element => {
     secureTextEntry: false,
   });
 
-  const fetchUser = () => {
-    dispatch(
-      authActions.onLoginRequest(
-        loggedInUser.email,
-        loggedInUser.phone,
-        loggedInUser.password,
-        loggedInUser.authInputType
-      )
-    );
-  };
-
-  log(loggedInUser);
   const onPressChangeEmail = () => {
-    log("press email");
     if (validateToken(loggedInUser.token)) {
       if (data.validEmail) {
         if (data.email != loggedInUser.email) {
@@ -64,14 +49,11 @@ const EditProfile: React.FC = (): JSX.Element => {
             token: loggedInUser.token,
           });
         } else {
-          ToastAndroid.show("ایمیل واردشده همان ایمیل قبلی است", ToastAndroid.SHORT);
+          ToastAndroid.show("لطفا ایمیل جدید وارد کنید", ToastAndroid.SHORT);
         }
       } else {
         ToastAndroid.show("ایمیل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      fetchUser();
-      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
     }
   };
 
@@ -89,41 +71,32 @@ const EditProfile: React.FC = (): JSX.Element => {
             token: loggedInUser.token,
           });
         } else {
-          ToastAndroid.show("شماره موبایل واردشده همان شماره موبایل قبلی است", ToastAndroid.SHORT);
+          ToastAndroid.show("لطفا شماره موبایل جدید وارد کنید", ToastAndroid.SHORT);
         }
       } else {
         ToastAndroid.show("شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      fetchUser();
-      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
     }
   };
 
   const onPressChangePassword = () => {
     if (validateToken(loggedInUser.token)) {
-      if (data.currentPassword == loggedInUser.password) {
-        if (data.validCurrentPassword) {
-          dispatch(
-            authActions.onChangePasswordRequest(
-              loggedInUser.token,
-              loggedInUser.email,
-              loggedInUser.phone,
-              loggedInUser.authInputType,
-              data.newPassword,
-              data.currentPassword
-            )
-          );
-        } else {
-          ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
-        }
+      if (data.validCurrentPassword) {
+        dispatch(
+          authActions.onChangePasswordRequest(
+            loggedInUser.token,
+            loggedInUser.email,
+            loggedInUser.phone,
+            loggedInUser.authInputType,
+            data.newPassword,
+            data.currentPassword
+          )
+        );
       } else {
-        ToastAndroid.show("رمز عبور فعلی شما نادرست است", ToastAndroid.SHORT);
+        ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
       }
-    } else {
-      fetchUser();
-      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
     }
+    setData({ ...data, newPassword: "", currentPassword: "" });
   };
 
   const onChangeNameText = (text: string) => {
@@ -171,11 +144,11 @@ const EditProfile: React.FC = (): JSX.Element => {
   };
 
   const clearCurrentPassword = () => {
-    setData({ ...data, currentPassword: loggedInUser.password, validCurrentPassword: true });
+    setData({ ...data, currentPassword: "", validCurrentPassword: true });
   };
 
   const clearNewPassword = () => {
-    setData({ ...data, newPassword: loggedInUser.password, validNewPassword: true });
+    setData({ ...data, newPassword: "", validNewPassword: true });
   };
 
   return (

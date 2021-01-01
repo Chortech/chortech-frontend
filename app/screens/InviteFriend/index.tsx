@@ -10,7 +10,7 @@ import { Api } from "../../services/api/graphQL/graphqlApi";
 import { User } from "../../models/other/graphql/User";
 import SearchedUserItem from "../../components/SearchedUserItem";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import * as userActions from "../../store/actions/userActions";
+import * as friendActions from "../../store/actions/friendActions";
 import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import LoadingIndicator from "../Loading";
@@ -32,22 +32,17 @@ const InviteFriend: React.FC = (): JSX.Element => {
     if (validateToken(loggedInUser.token)) {
       if (validInput) {
         if (inputType == InputType.Email) {
-          dispatch(userActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType));
+          dispatch(
+            friendActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
+          );
         } else if (inputType == InputType.Phone) {
-          dispatch(userActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType));
+          dispatch(
+            friendActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
+          );
         }
       } else {
         ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
     }
   };
 
@@ -56,25 +51,16 @@ const InviteFriend: React.FC = (): JSX.Element => {
       if (validInput) {
         if (inputType == InputType.Email) {
           dispatch(
-            userActions.onInviteFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
+            friendActions.onInviteFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
           );
         } else if (inputType == InputType.Phone) {
           dispatch(
-            userActions.onInviteFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
+            friendActions.onInviteFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
           );
         }
       } else {
         ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      dispatch(
-        authActions.onLoginRequest(
-          loggedInUser.email,
-          loggedInUser.phone,
-          loggedInUser.password,
-          loggedInUser.authInputType
-        )
-      );
     }
   };
 

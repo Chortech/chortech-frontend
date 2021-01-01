@@ -8,7 +8,7 @@ import NavigationService from "../../navigation/navigationService";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import * as userActions from "../../store/actions/userActions";
+import * as groupActions from "../../store/actions/groupActions";
 import FriendItem from "../../components/FriendItem";
 import { Expense } from "../../models/other/graphql/Expense";
 import ExpenseItem from "../../components/ExpenseItem";
@@ -30,7 +30,7 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const onPressDeleteGroup = () => {
-    dispatch(userActions.onDeleteGroupRequest(id));
+    dispatch(groupActions.onDeleteGroupRequest(id));
   };
 
   const expenses: Array<Expense> = [

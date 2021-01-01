@@ -7,7 +7,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
-import * as authActions from "../../store/actions/authActions";
+import * as verificationActions from "../../store/actions/verificationActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";
@@ -33,11 +33,19 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
     validCodeLength: false,
   });
 
-  // log(props);
-
   const dispatch = useDispatch();
   const generateCode = () => {
-    dispatch(authActions.onGenerateCodeRequest(props.email, props.phone, props.inputType));
+    dispatch(
+      verificationActions.onGenerateCodeRequest(
+        props.email,
+        props.phone,
+        props.inputType,
+        props.parentScreen,
+        props.name,
+        props.password,
+        state.token
+      )
+    );
   };
 
   useEffect(() => {
@@ -46,38 +54,18 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const onNextScreen = () => {
     if (data.validCodeLength) {
-      if (state.token != undefined) {
-        if (validateToken(state.token)) {
-          dispatch(
-            authActions.onVerifyCodeRequest(
-              props.name,
-              props.email,
-              props.phone,
-              props.password,
-              props.inputType,
-              data.verificationCode,
-              props.parentScreen,
-              state.token
-            )
-          );
-        } else {
-          dispatch(
-            authActions.onLoginRequest(props.email, props.phone, props.password, props.inputType)
-          );
-        }
-      } else {
-        dispatch(
-          authActions.onVerifyCodeRequest(
-            props.name,
-            props.email,
-            props.phone,
-            props.password,
-            props.inputType,
-            data.verificationCode,
-            props.parentScreen
-          )
-        );
-      }
+      dispatch(
+        verificationActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen,
+          state.token
+        )
+      );
     } else {
       ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }

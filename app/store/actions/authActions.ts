@@ -2,13 +2,18 @@ import * as types from "./types";
 import { Action } from "../../models/actions/action";
 import { InputType } from "../../utils/inputTypes";
 import {
-  ChangeEmailOrPhone,
+  ChangeEmailOrPhoneRequest,
   ChangePasswordRequest,
   LoginRequest,
   ResetPasswordRequest,
   SignUpRequest,
 } from "../../models/requests/axios/auth";
-import { Login, SignUp } from "../../models/responses/axios/auth";
+import {
+  ChangeEmailOrPhone,
+  ChangePassword,
+  Login,
+  SignUp,
+} from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
 import {
   CancelCodeRequest,
@@ -97,112 +102,6 @@ export function onSignUpFail(): Action<Response<SignUp>> {
   };
 }
 
-export function onGenerateCodeRequest(
-  email: string,
-  phone: string,
-  inputType: InputType
-): Action<GenerateCodeRequest> {
-  return {
-    type: types.GENERATE_CODE_REQUEST,
-    payload: {
-      email: email,
-      phone: phone,
-      inputType: inputType,
-    },
-  };
-}
-
-export function onGenerateCodeResponse(response: Response<null>): Action<Response<null>> {
-  return {
-    type: types.GENERATE_CODE_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onGenerateCodeFail(): Action<Response<null>> {
-  return {
-    type: types.GENERATE_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onVerifyCodeRequest(
-  name: string,
-  email: string,
-  phone: string,
-  password: string,
-  inputType: InputType,
-  code: string,
-  parentScreen: string,
-  token?: Token
-): Action<VerifyCodeRequest> {
-  return {
-    type: types.VERIFY_CODE_REQUEST,
-    payload: {
-      token: token,
-      name: name,
-      email: email,
-      phone: phone,
-      code: code,
-      password: password,
-      inputType: inputType,
-      parentScreen: parentScreen,
-    },
-  };
-}
-
-export function onVerifyCodeResponse(response: Response<null>): Action<Response<null>> {
-  return {
-    type: types.VERIFY_CODE_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onVerifyCodeFail(): Action<Response<null>> {
-  return {
-    type: types.VERIFY_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onCancelCodeRequest(
-  email: string,
-  phone: string,
-  inputType: InputType
-): Action<CancelCodeRequest> {
-  return {
-    type: types.CANCEL_CODE_REQUEST,
-    payload: {
-      email: email,
-      phone: phone,
-      inputType: inputType,
-    },
-  };
-}
-
-export function onCancelCodeResponse(response: Response<null>): Action<Response<null>> {
-  return {
-    type: types.CANCEL_CODE_RESPONSE,
-    payload: response,
-  };
-}
-
-export function onCancelCodeFail(): Action<Response<null>> {
-  return {
-    type: types.CANCEL_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onResetPasswordRequest(
   email: string,
   phone: string,
@@ -258,7 +157,9 @@ export function onChangePasswordRequest(
   };
 }
 
-export function onChangePasswordResponse(response: Response<null>): Action<Response<null>> {
+export function onChangePasswordResponse(
+  response: Response<ChangePassword>
+): Action<Response<ChangePassword>> {
   return {
     type: types.CHANGE_PASSWORD_RESPONSE,
     payload: {
@@ -269,7 +170,7 @@ export function onChangePasswordResponse(response: Response<null>): Action<Respo
   };
 }
 
-export function onChangePasswordFail(): Action<Response<null>> {
+export function onChangePasswordFail(): Action<Response<ChangePassword>> {
   return {
     type: types.CHANGE_PASSWORD_FAIL,
     payload: {
@@ -285,7 +186,7 @@ export function onChangeEmailOrPhoneRequest(
   newPhone: string,
   password: string,
   inputType: InputType
-): Action<ChangeEmailOrPhone> {
+): Action<ChangeEmailOrPhoneRequest> {
   return {
     type: types.CHANGE_EMAIL_OR_PHONE_REQUEST,
     payload: {
@@ -298,7 +199,9 @@ export function onChangeEmailOrPhoneRequest(
   };
 }
 
-export function onChangeEmailOrPhoneResponse(response: Response<null>): Action<Response<null>> {
+export function onChangeEmailOrPhoneResponse(
+  response: Response<ChangeEmailOrPhone>
+): Action<Response<ChangeEmailOrPhone>> {
   return {
     type: types.CHANGE_EMAIL_OR_PHONE_RESPONSE,
     payload: {
@@ -309,7 +212,7 @@ export function onChangeEmailOrPhoneResponse(response: Response<null>): Action<R
   };
 }
 
-export function onChangeEmailOrPhoneFail(): Action<Response<null>> {
+export function onChangeEmailOrPhoneFail(): Action<Response<ChangeEmailOrPhone>> {
   return {
     type: types.CHANGE_EMAIL_OR_PHONE_FAIL,
     payload: {

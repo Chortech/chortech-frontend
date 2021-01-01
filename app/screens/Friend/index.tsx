@@ -5,7 +5,7 @@ import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import * as userActions from "../../store/actions/userActions";
+import * as friendActions from "../../store/actions/friendActions";
 import * as authActions from "../../store/actions/authActions";
 import { validateToken } from "../../utils/tokenValidator";
 import LoadingIndicator from "../Loading";
@@ -27,7 +27,7 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const onPressDeleteFriend = () => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(userActions.onDeleteFriendRequest(loggedInUser.token, id));
+      dispatch(friendActions.onDeleteFriendRequest(loggedInUser.token, id));
     } else {
       dispatch(
         authActions.onLoginRequest(

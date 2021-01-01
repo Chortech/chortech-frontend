@@ -20,7 +20,6 @@ export interface IUserState {
   friends: Array<Friend>;
   groups: Array<Group>;
   activities: Array<Expense>;
-  comments: Array<Comment>;
   myCreditCards: Array<CreditCard>;
   otherCreditCards: Array<CreditCard>;
   activities: Array<Activity>;

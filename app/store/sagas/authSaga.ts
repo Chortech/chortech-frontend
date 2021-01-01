@@ -1,26 +1,30 @@
-import { call, put } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import { ToastAndroid } from "react-native";
-
 import { Action } from "../../models/actions/action";
 import { navigationRef } from "../../navigation/navigationService";
-
 import * as authActions from "../actions/authActions";
 import * as userActions from "../actions/userActions";
-import { GenerateCodeRequest } from "../../models/requests/graphql/codeVerification";
+import * as groupActions from "../actions/groupActions";
+import * as friendActions from "../actions/friendActions";
+import * as expenseActions from "../actions/expenseActions";
 import {
-  ChangeEmailOrPhone,
+  ChangeEmailOrPhoneRequest,
   ChangePasswordRequest,
   LoginRequest,
   ResetPasswordRequest,
   SignUpRequest,
 } from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
-import { Login, SignUp } from "../../models/responses/axios/auth";
+import {
+  ChangeEmailOrPhone,
+  ChangePassword,
+  Login,
+  SignUp,
+} from "../../models/responses/axios/auth";
 import { InputType } from "../../utils/inputTypes";
 import { AuthenticationApi, AuthAPI } from "../../services/api/axios/authApi";
-import { log } from "../../utils/logger";
-import { VerificationAPI } from "../../services/api/axios/verificationApi";
-import { CancelCodeRequest, VerifyCodeRequest } from "../../models/requests/axios/verification";
+import configureStore from "..";
+import { IUserState } from "../../models/reducers/default";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -28,20 +32,19 @@ export function* loginAsync(action: Action<LoginRequest>) {
   let response: Response<Login> = {
     success: false,
     status: -1,
-    response: null,
   };
 
   if (inputType == InputType.Email) {
-    log("login by email");
     response = yield AuthAPI.loginByEmail(email, password);
   } else if (inputType == InputType.Phone) {
     response = yield AuthAPI.loginByPhone(phone, password);
   }
 
-  yield put(authActions.onLoadingDisable());
-
   if (response.success) {
     yield put(authActions.onLoginResponse(response));
+    yield put(userActions.onGetUserProfileRequest(response.response!.token));
+    yield put(friendActions.onGetUserFriendsRequest(response.response!.token));
+    yield put(expenseActions.onGetUserExpensesRequest(response.response!.token));
   } else {
     yield put(authActions.onLoginFail());
     if (response.status == -2) {
@@ -54,6 +57,7 @@ export function* loginAsync(action: Action<LoginRequest>) {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
   }
+  yield put(authActions.onLoadingDisable());
 }
 
 export function* signUpAsync(action: Action<SignUpRequest>) {
@@ -85,100 +89,6 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
-  }
-}
-
-export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
-  const { email, phone, inputType } = action.payload;
-
-  yield call(cancelCodeAsync, authActions.onCancelCodeRequest(email, phone, inputType));
-
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.generateCodeRequestByEmail(email);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.generateCodeRequestByPhone(phone);
-  }
-
-  if (response.success) {
-    yield put(authActions.onGenerateCodeResponse(response));
-    ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
-  } else {
-    yield put(authActions.onGenerateCodeFail());
-    if (response.status == 400) {
-      ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
-    } else if (response.status == 409) {
-      ToastAndroid.show("اطلاعات کاربر تایید شده‌است", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-}
-
-export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
-  const { token, email, phone, code, inputType, parentScreen, name, password } = action.payload;
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.verifyCodeRequestByEmail(email, code);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.verifyCodeRequestByPhone(phone, code);
-  }
-
-  if (response.success) {
-    yield put(authActions.onVerifyCodeResponse(response));
-    if (parentScreen == "AccountIdentification") {
-      navigationRef.current?.navigate("ResetPassword", {
-        email: email,
-        phone: phone,
-        inputType: inputType,
-        parentScreen: parentScreen,
-      });
-    } else if (parentScreen == "EditProfile") {
-      log("in verify saga");
-      log(action.payload);
-      yield put(authActions.onChangeEmailOrPhoneRequest(token!, email, phone, password, inputType));
-    } else {
-      yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
-    }
-  } else {
-    yield put(authActions.onVerifyCodeFail());
-    if (response.status == -3) {
-      ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
-    } else if (response.status == -2) {
-      ToastAndroid.show("خطایی ناشناخته در تایید کد رخ داده‌است", ToastAndroid.SHORT);
-    } else if (response.status == 400) {
-      ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-}
-
-export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
-  const { email, phone, inputType } = action.payload;
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  if (inputType == InputType.Email) {
-    response = yield VerificationAPI.cancelCodeRequestByEmail(email);
-  } else if (inputType == InputType.Phone) {
-    response = yield VerificationAPI.cancelCodeRequestByPhone(phone);
-  }
-
-  if (response.success) {
-    yield put(authActions.onCancelCodeResponse(response));
-  } else {
-    yield put(authActions.onCancelCodeFail());
   }
 }
 
@@ -222,7 +132,7 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
 
 export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
   const { token, newpass, oldpass, email, phone, inputType } = action.payload;
-  let response: Response<null> = {
+  let response: Response<ChangePassword> = {
     success: false,
     status: -1,
   };
@@ -232,7 +142,6 @@ export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
 
   if (response.success) {
     yield put(authActions.onChangePasswordResponse(response));
-    yield put(userActions.onGetUserProfileRequest(token));
     ToastAndroid.show("رمز عبور با موفقیت ویرایش شد", ToastAndroid.SHORT);
   } else {
     yield put(authActions.onChangePasswordFail());
@@ -246,19 +155,17 @@ export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
   }
 }
 
-export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhone>) {
+export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhoneRequest>) {
   const { token, newEmail, newPhone, inputType, password } = action.payload;
+  const state: IUserState = configureStore().store.getState()["authReducer"];
 
-  log(action.payload);
-  let response: Response<null> = {
+  let response: Response<ChangeEmailOrPhone> = {
     success: false,
     status: -1,
   };
-  log("in saga");
 
   let api: AuthenticationApi = new AuthenticationApi(token);
   if (inputType == InputType.Email) {
-    log("api called");
     response = yield api.changeEmail(newEmail);
   } else if (inputType == InputType.Phone) {
     response = yield api.changePhone(newPhone);
@@ -271,7 +178,6 @@ export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhone>) {
     } else if (inputType == InputType.Phone) {
       ToastAndroid.show("شماره موبایل شما با موفقیت ویرایش شد", ToastAndroid.SHORT);
     }
-    yield put(userActions.onGetUserProfileRequest(token));
     yield navigationRef.current?.goBack();
   } else {
     yield put(authActions.onChangeEmailOrPhoneFail());
