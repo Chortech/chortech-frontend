@@ -8,7 +8,6 @@ import { Response } from "../../../models/responses/axios/response";
 import {
   UserExpenses,
   AddExpense,
-  AddComment,
   UserExpense,
   GetComment,
   EditExpense,
@@ -261,12 +260,8 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async addComment(
-    text: string,
-    created_at: number,
-    expenseId: string
-  ): Promise<Response<AddComment>> {
-    let result: Response<AddComment> = {
+  async addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>> {
+    let result: Response<null> = {
       success: false,
       status: -1,
     };
@@ -277,7 +272,7 @@ export class ExpenseAPI implements expenseApi {
         created_at: created_at,
       });
 
-      if (response.status == 200) {
+      if (response.status == 201) {
         result = {
           success: true,
           status: response.status,
@@ -292,7 +287,14 @@ export class ExpenseAPI implements expenseApi {
       log("add comment api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "user doesn't participate in expense") {
+          result.status = -2;
+        } else {
+          result.status = error.response?.status != undefined ? error.response?.status : -1;
+        }
         log(error.response?.data);
       } else {
         log(e.response);

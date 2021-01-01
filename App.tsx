@@ -23,6 +23,7 @@ cronJob.init(() => {
   store.dispatch(
     authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
   );
+  log("cron job called");
 }, "*/50 * * * *");
 
 // initializing navigation and redux store and persist

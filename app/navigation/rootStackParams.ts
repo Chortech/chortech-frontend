@@ -46,4 +46,7 @@ export type RootStackParamList = {
     description?: string;
     total?: string;
   };
+  AddComment: {
+    expenseId?: string;
+  };
 };

@@ -35,7 +35,8 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
     dispatch(expenseActions.onGetUserExpenseRequest(loggedInUser.token, params.id));
   }, [dispatch]);
 
-  const onPressAddComment = () => NavigationService.navigate("AddComment");
+  const onPressAddComment = () =>
+    NavigationService.navigate("AddComment", { expenseId: params.id });
 
   const onPressDeleteActivity = () => {
     if (validateToken(loggedInUser.token)) {

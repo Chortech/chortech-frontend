@@ -1,6 +1,5 @@
 import { Participant } from "../../other/axios/Participant";
 import {
-  AddComment,
   AddExpense,
   EditExpense,
   FriendRelations,
@@ -33,6 +32,6 @@ export interface expenseApi {
     notes?: string
   ): Promise<Response<EditExpense>>;
   deleteExpense(expenseId: string): Promise<Response<null>>;
-  addComment(text: string, created_at: number, expenseId: string): Promise<Response<AddComment>>;
+  addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>>;
   getComment(expenseId: string): Promise<Response<GetComment>>;
 }

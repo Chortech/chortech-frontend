@@ -13,7 +13,6 @@ import {
   UserExpenses,
   AddExpense,
   UserExpense,
-  AddComment,
   GetComment,
   EditExpense,
   DeleteExpenseRequest,
@@ -228,18 +227,17 @@ export function onAddCommentRequest(
   };
 }
 
-export function onAddCommentResponse(response: Response<AddComment>): Action<Response<AddComment>> {
+export function onAddCommentResponse(response: Response<null>): Action<Response<null>> {
   return {
     type: types.ADD_COMMENT_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
-      response: response.response,
     },
   };
 }
 
-export function onAddCommentFail(): Action<Response<AddComment>> {
+export function onAddCommentFail(): Action<Response<null>> {
   return {
     type: types.ADD_COMMENT_FAIL,
     payload: {

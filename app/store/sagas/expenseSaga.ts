@@ -13,7 +13,6 @@ import {
   AddExpense,
   UserExpenses,
   UserExpense,
-  AddComment,
   GetComment,
   EditExpense,
   DeleteExpenseRequest,
@@ -157,29 +156,31 @@ export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
 export function* addCommentAsync(action: Action<AddCommentRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const { token, text, created_at, id } = action.payload;
-  let response: Response<AddComment> = {
+  let response: Response<null> = {
     success: false,
     status: -1,
   };
 
-  try {
-    let api: ExpenseAPI = new ExpenseAPI(token);
-    response = yield api.addComment(text, created_at, id);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
-
-  yield put(expenseActions.onLoadingDisable());
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.addComment(text, created_at, id);
 
   if (response.success) {
     yield put(expenseActions.onAddCommentResponse(response));
-    navigationRef.current?.goBack();
     ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
+    navigationRef.current?.goBack();
   } else {
     yield put(expenseActions.onAddExpenseFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == -2) {
+      ToastAndroid.show("شما جزو اعضای این هزینه نیستید", ToastAndroid.SHORT);
+    } else if (response.status == 400) {
+      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("این هزینه وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
+  yield put(expenseActions.onLoadingDisable());
 }
 
 export function* getCommentAsync(action: Action<GetCommentRequest>) {

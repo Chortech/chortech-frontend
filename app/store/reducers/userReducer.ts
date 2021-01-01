@@ -36,7 +36,6 @@ import {
   GetUserFriends,
   UserProfileResponse,
   AddExpense,
-  AddComment,
   UserExpenses,
   UserExpense,
   GetComment,
@@ -360,13 +359,10 @@ export const userReducer = createReducer(initialState, {
       token: action.payload.token,
     };
   },
-  [types.ADD_COMMENT_RESPONSE](
-    state: IUserState,
-    action: Action<Response<AddComment>>
-  ): IUserState {
+  [types.ADD_COMMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<AddComment>>): IUserState {
+  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
 
