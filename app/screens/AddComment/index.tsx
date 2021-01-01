@@ -25,7 +25,6 @@ const AddComment: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
-  log(params.expenseId);
   const addComment = () => {
     if (comment.length > 255) {
       ToastAndroid.show("یادداشت نوشته‌شده بسیار طولانی است", ToastAndroid.SHORT);

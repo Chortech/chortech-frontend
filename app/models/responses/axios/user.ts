@@ -80,6 +80,7 @@ export interface FriendRelation {
   role: PRole;
 }
 
-export interface GetComment {
+export interface ExpenseComments {
+  expenseId: string;
   comments: Array<Comment>;
 }

@@ -70,11 +70,6 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
     return items;
   };
 
-  log("get items");
-  log(getItems());
-  log("total");
-  log(params.total);
-
   const onPressEditComment = () => {
     let items: Array<Item> = getItems();
     NavigationService.navigate("AddExpense", {

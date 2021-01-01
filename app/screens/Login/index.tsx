@@ -18,7 +18,6 @@ interface IState {
 
 const Login: React.FC = (): JSX.Element => {
   const state = useSelector((state: IState) => state.authReducer);
-  log(state);
 
   const dispatch = useDispatch();
   const onLogin = () => {

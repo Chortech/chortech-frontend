@@ -6,14 +6,14 @@ import {
   AddExpenseRequest,
   GetExpenseRequest,
   AddCommentRequest,
-  GetCommentRequest,
+  GetExpenseCommentsRequest,
   EditExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   UserExpenses,
   AddExpense,
   UserExpense,
-  GetComment,
+  ExpenseComments,
   EditExpense,
   DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
@@ -121,15 +121,12 @@ export function onEditExpenseRequest(
   };
 }
 
-export function onEditExpenseResponse(
-  response: Response<EditExpense>
-): Action<Response<EditExpense>> {
+export function onEditExpenseResponse(response: Response<null>): Action<Response<null>> {
   return {
     type: types.EDIT_EXPENSE_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
-      response: response.response,
     },
   };
 }
@@ -247,19 +244,24 @@ export function onAddCommentFail(): Action<Response<null>> {
   };
 }
 
-export function onGetCommentRequest(token: Token, id: string): Action<GetCommentRequest> {
+export function onGetExpenseCommentsRequest(
+  token: Token,
+  expenseId: string
+): Action<GetExpenseCommentsRequest> {
   return {
-    type: types.GET_COMMENT_REQUEST,
+    type: types.GET_COMMENTS_REQUEST,
     payload: {
       token: token,
-      id: id,
+      expenseId: expenseId,
     },
   };
 }
 
-export function onGetCommentResponse(response: Response<GetComment>): Action<Response<GetComment>> {
+export function onGetExpenseCommentsResponse(
+  response: Response<ExpenseComments>
+): Action<Response<ExpenseComments>> {
   return {
-    type: types.GET_COMMENT_RESPONSE,
+    type: types.GET_COMMENTS_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
@@ -268,9 +270,9 @@ export function onGetCommentResponse(response: Response<GetComment>): Action<Res
   };
 }
 
-export function onGetCommentFail(): Action<Response<GetComment>> {
+export function onGetExpenseCommentsFail(): Action<Response<ExpenseComments>> {
   return {
-    type: types.GET_COMMENT_FAIL,
+    type: types.GET_COMMENTS_FAIL,
     payload: {
       success: false,
       status: -1,

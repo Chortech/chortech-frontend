@@ -6,14 +6,14 @@ import {
   GetUserExpensesRequest,
   GetExpenseRequest,
   AddCommentRequest,
-  GetCommentRequest,
+  GetExpenseCommentsRequest,
   EditExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
   UserExpenses,
   UserExpense,
-  GetComment,
+  ExpenseComments,
   EditExpense,
   DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
@@ -101,7 +101,7 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
 export function* editExpenseAsync(action: Action<EditExpenseRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const payload = action.payload;
-  let response: Response<EditExpense> = {
+  let response: Response<null> = {
     success: false,
     status: -1,
   };
@@ -166,6 +166,7 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
 
   if (response.success) {
     yield put(expenseActions.onAddCommentResponse(response));
+    yield call(getExpenseCommentsAsync, expenseActions.onGetExpenseCommentsRequest(token, id));
     ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
     navigationRef.current?.goBack();
   } else {
@@ -183,28 +184,30 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
   yield put(expenseActions.onLoadingDisable());
 }
 
-export function* getCommentAsync(action: Action<GetCommentRequest>) {
+export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsRequest>) {
   yield put(expenseActions.onLoadingEnable());
-  const { token, id } = action.payload;
-  let response: Response<GetComment> = {
+  const { token, expenseId } = action.payload;
+  let response: Response<ExpenseComments> = {
     success: false,
     status: -1,
   };
 
-  try {
-    let api: ExpenseAPI = new ExpenseAPI(token);
-    response = yield api.getComment(id);
-  } catch (error) {
-    console.log(JSON.stringify(error, undefined, 2));
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-  }
-
-  yield put(expenseActions.onLoadingDisable());
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getExpenseComments(expenseId);
 
   if (response.success) {
-    yield put(expenseActions.onGetCommentResponse(response));
+    yield put(expenseActions.onGetExpenseCommentsResponse(response));
   } else {
     yield put(expenseActions.onAddExpenseFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    if (response.status == 401) {
+      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+    } else if (response.status == 403) {
+      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+    } else if (response.status == 404) {
+      ToastAndroid.show("هزینه با این مشخصات وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
   }
+  yield put(expenseActions.onLoadingDisable());
 }

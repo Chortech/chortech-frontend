@@ -11,7 +11,7 @@ import {
   GetUserExpensesRequest,
   AddCommentRequest,
   GetExpenseRequest,
-  GetCommentRequest,
+  GetExpenseCommentsRequest,
   EditExpenseRequest,
 } from "../../models/requests/axios/user";
 import {
@@ -38,7 +38,7 @@ import {
   AddExpense,
   UserExpenses,
   UserExpense,
-  GetComment,
+  ExpenseComments,
   EditExpense,
   DeleteExpenseRequest,
 } from "../../models/responses/axios/user";
@@ -80,7 +80,6 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
-  comments: [],
   myCreditCards: [],
   otherCreditCards: [],
 };
@@ -299,10 +298,7 @@ export const userReducer = createReducer(initialState, {
       token: action.payload.token,
     };
   },
-  [types.EDIT_EXPENSE_RESPONSE](
-    state: IUserState,
-    action: Action<Response<EditExpense>>
-  ): IUserState {
+  [types.EDIT_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
   [types.EDIT_EXPENSE_FAIL](state: IUserState, action: Action<Response<EditExpense>>): IUserState {
@@ -341,9 +337,6 @@ export const userReducer = createReducer(initialState, {
       state.activities[index].participants =
         expense?.participants != undefined ? expense.participants : [];
     }
-    log("state activities");
-    log(index);
-    log(state.activities);
     return state;
   },
   [types.GET_USER_EXPENSE_FAIL](
@@ -366,22 +359,31 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
 
-  [types.GET_COMMENT_REQUEST](state: IUserState, action: Action<GetCommentRequest>): IUserState {
+  [types.GET_COMMENTS_REQUEST](
+    state: IUserState,
+    action: Action<GetExpenseCommentsRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
     };
   },
-  [types.GET_COMMENT_RESPONSE](
+  [types.GET_COMMENTS_RESPONSE](
     state: IUserState,
-    action: Action<Response<GetComment>>
+    action: Action<Response<ExpenseComments>>
   ): IUserState {
-    return {
-      ...state,
-      comments: action.payload.response!.comments,
-    };
+    const index = state.activities.findIndex(
+      (activity) => activity.id == action.payload.response?.expenseId
+    );
+    if (index > -1) {
+      state.activities[index].comments = action.payload.response?.comments;
+    }
+    return state;
   },
-  [types.GET_COMMENT_FAIL](state: IUserState, action: Action<Response<GetComment>>): IUserState {
+  [types.GET_COMMENTS_FAIL](
+    state: IUserState,
+    action: Action<Response<ExpenseComments>>
+  ): IUserState {
     return state;
   },
   [types.DELETE_ACTIVITY_REQUEST](

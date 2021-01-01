@@ -106,8 +106,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
         ToastAndroid.show("مبالغ تقسیم‌شده با مبلغ کل هزینه برابر نیست", ToastAndroid.SHORT);
         return;
       }
-      log("confirmed");
-
       if (params.parentScreen == "ActivityList") {
         dispatch(
           expenseActions.onAddExpenseRequest(
@@ -166,10 +164,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
           }
         }
       });
-      log("fetch creditors");
-      log(creditors);
-      log("fetch debtors");
-      log(debtors);
       let items: Array<Item> = [];
       params.items.forEach((element) => {
         if (items.findIndex((item) => item.id == element.id) < 0) {
@@ -310,15 +304,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     setRenderFlatList(!renderFlatList);
   };
 
-  log("selected ones");
-  log(selectedItems.current);
-
-  log("creditors");
-  log(creditors.current);
-
-  log("debtors");
-  log(debtors.current);
-
   const showCreditorModal = () => {
     if (Number(data.expenseAmount) > 0) {
       let userItem: Item = {
@@ -391,7 +376,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
       const money = Number(expense);
       const length = selectedItems.filter((i) => i.selected == true).length;
       const equalAmount = Number((money / length).toFixed(2));
-      log(`equal amount ${equalAmount.toString()}`);
       selectedItems.forEach((element) => {
         if (element.selected) {
           element.amount = equalAmount;

@@ -3,7 +3,7 @@ import {
   AddExpense,
   EditExpense,
   FriendRelations,
-  GetComment,
+  ExpenseComments,
   UserExpense,
   UserExpenses,
 } from "../../responses/axios/user";
@@ -33,5 +33,5 @@ export interface expenseApi {
   ): Promise<Response<EditExpense>>;
   deleteExpense(expenseId: string): Promise<Response<null>>;
   addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>>;
-  getComment(expenseId: string): Promise<Response<GetComment>>;
+  getExpenseComments(expenseId: string): Promise<Response<ExpenseComments>>;
 }

@@ -9,7 +9,7 @@ import {
   UserExpenses,
   AddExpense,
   UserExpense,
-  GetComment,
+  ExpenseComments,
   EditExpense,
   FriendRelation,
   FriendRelations,
@@ -303,8 +303,8 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async getComment(expenseId: string): Promise<Response<GetComment>> {
-    let result: Response<GetComment> = {
+  async getExpenseComments(expenseId: string): Promise<Response<ExpenseComments>> {
+    let result: Response<ExpenseComments> = {
       success: false,
       status: -1,
     };
@@ -316,7 +316,10 @@ export class ExpenseAPI implements expenseApi {
         result = {
           success: true,
           status: response.status,
-          response: response.data,
+          response: {
+            expenseId: expenseId,
+            comments: response.data,
+          },
         };
       } else {
         result.status = response.status;

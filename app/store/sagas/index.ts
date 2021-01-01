@@ -37,6 +37,6 @@ export default function* watch() {
     takeLatest(types.EDIT_EXPENSE_REQUEST, expenseSaga.editExpenseAsync),
     takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
     takeLatest(types.ADD_COMMENT_REQUEST, expenseSaga.addCommentAsync),
-    takeLatest(types.GET_COMMENT_REQUEST, expenseSaga.getCommentAsync),
+    takeLatest(types.GET_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
   ]);
 }

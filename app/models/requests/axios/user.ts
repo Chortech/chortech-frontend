@@ -71,7 +71,7 @@ export interface AddCommentRequest {
   id: string;
 }
 
-export interface GetCommentRequest {
+export interface GetExpenseCommentsRequest {
   token: Token;
-  id: string;
+  expenseId: string;
 }
