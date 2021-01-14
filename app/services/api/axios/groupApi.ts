@@ -20,7 +20,7 @@ import { IUserState } from "../../../models/reducers/default";
 import { Buffer } from "buffer";
 import { CreateGroupRequest } from "../../../models/requests/axios/group";
 
-export class GroupApi implements groupApi {
+export class GroupAPI implements groupApi {
   client: AxiosInstance;
 
   constructor(token: Token) {
