@@ -1,165 +1,155 @@
 import { Action } from "../../models/actions/action";
+import { Token } from "../../models/other/axios/Token";
 import {
-  AddGroupRequest,
-  UpdateGroupRequest,
+  AddFriendToGroupRequest,
+  CreateGroupRequest,
   DeleteGroupRequest,
-  GetGroupByIdRequest,
+  EditGroupRequest,
+  GetGroupInfoRequest,
   GetUserGroupsRequest,
-} from "../../models/requests/graphql/group";
+  LeaveGroupRequest,
+  RemoveMemberRequest,
+} from "../../models/requests/axios/group";
 import {
-  AddGroupResponse,
-  UpdateGroupResponse,
+  AddFriendToGroupResponse,
   DeleteGroupResponse,
-  GetGroupByIdResponse,
+  EditGroupResponse,
+  GetGroupResponse,
   GetUserGroupsResponse,
-} from "../../models/responses/graphql/group";
+  LeaveGroupResponse,
+  RemoveMemberResponse,
+} from "../../models/responses/axios/group";
 import * as types from "./types";
+import { Group } from "../../models/other/axios/Group";
 
-export function onAddGroupRequest(
+export function onCreateGroupRequest(
+  token: Token,
   name: string,
-  creatorId: string,
-  membersIds: Array<string>
-): Action<AddGroupRequest> {
+  picture: string,
+): Action<CreateGroupRequest> {
   return {
     type: types.ADD_GROUP_REQUEST,
     payload: {
-      name: name,
-      creator: creatorId,
-      members: membersIds,
+      token,
+      name,
+      picture,
     },
   };
 }
 
-export function onAddGroupResponse(response: AddGroupResponse): Action<AddGroupResponse> {
+export function onCreateGroupResponse(response: null): Action<null> {
   return {
     type: types.ADD_GROUP_RESPONSE,
-    payload: {
-      success: response.success,
-      id: response.id,
-    },
+    payload: response,
   };
 }
 
-export function onAddGroupFail(): Action<AddGroupResponse> {
+export function onAddGroupFail(response: null): Action<null> {
   return {
     type: types.ADD_GROUP_FAIL,
-    payload: {
-      success: false,
-      id: "-1",
-    },
+    payload: response,
   };
 }
 
-export function onUpdateGroupRequest(
-  groupId: string,
-  name: string,
-  creator: string,
-  members: Array<string>
-): Action<UpdateGroupRequest> {
+export function onEditGroupRequest(
+    token: Token,
+    id: string,
+    name: string,
+    picture: string,
+): Action<EditGroupRequest> {
   return {
     type: types.UPDATE_GROUP_REQUEST,
     payload: {
-      groupId,
+      token,
+      id,
       name,
-      creator,
-      members,
+      picture,
     },
   };
 }
 
-export function onUpdateGroupResponse(response: UpdateGroupResponse): Action<UpdateGroupResponse> {
+export function onEditGroupResponse(group: Group): Action<EditGroupResponse> {
   return {
     type: types.UPDATE_GROUP_RESPONSE,
     payload: {
-      success: response.success,
-      id: response.id,
+      group,
     },
   };
 }
 
-export function onUpdateGroupFail(): Action<UpdateGroupResponse> {
+export function onUpdateGroupFail(response: null): Action<null> {
   return {
     type: types.UPDATE_GROUP_FAIL,
-    payload: {
-      success: false,
-      id: "-1",
-    },
+    payload: response,
   };
 }
 
-export function onDeleteGroupRequest(groupId: string): Action<DeleteGroupRequest> {
+export function onDeleteGroupRequest(
+  token: Token,
+  id: string,
+  ): Action<DeleteGroupRequest> {
   return {
     type: types.DELETE_GROUP_REQUEST,
     payload: {
-      groupId: groupId,
+      token,
+      id,
     },
   };
 }
 
-export function onDeleteGroupResponse(response: DeleteGroupResponse): Action<DeleteGroupResponse> {
+export function onDeleteGroupResponse(message: string): Action<DeleteGroupResponse> {
   return {
     type: types.DELETE_GROUP_RESPONSE,
     payload: {
-      success: response.success,
-      id: response.id,
+      message,
     },
   };
 }
 
-export function onDeleteGroupFail(): Action<DeleteGroupResponse> {
+export function onDeleteGroupFail(response: null): Action<null> {
   return {
     type: types.DELETE_GROUP_FAIL,
-    payload: {
-      success: false,
-      id: "-1",
-    },
+    payload: response,
   };
 }
 
-export function onGetGroupByIdRequest(groupId: string): Action<GetGroupByIdRequest> {
+export function onGetGroupByIdRequest(
+  token: Token,
+  id: string,
+  ): Action<GetGroupInfoRequest> {
   return {
     type: types.GET_GROUP_BY_ID_REQUEST,
     payload: {
-      groupId,
+      token,
+      id,
     },
   };
 }
 
 export function onGetGroupByIdResponse(
-  response: GetGroupByIdResponse
-): Action<GetGroupByIdResponse> {
+  group: Group,
+): Action<GetGroupResponse> {
   return {
     type: types.GET_GROUP_BY_ID_RESPONSE,
     payload: {
-      success: response.success,
-      id: response.id,
-      group: response.group,
+      group,
     },
   };
 }
 
-export function onGetGroupByIdFail(): Action<GetGroupByIdResponse> {
+export function onGetGroupByIdFail(response: null): Action<null> {
   return {
     type: types.GET_GROUP_BY_ID_FAIL,
-    payload: {
-      success: false,
-      id: "-1",
-      group: {
-        id: "-1",
-        name: "",
-        creatorId: "-1",
-        membersIds: [],
-        activitiesIds: [],
-      },
-    },
+    payload: 
+      response,
   };
 }
 
-export function onGetUserGroupsRequest(userId: string): Action<GetUserGroupsRequest> {
+export function onGetUserGroupsRequest(token: Token): Action<GetUserGroupsRequest> {
   return {
     type: types.GET_USER_GROUPS_REQUEST,
     payload: {
-      userId: userId,
+      token,
     },
   };
 }
@@ -170,21 +160,15 @@ export function onGetUserGroupsResponse(
   return {
     type: types.GET_USER_GROUPS_RESPONSE,
     payload: {
-      userId: response.userId,
-      success: response.success,
       groups: response.groups,
     },
   };
 }
 
-export function onGetUserGroupsFail(): Action<GetUserGroupsResponse> {
+export function onGetUserGroupsFail(response: null): Action<null> {
   return {
     type: types.GET_USER_GROUPS_FAIL,
-    payload: {
-      success: false,
-      userId: "-1",
-      groups: [],
-    },
+    payload: response,
   };
 }
 export function onLoadingEnable(): Action<any> {
