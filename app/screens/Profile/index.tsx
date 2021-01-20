@@ -39,9 +39,9 @@ const Profile: React.FC = (): JSX.Element => {
     imageUri: user.imageUri,
   });
   const fetchUser = () => {
-    if (validateToken(loggedInUser.token)) {
-      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
-    }
+    // if (validateToken(loggedInUser.token)) {
+    //   dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
+    // }
   };
 
   const onPressUpdateImage = () => {

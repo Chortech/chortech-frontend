@@ -35,9 +35,9 @@ const ActivityList: React.FC = () => {
   };
   const [refreshing, setRefreshing] = useState(false);
   const fetchActivities = (): void => {
-    if (validateToken(loggedInUser.token)) {
-      dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
-    }
+    // if (validateToken(loggedInUser.token)) {
+    //   dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
+    // }
   };
   useEffect(() => {
     fetchActivities();

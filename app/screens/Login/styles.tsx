@@ -1,9 +1,11 @@
 import { StyleSheet, Platform } from "react-native";
 
+const mainColor = "#00db12";
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: mainColor,
   },
   header: {
     flex: 1,
@@ -30,9 +32,9 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: "#f2f2f2",
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    padding: 5,
   },
   textInput: {
     flex: 10,
@@ -46,6 +48,7 @@ export const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 15,
     alignSelf: "center",
+    alignContent: "center",
   },
   validationText: {
     color: "red",
@@ -57,31 +60,36 @@ export const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
     fontFamily: "IRANSansWeb_Bold",
-    color: "#1AD927",
+    color: mainColor,
   },
   buttonContainer: {
-    flex: 5,
+    bottom: 0,
+    flexDirection: "row",
     width: "100%",
     marginTop: 50,
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   filledButton: {
-    elevation: 5,
-    backgroundColor: "#1AD927",
-    borderRadius: 5,
+    width: "40%",
+    elevation: 2,
+    marginHorizontal: 10,
+    backgroundColor: mainColor,
+    borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
   },
   outlinedButton: {
-    elevation: 5,
+    width: "40%",
+    elevation: 2,
     backgroundColor: "#fff",
-    borderRadius: 5,
+    borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    marginHorizontal: 10,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#1AD927",
+    borderColor: mainColor,
   },
   filledButtonText: {
     fontSize: 18,
@@ -92,7 +100,7 @@ export const styles = StyleSheet.create({
   },
   outlinedButtonText: {
     fontSize: 18,
-    color: "#1AD927",
+    color: mainColor,
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
