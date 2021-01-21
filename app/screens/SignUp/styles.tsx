@@ -1,44 +1,64 @@
 import { StyleSheet, Platform } from "react-native";
 
+const mainColor = "#00bb5d";
+const borderRadius = 20;
+const textColor = "#333333";
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: "#f7f7f7",
   },
   header: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
+  logo: {
+    alignSelf: "center",
+    transform: [{ scale: 0.25 }],
+  },
   textHeader: {
     textAlign: "center",
-    color: "#fff",
+    color: mainColor,
     fontSize: 50,
     writingDirection: "auto",
     fontFamily: "Alex",
   },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 3,
+  contentWrapper: {
+    flex: 6,
+    elevation: 10,
     backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    borderTopRightRadius: borderRadius,
+    borderTopLeftRadius: borderRadius,
   },
-  inputContainer: {
+  text: {
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: textColor,
+    fontSize: 18,
+  },
+
+  formsContainer: {
+    flex: 2,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
     borderWidth: 1,
     borderColor: "#f2f2f2",
-    borderRadius: 5,
+    borderRadius: borderRadius,
     backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    padding: 5,
   },
   textInput: {
     flex: 10,
-    color: "#053751",
+    color: textColor,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontSize: 16,
+    fontFamily: "IRANSansWeb_Light",
     textAlign: "right",
   },
   validationText: {
@@ -53,16 +73,28 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: "center",
   },
-  buttonContainer: {
-    flex: 5,
-    width: "100%",
-    marginTop: 30,
-    justifyContent: "flex-end",
+  visiblePassword: {
+    color: mainColor,
+  },
+  invisiblePassword: {
+    color: "red",
+  },
+  footerContainer: {
+    flex: 2,
+    bottom: 0,
+  },
+  buttonsContainer: {
+    flex: 2,
+    marginTop: 50,
+    justifyContent: "center",
   },
   verifyScreenButton: {
-    elevation: 10,
-    backgroundColor: "#1AD927",
-    borderRadius: 5,
+    width: "60%",
+    alignSelf: "center",
+    elevation: 2,
+    marginHorizontal: 10,
+    backgroundColor: mainColor,
+    borderRadius: borderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
@@ -72,5 +104,11 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
+  },
+  loggedInBeforeText: {
+    margin: 10,
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: mainColor,
   },
 });

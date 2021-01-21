@@ -1,16 +1,22 @@
 import { StyleSheet, Platform } from "react-native";
 
-const mainColor = "#00db12";
+const mainColor = "#00bb5d";
+const borderRadius = 20;
+const textColor = "#333333";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f7f7f7",
   },
   header: {
     flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
+  },
+  logo: {
+    alignSelf: "center",
+    transform: [{ scale: 0.25 }],
   },
   textHeader: {
     textAlign: "center",
@@ -19,25 +25,39 @@ export const styles = StyleSheet.create({
     writingDirection: "auto",
     fontFamily: "Alex",
   },
-  inputsContainer: {
+  contentWrapper: {
+    flex: 4,
+    elevation: 10,
+    backgroundColor: "#fff",
+    borderTopRightRadius: borderRadius,
+    borderTopLeftRadius: borderRadius,
+  },
+  text: {
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: textColor,
+    fontSize: 18,
+  },
+  formsContainer: {
     flex: 2,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 10,
   },
   textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
     borderWidth: 1,
     borderColor: "#f2f2f2",
-    borderRadius: 20,
+    borderRadius: borderRadius,
     backgroundColor: "#f2f2f2",
     padding: 5,
   },
   textInput: {
     flex: 10,
-    color: "#053751",
+    color: textColor,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontSize: 16,
+    fontFamily: "IRANSansWeb_Light",
     textAlign: "right",
   },
   toggleIcon: {
@@ -46,6 +66,12 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: "center",
     alignContent: "center",
+  },
+  visiblePassword: {
+    color: mainColor,
+  },
+  invisiblePassword: {
+    color: "red",
   },
   validationText: {
     color: "red",
@@ -74,7 +100,7 @@ export const styles = StyleSheet.create({
     elevation: 2,
     marginHorizontal: 10,
     backgroundColor: mainColor,
-    borderRadius: 25,
+    borderRadius: borderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
@@ -83,7 +109,7 @@ export const styles = StyleSheet.create({
     width: "40%",
     elevation: 2,
     backgroundColor: "#fff",
-    borderRadius: 25,
+    borderRadius: borderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginHorizontal: 10,
