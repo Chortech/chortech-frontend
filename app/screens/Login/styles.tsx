@@ -5,29 +5,26 @@ const mainColor = "#00db12";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: mainColor,
+    backgroundColor: "#fff",
   },
   header: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   textHeader: {
     textAlign: "center",
-    color: "#fff",
+    color: mainColor,
     fontSize: 50,
     writingDirection: "auto",
     fontFamily: "Alex",
   },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 3,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+  inputsContainer: {
+    flex: 2,
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  inputContainer: {
+  textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
     borderWidth: 1,
@@ -62,7 +59,10 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
     color: mainColor,
   },
-  buttonContainer: {
+  footerContainer: {
+    flex: 2,
+  },
+  buttonsContainer: {
     bottom: 0,
     flexDirection: "row",
     width: "100%",
@@ -104,5 +104,12 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
+  },
+
+  privacyText: {
+    margin: 10,
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: mainColor,
   },
 });

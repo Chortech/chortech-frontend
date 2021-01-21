@@ -95,8 +95,8 @@ const Login: React.FC = (): JSX.Element => {
           <View style={styles.header}>
             <Text style={styles.textHeader}>Chortech</Text>
           </View>
-          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
-            <View style={styles.inputContainer}>
+          <View style={styles.inputsContainer}>
+            <View style={styles.textInputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
                 style={styles.textInput}
@@ -108,7 +108,7 @@ const Login: React.FC = (): JSX.Element => {
                 ایمیل یا شماره موبایل وارد شده معتبر نیست
               </Animatable.Text>
             ) : null}
-            <View style={styles.inputContainer}>
+            <View style={styles.textInputContainer}>
               <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
                 {data.secureTextEntry ? (
                   <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
@@ -133,7 +133,9 @@ const Login: React.FC = (): JSX.Element => {
                 <Text style={styles.resetPasswordText}>کلمه عبور خود را فراموش کرده‌اید؟</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.buttonContainer}>
+          </View>
+          <View style={styles.footerContainer}>
+            <View style={styles.buttonsContainer}>
               <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
                 <Text style={styles.outlinedButtonText}>ثبت نام</Text>
               </TouchableOpacity>
@@ -143,18 +145,10 @@ const Login: React.FC = (): JSX.Element => {
             </View>
             <View>
               <TouchableOpacity>
-                <Text style={styles.resetPasswordText}>قوانین حریم خصوصی</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <FontAwesomeIcon
-                  icon="phone-square"
-                  size={40}
-                  style={{ color: "#00db12", margin: 10 }}
-                />
-                <FontAwesomeIcon icon="globe" size={40} style={{ color: "#00db12", margin: 10 }} />
+                <Text style={styles.privacyText}>قوانین حریم خصوصی</Text>
               </TouchableOpacity>
             </View>
-          </Animatable.View>
+          </View>
         </View>
       )}
     </>
