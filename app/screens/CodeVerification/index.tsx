@@ -24,7 +24,7 @@ import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
 import { Response } from "../../models/responses/axios/response";
 import { colors } from "react-native-elements";
-import { SignUp } from "../../models/responses/axios/auth";
+import { ChangeEmailOrPhone, SignUp } from "../../models/responses/axios/auth";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -83,7 +83,27 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
           },
         },
       };
-      dispatch(authActions.onSignUpResponse(response));
+      let editResponse: Response<ChangeEmailOrPhone> = {
+        status: 200,
+        success: true,
+        response: {
+          inputType: props.inputType,
+          newEmail: props.email,
+          newPhone: props.phone,
+        },
+      };
+      if (props.parentScreen == "AccountIdentification") {
+        NavigationService.navigate("ResetPassword", {
+          email: props.email,
+          phone: props.phone,
+          inputType: props.inputType,
+          parentScreen: props.parentScreen,
+        });
+      } else if (props.parentScreen == "EditProfile") {
+        dispatch(authActions.onChangeEmailOrPhoneResponse(editResponse));
+      } else {
+        dispatch(authActions.onSignUpResponse(response));
+      }
       // verificationActions.onVerifyCodeResponse(response);
 
       // NavigationService.navigate("GroupList");

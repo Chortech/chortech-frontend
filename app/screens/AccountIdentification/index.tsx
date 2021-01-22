@@ -57,12 +57,11 @@ const AccountIdentification: React.FC = () => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <StatusBar backgroundColor="#009387" barStyle="light-content" />
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Chortech</Text>
-          </View>
-          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
-            <View style={styles.inputContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>
+              ایمیل یا شماره‌موبایل موردنظر خود را وارد کنید
+            </Text>
+            <View style={styles.textInputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
                 style={styles.textInput}
@@ -75,8 +74,8 @@ const AccountIdentification: React.FC = () => {
               </Animatable.Text>
             ) : null}
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.verifyScreenButton} onPress={onVerify}>
-                <Text style={styles.verifyScreenButtonText}>ادامه و دریافت کد تایید</Text>
+              <TouchableOpacity style={styles.confirmButton} onPress={onVerify}>
+                <Text style={styles.confirmButtonText}>ادامه و دریافت کد تایید</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>
