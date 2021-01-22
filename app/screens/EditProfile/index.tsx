@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as Animatable from "react-native-animatable";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
 import * as authActions from "../../store/actions/authActions";
@@ -45,11 +45,24 @@ const EditProfile: React.FC = (): JSX.Element => {
       ToastAndroid.show("نام واردشده تکراری است", ToastAndroid.SHORT);
       return;
     }
-    if (!validateToken(loggedInUser.token)) {
-      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
-      return;
-    }
-    dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
+    // if (!validateToken(loggedInUser.token)) {
+    //   ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+    //   return;
+    // }
+    dispatch(
+      userActions.onEditUserProfileResponse({
+        status: 200,
+        success: true,
+        response: {
+          name: data.name,
+          picture: user.picture,
+          email: data.email,
+          phone: data.phone,
+        },
+      })
+    );
+    NavigationService.goBack();
+    // dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
   };
 
   const onPressChangeEmail = () => {
@@ -100,15 +113,25 @@ const EditProfile: React.FC = (): JSX.Element => {
     if (validateToken(loggedInUser.token)) {
       if (data.validCurrentPassword) {
         dispatch(
-          authActions.onChangePasswordRequest(
-            loggedInUser.token,
-            loggedInUser.email,
-            loggedInUser.phone,
-            loggedInUser.authInputType,
-            data.newPassword,
-            data.currentPassword
-          )
+          authActions.onChangePasswordResponse({
+            status: 200,
+            success: true,
+            response: {
+              newPassword: data.newPassword,
+            },
+          })
         );
+        NavigationService.goBack();
+        // dispatch(
+        //   authActions.onChangePasswordRequest(
+        //     loggedInUser.token,
+        //     loggedInUser.email,
+        //     loggedInUser.phone,
+        //     loggedInUser.authInputType,
+        //     data.newPassword,
+        //     data.currentPassword
+        //   )
+        // );
       } else {
         ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
       }

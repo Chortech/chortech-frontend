@@ -32,8 +32,6 @@ const Profile: React.FC = (): JSX.Element => {
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
-  log(user.picture);
-
   const dispatch = useDispatch();
   const [data, setData] = useState({
     imageUri: user.imageUri,
@@ -46,7 +44,7 @@ const Profile: React.FC = (): JSX.Element => {
 
   const onPressUpdateImage = () => {
     let uri = "../../assets/images/friend-image.jpg";
-    ImagePicker.launchImageLibrary(options, (response) => {
+    ImagePicker.launchImageLibrary(options, (response: any) => {
       uri = response.uri;
       setData({
         ...data,
@@ -56,26 +54,33 @@ const Profile: React.FC = (): JSX.Element => {
         ...user,
         imageUri: data.imageUri,
       };
+      // dispatch(
+      //   userActions.onUploadImageResponse({
+      //     status: 200,
+      //     success: true,
+      //     response: {
+      //       key: "1290",
+      //       url: data.imageUri,
+      //     },
+      //   })
+      // );
       if (validateToken(loggedInUser.token)) {
-        console.log("hmmm");
-        dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
+        // dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
       } else {
-        console.log("getting new token");
-        dispatch(
-          authActions.onLoginRequest(
-            loggedInUser.email,
-            loggedInUser.phone,
-            loggedInUser.password,
-            loggedInUser.authInputType
-          )
-        );
+        // dispatch(
+        //   authActions.onLoginRequest(
+        //     loggedInUser.email,
+        //     loggedInUser.phone,
+        //     loggedInUser.password,
+        //     loggedInUser.authInputType
+        //   )
+        // );
       }
     });
   };
-  const onPressFriendsList = () => NavigationService.navigate("FriendList");
   const onPressEditProfile = () => NavigationService.navigate("EditProfile");
   const onLogout = () => {
-    dispatch(userActions.onClearTokenRequest());
+    // dispatch(userActions.onClearTokenRequest());
     dispatch(authActions.onLogout());
   };
 
@@ -96,25 +101,35 @@ const Profile: React.FC = (): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={onPressUpdateImage}>
-              <Image
-                style={styles.profileImage}
-                source={
-                  data.imageUri && data.imageUri !== ""
-                    ? { uri: data.imageUri }
-                    : require("../../assets/images/friend-image.jpg")
-                }
-              />
+            <TouchableOpacity style={styles.logoutIconContainer} onPress={onLogout}>
+              <FontAwesomeIcon icon="sign-out-alt" style={styles.logoutIcon} size={30} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
-              <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
-            </TouchableOpacity>
-            <Text style={styles.userNameText}>{user.name}</Text>
+            <View style={styles.imageContainer}>
+              <TouchableOpacity onPress={onPressUpdateImage}>
+                <Image
+                  style={styles.profileImage}
+                  source={
+                    data.imageUri && data.imageUri !== ""
+                      ? { uri: data.imageUri }
+                      : require("../../assets/images/friend-image.jpg")
+                  }
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
             <ScrollView
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}>
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>{user.name}</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>نام</Text>
+                </View>
+              </View>
+
               {loggedInUser.authInputType == InputType.Email ? (
                 <View style={styles.textWrapper}>
                   <View style={styles.textContainerLeft}>
@@ -135,13 +150,19 @@ const Profile: React.FC = (): JSX.Element => {
                   </View>
                 </View>
               ) : null}
+              <View style={styles.textWrapper}>
+                <View style={styles.textContainerLeft}>
+                  <Text style={styles.textInfo}>۱۰۰۰۰ تومان</Text>
+                </View>
+                <View style={styles.textContainerRight}>
+                  <Text style={styles.textInfo}>اعتبار</Text>
+                </View>
+              </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
-                <Text style={styles.buttonText}>دوستان</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={onPressEditProfile}>
-                <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
+              <TouchableOpacity style={styles.editButton} onPress={onPressEditProfile}>
+                <FontAwesomeIcon icon="edit" style={styles.editIcon} size={30} />
+                <Text style={styles.editButtonText}>ویرایش اطلاعات</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>
