@@ -23,6 +23,7 @@ import AddExpense from "../screens/AddExpense";
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
 import AddComment from "../screens/AddComment";
+import SettleUp from "../screens/SettleUp";
 import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
 
@@ -213,12 +214,17 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
-      options={({ route }) => ({ title: route.params.friendName })}
+      options={({ route }) => ({ })}
     />
     <LoggedInTab.Screen
       name="InviteFriend"
       component={InviteFriend}
       options={{ title: "افزودن دوستان جدید" }}
+    />
+    <LoggedInTab.Screen
+      name="SettleUp"
+      component={SettleUp}
+      options={{ title: "تسویه حساب" }}
     />
   </FriendStack.Navigator>
 );
