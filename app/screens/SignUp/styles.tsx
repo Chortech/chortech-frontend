@@ -3,13 +3,14 @@ import { StyleSheet, Platform } from "react-native";
 const mainColor = "#00bb5d";
 const borderRadius = 20;
 const textColor = "#333333";
+const baseFontSize = 16;
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f7f7f7",
   },
-  header: {
+  headerContainer: {
     flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
@@ -18,31 +19,21 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     transform: [{ scale: 0.25 }],
   },
-  textHeader: {
-    textAlign: "center",
-    color: mainColor,
-    fontSize: 50,
-    writingDirection: "auto",
-    fontFamily: "Alex",
-  },
-  contentWrapper: {
-    flex: 6,
+  formsContainer: {
+    flex: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     elevation: 10,
     backgroundColor: "#fff",
     borderTopRightRadius: borderRadius,
     borderTopLeftRadius: borderRadius,
   },
-  text: {
+  screenTitleText: {
     textAlign: "center",
     fontFamily: "IRANSansWeb_Bold",
     color: textColor,
-    fontSize: 18,
-  },
-
-  formsContainer: {
-    flex: 2,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    fontSize: baseFontSize,
+    margin: 5,
   },
   textInputContainer: {
     flexDirection: "row",
@@ -57,7 +48,7 @@ export const styles = StyleSheet.create({
     flex: 10,
     color: textColor,
     padding: 10,
-    fontSize: 16,
+    fontSize: baseFontSize,
     fontFamily: "IRANSansWeb_Light",
     textAlign: "right",
   },
@@ -65,7 +56,7 @@ export const styles = StyleSheet.create({
     color: "red",
     padding: 5,
     fontFamily: "IRANSansWeb_Bold",
-    fontSize: 12,
+    fontSize: baseFontSize - 4,
   },
   toggleIcon: {
     flex: 1,
@@ -77,19 +68,14 @@ export const styles = StyleSheet.create({
     color: mainColor,
   },
   invisiblePassword: {
-    color: "red",
-  },
-  footerContainer: {
-    flex: 2,
-    bottom: 0,
+    color: "gray",
   },
   buttonsContainer: {
-    flex: 2,
     marginTop: 50,
     justifyContent: "center",
   },
-  verifyScreenButton: {
-    width: "60%",
+  codeVerificationScreenButton: {
+    width: "70%",
     alignSelf: "center",
     elevation: 2,
     marginHorizontal: 10,
@@ -98,15 +84,16 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
-  verifyScreenButtonText: {
-    fontSize: 18,
+  codeVerificationScreenButtonText: {
+    fontSize: baseFontSize + 2,
     color: "#fff",
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
   },
   loggedInBeforeText: {
-    margin: 10,
+    margin: 15,
+    fontSize: baseFontSize,
     textAlign: "center",
     fontFamily: "IRANSansWeb_Bold",
     color: mainColor,

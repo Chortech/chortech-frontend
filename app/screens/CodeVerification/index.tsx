@@ -13,6 +13,7 @@ import { IUserState } from "../../models/reducers/default";
 import { User } from "../../models/other/graphql/User";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
+import { Response } from "../../models/responses/axios/response";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -35,17 +36,17 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const dispatch = useDispatch();
   const generateCode = () => {
-    dispatch(
-      verificationActions.onGenerateCodeRequest(
-        props.email,
-        props.phone,
-        props.inputType,
-        props.parentScreen,
-        props.name,
-        props.password,
-        state.token
-      )
-    );
+    // dispatch(
+    //   verificationActions.onGenerateCodeRequest(
+    //     props.email,
+    //     props.phone,
+    //     props.inputType,
+    //     props.parentScreen,
+    //     props.name,
+    //     props.password,
+    //     state.token
+    //   )
+    // );
   };
 
   useEffect(() => {
@@ -54,18 +55,24 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const onNextScreen = () => {
     if (data.validCodeLength) {
-      dispatch(
-        verificationActions.onVerifyCodeRequest(
-          props.name,
-          props.email,
-          props.phone,
-          props.password,
-          props.inputType,
-          data.verificationCode,
-          props.parentScreen,
-          state.token
-        )
-      );
+      let response: Response<null> = {
+        status: 200,
+        success: true,
+      };
+      verificationActions.onVerifyCodeResponse(response);
+      NavigationService.navigate("GroupList");
+      // dispatch(
+      //   verificationActions.onVerifyCodeRequest(
+      //     props.name,
+      //     props.email,
+      //     props.phone,
+      //     props.password,
+      //     props.inputType,
+      //     data.verificationCode,
+      //     props.parentScreen,
+      //     state.token
+      //   )
+      // );
     } else {
       ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }
