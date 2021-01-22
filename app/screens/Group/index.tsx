@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import LoadingIndicator from "../Loading";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,7 @@ type Props = {
 type IState = {
   userReducer: IUserState;
 };
+
 
 const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [renderFlatList, setRenderFlatList] = useState(false);
@@ -100,5 +101,6 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
     </>
   );
 };
+
 
 export default Group;

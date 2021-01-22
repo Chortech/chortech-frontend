@@ -233,7 +233,7 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const renderSelectableItem: any = ({ item }) =>
     item.id != loggedInUser.id ? (
       <SelectableItem
-        id={item.id}
+        id={item.id.toString()}
         Name={item.name}
         selected={item.selected}
         hasBottomBorder={true}

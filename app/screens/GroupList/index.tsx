@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import GroupItem from "../../components/GroupItem/index";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import * as groupActions from "../../store/actions/groupActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
@@ -18,7 +18,11 @@ const GroupList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
-
+  let groupsData: { id: number, name: string }[] = [
+    { "id": 0, "name": "Available" },
+    { "id": 1, "name": "Ready" },
+    { "id": 2, "name": "Started" }
+];
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -53,7 +57,7 @@ const GroupList: React.FC = () => {
       <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
         <FlatList
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          data={groups}
+          data={groupsData}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}
         />
