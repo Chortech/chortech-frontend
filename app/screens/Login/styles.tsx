@@ -87,7 +87,6 @@ export const styles = StyleSheet.create({
   },
   filledButton: {
     flex: 2,
-    elevation: 2,
     marginHorizontal: 10,
     backgroundColor: mainColor,
     borderRadius: borderRadius,
@@ -97,7 +96,6 @@ export const styles = StyleSheet.create({
   },
   outlinedButton: {
     flex: 2,
-    elevation: 2,
     backgroundColor: "#fff",
     borderRadius: borderRadius,
     paddingVertical: 10,

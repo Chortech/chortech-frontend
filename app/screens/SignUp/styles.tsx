@@ -77,7 +77,6 @@ export const styles = StyleSheet.create({
   codeVerificationScreenButton: {
     width: "70%",
     alignSelf: "center",
-    elevation: 2,
     marginHorizontal: 10,
     backgroundColor: mainColor,
     borderRadius: borderRadius,

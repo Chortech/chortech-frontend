@@ -45,7 +45,6 @@ const Login: React.FC = (): JSX.Element => {
       };
 
       dispatch(loginActions.onLoginResponse(response));
-      NavigationService.navigate("GroupList");
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }
