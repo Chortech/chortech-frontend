@@ -8,93 +8,80 @@ const baseFontSize = 16;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: mainColor,
+    backgroundColor: "#fff",
   },
   header: {
-    flex: 3,
-  },
-  imageContainer: {
     flex: 4,
   },
-  profileImage: {
-    height: 100,
-    width: 100,
-    alignSelf: "center",
-    flexWrap: "wrap",
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: "#fff",
-  },
-  logoutIconContainer: {
+  imageContainer: {
     flex: 1,
-    // borderWidth: 2,
-    // borderRadius: borderRadius,
-    // borderColor: "#fff",
-    padding: 10,
-    margin: 10,
-    justifyContent: "center",
-    alignSelf: "flex-start",
-    alignItems: "flex-start",
-    transform: [{ rotate: "180deg" }],
   },
-  logoutIcon: {
+  cameraIconContainer: {
+    flex: 1,
+    backgroundColor: "#00000077",
+    padding: 10,
+    margin: 15,
+    borderWidth: 1,
+    position: "absolute",
+    borderColor: "#fff",
+    top: 0,
+    borderRadius: borderRadius,
+  },
+  cameraIcon: {
     color: "#fff",
   },
   infoContainer: {
     flex: 6,
     backgroundColor: "#fff",
-    paddingHorizontal: 15,
-    paddingTop: 15,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
     borderTopRightRadius: borderRadius,
     borderTopLeftRadius: borderRadius,
   },
-  textWrapper: {
-    flexDirection: "row",
-    backgroundColor: "#f2f2f2",
+  buttonContainer: {
     marginVertical: 5,
-    borderRadius: borderRadius - 5,
-  },
-  textContainerRight: {
-    padding: 15,
-    justifyContent: "center",
-  },
-  textContainerLeft: {
-    flex: 5,
+    flex: 1,
+    flexDirection: "row",
     padding: 10,
-    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddddddaa",
   },
-  textInfo: {
+  arrowIconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 5,
+    paddingBottom: 5,
+  },
+  arrowIcon: {
+    color: textColor,
+  },
+  textContainer: {
+    flex: 6,
+    paddingHorizontal: 5,
+    justifyContent: "center",
+    paddingBottom: 5,
+  },
+  titleText: {
+    fontSize: baseFontSize - 2,
+    color: textColor,
+    writingDirection: "auto",
+    fontFamily: "IRANSansWeb_Medium",
+  },
+  infoText: {
     fontSize: baseFontSize - 2,
     padding: 2,
     color: textColor,
     writingDirection: "auto",
-    alignSelf: "flex-start",
-    fontFamily: "IRANSansWeb_Medium",
+    alignSelf: "flex-end",
+    fontFamily: "IRANSansWeb_Light",
   },
-  buttonContainer: {
-    marginTop: 70,
-  },
-  editButton: {
-    width: "55%",
-    flexDirection: "row",
+  logoutIconContainer: {
+    flex: 1,
     justifyContent: "center",
-    margin: 15,
-    alignSelf: "center",
-    backgroundColor: mainColor,
-    borderRadius: borderRadius,
-    paddingVertical: 10,
-    paddingLeft: 10,
-  },
-  editButtonText: {
-    fontSize: baseFontSize,
-    color: "#fff",
-    paddingHorizontal: 10,
-    alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    writingDirection: "auto",
-  },
-  editIcon: {
-    color: "#fff",
     paddingHorizontal: 5,
+  },
+  logoutIcon: {
+    color: "red",
+    transform: [{ rotate: "180deg" }],
   },
 });

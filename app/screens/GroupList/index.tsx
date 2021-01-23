@@ -32,6 +32,7 @@ const GroupList: React.FC = () => {
 
   useEffect(() => {
     fetchGroups();
+    // log("render group");
   }, [dispatch]);
 
   const onRefresh = useCallback(() => {
