@@ -134,6 +134,7 @@ const GroupNavigator = () => (
   <GroupStack.Navigator
     initialRouteName="GroupList"
     screenOptions={{
+      headerShown:false,
       animationEnabled: true,
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
@@ -144,11 +145,10 @@ const GroupNavigator = () => (
         elevation: 10,
       },
     }}>
-    <LoggedInTab.Screen name="GroupList" component={GroupList} options={{ title: "گروه‌ها" }} />
+    <LoggedInTab.Screen name="GroupList" component={GroupList} options={{}}  />
     <LoggedInTab.Screen
       name="Group"
       component={Group}
-      options={({ route }) => ({ title: route.params.groupName })}
     />
     <LoggedInTab.Screen
       name="AddGroup"
@@ -161,6 +161,7 @@ const GroupNavigator = () => (
 const ActivityNavigator = () => (
   <ActivityStack.Navigator
     screenOptions={{
+      headerShown:false,
       animationEnabled: true,
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
@@ -180,7 +181,6 @@ const ActivityNavigator = () => (
     <LoggedInTab.Screen
       name="Activity"
       component={Activity}
-      options={({ route }) => ({ title: route.params.activityName })}
     />
     <LoggedInTab.Screen
       name="AddExpense"
@@ -198,6 +198,7 @@ const ActivityNavigator = () => (
 const FriendNavigator = () => (
   <FriendStack.Navigator
     screenOptions={{
+      headerShown:false,
       animationEnabled: true,
       headerTitleStyle: {
         fontFamily: "IRANSansWeb_Bold",
@@ -213,7 +214,6 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
-      options={({ route }) => ({ title: route.params.friendName })}
     />
     <LoggedInTab.Screen
       name="InviteFriend"

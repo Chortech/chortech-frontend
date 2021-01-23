@@ -40,7 +40,7 @@ const CreditCardList: React.FC = () => {
   return (
     <View>
       <View style={{ backgroundColor: "#fff" }}>
-        <FlatList data={data} renderItem={renderCardItem} keyExtractor={(item) => item.id.toString()} />
+        <FlatList data={data} renderItem={renderCardItem} keyExtractor={(item) => item.id} />
       </View>
       <Text>تایید</Text>
     </View>
