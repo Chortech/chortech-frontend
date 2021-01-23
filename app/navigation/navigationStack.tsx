@@ -87,7 +87,7 @@ const LoggedInNavigator = () => (
     activeColor="#000"
     inactiveColor="#227800"
     barStyle={{
-      backgroundColor: "#48ff00",
+      backgroundColor: "#00bb5d",
     }}
     initialRouteName="GroupList"
     screenOptions={({ route }) => ({})}>

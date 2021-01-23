@@ -12,10 +12,13 @@ import { cronJob } from "./app/utils/cronJob";
 import * as authActions from "./app/store/actions/authActions";
 import { log } from "./app/utils/logger";
 import { IUserState } from "./app/models/reducers/default";
+import StartUp from "./app/screens/Startup";
+import { flush } from "redux-saga/effects";
 
 library.add(fab, fas);
 
 const { persistor, store } = configureStore();
+let loadStartUp: boolean = true;
 
 cronJob.init(() => {
   let state: IUserState = store.getState()["authReducer"];

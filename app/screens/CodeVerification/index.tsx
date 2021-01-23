@@ -13,7 +13,7 @@ import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as verificationActions from "../../store/actions/verificationActions";
 import * as authActions from "../../store/actions/authActions";
@@ -101,6 +101,7 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
         });
       } else if (props.parentScreen == "EditProfile") {
         dispatch(authActions.onChangeEmailOrPhoneResponse(editResponse));
+        navigationRef.current?.navigate("Profile");
       } else {
         dispatch(authActions.onSignUpResponse(response));
       }

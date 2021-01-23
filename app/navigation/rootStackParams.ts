@@ -15,7 +15,12 @@ export type RootStackParamList = {
     token?: Token;
   };
   Profile: undefined;
-  EditProfile: undefined;
+  EditProfile: {
+    name?: boolean;
+    email?: boolean;
+    phone?: boolean;
+    password?: boolean;
+  };
   ResetPassword: {
     email: string;
     phone: string;
