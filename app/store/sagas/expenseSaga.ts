@@ -198,7 +198,7 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
     ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
     navigationRef.current?.goBack();
   } else {
-    yield put(expenseActions.onAddExpenseFail());
+    yield put(expenseActions.onAddCommentFail());
     if (response.status == -2) {
       ToastAndroid.show("شما جزو اعضای این هزینه نیستید", ToastAndroid.SHORT);
     } else if (response.status == 400) {

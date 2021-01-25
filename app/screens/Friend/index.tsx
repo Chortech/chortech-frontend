@@ -22,7 +22,7 @@ type IState = {
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  // const { id, friendName } = route.params;
+  const { id, friendName } = route.params;
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
@@ -55,7 +55,7 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
               style={styles.friendImage}
               source={require("../../assets/images/friend-image.jpg")}
             />
-            <Text style={styles.userNameText}></Text>
+            <Text style={styles.userNameText}>{friendName}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.buttonContainer}>
