@@ -3,7 +3,8 @@ import { StyleSheet, Platform } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: "#fff",
+    // paddingTop: 10,
   },
   header: {
     flex: 1,
@@ -20,8 +21,9 @@ export const styles = StyleSheet.create({
   infoContainer: {
     flex: 8,
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    paddingBottom: 30,
+    // paddingHorizontal: 10,
+    paddingRight: 10,
+    // paddingBottom: 30,
   },
   buttonContainer: {
     flex: 1,

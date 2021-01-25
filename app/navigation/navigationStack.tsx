@@ -169,6 +169,7 @@ const ActivityNavigator = () => (
         fontFamily: "IRANSansWeb_Bold",
         fontSize: 20,
         textAlign: "right",
+        color: "#333333",
       },
       headerStyle: {
         elevation: 10,
@@ -206,6 +207,7 @@ const FriendNavigator = () => (
         fontFamily: "IRANSansWeb_Bold",
         fontSize: 20,
         textAlign: "right",
+        color: "#333333",
       },
       headerStyle: {
         elevation: 10,

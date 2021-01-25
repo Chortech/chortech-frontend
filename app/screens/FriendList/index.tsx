@@ -11,7 +11,8 @@ import * as friendActions from "../../store/actions/friendActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
-import { take } from "redux-saga/effects";
+import { FloatingAction } from "react-native-floating-action";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type IState = {
   userReducer: IUserState;
@@ -22,15 +23,16 @@ const FriendList: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
+  const [fabVisible, setFabVisibility] = useState(true);
 
   useEffect(() => {
     fetchFriends();
   }, [dispatch]);
 
   const fetchFriends = (): void => {
-    // if (validateToken(loggedInUser.token)) {
-    //   dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
-    // }
+    if (validateToken(loggedInUser.token)) {
+      dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
+    }
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
@@ -46,26 +48,39 @@ const FriendList: React.FC = (): JSX.Element => {
     <FriendItem
       onPressFriendItem={() => onFriend(item.id, item.name)}
       Name={item.name}
-      ImageUrl={require("../../assets/images/friend-image.jpg")}
+      ImageUrl={
+        item.picture != undefined
+          ? { uri: item.picture }
+          : require("../../assets/images/friend-image.jpg")
+      }
     />
   );
 
   return (
     <>
       <View style={styles.container}>
-        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+        <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
           <FlatList
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             data={friends}
             renderItem={renderFriendItem}
             showsVerticalScrollIndicator={false}
+            onScroll={() => {
+              setFabVisibility(false);
+            }}
+            onMomentumScrollEnd={() => {
+              setFabVisibility(true);
+            }}
           />
         </Animatable.View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-            <Text style={styles.buttonText}>اضافه کردن دوستان جدید</Text>
-          </TouchableOpacity>
-        </View>
+        <FloatingAction
+          visible={fabVisible}
+          color="#00bb5d"
+          position="left"
+          overlayColor="#00000000"
+          floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
+          onPressMain={onAddFriend}
+        />
       </View>
     </>
   );

@@ -48,7 +48,7 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
   if (inputType == InputType.Email) {
     response = yield api.addUserFriendByEmail(email);
   } else if (inputType == InputType.Phone) {
-    response = yield api.addUserFriendByEmail(phone);
+    response = yield api.addUserFriendByPhone(phone);
   }
 
   yield put(friendActions.onLoadingDisable());
