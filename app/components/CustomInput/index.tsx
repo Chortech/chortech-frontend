@@ -1,15 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useState } from "react";
-import {
-  GestureResponderEvent,
-  NativeSyntheticEvent,
-  Text,
-  TextInput,
-  TextInputChangeEventData,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { GestureResponderEvent, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
+import * as Animatable from "react-native-animatable";
 
 type Props = {
   placeholder?: string;

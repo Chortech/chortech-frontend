@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#f2f2f2",
   },
   buttonsContainer: {
-    marginTop: 50,
+    marginTop: 10,
     paddingHorizontal: 10,
     justifyContent: "center",
   },
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     borderRadius: borderRadius,
     justifyContent: "center",
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   filledButtonText: {
     fontSize: baseFontSize + 2,

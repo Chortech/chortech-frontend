@@ -50,7 +50,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
       onPressEditEmail();
     } else if (props.phone) {
       onPressEditPhone();
-    } else {
+    } else if (props.password) {
       onPressEditPassword();
     }
   };
@@ -64,98 +64,75 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ToastAndroid.show("نام واردشده تکراری است", ToastAndroid.SHORT);
       return;
     }
-    // if (!validateToken(loggedInUser.token)) {
-    //   ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
-    //   return;
-    // }
-    dispatch(
-      userActions.onEditUserProfileResponse({
-        status: 200,
-        success: true,
-        response: {
-          name: data.name,
-          picture: user.picture,
-          email: data.email,
-          phone: data.phone,
-        },
-      })
-    );
-    NavigationService.goBack();
-    // dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
+    if (!validateToken(loggedInUser.token)) {
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+      return;
+    }
+    dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
   };
 
   const onPressEditEmail = () => {
-    // if (validateToken(loggedInUser.token)) {
-    if (data.validEmail) {
-      if (data.email != loggedInUser.email) {
-        NavigationService.navigate("CodeVerification", {
-          parentScreen: "EditProfile",
-          name: "",
-          email: data.email,
-          phone: "",
-          password: loggedInUser.password,
-          inputType: InputType.Email,
-          token: loggedInUser.token,
-        });
+    if (validateToken(loggedInUser.token)) {
+      if (data.validEmail) {
+        if (data.email != loggedInUser.email) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: data.email,
+            phone: "",
+            password: loggedInUser.password,
+            inputType: InputType.Email,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("لطفا ایمیل جدید وارد کنید", ToastAndroid.SHORT);
+        }
       } else {
-        ToastAndroid.show("لطفا ایمیل جدید وارد کنید", ToastAndroid.SHORT);
+        ToastAndroid.show("ایمیل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      ToastAndroid.show("ایمیل واردشده معتبر نیست", ToastAndroid.SHORT);
     }
-    // }
   };
 
   const onPressEditPhone = () => {
-    // if (validateToken(loggedInUser.token)) {
-    if (data.validPhone) {
-      if (data.phone != loggedInUser.phone) {
-        NavigationService.navigate("CodeVerification", {
-          parentScreen: "EditProfile",
-          name: "",
-          email: "",
-          phone: data.phone,
-          password: loggedInUser.password,
-          inputType: InputType.Phone,
-          token: loggedInUser.token,
-        });
+    if (validateToken(loggedInUser.token)) {
+      if (data.validPhone) {
+        if (data.phone != loggedInUser.phone) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: "",
+            phone: data.phone,
+            password: loggedInUser.password,
+            inputType: InputType.Phone,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("لطفا شماره موبایل جدید وارد کنید", ToastAndroid.SHORT);
+        }
       } else {
-        ToastAndroid.show("لطفا شماره موبایل جدید وارد کنید", ToastAndroid.SHORT);
+        ToastAndroid.show("شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
       }
-    } else {
-      ToastAndroid.show("شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
     }
-    // }
   };
 
   const onPressEditPassword = () => {
-    // if (validateToken(loggedInUser.token)) {
-    if (data.validCurrentPassword) {
-      dispatch(
-        authActions.onChangePasswordResponse({
-          status: 200,
-          success: true,
-          response: {
-            newPassword: data.newPassword,
-          },
-        })
-      );
-      NavigationService.goBack();
-      // dispatch(
-      //   authActions.onChangePasswordRequest(
-      //     loggedInUser.token,
-      //     loggedInUser.email,
-      //     loggedInUser.phone,
-      //     loggedInUser.authInputType,
-      //     data.newPassword,
-      //     data.currentPassword
-      //   )
-      // );
-    } else {
-      ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
+    if (validateToken(loggedInUser.token)) {
+      if (data.validCurrentPassword) {
+        dispatch(
+          authActions.onChangePasswordRequest(
+            loggedInUser.token,
+            loggedInUser.email,
+            loggedInUser.phone,
+            loggedInUser.authInputType,
+            data.newPassword,
+            data.currentPassword
+          )
+        );
+      } else {
+        ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
+      }
     }
-    // }
-    setData({ ...data, newPassword: "", currentPassword: "" });
+    setData({ ...data, newPassword: "********", currentPassword: "********" });
   };
 
   const onChangeNameText = (text: string) => {
@@ -209,7 +186,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <Text style={styles.screenTitleText}>ویرایش اطلاعات</Text>
+            <Text style={styles.screenTitleText}>اطلاعات حساب کاربری</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
               {props.name ? (
                 <CustomInput
@@ -243,7 +220,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
                     label="رمز عبور فعلی"
                     passwordInput={true}
                     defaultValue={data.currentPassword}
-                    placeholder="رمز عبور فعلی"
+                    placeholder="********"
                     validInput={data.validCurrentPassword}
                     onChangeText={onChangeCurrentPasswordText}
                   />
@@ -251,7 +228,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
                     label="رمز عبور جدید"
                     passwordInput={true}
                     defaultValue={data.newPassword}
-                    placeholder="رمز عبور جدید"
+                    placeholder="********"
                     validInput={data.validNewPassword}
                     onChangeText={onChangePasswordText}
                   />
@@ -260,7 +237,12 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
             </ScrollView>
             <View style={styles.buttonsContainer}>
               <TouchableOpacity style={styles.filledButton} onPress={onPressEditInfo}>
-                <Text style={styles.filledButtonText}>ذخیره اطلاعات </Text>
+                <Animatable.Text
+                  style={styles.filledButtonText}
+                  animation="bounceIn"
+                  duration={1500}>
+                  ذخیره اطلاعات
+                </Animatable.Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

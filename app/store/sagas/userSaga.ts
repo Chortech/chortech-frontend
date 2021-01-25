@@ -8,6 +8,7 @@ import {
 } from "../../models/requests/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import { EditProfile, UploadImage, UserProfile } from "../../models/responses/axios/user";
+import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import * as userActions from "../actions/userActions";
 
@@ -46,6 +47,7 @@ export function* editUserProfileAsync(action: Action<EditProfileRequest>) {
   if (response.success) {
     yield put(userActions.onEditUserProfileResponse(response));
     ToastAndroid.show("ویرایش اطلاعات شما با موفقیت انجام شد", ToastAndroid.SHORT);
+    yield navigationRef.current?.navigate("ProfileInfo");
   } else {
     yield put(userActions.onEditUserProfileFail());
     if (response.status == 400) {
