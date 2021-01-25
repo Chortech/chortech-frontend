@@ -226,7 +226,7 @@ const FriendNavigator = () => (
 const ProfileNavigator = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Profile">
     <LoggedInTab.Screen name="Profile" component={Profile} />
-    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile}/>
     <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
   </ProfileStack.Navigator>
 );
