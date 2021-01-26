@@ -1,10 +1,11 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // paddingTop: 10,
+    backgroundColor: colors.white,
   },
   header: {
     flex: 1,
@@ -13,17 +14,15 @@ export const styles = StyleSheet.create({
   },
   textHeader: {
     textAlign: "center",
-    color: "#fff",
+    color: colors.white,
     fontSize: 20,
     writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
   },
   infoContainer: {
     flex: 8,
-    backgroundColor: "#fff",
-    // paddingHorizontal: 10,
+    backgroundColor: colors.white,
     paddingRight: 10,
-    // paddingBottom: 30,
   },
   buttonContainer: {
     flex: 1,
@@ -32,9 +31,9 @@ export const styles = StyleSheet.create({
   },
   button: {
     elevation: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: "#1AD927",
+    borderColor: colors.mainColor,
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 10,
@@ -42,9 +41,9 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: "#1AD927",
+    color: colors.mainColor,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
 });

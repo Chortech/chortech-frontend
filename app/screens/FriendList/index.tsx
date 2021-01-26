@@ -59,7 +59,7 @@ const FriendList: React.FC = (): JSX.Element => {
   return (
     <>
       <View style={styles.container}>
-        <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
+        <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
           <FlatList
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             data={friends}
