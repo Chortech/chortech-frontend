@@ -16,12 +16,15 @@ import {
   UploadImageRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  AddActivityRequest,
+  DeleteActivityRequest,
+  EditActivityRequest,
+  GetUserActivityRequest,
+  GetUserActivitiesRequest,
 } from "../../models/requests/axios/user";
 import {
-  AddActivityRequest,
   AddDebtRequest,
   AddParticipantRequest,
-  DeleteActivityRequest,
   DeleteParticipantRequest,
 } from "../../models/requests/graphql/activity";
 import {
@@ -31,7 +34,7 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
+import { UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
 import {
   AddFriend,
@@ -45,6 +48,11 @@ import {
   EditExpense,
   UploadImage,
   EditProfile,
+  AddActivity,
+  DeleteActivity,
+  EditActivity,
+  UserActivity,
+  UserActivities,
 } from "../../models/responses/axios/user";
 import {
   AddGroupResponse,
@@ -345,6 +353,81 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
   [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.GET_USER_ACTIVITIES_REQUEST](state: IUserState, action: Action<GetUserActivitiesRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_ACTIVITIES_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserActivities>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_USER_ACTIVITIES_FAIL](state: IUserState, action: Action<Response<UserActivities>>): IUserState {
+    return state;
+  },
+  [types.GET_USER_ACTIVITY_REQUEST](state: IUserState, action: Action<GetUserActivityRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserActivity>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_USER_ACTIVITY_FAIL](state: IUserState, action: Action<Response<UserActivity>>): IUserState {
+    return state;
+  },
+  [types.ADD_ACTIVITY_REQUEST](state: IUserState, action: Action<AddActivityRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.ADD_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddActivity>>
+  ): IUserState {
+    return state;
+  },
+  [types.ADD_ACTIVITY_FAIL](state: IUserState, action: Action<Response<AddActivity>>): IUserState {
+    return state;
+  },
+  [types.DELETE_ACTIVITY_REQUEST](state: IUserState, action: Action<DeleteActivityRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.DELETE_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<Response<DeleteActivity>>
+  ): IUserState {
+    return state;
+  },
+  [types.DELETE_ACTIVITY_FAIL](state: IUserState, action: Action<Response<DeleteActivity>>): IUserState {
+    return state;
+  },
+  [types.EDIT_ACTIVITY_REQUEST](state: IUserState, action: Action<EditActivityRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.EDIT_ACTIVITY_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditActivity>>
+  ): IUserState {
+    return state;
+  },
+  [types.EDIT_ACTIVITY_FAIL](state: IUserState, action: Action<Response<EditActivity>>): IUserState {
     return state;
   },
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
