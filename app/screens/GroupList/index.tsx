@@ -16,7 +16,7 @@ type IState = {
 const GroupList: React.FC = () => {
   const dispatch = useDispatch();
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { groups } = useSelector((state: IState) => state.userReducer);
+  const groups  = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   let groupsData: { id: string, name: string }[] = [
     { "id": "0", "name": "Available" },

@@ -20,7 +20,7 @@ type IState = {
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { friends } = useSelector((state: IState) => state.userReducer);
+  const friends = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {

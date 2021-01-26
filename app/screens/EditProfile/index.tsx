@@ -23,9 +23,9 @@ const EditProfile: React.FC = (): JSX.Element => {
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    name: user.name,
-    email: loggedInUser.email,
-    phone: loggedInUser.phone,
+    name: user?.name,
+    email: loggedInUser?.email,
+    phone: loggedInUser?.phone,
     currentPassword: "",
     newPassword: "",
     validName: true,
@@ -170,7 +170,7 @@ const EditProfile: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
@@ -189,7 +189,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                 onPressConfirmButton={onPressChangeName}
                 onPressCancelButton={() => setData({ ...data, name: user.name, validName: true })}
               />
-              {loggedInUser.authInputType == InputType.Email ? (
+              {loggedInUser?.authInputType == InputType.Email ? (
                 <CustomInput
                   label="ایمیل"
                   validInput={data.validEmail}
@@ -204,7 +204,7 @@ const EditProfile: React.FC = (): JSX.Element => {
                   }
                 />
               ) : null}
-              {loggedInUser.authInputType == InputType.Phone ? (
+              {loggedInUser?.authInputType == InputType.Phone ? (
                 <CustomInput
                   label="شماره تلفن"
                   validInput={data.validPhone}

@@ -56,7 +56,7 @@ const ActivityList: React.FC = () => {
           <FlatList
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             showsVerticalScrollIndicator={false}
-            data={user.activities}
+            data={user?.activities}
             renderItem={({ item }) => {
               return (
                 <View>

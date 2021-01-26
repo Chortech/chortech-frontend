@@ -32,11 +32,9 @@ const Profile: React.FC = (): JSX.Element => {
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
-  log(user.picture);
-
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    imageUri: user.imageUri,
+    imageUri: user?.imageUri,
   });
   const fetchUser = () => {
     // if (validateToken(loggedInUser.token)) {
@@ -90,7 +88,7 @@ const Profile: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
@@ -108,13 +106,13 @@ const Profile: React.FC = (): JSX.Element => {
             <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
               <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
             </TouchableOpacity>
-            <Text style={styles.userNameText}>{user.name}</Text>
+            <Text style={styles.userNameText}>{user?.name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <ScrollView
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}>
-              {loggedInUser.authInputType == InputType.Email ? (
+              {loggedInUser?.authInputType == InputType.Email ? (
                 <View style={styles.textWrapper}>
                   <View style={styles.textContainerLeft}>
                     <Text style={styles.textInfo}>{loggedInUser.email}</Text>
@@ -124,7 +122,7 @@ const Profile: React.FC = (): JSX.Element => {
                   </View>
                 </View>
               ) : null}
-              {loggedInUser.authInputType == InputType.Phone ? (
+              {loggedInUser?.authInputType == InputType.Phone ? (
                 <View style={styles.textWrapper}>
                   <View style={styles.textContainerLeft}>
                     <Text style={styles.textInfo}>{loggedInUser.phone}</Text>

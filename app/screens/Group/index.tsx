@@ -26,7 +26,7 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [renderFlatList, setRenderFlatList] = useState(false);
 
   const { id, groupName, ImageUrl } = route.params;
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const loading = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onAddExpense = () => NavigationService.navigate("AddExpense");
