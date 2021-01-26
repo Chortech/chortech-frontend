@@ -13,6 +13,11 @@ import {
   EditExpense,
   FriendRelation,
   FriendRelations,
+  UserActivities,
+  UserActivity,
+  AddActivity,
+  DeleteActivity,
+  EditActivity,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -32,6 +37,51 @@ export class ExpenseAPI implements expenseApi {
       }
       return config;
     });
+  }
+
+  async getActivities(): Promise<Response<UserActivities>> {
+    let result: Response<UserActivities> = {
+      success: false,
+      status: -1,
+    };
+
+    return result;
+  }
+
+  async getActivity(): Promise<Response<UserActivity>> {
+    let result: Response<UserActivity> = {
+      success: false,
+      status: -1,
+    };
+
+    return result;
+  }
+
+  async addActivity(): Promise<Response<AddActivity>> {
+    let result: Response<AddActivity> = {
+      success: false,
+      status: -1,
+    };
+
+    return result;
+  }
+
+  async deleteActivity(): Promise<Response<DeleteActivity>> {
+    let result: Response<DeleteActivity> = {
+      success: false,
+      status: -1,
+    };
+
+    return result;
+  }
+
+  async editActivity(): Promise<Response<EditActivity>> {
+    let result: Response<EditActivity> = {
+      success: false,
+      status: -1,
+    };
+
+    return result;
   }
 
   async getExpenses(): Promise<Response<UserExpenses>> {
