@@ -1,3 +1,4 @@
+import { Activity } from "../../other/axios/Activity";
 import { Comment } from "../../other/axios/Comment";
 import { Expense } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
@@ -83,4 +84,24 @@ export interface ExpenseComments {
 export interface UploadImage {
   key: string;
   url: string;
+}
+
+export interface UserActivities {
+  activities: Array<Activity>;
+}
+
+export interface UserActivity {
+  activity: Activity;
+}
+
+export interface AddActivity {
+
+}
+
+export interface DeleteActivity {
+
+}
+
+export interface EditActivity {
+
 }
