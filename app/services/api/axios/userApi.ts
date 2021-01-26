@@ -326,7 +326,7 @@ export class UserAPI implements userApi {
     try {
       let invitees: Array<InviteeByPhone> = [
         {
-          name: "نام من",
+          name: "sampleName",
           phone: phone,
         },
       ];

@@ -55,6 +55,7 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
 
   if (response.success) {
     yield put(friendActions.onAddFriendResponse(response));
+    navigationRef.current?.navigate("FriendList");
   } else {
     yield put(friendActions.onAddFriendFail());
     if (response.status == -3) {
@@ -127,6 +128,7 @@ export function* inviteFriendAsync(action: Action<InviteFriendsRequest>) {
   if (response.success) {
     yield put(friendActions.onInviteFriendResponse(response));
     ToastAndroid.show("دعوت‌نامه برای ایمیل یا شماره موبایل واردشده ارسال شد", ToastAndroid.SHORT);
+    navigationRef.current?.navigate("FriendList");
   } else {
     yield put(friendActions.onInviteFriendFail());
     if (response.status == -2) {

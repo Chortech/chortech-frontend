@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";
 import { CustomContact } from "../../models/other/CustomContact";
 import { faTumblrSquare } from "@fortawesome/free-brands-svg-icons";
+import fonts from "../../assets/resources/fonts";
 
 type IState = {
   userReducer: IUserState;
@@ -73,6 +74,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
         phoneNumbers: numbers,
         emailAddresses: emails,
         selected: true,
+        inputType: inputType,
       };
       selectedContacts.current?.push(contact);
       setInfo("");
@@ -132,6 +134,12 @@ const InviteFriend: React.FC = (): JSX.Element => {
               name: contact.givenName + " " + contact.familyName,
               phoneNumbers: phoneNumbers,
               emailAddresses: emailAddresses,
+              inputType:
+                phoneNumbers.length > 0
+                  ? InputType.Phone
+                  : emailAddresses.length > 0
+                  ? InputType.Email
+                  : InputType.None,
             };
             result.push(temp);
           }
@@ -166,37 +174,53 @@ const InviteFriend: React.FC = (): JSX.Element => {
   };
 
   const onPressAddFriend = (): void => {
+    if (selectedContacts.current.length < 0) return;
+    let contact = selectedContacts.current[0];
     if (validateToken(loggedInUser.token)) {
-      if (validInput) {
-        if (inputType == InputType.Email) {
-          dispatch(
-            friendActions.onAddFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
-          );
-        } else if (inputType == InputType.Phone) {
-          dispatch(
-            friendActions.onAddFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
-          );
-        }
-      } else {
-        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      if (contact.inputType == InputType.Email) {
+        dispatch(
+          friendActions.onAddFriendRequest(
+            loggedInUser.token,
+            contact.emailAddresses[0],
+            "",
+            contact.inputType
+          )
+        );
+      } else if (contact.inputType == InputType.Phone) {
+        dispatch(
+          friendActions.onAddFriendRequest(
+            loggedInUser.token,
+            "",
+            contact.phoneNumbers[0],
+            contact.inputType
+          )
+        );
       }
     }
   };
 
   const onPressInviteFriend = (): void => {
+    if (selectedContacts.current.length < 0) return;
+    let contact = selectedContacts.current[0];
     if (validateToken(loggedInUser.token)) {
-      if (validInput) {
-        if (inputType == InputType.Email) {
-          dispatch(
-            friendActions.onInviteFriendRequest(loggedInUser.token, emailOrPhone, "", inputType)
-          );
-        } else if (inputType == InputType.Phone) {
-          dispatch(
-            friendActions.onInviteFriendRequest(loggedInUser.token, "", emailOrPhone, inputType)
-          );
-        }
-      } else {
-        ToastAndroid.show("ایمیل یا شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      if (contact.inputType == InputType.Email) {
+        dispatch(
+          friendActions.onInviteFriendRequest(
+            loggedInUser.token,
+            contact.emailAddresses[0],
+            "",
+            contact.inputType
+          )
+        );
+      } else if (contact.inputType == InputType.Phone) {
+        dispatch(
+          friendActions.onInviteFriendRequest(
+            loggedInUser.token,
+            "",
+            contact.phoneNumbers[0],
+            contact.inputType
+          )
+        );
       }
     }
   };
@@ -212,6 +236,32 @@ const InviteFriend: React.FC = (): JSX.Element => {
     }
   };
 
+  const actions: any = [
+    {
+      text: "افزودن به دوستان",
+      icon: <FontAwesomeIcon icon="user-plus" size={15} color={colors.white} />,
+      name: "add",
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 1,
+      color: colors.mainColor,
+    },
+    {
+      text: "دعوت",
+      icon: <FontAwesomeIcon icon="envelope" size={15} color={colors.white} />,
+      name: "invite",
+      color: colors.mainColor,
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 2,
+    },
+  ];
   return (
     <>
       {loading ? (
@@ -275,11 +325,14 @@ const InviteFriend: React.FC = (): JSX.Element => {
             />
           </Animatable.View>
           <FloatingAction
+            actions={actions}
             color={colors.mainColor}
             position="left"
-            overlayColor="#00000000"
             floatingIcon={<FontAwesomeIcon icon="check" color="#fff" size={20} />}
-            onPressMain={onPressNextScreen}
+            onPressItem={(name) => {
+              if (name == "invite") onPressInviteFriend();
+              else onPressAddFriend();
+            }}
           />
         </View>
       )}
