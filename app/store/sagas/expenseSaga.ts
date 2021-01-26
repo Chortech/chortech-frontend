@@ -9,6 +9,11 @@ import {
   GetExpenseCommentsRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  GetUserActivitiesRequest,
+  GetUserActivityRequest,
+  AddActivityRequest,
+  DeleteActivityRequest,
+  EditActivityRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
@@ -16,6 +21,11 @@ import {
   UserExpense,
   ExpenseComments,
   EditExpense,
+  UserActivities,
+  UserActivity,
+  AddActivity,
+  DeleteActivity,
+  EditActivity,
 } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
@@ -23,6 +33,111 @@ import { Response } from "../../models/responses/axios/response";
 import * as expenseActions from "../actions/expenseActions";
 import * as friendActions from "../actions/friendActions";
 import * as friendSaga from "./friendSaga";
+
+export function* getUserActivitiesAsync(action: Action<GetUserActivitiesRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token } = action.payload;
+  let response: Response<UserActivities> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getActivities();
+
+  if (response.success) {
+    yield put(expenseActions.onGetUserActivitiesResponse(response));
+  } else {
+    yield put(expenseActions.onGetUserActivitiesFail());
+    if (response.status == 404) {
+      ToastAndroid.show("فعالیتی وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* getUserActivityAsync(action: Action<GetUserActivityRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token } = action.payload;
+  let response: Response<UserActivity> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.getActivity();
+
+  if (response.success) {
+    yield put(expenseActions.onGetUserActivityResponse(response));
+  } else {
+    yield put(expenseActions.onGetUserActivityFail());
+    if (response.status == 404) {
+      ToastAndroid.show("فعالیت وجود ندارد", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    }
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* addActivityAsync(action: Action<AddActivityRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token } = action.payload;
+  let response: Response<AddActivity> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.addActivity();
+
+  if (response.success) {
+    yield put(expenseActions.onAddActivityResponse(response));
+  } else {
+    yield put(expenseActions.onAddActivityFail());
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* deleteActivityAsync(action: Action<DeleteActivityRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token } = action.payload;
+  let response: Response<DeleteActivity> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.deleteActivity();
+
+  if (response.success) {
+    yield put(expenseActions.onDeleteActivityResponse(response));
+  } else {
+    yield put(expenseActions.onDeleteActivityFail());
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* editActivityAsync(action: Action<EditActivityRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token } = action.payload;
+  let response: Response<EditActivity> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  response = yield api.editActivity();
+
+  if (response.success) {
+    yield put(expenseActions.onEditActivityResponse(response));
+  } else {
+    yield put(expenseActions.onEditActivityFail());
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
 
 export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
