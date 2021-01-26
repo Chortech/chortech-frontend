@@ -13,6 +13,7 @@ import {
   EditExpense,
   FriendRelation,
   FriendRelations,
+  FriendBalance,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -336,6 +337,69 @@ export class ExpenseAPI implements expenseApi {
         log(e.response);
       }
     }
+    return result;
+  }
+
+  async getUserFriendsBalance(): Promise<Response<FriendBalance[]>> {
+    let result: Response<FriendBalance[]> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get("/friends");
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (e) {
+      log("get user friends balance api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
+    return result;
+  }
+
+  async getUserFriendBalance(friendId: string): Promise<Response<FriendBalance>> {
+    let result: Response<FriendBalance> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get(`/friends/${friendId}`);
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+    } catch (e) {
+      log("get user friends balance api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
     return result;
   }
 }

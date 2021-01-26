@@ -3,6 +3,7 @@ import { Expense } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
 import { Token } from "../../other/axios/Token";
+import { User } from "../../other/axios/User";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -83,4 +84,10 @@ export interface ExpenseComments {
 export interface UploadImage {
   key: string;
   url: string;
+}
+
+export interface FriendBalance {
+  self: User;
+  other: User;
+  balance: number;
 }

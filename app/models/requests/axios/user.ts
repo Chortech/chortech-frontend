@@ -86,3 +86,12 @@ export interface GetExpenseCommentsRequest {
   token: Token;
   expenseId: string;
 }
+
+export interface GetFriendsBalanceRequest {
+  token: Token;
+}
+
+export interface GetFriendBalanceRequest {
+  token: Token;
+  friendId: string;
+}
