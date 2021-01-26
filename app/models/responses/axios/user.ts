@@ -89,19 +89,3 @@ export interface UploadImage {
 export interface UserActivities {
   activities: Array<Activity>;
 }
-
-export interface UserActivity {
-  activity: Activity;
-}
-
-export interface AddActivity {
-
-}
-
-export interface DeleteActivity {
-
-}
-
-export interface EditActivity {
-
-}
