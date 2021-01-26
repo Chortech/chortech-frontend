@@ -86,3 +86,23 @@ export interface GetExpenseCommentsRequest {
   token: Token;
   expenseId: string;
 }
+
+export interface GetUserActivitiesRequest {
+  token: Token;
+}
+
+export interface GetUserActivityRequest {
+  token: Token;
+}
+
+export interface AddActivityRequest {
+  token: Token;
+}
+
+export interface DeleteActivityRequest {
+  token: Token;
+}
+
+export interface EditActivityRequest {
+  token: Token;
+}
