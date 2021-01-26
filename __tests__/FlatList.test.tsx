@@ -54,5 +54,5 @@ describe("FlatList", () => {
       let testIndex = randomNumber(0, groupsData.length);
       let testName = r.findAllByType(GroupItem)[testIndex].props.Name;
       expect(testName).toEqual("test"+(testIndex+1).toString())
-    })
+    });
 });
