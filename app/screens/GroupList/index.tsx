@@ -18,11 +18,15 @@ const GroupList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
-  let groupsData: { id: number, name: string }[] = [
-    { "id": 0, "name": "Available" },
-    { "id": 1, "name": "Ready" },
-    { "id": 2, "name": "Started" }
+  let groupsData: { id: string, name: string }[] = [
+    { "id": "0", "name": "Available" },
+    { "id": "1", "name": "Ready" },
+    { "id": "2", "name": "Started" }
 ];
+for(let i =3; i< 500; i++)
+{
+  groupsData.push({"id":i.toString(), "name":"test"+i.toString()})
+}
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -60,6 +64,7 @@ const GroupList: React.FC = () => {
           data={groupsData}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}
+          initialNumToRender={15}
         />
       </Animatable.View>
       <View style={styles.buttonContainer}>
