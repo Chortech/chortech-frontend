@@ -4,10 +4,6 @@ export interface GetUserGroupsResponse{
     groups: Array<Group>;
 }
 
-export interface GetGroupResponse{
-    group: Group;
-}
-
 export interface DeleteGroupResponse{
     message: string;
 }
@@ -25,5 +21,9 @@ export interface LeaveGroupResponse{
 }
 
 export interface RemoveMemberResponse{
+    group: Group;
+}
+
+export interface GetGroupInfoResponse{
     group: Group;
 }

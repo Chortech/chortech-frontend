@@ -3,7 +3,7 @@ import {
     AddFriendToGroupResponse,
     DeleteGroupResponse,
     EditGroupResponse,
-    GetGroupResponse,
+    GetGroupInfoResponse,
     GetUserGroupsResponse,
     LeaveGroupResponse,
     RemoveMemberResponse,
@@ -11,8 +11,8 @@ import {
 
 export interface groupApi {
     getUserGroups(): Promise<Response<GetUserGroupsResponse>>;
-    createGroup(): Promise<Response<null>>;
-    getGroupInfo(groupId: string): Promise<Response<GetGroupResponse>>;
+    createGroup(name: string, picture: string): Promise<Response<null>>;
+    getGroupInfo(groupId: string): Promise<Response<GetGroupInfoResponse>>;
     deleteGroup(groupId: string): Promise<Response<DeleteGroupResponse>;
     addFriendToGroup(groupId: string): Promise<Response<AddFriendToGroupResponse>>;
     editGroup(groupId: string): Promise<Response<EditGroupResponse>>;
