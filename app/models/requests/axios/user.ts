@@ -97,6 +97,8 @@ export interface GetFriendBalanceRequest {
   token: Token;
   friendId: string;
   friendName: string;
+}
+
 export interface GetUserActivitiesRequest {
   token: Token;
 }
