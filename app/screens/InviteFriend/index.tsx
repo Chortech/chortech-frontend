@@ -16,6 +16,7 @@ import * as authActions from "../../store/actions/authActions";
 import { IUserState } from "../../models/reducers/default";
 import LoadingIndicator from "../Loading";
 import { validateToken } from "../../utils/tokenValidator";
+import NavigationService from "../../navigation/navigationService";
 import { log } from "../../utils/logger";
 import ContactItem from "../../components/ContactItem";
 import { FloatingAction } from "react-native-floating-action";
