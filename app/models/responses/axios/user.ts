@@ -3,6 +3,7 @@ import { Comment } from "../../other/axios/Comment";
 import { Expense } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
+import { Payment } from "../../other/axios/Payment";
 import { Token } from "../../other/axios/Token";
 
 export interface GetUserFriends {
@@ -88,4 +89,22 @@ export interface UploadImage {
 
 export interface UserActivities {
   activities: Array<Activity>;
+}
+
+export interface UserPayment {
+  payment: Payment;
+}
+
+export interface AddPayment {
+  id: string;
+  from: string; //change this part
+  to: string;
+  amount: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+}
+
+export interface EditPayment {
+  payment: Payment;
 }
