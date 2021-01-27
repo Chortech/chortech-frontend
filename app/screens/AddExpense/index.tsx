@@ -113,7 +113,8 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
             data.description!,
             total,
             date,
-            participants
+            participants,
+            1
           )
         );
       } else {
@@ -124,7 +125,8 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
             data.description!,
             total,
             date,
-            participants
+            participants,
+            1
           )
         );
       }

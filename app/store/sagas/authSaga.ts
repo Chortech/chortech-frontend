@@ -1,4 +1,4 @@
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import { ToastAndroid } from "react-native";
 import { Action } from "../../models/actions/action";
 import { navigationRef } from "../../navigation/navigationService";
@@ -155,7 +155,7 @@ export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhoneReques
     } else if (inputType == InputType.Phone) {
       ToastAndroid.show("شماره موبایل شما با موفقیت ویرایش شد", ToastAndroid.SHORT);
     }
-    yield navigationRef.current?.goBack();
+    yield navigationRef.current?.navigate("ProfileInfo");
   } else {
     yield put(authActions.onChangeEmailOrPhoneFail());
     if (response.status == -2) {
@@ -187,6 +187,7 @@ export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
   if (response.success) {
     yield put(authActions.onChangePasswordResponse(response));
     ToastAndroid.show("رمز عبور با موفقیت ویرایش شد", ToastAndroid.SHORT);
+    yield navigationRef.current?.navigate("ProfileInfo");
   } else {
     yield put(authActions.onChangePasswordFail());
     if (response.status == 401) {

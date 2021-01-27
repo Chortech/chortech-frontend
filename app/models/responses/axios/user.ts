@@ -1,8 +1,11 @@
+import { Activity } from "../../other/axios/Activity";
 import { Comment } from "../../other/axios/Comment";
-import { Expense } from "../../other/axios/Expense";
+import { Expense, ExpenseBalance } from "../../other/axios/Expense";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
+import { Payment } from "../../other/axios/Payment";
 import { Token } from "../../other/axios/Token";
+import { User } from "../../other/axios/User";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -42,6 +45,7 @@ export interface AddExpense {
   group?: string;
   notes?: string;
   participants: Array<Participant>;
+  category: number;
 }
 
 export interface EditExpense {
@@ -51,6 +55,7 @@ export interface EditExpense {
   paid_at?: number;
   group?: string;
   notes?: string;
+  category: number;
   participants?: Array<Participant>;
 }
 
@@ -83,4 +88,33 @@ export interface ExpenseComments {
 export interface UploadImage {
   key: string;
   url: string;
+}
+
+export interface FriendBalance {
+  self: User;
+  other: User;
+  balance?: number;
+  expenses?: ExpenseBalance[];
+}
+
+export interface UserActivities {
+  activities: Array<Activity>;
+}
+
+export interface UserPayment {
+  payment: Payment;
+}
+
+export interface AddPayment {
+  id: string;
+  from: string; 
+  to: string;
+  amount: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+}
+
+export interface EditPayment {
+  payment: Payment;
 }

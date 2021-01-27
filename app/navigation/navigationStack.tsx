@@ -24,8 +24,10 @@ import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
 import AddComment from "../screens/AddComment";
 import SettleUp from "../screens/SettleUp";
+import ProfileInfo from "../screens/ProfileInfo";
 import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
+import { lightBlue100 } from "react-native-paper/lib/typescript/src/styles/colors";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -85,13 +87,14 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    activeColor="#000"
-    inactiveColor="#227800"
+    activeColor="#00bb5d"
+    inactiveColor="#999999aa"
     barStyle={{
-      backgroundColor: "#48ff00",
+      backgroundColor: "#fff",
+      elevation: 15,
     }}
-    initialRouteName="GroupList"
-    screenOptions={({ route }) => ({})}>
+    keyboardHidesNavigationBar
+    initialRouteName="GroupList">
     <LoggedInTab.Screen
       name="GroupList"
       component={GroupNavigator}
@@ -135,26 +138,23 @@ const GroupNavigator = () => (
   <GroupStack.Navigator
     initialRouteName="GroupList"
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      
+      headerShown: false,
     }}>
-    <LoggedInTab.Screen name="GroupList" component={GroupList} options={{ title: "گروه‌ها" }} />
+    <LoggedInTab.Screen
+      name="GroupList"
+      component={GroupList}
+     
+    />
     <LoggedInTab.Screen
       name="Group"
       component={Group}
-      options={({ route }) => ({ title: route.params.groupName })}
+     
     />
     <LoggedInTab.Screen
       name="AddGroup"
       component={AddGroup}
-      options={{ title: "افزودن گروه جدید" }}
+      
     />
   </GroupStack.Navigator>
 );
@@ -162,36 +162,28 @@ const GroupNavigator = () => (
 const ActivityNavigator = () => (
   <ActivityStack.Navigator
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      headerShown: false,
     }}
     initialRouteName="ActivityList">
     <LoggedInTab.Screen
       name="ActivityList"
       component={ActivityList}
-      options={{ title: "فعالیت‌ها" }}
+     
     />
     <LoggedInTab.Screen
       name="Activity"
       component={Activity}
-      options={({ route }) => ({ title: route.params.activityName })}
+     
     />
     <LoggedInTab.Screen
       name="AddExpense"
       component={AddExpense}
-      options={{ title: "افزودن هزینه جدید" }}
+     
     />
     <LoggedInTab.Screen
       name="AddComment"
       component={AddComment}
-      options={{ title: "افزودن یادداشت" }}
+      
     />
   </ActivityStack.Navigator>
 );
@@ -199,27 +191,23 @@ const ActivityNavigator = () => (
 const FriendNavigator = () => (
   <FriendStack.Navigator
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      headerShown: false,
     }}
     initialRouteName="FriendList">
-    <LoggedInTab.Screen name="FriendList" component={FriendList} options={{ title: "دوستان" }} />
+    <LoggedInTab.Screen
+      name="FriendList"
+      component={FriendList}
+     
+    />
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
-      options={({ route }) => ({ })}
+      
     />
     <LoggedInTab.Screen
       name="InviteFriend"
       component={InviteFriend}
-      options={{ title: "افزودن دوستان جدید" }}
+     
     />
     <LoggedInTab.Screen
       name="SettleUp"
@@ -234,6 +222,7 @@ const ProfileNavigator = () => (
     <LoggedInTab.Screen name="Profile" component={Profile} />
     <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
     <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
+    <LoggedInTab.Screen name="ProfileInfo" component={ProfileInfo} />
   </ProfileStack.Navigator>
 );
 

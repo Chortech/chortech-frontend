@@ -13,6 +13,7 @@ import {
   EditExpense,
   FriendRelation,
   FriendRelations,
+  FriendBalance,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -136,6 +137,7 @@ export class ExpenseAPI implements expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<AddExpense>> {
@@ -152,6 +154,7 @@ export class ExpenseAPI implements expenseApi {
         group: group,
         notes: notes,
         participants: participants,
+        category: category,
       });
 
       if (response.status == 201) {
@@ -184,6 +187,7 @@ export class ExpenseAPI implements expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<EditExpense>> {
@@ -200,6 +204,7 @@ export class ExpenseAPI implements expenseApi {
         group: group,
         notes: notes,
         participants: participants,
+        category: category,
       });
 
       if (response.status == 200) {
@@ -336,6 +341,73 @@ export class ExpenseAPI implements expenseApi {
         log(e.response);
       }
     }
+    return result;
+  }
+
+  async getFriendsBalance(): Promise<Response<FriendBalance[]>> {
+    let result: Response<FriendBalance[]> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get("/friends");
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("get user friends balance api result");
+      log(result);
+    } catch (e) {
+      log("get user friends balance api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
+    return result;
+  }
+
+  async getFriendBalance(friendId: string): Promise<Response<FriendBalance[]>> {
+    let result: Response<FriendBalance[]> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get(`/friends/${friendId}`);
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("get user friend balance api result");
+      log(result.response);
+    } catch (e) {
+      log("get user friend balance api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
     return result;
   }
 }

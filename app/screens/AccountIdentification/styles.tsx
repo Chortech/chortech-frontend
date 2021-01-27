@@ -1,67 +1,66 @@
 import { StyleSheet, Platform } from "react-native";
 
+const mainColor = "#00bb5d";
+const borderRadius = 20;
+const textColor = "#333333";
+const baseFontSize = 16;
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
-  },
-  header: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-  textHeader: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 50,
-    writingDirection: "auto",
-    fontFamily: "Alex",
-  },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 3,
     backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
   },
-  inputContainer: {
+  formsContainer: {
+    flex: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderTopRightRadius: borderRadius,
+    borderTopLeftRadius: borderRadius,
+  },
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: textColor,
+    fontSize: baseFontSize,
+    margin: 5,
+  },
+  textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
     borderWidth: 1,
     borderColor: "#f2f2f2",
-    borderRadius: 5,
+    borderRadius: borderRadius,
     backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    padding: 5,
   },
   textInput: {
-    flex: 10,
-    color: "#053751",
+    flex: 5,
+    color: textColor,
+    fontSize: baseFontSize,
     padding: 10,
-    fontFamily: "Dirooz",
-    textAlign: "right",
+    fontFamily: "IRANSansWeb_Light",
+    writingDirection: "auto",
+    textAlign: "center",
   },
   validationText: {
     color: "red",
     padding: 5,
     fontFamily: "IRANSansWeb_Bold",
-    fontSize: 12,
+    fontSize: baseFontSize - 4,
   },
   buttonContainer: {
-    flex: 5,
-    width: "100%",
-    marginTop: 30,
+    flex: 4,
     justifyContent: "flex-end",
   },
-  verifyScreenButton: {
-    elevation: 10,
-    backgroundColor: "#1AD927",
-    borderRadius: 5,
+  confirmButton: {
+    width: "80%",
+    alignSelf: "center",
+    backgroundColor: mainColor,
+    borderRadius: borderRadius,
     paddingVertical: 10,
-    paddingHorizontal: 12,
   },
-  verifyScreenButtonText: {
-    fontSize: 18,
+  confirmButtonText: {
+    fontSize: baseFontSize + 2,
     color: "#fff",
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",

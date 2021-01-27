@@ -1,5 +1,5 @@
 import { ToastAndroid } from "react-native";
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
 import {
   GetUserFriendsRequest,
@@ -13,8 +13,11 @@ import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { InputType } from "../../utils/inputTypes";
 import * as friendActions from "../actions/friendActions";
+import * as expenseActions from "../actions/expenseActions";
+import * as expenseSaga from "./expenseSaga";
 
 export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
+  yield put(friendActions.onLoadingEnable());
   const { token } = action.payload;
   let response: Response<GetUserFriends> = {
     success: false,
@@ -26,6 +29,13 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
 
   if (response.success) {
     yield put(friendActions.onGetUserFriendsResponse(response));
+    yield call(
+      expenseSaga.getFriendsBalanceRequest,
+      expenseActions.onGetFriendsBalanceRequest(token)
+    );
+    // yield response.response?.friends.forEach(friend => {
+    //   yield call(expenseSaga.getFriendBalanceRequest, expenseActions.onGetFriendBalanceRequest(token, friend.id));
+    // });
   } else {
     yield put(friendActions.onGetUserFriendsFail());
     if (response.status == 404) {
@@ -34,6 +44,7 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
   }
+  yield put(friendActions.onLoadingDisable());
 }
 
 export function* addFriendAsync(action: Action<AddFriendRequest>) {
@@ -48,13 +59,14 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
   if (inputType == InputType.Email) {
     response = yield api.addUserFriendByEmail(email);
   } else if (inputType == InputType.Phone) {
-    response = yield api.addUserFriendByEmail(phone);
+    response = yield api.addUserFriendByPhone(phone);
   }
 
   yield put(friendActions.onLoadingDisable());
 
   if (response.success) {
     yield put(friendActions.onAddFriendResponse(response));
+    navigationRef.current?.navigate("FriendList");
   } else {
     yield put(friendActions.onAddFriendFail());
     if (response.status == -3) {
@@ -127,6 +139,7 @@ export function* inviteFriendAsync(action: Action<InviteFriendsRequest>) {
   if (response.success) {
     yield put(friendActions.onInviteFriendResponse(response));
     ToastAndroid.show("دعوت‌نامه برای ایمیل یا شماره موبایل واردشده ارسال شد", ToastAndroid.SHORT);
+    navigationRef.current?.navigate("FriendList");
   } else {
     yield put(friendActions.onInviteFriendFail());
     if (response.status == -2) {
