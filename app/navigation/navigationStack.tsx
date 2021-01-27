@@ -87,17 +87,13 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    // activeColor="#000"
-    // inactiveColor="#227800"
-    // barStyle={{
-    //   backgroundColor: "#48ff00",
-    // }}
     initialRouteName="GroupList"
     screenOptions={({ route }) => ({})}>
     <LoggedInTab.Screen
       name="GroupList"
       component={GroupNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Group' || 'AddGroup' ? false : true,
         tabBarLabel: "گروه‌ها",
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="home-group" color={color} size={26} />
@@ -108,6 +104,7 @@ const LoggedInNavigator = () => (
       name="FriendList"
       component={FriendNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Friend' || 'InviteFriend' ? false : true,
         tabBarLabel: "دوستان",
         tabBarIcon: ({ color }) => <FontAwesomeIcon icon="users" color={color} size={26} />,
       }}
@@ -116,6 +113,7 @@ const LoggedInNavigator = () => (
       name="ActivityList"
       component={ActivityNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Activity' || 'AddActivity' ? false : true,
         tabBarLabel: "فعالیت‌ها",
         tabBarIcon: ({ color }) => (
           <FontAwesomeIcon icon="shopping-basket" color={color} size={26} />
