@@ -42,7 +42,7 @@ const Profile: React.FC = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    imageUri: user.imageUri,
+    imageUri: user?.imageUri,
   });
   const fetchUser = () => {
     if (validateToken(loggedInUser.token)) {
@@ -85,7 +85,7 @@ const Profile: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>

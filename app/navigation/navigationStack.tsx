@@ -4,6 +4,7 @@ import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
 import { navigationRef } from "./navigationService";
 import Login from "../screens/Login";
@@ -29,9 +30,11 @@ import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
 import { lightBlue100 } from "react-native-paper/lib/typescript/src/styles/colors";
 
+import { NavigationRoute, NavigationParams } from 'react-navigation';
+
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const LoggedInTab = createMaterialBottomTabNavigator();
+const LoggedInTab = createBottomTabNavigator();
 const GroupStack = createStackNavigator();
 const FriendStack = createStackNavigator();
 const ActivityStack = createStackNavigator();
@@ -87,18 +90,13 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    activeColor="#00bb5d"
-    inactiveColor="#999999aa"
-    barStyle={{
-      backgroundColor: "#fff",
-      elevation: 15,
-    }}
-    keyboardHidesNavigationBar
-    initialRouteName="GroupList">
+    initialRouteName="GroupList"
+    screenOptions={({ route }) => ({})}>
     <LoggedInTab.Screen
       name="GroupList"
       component={GroupNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Group' || 'AddGroup' ? false : true,
         tabBarLabel: "گروه‌ها",
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="home-group" color={color} size={26} />
@@ -109,6 +107,7 @@ const LoggedInNavigator = () => (
       name="FriendList"
       component={FriendNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Friend' || 'InviteFriend' ? false : true,
         tabBarLabel: "دوستان",
         tabBarIcon: ({ color }) => <FontAwesomeIcon icon="users" color={color} size={26} />,
       }}
@@ -117,6 +116,7 @@ const LoggedInNavigator = () => (
       name="ActivityList"
       component={ActivityNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Activity' || 'AddActivity' ? false : true,
         tabBarLabel: "فعالیت‌ها",
         tabBarIcon: ({ color }) => (
           <FontAwesomeIcon icon="shopping-basket" color={color} size={26} />
@@ -127,6 +127,7 @@ const LoggedInNavigator = () => (
       name="Profile"
       component={ProfileNavigator}
       options={{
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'EditProfile' ? false : true,
         tabBarLabel: "صفحه شخصی",
         tabBarIcon: ({ color }) => <FontAwesomeIcon icon="user" color={color} size={26} />,
       }}
@@ -138,7 +139,6 @@ const GroupNavigator = () => (
   <GroupStack.Navigator
     initialRouteName="GroupList"
     screenOptions={{
-      
       headerShown: false,
     }}>
     <LoggedInTab.Screen
@@ -149,7 +149,6 @@ const GroupNavigator = () => (
     <LoggedInTab.Screen
       name="Group"
       component={Group}
-     
     />
     <LoggedInTab.Screen
       name="AddGroup"
@@ -173,7 +172,6 @@ const ActivityNavigator = () => (
     <LoggedInTab.Screen
       name="Activity"
       component={Activity}
-     
     />
     <LoggedInTab.Screen
       name="AddExpense"
@@ -202,7 +200,6 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
-      
     />
     <LoggedInTab.Screen
       name="InviteFriend"
@@ -218,9 +215,9 @@ const FriendNavigator = () => (
 );
 
 const ProfileNavigator = () => (
-  <ProfileStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Profile">
-    <LoggedInTab.Screen name="Profile" component={Profile} />
-    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
+  <ProfileStack.Navigator screenOptions={{ headerShown: false}} initialRouteName="Profile">
+    <LoggedInTab.Screen name="Profile" component={Profile}/>
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile}/>
     <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
     <LoggedInTab.Screen name="ProfileInfo" component={ProfileInfo} />
   </ProfileStack.Navigator>

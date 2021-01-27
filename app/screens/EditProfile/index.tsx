@@ -30,9 +30,9 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    name: user.name,
-    email: loggedInUser.email,
-    phone: loggedInUser.phone,
+    name: user?.name,
+    email: loggedInUser?.email,
+    phone: loggedInUser?.phone,
     currentPassword: "",
     newPassword: "",
     validName: true,
@@ -181,7 +181,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
