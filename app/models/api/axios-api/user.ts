@@ -6,6 +6,7 @@ import {
   UserProfile,
   UploadImage,
   EditProfile,
+  FriendBalance,
 } from "../../responses/axios/user";
 
 export interface userApi {

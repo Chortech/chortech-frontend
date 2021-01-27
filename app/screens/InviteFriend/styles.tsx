@@ -1,44 +1,106 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
   },
-  infoContainer: {
-    flex: 6,
-    backgroundColor: "#fff",
+  contactsContainer: {
+    // flex: 1,
   },
-  friendEmailOrPhoneInput: {
-    borderWidth: 1,
-    borderColor: "black",
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
+  inputContainer: {
+    backgroundColor: colors.white,
+    elevation: 5,
+  },
+  screenTitleText: {
+    textAlign: "center",
     fontFamily: "IRANSansWeb_Bold",
+    color: colors.textBlack,
+    fontSize: 16,
+    // margin: 10,
+    marginHorizontal: 30,
+    paddingTop: 10,
+    // paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+  },
+
+  textInput: {
+    borderWidth: 1,
+    backgroundColor: colors.white,
+    borderColor: colors.gray,
+    padding: 10,
+    marginHorizontal: 15,
+    marginTop: 15,
+    borderRadius: 20,
+    fontSize: 16,
+    fontFamily: fonts.IranSans_Light,
     textAlign: "center",
   },
+  addNewContactButton: {
+    flexDirection: "row-reverse",
+    padding: 15,
+    marginBottom: 5,
+    justifyContent: "center",
+  },
+  addNewContactButtonText: {
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: 16,
+    paddingHorizontal: 10,
+    alignSelf: "center",
+  },
+  addNewContactIcon: {
+    color: colors.mainColor,
+  },
+  selectedList: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightGray,
+  },
+  userContainer: {
+    paddingVertical: 30,
+    paddingHorizontal: 15,
+    alignSelf: "center",
+    borderRightWidth: 1,
+    borderRightColor: colors.lightGray,
+  },
+  userIcon: {
+    color: colors.mainColor,
+    alignSelf: "center",
+  },
+  userText: {
+    paddingTop: 5,
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: 14,
+  },
+  cancelIcon: {
+    borderWidth: 1,
+    color: colors.red,
+    borderColor: colors.red,
+    borderRadius: 10,
+  },
+  contactList: {
+    paddingTop: 18,
+  },
   buttonContainer: {
-    flex: 2,
-    justifyContent: "flex-end",
-    marginHorizontal: 15,
-    marginTop: 100,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   button: {
-    elevation: 1,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#1AD927",
-    borderRadius: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    backgroundColor: colors.mainColor,
+    borderRadius: 25,
     paddingVertical: 10,
-    paddingHorizontal: 10,
-    marginBottom: 15,
+    paddingHorizontal: 12,
   },
   buttonText: {
     fontSize: 16,
-    color: "#1AD927",
+    color: colors.white,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
 });

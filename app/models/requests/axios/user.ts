@@ -47,6 +47,7 @@ export interface AddExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 
@@ -58,6 +59,7 @@ export interface EditExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 
@@ -87,6 +89,14 @@ export interface GetExpenseCommentsRequest {
   expenseId: string;
 }
 
+export interface GetFriendsBalanceRequest {
+  token: Token;
+}
+
+export interface GetFriendBalanceRequest {
+  token: Token;
+  friendId: string;
+  friendName: string;
 export interface GetUserActivitiesRequest {
   token: Token;
 }

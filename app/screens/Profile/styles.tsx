@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 5,
-    paddingBottom: 2,
+    paddingBottom: 5,
   },
   arrowIcon: {
     color: textColor,
