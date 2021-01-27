@@ -16,14 +16,12 @@ import {
   UploadImageRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  GetUserActivitiesRequest,
+  AddPaymentRequest,
+  DeletePaymentRequest,
+  EditPaymentRequest,
+  GetPaymentRequest,
 } from "../../models/requests/axios/user";
-import {
-  AddActivityRequest,
-  AddDebtRequest,
-  AddParticipantRequest,
-  DeleteActivityRequest,
-  DeleteParticipantRequest,
-} from "../../models/requests/graphql/activity";
 import {
   AddGroupRequest,
   UpdateGroupRequest,
@@ -31,7 +29,6 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import { GetUserActivitiesRequest, UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
 import {
   AddFriend,
@@ -45,6 +42,10 @@ import {
   EditExpense,
   UploadImage,
   EditProfile,
+  UserActivities,
+  AddPayment,
+  EditPayment,
+  UserPayment,
 } from "../../models/responses/axios/user";
 import {
   AddGroupResponse,
@@ -75,6 +76,13 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  payment: {
+    id: "",
+    from: "",
+    to: "",
+    amount: 0,
+    paid_at: 0,
+  },
   myCreditCards: [],
   otherCreditCards: [],
   imageUri: "",
@@ -347,6 +355,21 @@ export const userReducer = createReducer(initialState, {
   [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
+  [types.GET_USER_ACTIVITIES_REQUEST](state: IUserState, action: Action<GetUserActivitiesRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_ACTIVITIES_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserActivities>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_USER_ACTIVITIES_FAIL](state: IUserState, action: Action<Response<UserActivities>>): IUserState {
+    return state;
+  },
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
     return {
       ...state,
@@ -427,6 +450,71 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return state;
   },
+
+  [types.GET_USER_PAYMENT_REQUEST](state: IUserState, action: Action<GetPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_PAYMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserPayment>>
+  ): IUserState {
+    return  {
+      ...state,
+      payment: action.payload.response!.payment
+    };
+  },
+  [types.GET_USER_PAYMENT_FAIL](state: IUserState, action: Action<Response<UserPayment>>): IUserState {
+    return state;
+  },
+
+  [types.ADD_PAYMENT_REQUEST](state: IUserState, action: Action<AddPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.ADD_PAYMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddPayment>>
+  ): IUserState {
+    return {
+      ...state,
+      
+    }  
+  },
+  [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
+    return state;
+  },
+
+  [types.EDIT_PAYMENT_REQUEST](state: IUserState, action: Action<EditPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
+    return state;
+  },
+  [types.EDIT_PAYMENT_FAIL](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
+    return state;
+  },
+
+  [types.DELETE_PAYMENT_REQUEST](
+    state: IUserState,
+    action: Action<DeletePaymentRequest>
+  ): IUserState {
+    return { ...state, token: action.payload.token };
+  },
+  [types.DELETE_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.DELETE_PAYMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+
   [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,

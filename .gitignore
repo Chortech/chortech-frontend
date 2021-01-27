@@ -62,3 +62,5 @@ buck-out/
 
 
 local_env_vars.ts
+
+android/app/google-services.json
