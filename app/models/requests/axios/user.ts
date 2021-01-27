@@ -47,6 +47,7 @@ export interface AddExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 
@@ -58,6 +59,7 @@ export interface EditExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 
@@ -85,4 +87,47 @@ export interface AddCommentRequest {
 export interface GetExpenseCommentsRequest {
   token: Token;
   expenseId: string;
+}
+
+export interface GetFriendsBalanceRequest {
+  token: Token;
+}
+
+export interface GetFriendBalanceRequest {
+  token: Token;
+  friendId: string;
+  friendName: string;
+}
+
+export interface GetUserActivitiesRequest {
+  token: Token;
+}
+
+export interface GetPaymentRequest {
+  token: Token;
+  id: string;
+}
+
+export interface AddPaymentRequest {
+  token: Token;
+  from: string;
+  to: string;
+  amount: number;
+  paid_at: number;
+  group?: string;
+  notes?: string;
+}
+
+export interface DeletePaymentRequest {
+  token: Token;
+  id: string;
+}
+
+export interface EditPaymentRequest {
+  token: Token;
+  id: string;
+  amount?: number;
+  paid_at?: number;
+  group?: string;
+  notes?: string;
 }

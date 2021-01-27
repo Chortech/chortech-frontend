@@ -8,10 +8,14 @@ import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as friendActions from "../../store/actions/friendActions";
+import * as expenseActions from "../../store/actions/expenseActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
-import { take } from "redux-saga/effects";
+import { FloatingAction } from "react-native-floating-action";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import colors from "../../assets/resources/colors";
+import LoadingIndicator from "../Loading";
 
 type IState = {
   userReducer: IUserState;
@@ -20,7 +24,7 @@ type IState = {
 const FriendList: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const dispatch = useDispatch();
-  const { friends } = useSelector((state: IState) => state.userReducer);
+  const { loading, friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -34,8 +38,14 @@ const FriendList: React.FC = (): JSX.Element => {
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
-  const onFriend = (id: string, name: string) =>
-    NavigationService.navigate("Friend", { id: id, friendName: name });
+  const onPressFriendItem = (id: string, name: string) => {
+    let index = friends.findIndex((friend) => friend.id == id);
+    if (index > -1) {
+      if (validateToken(loggedInUser.token)) {
+        dispatch(expenseActions.onGetFriendBalanceRequest(loggedInUser.token, id, name));
+      }
+    }
+  };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchFriends();
@@ -44,29 +54,42 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={() => onFriend(item.id, item.name)}
+      onPressFriendItem={() => onPressFriendItem(item.id, item.name)}
       Name={item.name}
-      ImageUrl={require("../../assets/images/friend-image.jpg")}
+      ImageUrl={
+        item.picture != undefined
+          ? { uri: item.picture }
+          : require("../../assets/images/friend-image.jpg")
+      }
+      Balance={item.balance?.balance}
     />
   );
 
   return (
     <>
-      <View style={styles.container}>
-        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-          <FlatList
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            data={friends}
-            renderItem={renderFriendItem}
-            showsVerticalScrollIndicator={false}
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
+            <Text style={styles.screenTitleText}>دوستان</Text>
+            <FlatList
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              data={friends}
+              renderItem={renderFriendItem}
+              showsVerticalScrollIndicator={false}
+              removeClippedSubviews
+            />
+          </Animatable.View>
+          <FloatingAction
+            color={colors.mainColor}
+            position="left"
+            overlayColor="#00000000"
+            floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
+            onPressMain={onAddFriend}
           />
-        </Animatable.View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onAddFriend}>
-            <Text style={styles.buttonText}>اضافه کردن دوستان جدید</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      )}
     </>
   );
 };

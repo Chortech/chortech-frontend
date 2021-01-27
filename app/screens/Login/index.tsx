@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, ScrollView, ToastAndroid } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Image } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
@@ -11,6 +12,8 @@ import { InputType } from "../../utils/inputTypes";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { log } from "../../utils/logger";
+import { Login } from "../../models/responses/axios/auth";
+import { Response } from "../../models/responses/axios/response";
 
 interface IState {
   authReducer: IUserState;
@@ -75,60 +78,61 @@ const Login: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Chortech</Text>
-          </View>
-          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
-            <ScrollView>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  placeholder="ایمیل یا شماره موبایل"
-                  style={styles.textInput}
-                  onChangeText={(text) => setEmailOrPhone(text)}
-                />
-              </View>
-              {!data.validEmailOrPhone ? (
-                <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
-                  ایمیل یا شماره موبایل وارد شده معتبر نیست
-                </Animatable.Text>
-              ) : null}
-              <View style={styles.inputContainer}>
-                <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
-                  {data.secureTextEntry ? (
-                    <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
-                  ) : (
-                    <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
-                  )}
-                </TouchableOpacity>
-                <TextInput
-                  placeholder="رمز عبور"
-                  style={styles.textInput}
-                  secureTextEntry={data.secureTextEntry}
-                  onChangeText={(text) => setPassword(text)}
-                />
-              </View>
-              {!data.validPassword ? (
-                <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
-                  رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
-                </Animatable.Text>
-              ) : null}
-              <View>
-                <TouchableOpacity onPress={onForgot}>
-                  <Text style={styles.resetPasswordText}>کلمه عبور خود را فراموش کرده‌اید؟</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.filledButton} onPress={onLogin}>
-                  <Text style={styles.filledButtonText}>ورود</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
-                  <Text style={styles.outlinedButtonText}>ثبت نام</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.outlinedButton}>
-                  <Text style={styles.outlinedButtonText}>قوانین حریم خصوصی</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
+          <Animatable.View style={styles.headerContainer} animation="fadeInDown" duration={1500}>
+            <Image source={require("../../assets/images/chortech_1.png")} style={styles.logo} />
+          </Animatable.View>
+          <Animatable.View animation="slideInUp" duration={1500} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>ورود</Text>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                placeholder="ایمیل یا شماره موبایل"
+                style={styles.textInput}
+                onChangeText={(text) => setEmailOrPhone(text)}
+              />
+            </View>
+            {!data.validEmailOrPhone ? (
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
+                ایمیل یا شماره موبایل وارد شده معتبر نیست
+              </Animatable.Text>
+            ) : null}
+            <View style={styles.textInputContainer}>
+              <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
+                {data.secureTextEntry ? (
+                  <FontAwesomeIcon icon="eye-slash" size={20} style={styles.invisiblePassword} />
+                ) : (
+                  <FontAwesomeIcon icon="eye" size={20} style={styles.visiblePassword} />
+                )}
+              </TouchableOpacity>
+              <TextInput
+                placeholder="رمز عبور"
+                style={styles.textInput}
+                secureTextEntry={data.secureTextEntry}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
+            {!data.validPassword ? (
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
+                رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
+              </Animatable.Text>
+            ) : null}
+            <View>
+              <TouchableOpacity onPress={onForgot}>
+                <Text style={styles.resetPasswordText}>کلمه عبور خود را فراموش کرده‌اید؟</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.outlinedButton} onPress={onSignUp}>
+                <Text style={styles.outlinedButtonText}>ثبت نام</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.filledButton} onPress={onLogin}>
+                <Text style={styles.filledButtonText}>ورود</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity>
+                <Text style={styles.privacyText}>قوانین حریم خصوصی</Text>
+              </TouchableOpacity>
+            </View>
           </Animatable.View>
         </View>
       )}

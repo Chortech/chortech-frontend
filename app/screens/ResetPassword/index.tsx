@@ -11,6 +11,7 @@ import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import { RouteProp } from "@react-navigation/native";
+import { navigationRef } from "../../navigation/navigationService";
 
 type Props = {
   route: RouteProp<RootStackParamList, "ResetPassword">;
@@ -79,16 +80,14 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>بازیابی کلمه عبور</Text>
-          </View>
-          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <View style={styles.inputContainer}>
+          <Animatable.View animation="slideInUp" duration={1500} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>تغییر رمز عبور</Text>
+            <View style={styles.textInputContainer}>
               <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
                 {data.secureTextEntry ? (
-                  <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
+                  <FontAwesomeIcon icon="eye-slash" size={20} style={styles.invisiblePassword} />
                 ) : (
-                  <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
+                  <FontAwesomeIcon icon="eye" size={20} style={styles.visiblePassword} />
                 )}
               </TouchableOpacity>
               <TextInput
@@ -99,16 +98,16 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
               />
             </View>
             {!data.validPassword ? (
-              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
                 رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
               </Animatable.Text>
             ) : null}
-            <View style={styles.inputContainer}>
+            <View style={styles.textInputContainer}>
               <TouchableOpacity onPress={toggleConfirmPassword} style={styles.toggleIcon}>
                 {data.confirmSecureTextEntry ? (
-                  <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
+                  <FontAwesomeIcon icon="eye-slash" size={20} style={styles.invisiblePassword} />
                 ) : (
-                  <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
+                  <FontAwesomeIcon icon="eye" size={20} style={styles.visiblePassword} />
                 )}
               </TouchableOpacity>
               <TextInput
@@ -119,7 +118,7 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
               />
             </View>
             {!data.validConfirmPassword ? (
-              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
                 رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
               </Animatable.Text>
             ) : null}

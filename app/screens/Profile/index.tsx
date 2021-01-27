@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  ImageBackground,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -32,8 +40,6 @@ const Profile: React.FC = (): JSX.Element => {
   let user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
-  log(user.picture);
-
   const dispatch = useDispatch();
   const [data, setData] = useState({
     imageUri: user.imageUri,
@@ -45,8 +51,8 @@ const Profile: React.FC = (): JSX.Element => {
   };
 
   const onPressUpdateImage = () => {
-    let uri = "../../assets/images/friend-image.jpg";
-    ImagePicker.launchImageLibrary(options, (response) => {
+    let uri = "../../assets/images/chortech_1.png";
+    ImagePicker.launchImageLibrary(options, (response: any) => {
       uri = response.uri;
       setData({
         ...data,
@@ -58,22 +64,12 @@ const Profile: React.FC = (): JSX.Element => {
       };
       if (validateToken(loggedInUser.token)) {
         dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
-      } else {
-        dispatch(
-          authActions.onLoginRequest(
-            loggedInUser.email,
-            loggedInUser.phone,
-            loggedInUser.password,
-            loggedInUser.authInputType
-          )
-        );
-      }
+      } 
     });
   };
-  const onPressFriendsList = () => NavigationService.navigate("FriendList");
-  const onPressEditProfile = () => NavigationService.navigate("EditProfile");
+
   const onLogout = () => {
-    dispatch(userActions.onClearTokenRequest());
+    // dispatch(userActions.onClearTokenRequest());
     dispatch(authActions.onLogout());
   };
 
@@ -94,54 +90,59 @@ const Profile: React.FC = (): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={onPressUpdateImage}>
-              <Image
-                style={styles.profileImage}
-                source={
-                  data.imageUri && data.imageUri !== ""
-                    ? { uri: data.imageUri }
-                    : require("../../assets/images/friend-image.jpg")
-                }
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
-              <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
-            </TouchableOpacity>
-            <Text style={styles.userNameText}>{user.name}</Text>
+            <ImageBackground
+              source={
+                data.imageUri && data.imageUri !== ""
+                  ? { uri: data.imageUri }
+                  : require("../../assets/images/friend-image.jpg")
+              }
+              style={styles.imageContainer}>
+              <TouchableOpacity style={styles.cameraIconContainer} onPress={onPressUpdateImage}>
+                <FontAwesomeIcon icon="camera" style={styles.cameraIcon} size={20} />
+              </TouchableOpacity>
+            </ImageBackground>
           </View>
-          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
+            {user.name != "" ? <Text style={styles.screenTitleText}>{user.name}</Text> : null}
             <ScrollView
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-              showsVerticalScrollIndicator={false}>
-              {loggedInUser.authInputType == InputType.Email ? (
-                <View style={styles.textWrapper}>
-                  <View style={styles.textContainerLeft}>
-                    <Text style={styles.textInfo}>{loggedInUser.email}</Text>
-                  </View>
-                  <View style={styles.textContainerRight}>
-                    <Text style={styles.textInfo}>ایمیل</Text>
-                  </View>
+              showsVerticalScrollIndicator={true}>
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={() => NavigationService.navigate("ProfileInfo")}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
-              ) : null}
-              {loggedInUser.authInputType == InputType.Phone ? (
-                <View style={styles.textWrapper}>
-                  <View style={styles.textContainerLeft}>
-                    <Text style={styles.textInfo}>{loggedInUser.phone}</Text>
-                  </View>
-                  <View style={styles.textContainerRight}>
-                    <Text style={styles.textInfo}>تلفن همراه</Text>
-                  </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>اطلاعات حساب کاربری</Text>
                 </View>
-              ) : null}
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.buttonContainer}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>کارت‌های برگزیده</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonContainer}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>مدیریت اعتبار</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonContainer} onPress={onLogout}>
+                <View style={styles.logoutIconContainer}>
+                  <FontAwesomeIcon icon="sign-out-alt" style={styles.logoutIcon} size={20} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={{ ...styles.titleText, color: "red" }}>خروج از حساب کاربری</Text>
+                </View>
+              </TouchableOpacity>
             </ScrollView>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
-                <Text style={styles.buttonText}>دوستان</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={onPressEditProfile}>
-                <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
-              </TouchableOpacity>
-            </View>
           </Animatable.View>
         </View>
       )}
