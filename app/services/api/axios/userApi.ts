@@ -12,6 +12,7 @@ import {
   UserProfile,
   UploadImage,
   EditProfile,
+  FriendBalance,
 } from "../../../models/responses/axios/user";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -326,7 +327,7 @@ export class UserAPI implements userApi {
     try {
       let invitees: Array<InviteeByPhone> = [
         {
-          name: "نام من",
+          name: "sampleName",
           phone: phone,
         },
       ];
@@ -404,7 +405,6 @@ export class UserAPI implements userApi {
     } catch (e) {
       log("upload image api error");
       if (e.isAxiosError) {
-        console.log("axios error:", e.response);
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);

@@ -1,17 +1,19 @@
-import React from "react";
-import { ActivityIndicator } from "react-native";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Alert } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-
+import messaging from '@react-native-firebase/messaging';
 import Navigator from "./app/navigation/navigationStack";
 import configureStore from "./app/store";
 import { cronJob } from "./app/utils/cronJob";
 import * as authActions from "./app/store/actions/authActions";
 import { log } from "./app/utils/logger";
 import { IUserState } from "./app/models/reducers/default";
+import StartUp from "./app/screens/Startup";
+import { flush } from "redux-saga/effects";
 
 library.add(fab, fas);
 
@@ -20,9 +22,9 @@ const { persistor, store } = configureStore();
 cronJob.init(() => {
   let state: IUserState = store.getState()["authReducer"];
   if (!state.isLoggedIn) return;
-  // store.dispatch(
-  //   authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
-  // );
+  store.dispatch(
+    authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
+  );
   log("cron job called");
 }, "*/50 * * * *");
 
@@ -32,6 +34,18 @@ const RootNavigation: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    messaging()
+      .getToken()
+      .then(token => { console.log(token)})
+
+    return unsubscribe;
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>

@@ -8,6 +8,7 @@ import * as groupActions from "../../store/actions/groupActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { error, log, warn } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
   userReducer: IUserState;
@@ -18,15 +19,6 @@ const GroupList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const groups  = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
-  let groupsData: { id: string, name: string }[] = [
-    { "id": "0", "name": "Available" },
-    { "id": "1", "name": "Ready" },
-    { "id": "2", "name": "Started" }
-];
-for(let i =3; i< 500; i++)
-{
-  groupsData.push({"id":i.toString(), "name":"test"+i.toString()})
-}
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -35,11 +27,14 @@ for(let i =3; i< 500; i++)
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    // dispatch(groupActions.onGetUserRequest(loggedInUser.id));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.token));
+    }
   };
 
   useEffect(() => {
     fetchGroups();
+    // log("render group");
   }, [dispatch]);
 
   const onRefresh = useCallback(() => {

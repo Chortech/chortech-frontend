@@ -9,6 +9,8 @@ import {
   GetExpenseCommentsRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  GetFriendsBalanceRequest,
+  GetFriendBalanceRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
@@ -16,6 +18,7 @@ import {
   UserExpense,
   ExpenseComments,
   EditExpense,
+  FriendBalance,
 } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
@@ -23,6 +26,8 @@ import { Response } from "../../models/responses/axios/response";
 import * as expenseActions from "../actions/expenseActions";
 import * as friendActions from "../actions/friendActions";
 import * as friendSaga from "./friendSaga";
+import messages from "../../assets/resources/messages";
+import { log } from "../../utils/logger";
 
 export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
@@ -105,14 +110,31 @@ export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsReques
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(expenseActions.onLoadingEnable());
-  const { token, description, total, paid_at, group, notes, participants } = action.payload;
+  const {
+    token,
+    description,
+    total,
+    paid_at,
+    group,
+    notes,
+    participants,
+    category,
+  } = action.payload;
   let response: Response<AddExpense> = {
     success: false,
     status: -1,
   };
 
   let api: ExpenseAPI = new ExpenseAPI(token);
-  response = yield api.addExpense(description, total, paid_at, participants, group, notes);
+  response = yield api.addExpense(
+    description,
+    total,
+    paid_at,
+    participants,
+    category,
+    group,
+    notes
+  );
 
   if (response.success) {
     yield put(expenseActions.onAddExpenseResponse(response));
@@ -141,6 +163,7 @@ export function* editExpenseAsync(action: Action<EditExpenseRequest>) {
     payload.total,
     payload.paid_at,
     payload.participants,
+    payload.category,
     payload.group,
     payload.notes
   );
@@ -198,7 +221,7 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
     ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
     navigationRef.current?.goBack();
   } else {
-    yield put(expenseActions.onAddExpenseFail());
+    yield put(expenseActions.onAddCommentFail());
     if (response.status == -2) {
       ToastAndroid.show("شما جزو اعضای این هزینه نیستید", ToastAndroid.SHORT);
     } else if (response.status == 400) {
@@ -208,6 +231,38 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
     } else {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
+  }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* getFriendsBalanceRequest(action: Action<GetFriendsBalanceRequest>) {
+  let api: ExpenseAPI = new ExpenseAPI(action.payload.token);
+  let response: Response<FriendBalance[]> = yield api.getFriendsBalance();
+
+  if (response.success) {
+    yield put(expenseActions.onGetFriendsBalanceResponse(response));
+  } else {
+    yield put(expenseActions.onGetFriendsBalanceFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+  }
+}
+
+export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token, friendId, friendName } = action.payload;
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  let response: Response<FriendBalance[]> = yield api.getFriendBalance(friendId);
+
+  if (response.success) {
+    yield put(expenseActions.onGetFriendBalanceResponse(response));
+    yield navigationRef.current?.navigate("Friend", {
+      id: friendId,
+      name: friendName,
+      friendBalance: response.response,
+    });
+  } else {
+    yield put(expenseActions.onGetFriendBalanceFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
   yield put(expenseActions.onLoadingDisable());
 }

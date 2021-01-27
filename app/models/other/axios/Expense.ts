@@ -18,3 +18,14 @@ export interface You {
   role: PRole;
   amount: number;
 }
+
+export interface ExpenseBalance {
+  balance: number;
+  expense: {
+    id: string;
+    creator: string;
+    total: number;
+    description: string;
+    category: number;
+  };
+}
