@@ -9,7 +9,6 @@ import {
   FriendBalance,
 } from "../../responses/axios/user";
 import { Response } from "../../responses/axios/response";
-import { Token } from "../../other/axios/Token";
 
 export interface expenseApi {
   getExpenses(): Promise<Response<UserExpenses>>;

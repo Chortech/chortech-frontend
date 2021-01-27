@@ -1,11 +1,11 @@
-import React from "react";
-import { ActivityIndicator } from "react-native";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Alert } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-
+import messaging from '@react-native-firebase/messaging';
 import Navigator from "./app/navigation/navigationStack";
 import configureStore from "./app/store";
 import { cronJob } from "./app/utils/cronJob";
@@ -34,6 +34,18 @@ const RootNavigation: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    messaging()
+      .getToken()
+      .then(token => { console.log(token)})
+
+    return unsubscribe;
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
