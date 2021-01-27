@@ -105,7 +105,7 @@ export interface GetUserActivitiesRequest {
 
 export interface GetPaymentRequest {
   token: Token;
-  id: string
+  id: string;
 }
 
 export interface AddPaymentRequest {

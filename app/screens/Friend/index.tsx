@@ -1,6 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, Image, ToastAndroid, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, Image, ToastAndroid, FlatList, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
@@ -17,6 +17,8 @@ import { log } from "../../utils/logger";
 import { ExpenseBalance } from "../../models/other/axios/Expense";
 import colors from "../../assets/resources/colors";
 import FriendExpenseItem from "../../components/FriendExpenseItem";
+import PopupMenu from "../../components/PopupMenu";
+import fonts from "../../assets/resources/fonts";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Friend">;
@@ -32,7 +34,6 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-
   const onPressSettleUp = () => NavigationService.navigate("SettleUp");
 
   const onPressDeleteFriend = () => {
@@ -41,8 +42,32 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
     }
   };
 
-  log("friend balance");
-  log(friendBalance);
+  // log("friend balance");
+  // log(friendBalance);
+
+  const onPopupEvent = (eventName, index) => {
+    if (eventName !== "itemSelected") return;
+    if (index === 0) {
+      Alert.alert(
+        "",
+        "آیا از حذف دوست خود مطمئن هستید؟",
+        [
+          {
+            text: "لغو",
+            onPress: () => {},
+          },
+          {
+            text: "تایید",
+            onPress: onPressDeleteFriend,
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
+    // onPressDeleteFriend();
+  };
 
   return (
     <>
@@ -51,6 +76,9 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
+            <View style={styles.popupMenuContainer}>
+              <PopupMenu actions={["حذف از لیست دوستان"]} onPress={onPopupEvent} />
+            </View>
             <Image
               style={styles.friendImage}
               source={require("../../assets/images/friend-image.jpg")}
@@ -58,17 +86,16 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
             <Text style={styles.userNameText}>{name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <FlatList
-              data={friendBalance[0].expenses}
-              renderItem={({ item }) => <FriendExpenseItem item={item} />}
-              keyExtractor={(item) => item.balance.toString()}
-            />
+            {friendBalance.length > 0 ? (
+              <FlatList
+                data={friendBalance[0].expenses}
+                renderItem={({ item }) => <FriendExpenseItem item={item} />}
+                keyExtractor={(item) => item.balance.toString()}
+              />
+            ) : null}
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.settleUpButton} onPress={onPressSettleUp}>
                 <Text style={styles.settleUpButtonText}>تسویه حساب</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteFriend}>
-                <Text style={styles.removeButtonText}>حذف کردن از دوستان</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

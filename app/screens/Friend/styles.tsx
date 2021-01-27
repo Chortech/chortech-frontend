@@ -12,6 +12,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 5,
   },
+  popupMenuContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    marginRight: 10,
+  },
   friendImage: {
     height: 80,
     width: 80,
@@ -50,6 +58,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
   },
   buttonContainer: {
+    // flex: 2,
     justifyContent: "center",
   },
   removeButton: {
@@ -71,18 +80,19 @@ export const styles = StyleSheet.create({
   },
   settleUpButton: {
     elevation: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderWidth: 2,
-    borderColor: "#1AD927",
-    borderRadius: 5,
-    marginVertical: 10,
+    borderColor: colors.mainColor,
+    borderRadius: 25,
+    marginVertical: 15,
+    marginHorizontal: 50,
     flexDirection: "row",
     justifyContent: "center",
     padding: 10,
   },
   settleUpButtonText: {
     fontSize: 16,
-    color: "#1AD927",
+    color: colors.mainColor,
     paddingHorizontal: 10,
     alignSelf: "center",
     fontFamily: "IRANSansWeb_Bold",
