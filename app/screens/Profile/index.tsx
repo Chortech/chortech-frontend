@@ -57,10 +57,8 @@ const Profile: React.FC = (): JSX.Element => {
         imageUri: data.imageUri,
       };
       if (validateToken(loggedInUser.token)) {
-        console.log("hmmm");
         dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
       } else {
-        console.log("getting new token");
         dispatch(
           authActions.onLoginRequest(
             loggedInUser.email,

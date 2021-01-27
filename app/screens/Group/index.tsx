@@ -7,7 +7,7 @@ import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import * as groupActions from "../../store/actions/groupActions";
 import FriendItem from "../../components/FriendItem";
 import { Expense } from "../../models/other/graphql/Expense";
@@ -24,13 +24,14 @@ type IState = {
 const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [renderFlatList, setRenderFlatList] = useState(false);
 
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { id, groupName, ImageUrl } = route.params;
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onAddExpense = () => NavigationService.navigate("AddExpense");
   const onPressDeleteGroup = () => {
-    dispatch(groupActions.onDeleteGroupRequest(id));
+    dispatch(groupActions.onDeleteGroupRequest(loggedInUser.token ,id));
   };
 
   const expenses: Array<Expense> = [
