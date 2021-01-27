@@ -174,7 +174,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
   };
 
   const onPressAddFriend = (): void => {
-    if (selectedContacts.current.length < 0) return;
     let contact = selectedContacts.current[0];
     if (validateToken(loggedInUser.token)) {
       if (contact.inputType == InputType.Email) {
@@ -200,7 +199,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
   };
 
   const onPressInviteFriend = (): void => {
-    if (selectedContacts.current.length < 0) return;
     let contact = selectedContacts.current[0];
     if (validateToken(loggedInUser.token)) {
       if (contact.inputType == InputType.Email) {
@@ -304,6 +302,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
                 removeClippedSubviews
               />
             ) : null}
+            <Text style={styles.screenTitleText}>لیست مخاطبین</Text>
             <FlatList
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               data={searchedContacts}
@@ -330,8 +329,12 @@ const InviteFriend: React.FC = (): JSX.Element => {
             position="left"
             floatingIcon={<FontAwesomeIcon icon="check" color="#fff" size={20} />}
             onPressItem={(name) => {
-              if (name == "invite") onPressInviteFriend();
-              else onPressAddFriend();
+              if (selectedContacts.current.length > 0) {
+                if (name == "invite") onPressInviteFriend();
+                else onPressAddFriend();
+              } else {
+                ToastAndroid.show("مخاطبی انتخاب نشده‌است", ToastAndroid.SHORT);
+              }
             }}
           />
         </View>

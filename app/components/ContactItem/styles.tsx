@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     flexDirection: "row-reverse",
     borderWidth: 4,
-    borderColor: colors.lightGray,
+    borderColor: colors.ultraLightGray,
   },
   contactIcon: {
     marginLeft: 10,

@@ -6,7 +6,7 @@ class Colors {
   public gray = "#bbbbbb";
   public lightGray = "#dddddd";
   public ultraLightGray = "#eeeeee";
-  public red = "red";
+  public red = "#fb3449";
   public customRed = "#ff2a00";
   public lightGreen = "#00ff7e";
 }

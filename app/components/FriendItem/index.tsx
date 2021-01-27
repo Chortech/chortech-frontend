@@ -13,6 +13,7 @@ type Props = {
 };
 
 const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
+  let color = props.Balance < 0 ? colors.red : colors.mainColor;
   return (
     <View>
       <TouchableOpacity
@@ -28,14 +29,14 @@ const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
                     fontFamily: fonts.IranSans_Light,
                     fontSize: 12,
                     alignSelf: "center",
-                    color: props.Balance < 0 ? colors.customRed : colors.mainColor,
+                    color: color,
                   }}>
                   تومان
                 </Text>
                 <Text
                   style={{
                     ...styles.balanceNumber,
-                    color: props.Balance < 0 ? colors.customRed : colors.mainColor,
+                    color: color,
                   }}>
                   {Math.abs(props.Balance)}
                 </Text>
@@ -43,7 +44,7 @@ const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
               <Text
                 style={{
                   ...styles.balanceStatus,
-                  color: props.Balance < 0 ? colors.customRed : colors.mainColor,
+                  color: color,
                 }}>
                 {props.Balance < 0 ? "بهش بدهکاری" : "بهت بدهکاره"}
               </Text>

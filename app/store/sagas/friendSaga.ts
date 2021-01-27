@@ -33,6 +33,9 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
       expenseSaga.getFriendsBalanceRequest,
       expenseActions.onGetFriendsBalanceRequest(token)
     );
+    // yield response.response?.friends.forEach(friend => {
+    //   yield call(expenseSaga.getFriendBalanceRequest, expenseActions.onGetFriendBalanceRequest(token, friend.id));
+    // });
   } else {
     yield put(friendActions.onGetUserFriendsFail());
     if (response.status == 404) {

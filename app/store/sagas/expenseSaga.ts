@@ -10,6 +10,7 @@ import {
   EditExpenseRequest,
   DeleteExpenseRequest,
   GetFriendsBalanceRequest,
+  GetFriendBalanceRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
@@ -162,6 +163,7 @@ export function* editExpenseAsync(action: Action<EditExpenseRequest>) {
     payload.total,
     payload.paid_at,
     payload.participants,
+    payload.category,
     payload.group,
     payload.notes
   );
@@ -243,4 +245,24 @@ export function* getFriendsBalanceRequest(action: Action<GetFriendsBalanceReques
     yield put(expenseActions.onGetFriendsBalanceFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
+}
+
+export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { token, friendId, friendName } = action.payload;
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  let response: Response<FriendBalance[]> = yield api.getFriendBalance(friendId);
+
+  if (response.success) {
+    yield put(expenseActions.onGetFriendBalanceResponse(response));
+    yield navigationRef.current?.navigate("Friend", {
+      id: friendId,
+      name: friendName,
+      friendBalance: response.response,
+    });
+  } else {
+    yield put(expenseActions.onGetFriendBalanceFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+  }
+  yield put(expenseActions.onLoadingDisable());
 }

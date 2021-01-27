@@ -377,8 +377,8 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async getFriendBalance(friendId: string): Promise<Response<FriendBalance>> {
-    let result: Response<FriendBalance> = {
+  async getFriendBalance(friendId: string): Promise<Response<FriendBalance[]>> {
+    let result: Response<FriendBalance[]> = {
       success: false,
       status: -1,
     };
@@ -396,9 +396,9 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("get user friend balance api result");
-      log(result);
+      log(result.response);
     } catch (e) {
-      log("get user friends balance api error");
+      log("get user friend balance api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;

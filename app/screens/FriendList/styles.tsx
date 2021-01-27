@@ -24,6 +24,17 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingRight: 10,
   },
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: colors.textBlack,
+    fontSize: 16,
+    marginHorizontal: 30,
+    paddingTop: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+  },
   buttonContainer: {
     flex: 1,
     justifyContent: "flex-end",

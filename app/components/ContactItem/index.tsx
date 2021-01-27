@@ -15,7 +15,7 @@ type Props = {
 
 const ContactItem: React.FC<Props> = (props: Props): JSX.Element => {
   return (
-    <TouchableOpacity onPress={props.onPressContact}>
+    <TouchableOpacity onPress={props.onPressContact} activeOpacity={0.5}>
       <View style={styles.container}>
         <FontAwesomeIcon
           icon="address-book"

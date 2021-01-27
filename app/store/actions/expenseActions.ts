@@ -22,6 +22,7 @@ import {
 } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
+import { log } from "../../utils/logger";
 
 export function onGetUserExpensesRequest(token: Token): Action<GetUserExpensesRequest> {
   return {
@@ -321,20 +322,22 @@ export function onGetFriendsBalanceFail(): Action<Response<FriendBalance[]>> {
 
 export function onGetFriendBalanceRequest(
   token: Token,
-  friendId: string
+  friendId: string,
+  friendName: string
 ): Action<GetFriendBalanceRequest> {
   return {
     type: types.GET_FRIEND_BALANCE_REQUEST,
     payload: {
       token: token,
       friendId: friendId,
+      friendName: friendName,
     },
   };
 }
 
 export function onGetFriendBalanceResponse(
-  response: Response<FriendBalance>
-): Action<Response<FriendBalance>> {
+  response: Response<FriendBalance[]>
+): Action<Response<FriendBalance[]>> {
   return {
     type: types.GET_FRIEND_BALANCE_RESPONSE,
     payload: {
@@ -345,7 +348,7 @@ export function onGetFriendBalanceResponse(
   };
 }
 
-export function onGetFriendBalanceFail(): Action<Response<FriendBalance>> {
+export function onGetFriendBalanceFail(): Action<Response<FriendBalance[]>> {
   return {
     type: types.GET_FRIEND_BALANCE_FAIL,
     payload: {
