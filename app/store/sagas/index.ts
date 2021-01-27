@@ -36,5 +36,13 @@ export default function* watch() {
     takeLatest(types.GET_FRIENDS_BALANCE_REQUEST, expenseSaga.getFriendsBalanceRequest),
     takeLatest(types.GET_FRIEND_BALANCE_REQUEST, expenseSaga.getFriendBalanceRequest),
     takeLatest(types.UPLOAD_IMAGE_REQUEST, userSaga.uploadImageAsync),
+    takeLatest(types.ADD_GROUP_REQUEST, groupSaga.createGroupAsync),
+    takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.GetUserGroupsAsync),
+    takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.DeleteGroupAsync),
+    takeLatest(types.GET_GROUP_BY_ID_REQUEST, groupSaga.GetGroupInfoAsync),
+    takeLatest(types.EDIT_GROUP_REQUEST, groupSaga.EditGroupAsync),
+    takeLatest(types.LEAVE_GROUP_REQUEST, groupSaga.LeaveGroupAsync),
+    takeLatest(types.REMOVE_MEMBER_REQUEST, groupSaga.RemoveMemberAsync),
+    takeLatest(types.ADD_FRIEND_TO_GROUP_REQUEST, groupSaga.AddFriendToGroupAsync),
   ]);
 }

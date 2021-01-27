@@ -8,6 +8,7 @@ import * as groupActions from "../../store/actions/groupActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { error, log, warn } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
 
 type IState = {
   userReducer: IUserState;
@@ -18,7 +19,6 @@ const GroupList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
-
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) =>
     NavigationService.navigate("Group", {
@@ -27,7 +27,9 @@ const GroupList: React.FC = () => {
       ImageUrl: "",
     });
   const fetchGroups = (): void => {
-    // dispatch(groupActions.onGetUserRequest(loggedInUser.id));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.token));
+    }
   };
 
   useEffect(() => {

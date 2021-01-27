@@ -64,7 +64,7 @@ const Profile: React.FC = (): JSX.Element => {
       };
       if (validateToken(loggedInUser.token)) {
         dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
-      }
+      } 
     });
   };
 
