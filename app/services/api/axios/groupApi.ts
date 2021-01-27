@@ -7,7 +7,7 @@ import {
     AddFriendToGroupResponse,
     DeleteGroupResponse,
     EditGroupResponse,
-    GetGroupResponse,
+    GetGroupInfoResponse,
     GetUserGroupsResponse,
     LeaveGroupResponse,
     RemoveMemberResponse,
@@ -70,14 +70,14 @@ export class GroupAPI implements groupApi {
     return result;
   }
 
-  async createGroup(): Promise<Response<null>> {
+  async createGroup(name: string, picture: string): Promise<Response<null>> {
     let result: Response<null> = {
       success: false,
       status: -1,
     };
-
+    picture = "../../../assets/images/group-image.jpg"
     try {
-      let response: AxiosResponse = await this.client.post("");
+      let response: AxiosResponse = await this.client.post("", {name, picture});
 
       if (response.status == 201) {
         result = {
@@ -104,8 +104,8 @@ export class GroupAPI implements groupApi {
     return result;
   }
 
-  async getGroupInfo(groupId: string): Promise<Response<GetGroupResponse>> {
-    let result: Response<GetGroupResponse> = {
+  async getGroupInfo(groupId: string): Promise<Response<GetGroupInfoResponse>> {
+    let result: Response<GetGroupInfoResponse> = {
       success: false,
       status: -1,
     };
