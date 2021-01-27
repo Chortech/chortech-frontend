@@ -31,11 +31,12 @@ export interface expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<EditExpense>>;
   deleteExpense(expenseId: string): Promise<Response<null>>;
   addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>>;
-  getUserFriendsBalance(): Promise<Response<FriendBalance[]>>;
-  getUserFriendBalance(friendId: string): Promise<Response<FriendBalance>>;
+  getFriendsBalance(): Promise<Response<FriendBalance[]>>;
+  getFriendBalance(friendId: string): Promise<Response<FriendBalance>>;
 }

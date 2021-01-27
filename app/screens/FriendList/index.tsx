@@ -13,6 +13,7 @@ import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
 import { FloatingAction } from "react-native-floating-action";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import colors from "../../assets/resources/colors";
 
 type IState = {
   userReducer: IUserState;
@@ -23,7 +24,6 @@ const FriendList: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const { friends } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [fabVisible, setFabVisibility] = useState(true);
 
   useEffect(() => {
     fetchFriends();
@@ -53,6 +53,7 @@ const FriendList: React.FC = (): JSX.Element => {
           ? { uri: item.picture }
           : require("../../assets/images/friend-image.jpg")
       }
+      Balance={item.balance}
     />
   );
 
@@ -65,17 +66,11 @@ const FriendList: React.FC = (): JSX.Element => {
             data={friends}
             renderItem={renderFriendItem}
             showsVerticalScrollIndicator={false}
-            onScroll={() => {
-              setFabVisibility(false);
-            }}
-            onMomentumScrollEnd={() => {
-              setFabVisibility(true);
-            }}
+            removeClippedSubviews
           />
         </Animatable.View>
         <FloatingAction
-          visible={fabVisible}
-          color="#00bb5d"
+          color={colors.mainColor}
           position="left"
           overlayColor="#00000000"
           floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}

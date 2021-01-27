@@ -440,6 +440,17 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<FriendBalance[]>>
   ): IUserState {
+    if (action.payload.response != undefined) {
+      state.friends.forEach((friend) => {
+        friend.balance = 0;
+        let index = action.payload.response!.findIndex(
+          (friendBalance) => friendBalance.other.id == friend.id
+        );
+        if (index > -1) {
+          friend.balance = action.payload.response![index].balance;
+        }
+      });
+    }
     return state;
   },
   [types.GET_FRIENDS_BALANCE_FAIL](

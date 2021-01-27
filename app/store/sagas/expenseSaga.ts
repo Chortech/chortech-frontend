@@ -9,6 +9,7 @@ import {
   GetExpenseCommentsRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  GetFriendsBalanceRequest,
 } from "../../models/requests/axios/user";
 import {
   AddExpense,
@@ -16,6 +17,7 @@ import {
   UserExpense,
   ExpenseComments,
   EditExpense,
+  FriendBalance,
 } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
@@ -23,6 +25,8 @@ import { Response } from "../../models/responses/axios/response";
 import * as expenseActions from "../actions/expenseActions";
 import * as friendActions from "../actions/friendActions";
 import * as friendSaga from "./friendSaga";
+import messages from "../../assets/resources/messages";
+import { log } from "../../utils/logger";
 
 export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
@@ -227,4 +231,16 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
     }
   }
   yield put(expenseActions.onLoadingDisable());
+}
+
+export function* getFriendsBalanceRequest(action: Action<GetFriendsBalanceRequest>) {
+  let api: ExpenseAPI = new ExpenseAPI(action.payload.token);
+  let response: Response<FriendBalance[]> = yield api.getFriendsBalance();
+
+  if (response.success) {
+    yield put(expenseActions.onGetFriendsBalanceResponse(response));
+  } else {
+    yield put(expenseActions.onGetFriendsBalanceFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+  }
 }

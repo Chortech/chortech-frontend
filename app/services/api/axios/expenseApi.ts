@@ -187,6 +187,7 @@ export class ExpenseAPI implements expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<EditExpense>> {
@@ -343,7 +344,7 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async getUserFriendsBalance(): Promise<Response<FriendBalance[]>> {
+  async getFriendsBalance(): Promise<Response<FriendBalance[]>> {
     let result: Response<FriendBalance[]> = {
       success: false,
       status: -1,
@@ -360,6 +361,8 @@ export class ExpenseAPI implements expenseApi {
       } else {
         result.status = response.status;
       }
+      log("get user friends balance api result");
+      log(result);
     } catch (e) {
       log("get user friends balance api error");
       if (e.isAxiosError) {
@@ -374,7 +377,7 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async getUserFriendBalance(friendId: string): Promise<Response<FriendBalance>> {
+  async getFriendBalance(friendId: string): Promise<Response<FriendBalance>> {
     let result: Response<FriendBalance> = {
       success: false,
       status: -1,
@@ -392,6 +395,8 @@ export class ExpenseAPI implements expenseApi {
       } else {
         result.status = response.status;
       }
+      log("get user friend balance api result");
+      log(result);
     } catch (e) {
       log("get user friends balance api error");
       if (e.isAxiosError) {

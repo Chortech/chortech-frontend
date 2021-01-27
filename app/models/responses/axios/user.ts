@@ -89,8 +89,8 @@ export interface UploadImage {
 }
 
 export interface FriendBalance {
-  self?: User;
-  other?: User;
+  self: User;
+  other: User;
   balance?: number;
   expenses?: ExpenseBalance[];
 }
