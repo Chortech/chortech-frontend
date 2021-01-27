@@ -14,13 +14,14 @@ import {
   AddFriendToGroupResponse,
   DeleteGroupResponse,
   EditGroupResponse,
-  GetGroupResponse,
+  GetGroupInfoResponse,
   GetUserGroupsResponse,
   LeaveGroupResponse,
   RemoveMemberResponse,
 } from "../../models/responses/axios/group";
 import * as types from "./types";
 import { Group } from "../../models/other/axios/Group";
+import { Response } from "../../models/responses/axios/response";
 
 export function onCreateGroupRequest(
   token: Token,
@@ -37,7 +38,7 @@ export function onCreateGroupRequest(
   };
 }
 
-export function onCreateGroupResponse(response: null): Action<null> {
+export function onCreateGroupResponse(response: any): Action<null> {
   return {
     type: types.ADD_GROUP_RESPONSE,
     payload: response,
@@ -58,7 +59,7 @@ export function onEditGroupRequest(
     picture: string,
 ): Action<EditGroupRequest> {
   return {
-    type: types.UPDATE_GROUP_REQUEST,
+    type: types.EDIT_GROUP_REQUEST,
     payload: {
       token,
       id,
@@ -70,7 +71,7 @@ export function onEditGroupRequest(
 
 export function onEditGroupResponse(group: Group): Action<EditGroupResponse> {
   return {
-    type: types.UPDATE_GROUP_RESPONSE,
+    type: types.EDIT_GROUP_RESPONSE,
     payload: {
       group,
     },
@@ -128,7 +129,7 @@ export function onGetGroupByIdRequest(
 
 export function onGetGroupByIdResponse(
   group: Group,
-): Action<GetGroupResponse> {
+): Action<GetGroupInfoResponse> {
   return {
     type: types.GET_GROUP_BY_ID_RESPONSE,
     payload: {
@@ -155,12 +156,14 @@ export function onGetUserGroupsRequest(token: Token): Action<GetUserGroupsReques
 }
 
 export function onGetUserGroupsResponse(
-  response: GetUserGroupsResponse
-): Action<GetUserGroupsResponse> {
+  response: Response<GetUserGroupsResponse>
+): Action<Response<GetUserGroupsResponse>> {
   return {
     type: types.GET_USER_GROUPS_RESPONSE,
     payload: {
-      groups: response.groups,
+      success: response.success,
+      status: response.status,
+      response: response.response,
     },
   };
 }
@@ -171,6 +174,73 @@ export function onGetUserGroupsFail(response: null): Action<null> {
     payload: response,
   };
 }
+
+export function onAddFriendToGroupRequest(
+  token: Token,
+  id: string,
+  members: Array<string>,
+): Action<AddFriendToGroupRequest> {
+return {
+  type: types.ADD_GROUP_REQUEST,
+  payload: {
+    token,
+    id,
+    members,
+  },
+};
+}
+
+export function onAddFriendToGroupResponse(group: Group): Action<AddFriendToGroupResponse> {
+return {
+  type: types.ADD_GROUP_RESPONSE,
+  payload: {
+    group,
+  },
+};
+}
+
+export function onLeaveGroupRequest(
+  token: Token,
+  id: string,
+): Action<LeaveGroupRequest> {
+return {
+  type: types.LEAVE_GROUP_REQUEST,
+  payload: {
+    token,
+    id,
+  },
+};
+}
+
+export function onLeaveGroupResponse(response: any): Action<LeaveGroupResponse> {
+return {
+  type: types.LEAVE_GROUP_RESPONSE,
+  payload: response,
+};
+}
+
+export function onRemoveMemberRequest(
+  token: Token,
+  memberId: string,
+): Action<RemoveMemberRequest> {
+return {
+  type: types.REMOVE_MEMBER_REQUEST,
+  payload: {
+    token,
+    memberId,
+  },
+};
+}
+
+export function onRemoveMemberResponse(group: Group): Action<RemoveMemberResponse> {
+return {
+  type: types.REMOVE_MEMBER_RESPONSE,
+  payload: {
+    group,
+  },
+};
+}
+
 export function onLoadingEnable(): Action<any> {
   return {
     type: types.LOADING_ENABLED,

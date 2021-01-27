@@ -259,11 +259,11 @@ export const userReducer = createReducer(initialState, {
   },
   [types.GET_USER_GROUPS_RESPONSE](
     state: IUserState,
-    action: Action<GetUserGroupsResponse>
+    action: Action<Response<GetUserGroupsResponse>>
   ): IUserState {
     return {
       ...state,
-      groups: action.payload.groups,
+      groups: action.payload.response,
     };
   },
   [types.GET_USER_GROUPS_FAIL](
