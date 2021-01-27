@@ -10,6 +10,7 @@ import * as expenseActions from "../../store/actions/expenseActions";
 import { validateToken } from "../../utils/tokenValidator";
 import LoadingIndicator from "../Loading";
 import { styles } from "./styles";
+import NavigationService from "../../navigation/navigationService";
 import { AxiosInstance } from "axios";
 import { Friend } from "../../models/other/axios/Friend";
 import { log } from "../../utils/logger";
@@ -31,8 +32,8 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  log("expenses");
-  log(route.params.friendBalance[0].expenses);
+
+  const onPressSettleUp = () => NavigationService.navigate("SettleUp");
 
   const onPressDeleteFriend = () => {
     if (validateToken(loggedInUser.token)) {
@@ -63,6 +64,9 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
               keyExtractor={(item) => item.balance.toString()}
             />
             <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.settleUpButton} onPress={onPressSettleUp}>
+                <Text style={styles.settleUpButtonText}>تسویه حساب</Text>
+              </TouchableOpacity>
               <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteFriend}>
                 <Text style={styles.removeButtonText}>حذف کردن از دوستان</Text>
               </TouchableOpacity>
