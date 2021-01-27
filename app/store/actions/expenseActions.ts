@@ -130,6 +130,7 @@ export function onAddExpenseRequest(
   total: number,
   paid_at: number,
   participants: Array<Participant>,
+  category: number,
   group?: string,
   notes?: string
 ): Action<AddExpenseRequest> {
@@ -143,6 +144,7 @@ export function onAddExpenseRequest(
       group: group,
       notes: notes,
       participants: participants,
+      category: category,
     },
   };
 }
@@ -175,6 +177,7 @@ export function onEditExpenseRequest(
   total: number,
   paid_at: number,
   participants: Array<Participant>,
+  category: number,
   group?: string,
   notes?: string
 ): Action<EditExpenseRequest> {
@@ -189,6 +192,7 @@ export function onEditExpenseRequest(
       group: group,
       notes: notes,
       participants: participants,
+      category: category,
     },
   };
 }

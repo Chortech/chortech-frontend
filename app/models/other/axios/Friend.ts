@@ -4,4 +4,5 @@ export type Friend = {
   email?: string;
   phone?: string;
   picture?: string;
+  balance?: number;
 };

@@ -16,6 +16,8 @@ import {
   UploadImageRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
+  GetFriendBalanceRequest,
+  GetFriendsBalanceRequest,
 } from "../../models/requests/axios/user";
 import {
   AddActivityRequest,
@@ -45,6 +47,7 @@ import {
   EditExpense,
   UploadImage,
   EditProfile,
+  FriendBalance,
 } from "../../models/responses/axios/user";
 import {
   AddGroupResponse,
@@ -427,6 +430,43 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return state;
   },
+  [types.GET_FRIENDS_BALANCE_REQUEST](
+    state: IUserState,
+    action: Action<GetFriendsBalanceRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_FRIENDS_BALANCE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<FriendBalance[]>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_FRIENDS_BALANCE_FAIL](
+    state: IUserState,
+    action: Action<Response<FriendBalance[]>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_FRIEND_BALANCE_REQUEST](
+    state: IUserState,
+    action: Action<GetFriendBalanceRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_FRIEND_BALANCE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<FriendBalance>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_FRIEND_BALANCE_FAIL](
+    state: IUserState,
+    action: Action<Response<FriendBalance>>
+  ): IUserState {
+    return state;
+  },
+
   [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,

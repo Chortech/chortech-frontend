@@ -105,14 +105,31 @@ export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsReques
 
 export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
   yield put(expenseActions.onLoadingEnable());
-  const { token, description, total, paid_at, group, notes, participants } = action.payload;
+  const {
+    token,
+    description,
+    total,
+    paid_at,
+    group,
+    notes,
+    participants,
+    category,
+  } = action.payload;
   let response: Response<AddExpense> = {
     success: false,
     status: -1,
   };
 
   let api: ExpenseAPI = new ExpenseAPI(token);
-  response = yield api.addExpense(description, total, paid_at, participants, group, notes);
+  response = yield api.addExpense(
+    description,
+    total,
+    paid_at,
+    participants,
+    category,
+    group,
+    notes
+  );
 
   if (response.success) {
     yield put(expenseActions.onAddExpenseResponse(response));

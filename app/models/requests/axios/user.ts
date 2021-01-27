@@ -47,6 +47,7 @@ export interface AddExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 
@@ -58,6 +59,7 @@ export interface EditExpenseRequest {
   paid_at: number;
   group?: string;
   notes?: string;
+  category: number;
   participants: Array<Participant>;
 }
 

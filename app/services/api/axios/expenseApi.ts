@@ -137,6 +137,7 @@ export class ExpenseAPI implements expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<AddExpense>> {
@@ -153,6 +154,7 @@ export class ExpenseAPI implements expenseApi {
         group: group,
         notes: notes,
         participants: participants,
+        category: category,
       });
 
       if (response.status == 201) {
@@ -201,6 +203,7 @@ export class ExpenseAPI implements expenseApi {
         group: group,
         notes: notes,
         participants: participants,
+        category: category,
       });
 
       if (response.status == 200) {

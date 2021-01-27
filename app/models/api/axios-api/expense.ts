@@ -21,6 +21,7 @@ export interface expenseApi {
     total: number,
     paid_at: number,
     participants: Array<Participant>,
+    category: number,
     group?: string,
     notes?: string
   ): Promise<Response<AddExpense>>;
