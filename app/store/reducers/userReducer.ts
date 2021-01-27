@@ -21,6 +21,10 @@ import {
   EditActivityRequest,
   GetUserActivityRequest,
   GetUserActivitiesRequest,
+  AddPaymentRequest,
+  DeletePaymentRequest,
+  EditPaymentRequest,
+  GetPaymentRequest,
 } from "../../models/requests/axios/user";
 import {
   AddDebtRequest,
@@ -53,6 +57,9 @@ import {
   EditActivity,
   UserActivity,
   UserActivities,
+  AddPayment,
+  EditPayment,
+  UserPayment,
 } from "../../models/responses/axios/user";
 import {
   AddGroupResponse,
@@ -450,6 +457,65 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return state;
   },
+
+  [types.GET_USER_PAYMENT_REQUEST](state: IUserState, action: Action<GetPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.GET_USER_PAYMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<UserPayment>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_USER_PAYMENT_FAIL](state: IUserState, action: Action<Response<UserPayment>>): IUserState {
+    return state;
+  },
+
+  [types.ADD_PAYMENT_REQUEST](state: IUserState, action: Action<AddPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.ADD_PAYMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddPayment>>
+  ): IUserState {
+    return state;
+  },
+  [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
+    return state;
+  },
+
+  [types.EDIT_PAYMENT_REQUEST](state: IUserState, action: Action<EditPaymentRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
+    return state;
+  },
+  [types.EDIT_PAYMENT_FAIL](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
+    return state;
+  },
+
+  [types.DELETE_PAYMENT_REQUEST](
+    state: IUserState,
+    action: Action<DeletePaymentRequest>
+  ): IUserState {
+    return { ...state, token: action.payload.token };
+  },
+  [types.DELETE_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.DELETE_PAYMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+
   [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>): IUserState {
     return {
       ...state,
