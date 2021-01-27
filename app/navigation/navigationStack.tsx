@@ -137,26 +137,31 @@ const GroupNavigator = () => (
   <GroupStack.Navigator
     initialRouteName="GroupList"
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      // animationEnabled: true,
+      // headerTitleStyle: {
+      //   fontFamily: "IRANSansWeb_Bold",
+      //   fontSize: 20,
+      //   textAlign: "right",
+      // },
+      // headerStyle: {
+      //   elevation: 10,
+      // },
+      headerShown: false,
     }}>
-    <LoggedInTab.Screen name="GroupList" component={GroupList} options={{ title: "گروه‌ها" }} />
+    <LoggedInTab.Screen
+      name="GroupList"
+      component={GroupList}
+      // options={{ title: "گروه‌ها" }}
+    />
     <LoggedInTab.Screen
       name="Group"
       component={Group}
-      options={({ route }) => ({ title: route.params.groupName })}
+      // options={({ route }) => ({ title: route.params.groupName })}
     />
     <LoggedInTab.Screen
       name="AddGroup"
       component={AddGroup}
-      options={{ title: "افزودن گروه جدید" }}
+      // options={{ title: "افزودن گروه جدید" }}
     />
   </GroupStack.Navigator>
 );
@@ -164,36 +169,38 @@ const GroupNavigator = () => (
 const ActivityNavigator = () => (
   <ActivityStack.Navigator
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      // animationEnabled: true,
+      // headerTitleStyle: {
+      //   fontFamily: "IRANSansWeb_Bold",
+      //   fontSize: 20,
+      //   textAlign: "right",
+      //   color: "#333333",
+      // },
+      // headerStyle: {
+      //   elevation: 10,
+      // },
+      headerShown: false,
     }}
     initialRouteName="ActivityList">
     <LoggedInTab.Screen
       name="ActivityList"
       component={ActivityList}
-      options={{ title: "فعالیت‌ها" }}
+      // options={{ title: "فعالیت‌ها" }}
     />
     <LoggedInTab.Screen
       name="Activity"
       component={Activity}
-      options={({ route }) => ({ title: route.params.activityName })}
+      // options={({ route }) => ({ title: route.params.activityName })}
     />
     <LoggedInTab.Screen
       name="AddExpense"
       component={AddExpense}
-      options={{ title: "افزودن هزینه جدید" }}
+      // options={{ title: "افزودن هزینه جدید" }}
     />
     <LoggedInTab.Screen
       name="AddComment"
       component={AddComment}
-      options={{ title: "افزودن یادداشت" }}
+      // options={{ title: "افزودن یادداشت" }}
     />
   </ActivityStack.Navigator>
 );
@@ -201,27 +208,33 @@ const ActivityNavigator = () => (
 const FriendNavigator = () => (
   <FriendStack.Navigator
     screenOptions={{
-      animationEnabled: true,
-      headerTitleStyle: {
-        fontFamily: "IRANSansWeb_Bold",
-        fontSize: 20,
-        textAlign: "right",
-      },
-      headerStyle: {
-        elevation: 10,
-      },
+      // animationEnabled: true,
+      // headerTitleStyle: {
+      //   fontFamily: "IRANSansWeb_Bold",
+      //   fontSize: 20,
+      //   textAlign: "right",
+      //   color: "#333333",
+      // },
+      // headerStyle: {
+      //   elevation: 10,
+      // },
+      headerShown: false,
     }}
     initialRouteName="FriendList">
-    <LoggedInTab.Screen name="FriendList" component={FriendList} options={{ title: "دوستان" }} />
+    <LoggedInTab.Screen
+      name="FriendList"
+      component={FriendList}
+      // options={{ title: "دوستان" }}
+    />
     <LoggedInTab.Screen
       name="Friend"
       component={Friend}
-      options={({ route }) => ({ title: route.params.friendName })}
+      // options={({ route }) => ({ title: route.params.friendName })}
     />
     <LoggedInTab.Screen
       name="InviteFriend"
       component={InviteFriend}
-      options={{ title: "افزودن دوستان جدید" }}
+      // options={{ title: "افزودن دوستان جدید" }}
     />
   </FriendStack.Navigator>
 );
