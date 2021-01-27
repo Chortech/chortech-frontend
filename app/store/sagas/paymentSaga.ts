@@ -17,7 +17,6 @@ import { navigationRef } from "../../navigation/navigationService";
 import { PaymentAPI } from "../../services/api/axios/paymentApi";
 import { Response } from "../../models/responses/axios/response";
 import * as paymentActions from "../actions/paymentActions";
-import { ExpenseAPI } from "../../services/api/axios/expenseApi";
 
 export function* getUserPaymentAsync(action: Action<GetPaymentRequest>) {
     yield put(paymentActions.onLoadingEnable());
@@ -45,7 +44,7 @@ export function* getUserPaymentAsync(action: Action<GetPaymentRequest>) {
 
 export function* addPaymentAsync(action: Action<AddPaymentRequest>) {
     yield put(paymentActions.onLoadingEnable());
-    const { token, from, to, amount, paid_at, group, notes} = action.payload;
+    const { token, from, to, amount, paid_at, group, notes } = action.payload;
     let response: Response<AddPayment> = {
         success: false,
         status: -1,
@@ -67,7 +66,7 @@ export function* addPaymentAsync(action: Action<AddPaymentRequest>) {
 
 export function* editPaymentAsync(action: Action<EditPaymentRequest>) {
     yield put(paymentActions.onLoadingEnable());
-    const { token, id, amount, paid_at, group, notes} = action.payload;
+    const { token, id, amount, paid_at, group, notes } = action.payload;
     let response: Response<EditPayment> = {
         success: false,
         status: -1,
@@ -113,7 +112,7 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
         status: -1,
     };
 
-    let api: ExpenseAPI = new ExpenseAPI(token);
+    let api: PaymentAPI = new PaymentAPI(token);
     response = yield api.addComment(text, created_at, id);
 
     if (response.success) {
@@ -122,15 +121,6 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
         navigationRef.current?.goBack();
     } else {
         yield put(paymentActions.onAddCommentFail());
-        // if (response.status == -2) {
-        //     ToastAndroid.show("شما جزو اعضای این هزینه نیستید", ToastAndroid.SHORT);
-        // } else if (response.status == 400) {
-        //     ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
-        // } else if (response.status == 404) {
-        //     ToastAndroid.show("این هزینه وجود ندارد", ToastAndroid.SHORT);
-        // } else {
-        //     ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
-        // }
     }
     yield put(paymentActions.onLoadingDisable());
 }

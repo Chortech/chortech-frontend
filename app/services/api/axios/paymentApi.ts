@@ -4,6 +4,7 @@ import { paymentApi } from "../../../models/api/axios-api/payment";
 import { Response } from "../../../models/responses/axios/response";
 import { Token } from "../../../models/other/axios/Token";
 import { AddPayment, EditPayment, UserPayment } from "../../../models/responses/axios/user";
+import { log } from "../../../utils/logger";
 
 export class PaymentAPI implements paymentApi {
     client: AxiosInstance;
@@ -27,6 +28,31 @@ export class PaymentAPI implements paymentApi {
             status: -1,
         };
 
+        try {
+            let response: AxiosResponse = await this.client.get(`/payments/${id}`);
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            } 
+            log("get payment api result");
+            log(result);
+        } catch (e) {
+            log("get payment api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
+
         return result;
     }
 
@@ -43,6 +69,38 @@ export class PaymentAPI implements paymentApi {
             status: -1,
         };
 
+        try {
+            let response: AxiosResponse = await this.client.post("/payments", {
+                from: from,
+                to: to,
+                amount: amount,
+                paid_at: paid_at,
+                group: group,
+                notes: notes
+            });
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            }
+            log("add payment api result");
+            log(result);
+        } catch (e) {
+            log("add payment api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
+
         return result;
     }
 
@@ -58,6 +116,36 @@ export class PaymentAPI implements paymentApi {
             status: -1,
         };
 
+        try {
+            let response: AxiosResponse = await this.client.put(`/payments/${id}`, {
+                amount: amount,
+                paid_at: paid_at,
+                group: group,
+                notes: notes
+            });
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            }
+            log("edit payment api result");
+            log(result);
+        } catch (e) {
+            log("edit payment api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
+
         return result;
     }
 
@@ -67,6 +155,31 @@ export class PaymentAPI implements paymentApi {
             status: -1,
         };
 
+        try {
+            let response: AxiosResponse = await this.client.delete(`/payments/${id}`);
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            }
+            log("delete payment api result");
+            log(result);
+        } catch (e) {
+            log("delete payment api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
+
         return result;
     }
 
@@ -75,6 +188,34 @@ export class PaymentAPI implements paymentApi {
             success: false,
             status: -1,
         };
+
+        try {
+            let response: AxiosResponse = await this.client.post(`/payments/${id}/comments`, {
+                text: text,
+                created_at: created_at
+            });
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            }
+            log("add comment api result");
+            log(result);
+        } catch (e) {
+            log("add comment api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
 
         return result;
     }

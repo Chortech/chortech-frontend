@@ -16,10 +16,6 @@ import {
   UploadImageRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
-  AddActivityRequest,
-  DeleteActivityRequest,
-  EditActivityRequest,
-  GetUserActivityRequest,
   GetUserActivitiesRequest,
   AddPaymentRequest,
   DeletePaymentRequest,
@@ -27,18 +23,12 @@ import {
   GetPaymentRequest,
 } from "../../models/requests/axios/user";
 import {
-  AddDebtRequest,
-  AddParticipantRequest,
-  DeleteParticipantRequest,
-} from "../../models/requests/graphql/activity";
-import {
   AddGroupRequest,
   UpdateGroupRequest,
   DeleteGroupRequest,
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
-import { UpdateUserRequest } from "../../models/requests/graphql/user";
 import { Response } from "../../models/responses/axios/response";
 import {
   AddFriend,
@@ -52,10 +42,6 @@ import {
   EditExpense,
   UploadImage,
   EditProfile,
-  AddActivity,
-  DeleteActivity,
-  EditActivity,
-  UserActivity,
   UserActivities,
   AddPayment,
   EditPayment,
@@ -90,6 +76,13 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  payment: {
+    id: "",
+    from: "",
+    to: "",
+    amount: 0,
+    paid_at: 0,
+  },
   myCreditCards: [],
   otherCreditCards: [],
   imageUri: "",
@@ -468,7 +461,10 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<UserPayment>>
   ): IUserState {
-    return state;
+    return  {
+      ...state,
+      payment: action.payload.response!.payment
+    };
   },
   [types.GET_USER_PAYMENT_FAIL](state: IUserState, action: Action<Response<UserPayment>>): IUserState {
     return state;
@@ -484,7 +480,10 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<AddPayment>>
   ): IUserState {
-    return state;
+    return {
+      ...state,
+      
+    }  
   },
   [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
     return state;

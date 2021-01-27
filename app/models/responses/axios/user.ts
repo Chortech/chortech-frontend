@@ -5,6 +5,7 @@ import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
 import { Payment } from "../../other/axios/Payment";
 import { Token } from "../../other/axios/Token";
+import { User } from "../../other/axios/User";
 
 export interface GetUserFriends {
   friends: Array<Friend>;
@@ -97,7 +98,7 @@ export interface UserPayment {
 
 export interface AddPayment {
   id: string;
-  from: string; //change this part
+  from: string; 
   to: string;
   amount: number;
   paid_at: number;
