@@ -30,21 +30,7 @@ const Login: React.FC = (): JSX.Element => {
     } else if (data.validEmailOrPhone && data.validPassword) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
-      // dispatch(loginActions.onLoginRequest(email, phone, data.password, data.inputType));
-      let response: Response<Login> = {
-        status: 0,
-        success: true,
-        response: {
-          id: "1",
-          email: email,
-          phone: phone,
-          password: data.password,
-          inputType: data.inputType,
-          token: state.token,
-        },
-      };
-
-      dispatch(loginActions.onLoginResponse(response));
+      dispatch(loginActions.onLoginRequest(email, phone, data.password, data.inputType));
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }

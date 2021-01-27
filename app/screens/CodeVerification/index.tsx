@@ -47,17 +47,17 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const dispatch = useDispatch();
   const generateCode = () => {
-    // dispatch(
-    //   verificationActions.onGenerateCodeRequest(
-    //     props.email,
-    //     props.phone,
-    //     props.inputType,
-    //     props.parentScreen,
-    //     props.name,
-    //     props.password,
-    //     state.token
-    //   )
-    // );
+    dispatch(
+      verificationActions.onGenerateCodeRequest(
+        props.email,
+        props.phone,
+        props.inputType,
+        props.parentScreen,
+        props.name,
+        props.password,
+        state.token
+      )
+    );
   };
 
   useEffect(() => {
@@ -66,60 +66,18 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
 
   const onNextScreen = () => {
     if (data.validCodeLength) {
-      let response: Response<SignUp> = {
-        status: 200,
-        success: true,
-        response: {
-          id: state.id,
-          email: props.email,
-          inputType: props.inputType,
-          name: props.name,
-          password: props.password,
-          phone: props.phone,
-          token: {
-            access: "asdkljfadsklf",
-            created: 102310238,
-            expires: 132809183,
-          },
-        },
-      };
-      let editResponse: Response<ChangeEmailOrPhone> = {
-        status: 200,
-        success: true,
-        response: {
-          inputType: props.inputType,
-          newEmail: props.email,
-          newPhone: props.phone,
-        },
-      };
-      if (props.parentScreen == "AccountIdentification") {
-        NavigationService.navigate("ResetPassword", {
-          email: props.email,
-          phone: props.phone,
-          inputType: props.inputType,
-          parentScreen: props.parentScreen,
-        });
-      } else if (props.parentScreen == "EditProfile") {
-        dispatch(authActions.onChangeEmailOrPhoneResponse(editResponse));
-        navigationRef.current?.navigate("Profile");
-      } else {
-        dispatch(authActions.onSignUpResponse(response));
-      }
-      // verificationActions.onVerifyCodeResponse(response);
-
-      // NavigationService.navigate("GroupList");
-      // dispatch(
-      //   verificationActions.onVerifyCodeRequest(
-      //     props.name,
-      //     props.email,
-      //     props.phone,
-      //     props.password,
-      //     props.inputType,
-      //     data.verificationCode,
-      //     props.parentScreen,
-      //     state.token
-      //   )
-      // );
+      dispatch(
+        verificationActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen,
+          state.token
+        )
+      );
     } else {
       ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }

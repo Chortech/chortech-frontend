@@ -12,7 +12,7 @@ export class RegexValidator {
   }
 
   static validateName(name: string) {
-    return name.length >= 6 && name.length <= 255 ? InputType.Name : InputType.None;
+    return name.length >= 3 && name.length <= 255 ? InputType.Name : InputType.None;
   }
 
   static validatePassword(password: string) {

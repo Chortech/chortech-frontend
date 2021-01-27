@@ -20,57 +20,23 @@ import { styles } from "./styles";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
 import { InputType } from "../../utils/inputTypes";
-import * as ImagePicker from "react-native-image-picker";
+import { FloatingAction } from "react-native-floating-action";
 
 type IState = {
   userReducer: IUserState;
 };
 
-const options = {
-  title: "Select Avatar",
-  storageOptions: {
-    skipBackup: true,
-    path: "images",
-  },
-  includeBase64: true,
-};
-
 const Profile: React.FC = (): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  let user: IUserState = useSelector((state: IState) => state.userReducer);
+  const user: IUserState = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
-  const [data, setData] = useState({
-    imageUri: user.imageUri,
-  });
   const fetchUser = () => {
     if (validateToken(loggedInUser.token)) {
       dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
     }
-  };
-
-  const onPressUpdateImage = () => {
-    let uri = "../../assets/images/chortech_1.png";
-    ImagePicker.launchImageLibrary(options, (response: any) => {
-      uri = response.uri;
-      setData({
-        ...data,
-        imageUri: uri,
-      });
-      user = {
-        ...user,
-        imageUri: data.imageUri,
-      };
-      if (validateToken(loggedInUser.token)) {
-        dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
-      }
-    });
-  };
-
-  const onLogout = () => {
-    // dispatch(userActions.onClearTokenRequest());
-    dispatch(authActions.onLogout());
+    log("fetched user");
   };
 
   const onRefresh = useCallback(() => {
@@ -83,63 +49,78 @@ const Profile: React.FC = (): JSX.Element => {
     fetchUser();
   }, [dispatch]);
 
+  const onEditName = () => {
+    NavigationService.navigate("EditProfile", {
+      name: true,
+    });
+  };
+
+  const onEditEmail = () => {
+    NavigationService.navigate("EditProfile", {
+      email: true,
+    });
+  };
+  const onEditPhone = () => {
+    NavigationService.navigate("EditProfile", {
+      phone: true,
+    });
+  };
+  const onEditPassword = () => {
+    NavigationService.navigate("EditProfile", {
+      password: true,
+    });
+  };
+
   return (
     <>
       {user.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <ImageBackground
-              source={
-                data.imageUri && data.imageUri !== ""
-                  ? { uri: data.imageUri }
-                  : require("../../assets/images/friend-image.jpg")
-              }
-              style={styles.imageContainer}>
-              <TouchableOpacity style={styles.cameraIconContainer} onPress={onPressUpdateImage}>
-                <FontAwesomeIcon icon="camera" style={styles.cameraIcon} size={20} />
-              </TouchableOpacity>
-            </ImageBackground>
-          </View>
+          <Text style={styles.screenTitleText}>اطلاعات حساب کاربری</Text>
           <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
-            {user.name != "" ? <Text style={styles.screenTitleText}>{user.name}</Text> : null}
             <ScrollView
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={true}>
-              <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={() => NavigationService.navigate("ProfileInfo")}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={onEditName}>
                 <View style={styles.arrowIconContainer}>
                   <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={styles.titleText}>اطلاعات حساب کاربری</Text>
+                  <Text style={styles.titleText}>نام</Text>
+                  <Text style={styles.infoText}>{user.name == "" ? "-" : user.name}</Text>
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={onEditEmail}>
                 <View style={styles.arrowIconContainer}>
                   <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={styles.titleText}>کارت‌های برگزیده</Text>
+                  <Text style={styles.titleText}>ایمیل</Text>
+                  <Text style={styles.infoText}>
+                    {loggedInUser.email == "" ? "-" : loggedInUser.email}
+                  </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={onEditPhone}>
                 <View style={styles.arrowIconContainer}>
                   <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={styles.titleText}>مدیریت اعتبار</Text>
+                  <Text style={styles.titleText}>تلفن همراه</Text>
+                  <Text style={styles.infoText}>
+                    {loggedInUser.phone == "" ? "-" : loggedInUser.phone}
+                  </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer} onPress={onLogout}>
-                <View style={styles.logoutIconContainer}>
-                  <FontAwesomeIcon icon="sign-out-alt" style={styles.logoutIcon} size={20} />
+              <TouchableOpacity style={styles.buttonContainer} onPress={onEditPassword}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={{ ...styles.titleText, color: "red" }}>خروج از حساب کاربری</Text>
+                  <Text style={styles.titleText}>رمز عبور</Text>
+                  <Text style={styles.infoText}>********</Text>
                 </View>
               </TouchableOpacity>
             </ScrollView>

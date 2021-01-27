@@ -10,34 +10,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  header: {
-    flex: 4,
-  },
-  imageContainer: {
-    flex: 1,
-  },
-  cameraIconContainer: {
-    flex: 1,
-    backgroundColor: "#00000077",
-    padding: 10,
-    margin: 15,
-    borderWidth: 1,
-    position: "absolute",
-    borderColor: "#fff",
-    top: 0,
-    borderRadius: borderRadius,
-  },
-  cameraIcon: {
-    color: "#fff",
-  },
-  infoContainer: {
-    flex: 6,
-    backgroundColor: "#fff",
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
-  },
   screenTitleText: {
     textAlign: "center",
     fontFamily: "IRANSansWeb_Bold",
@@ -50,6 +22,14 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#f2f2f2",
   },
 
+  infoContainer: {
+    flex: 6,
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
+    paddingBottom: 10,
+    borderTopRightRadius: borderRadius,
+    borderTopLeftRadius: borderRadius,
+  },
   buttonContainer: {
     marginVertical: 5,
     flex: 1,
@@ -71,13 +51,14 @@ export const styles = StyleSheet.create({
     flex: 6,
     paddingHorizontal: 5,
     justifyContent: "center",
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   titleText: {
     fontSize: baseFontSize - 2,
     color: textColor,
     writingDirection: "auto",
     fontFamily: "IRANSansWeb_Medium",
+    padding: 2,
   },
   infoText: {
     fontSize: baseFontSize - 2,

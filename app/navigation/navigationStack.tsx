@@ -23,8 +23,10 @@ import AddExpense from "../screens/AddExpense";
 import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
 import AddComment from "../screens/AddComment";
+import ProfileInfo from "../screens/ProfileInfo";
 import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
+import { lightBlue100 } from "react-native-paper/lib/typescript/src/styles/colors";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -84,13 +86,14 @@ const AuthNavigator = () => {
 
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
-    activeColor="#000"
-    inactiveColor="#227800"
+    activeColor="#00bb5d"
+    inactiveColor="#999999aa"
     barStyle={{
-      backgroundColor: "#00bb5d",
+      backgroundColor: "#fff",
+      elevation: 15,
     }}
-    initialRouteName="GroupList"
-    screenOptions={({ route }) => ({})}>
+    keyboardHidesNavigationBar
+    initialRouteName="GroupList">
     <LoggedInTab.Screen
       name="GroupList"
       component={GroupNavigator}
@@ -228,6 +231,7 @@ const ProfileNavigator = () => (
     <LoggedInTab.Screen name="Profile" component={Profile} />
     <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
     <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
+    <LoggedInTab.Screen name="ProfileInfo" component={ProfileInfo} />
   </ProfileStack.Navigator>
 );
 

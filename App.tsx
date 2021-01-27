@@ -18,14 +18,13 @@ import { flush } from "redux-saga/effects";
 library.add(fab, fas);
 
 const { persistor, store } = configureStore();
-let loadStartUp: boolean = true;
 
 cronJob.init(() => {
   let state: IUserState = store.getState()["authReducer"];
   if (!state.isLoggedIn) return;
-  // store.dispatch(
-  //   authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
-  // );
+  store.dispatch(
+    authActions.onLoginRequest(state.email, state.phone, state.password, state.authInputType)
+  );
   log("cron job called");
 }, "*/50 * * * *");
 

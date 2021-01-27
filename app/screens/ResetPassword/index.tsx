@@ -27,11 +27,9 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const resetToHome = () => {
     if (data.password == data.confirmPassword && data.validPassword && data.validConfirmPassword) {
-      // dispatch(
-      //   authActions.onResetPasswordRequest(props.email, props.phone, data.password, props.inputType)
-      // );
-      dispatch(authActions.onResetPasswordResponse({ status: 200, success: true }));
-      navigationRef.current?.reset({ index: 0, routes: [{ name: "Login" }] });
+      dispatch(
+        authActions.onResetPasswordRequest(props.email, props.phone, data.password, props.inputType)
+      );
     } else {
       ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
     }
