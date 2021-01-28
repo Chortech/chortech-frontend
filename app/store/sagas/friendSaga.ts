@@ -13,8 +13,8 @@ import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { InputType } from "../../utils/inputTypes";
 import * as friendActions from "../actions/friendActions";
-import * as expenseActions from "../actions/expenseActions";
-import * as expenseSaga from "./expenseSaga";
+import * as balanceActions from "../actions/balanceActions";
+import * as balanceSaga from "./balanceSaga";
 
 export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   yield put(friendActions.onLoadingEnable());
@@ -30,12 +30,9 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   if (response.success) {
     yield put(friendActions.onGetUserFriendsResponse(response));
     yield call(
-      expenseSaga.getFriendsBalanceRequest,
-      expenseActions.onGetFriendsBalanceRequest(token)
+      balanceSaga.getFriendsBalanceRequest,
+      balanceActions.onGetFriendsBalanceRequest(token)
     );
-    // yield response.response?.friends.forEach(friend => {
-    //   yield call(expenseSaga.getFriendBalanceRequest, expenseActions.onGetFriendBalanceRequest(token, friend.id));
-    // });
   } else {
     yield put(friendActions.onGetUserFriendsFail());
     if (response.status == 404) {

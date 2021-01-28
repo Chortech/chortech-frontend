@@ -8,7 +8,7 @@ import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as friendActions from "../../store/actions/friendActions";
-import * as expenseActions from "../../store/actions/expenseActions";
+import * as balanceActions from "../../store/actions/balanceActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
@@ -42,7 +42,7 @@ const FriendList: React.FC = (): JSX.Element => {
     let index = friends.findIndex((friend) => friend.id == id);
     if (index > -1) {
       if (validateToken(loggedInUser.token)) {
-        dispatch(expenseActions.onGetFriendBalanceRequest(loggedInUser.token, id, name));
+        dispatch(balanceActions.onGetFriendBalanceRequest(loggedInUser.token, id, name));
       }
     }
   };
@@ -61,7 +61,7 @@ const FriendList: React.FC = (): JSX.Element => {
           ? { uri: item.picture }
           : require("../../assets/images/friend-image.jpg")
       }
-      Balance={item.balance?.balance}
+      Balance={item.balance}
     />
   );
 

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { color } from "react-native-reanimated";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
 
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row-reverse",
   },
   expenseInfoContainer: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
   },
   expenseDescription: {
@@ -30,10 +31,12 @@ export const styles = StyleSheet.create({
   },
   expenseStatusContainer: {
     flex: 1,
+    justifyContent: "center",
+    borderRadius: 10,
   },
   expenseBalanceContainer: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   expenseCurrency: {
     fontFamily: fonts.IranSans_Light,
@@ -41,7 +44,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   expenseStatus: {
-    textAlign: "left",
+    textAlign: "center",
     fontFamily: fonts.IranSans_Light,
     fontSize: 14,
   },
@@ -50,5 +53,24 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: fonts.IranSans_Medium,
     fontSize: 18,
+  },
+  paymentContainer: {
+    padding: 15,
+    marginTop: 10,
+    borderWidth: 3,
+    borderRadius: 20,
+    borderColor: colors.ultraLightGray,
+    backgroundColor: "#f9f9f9",
+    flexDirection: "row-reverse",
+  },
+  coinIcon: {
+    color: colors.gold,
+    alignSelf: "center",
+  },
+  paymentText: {
+    textAlign: "right",
+    fontFamily: fonts.IranSans_Medium,
+    marginRight: 10,
+    color: colors.textBlack,
   },
 });

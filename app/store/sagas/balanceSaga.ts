@@ -32,6 +32,11 @@ export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>
 
   if (response.success) {
     yield put(balanceActions.onGetFriendBalanceResponse(response));
+    yield navigationRef.current?.navigate("Friend", {
+      id: friendId,
+      name: friendName,
+      balances: response.response?.balances != undefined ? response.response.balances : [],
+    });
   } else {
     yield put(balanceActions.onGetFriendBalanceFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);

@@ -16,7 +16,7 @@ import { Friend } from "../../models/other/axios/Friend";
 import { log } from "../../utils/logger";
 import { ExpenseBalance } from "../../models/other/axios/Expense";
 import colors from "../../assets/resources/colors";
-import FriendExpenseItem from "../../components/FriendExpenseItem";
+import FriendBalanceItem from "../../components/FriendBalanceItem";
 import PopupMenu from "../../components/PopupMenu";
 import fonts from "../../assets/resources/fonts";
 
@@ -30,8 +30,8 @@ type IState = {
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { id, name, image, friendBalance } = route.params;
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const { id, name, image, balances } = route.params;
+  const { loading, friends } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressSettleUp = () => NavigationService.navigate("SettleUp");
@@ -66,6 +66,13 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
     // onPressDeleteFriend();
   };
 
+  log("friend balance");
+  log(balances);
+
+  const renderFriendBalanceItem = ({ item }) => {
+    return <FriendBalanceItem item={item} />;
+  };
+
   return (
     <>
       {loading ? (
@@ -83,11 +90,11 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
             <Text style={styles.userNameText}>{name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            {friendBalance.length > 0 ? (
+            {balances.length > 0 ? (
               <FlatList
-                data={friendBalance[0].expenses}
-                renderItem={({ item }) => <FriendExpenseItem item={item} />}
-                keyExtractor={(item) => item.balance.toString()}
+                data={balances}
+                renderItem={({ item }) => <FriendBalanceItem item={item} />}
+                keyExtractor={(item) => item.id}
               />
             ) : null}
             <View style={styles.buttonContainer}>

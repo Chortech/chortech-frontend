@@ -9,6 +9,8 @@ class Colors {
   public red = "#fb3449";
   public customRed = "#ff2a00";
   public lightGreen = "#00ff7e";
+  public gold = "#eeb501";
+  public green = "green";
 }
 
 const colors = new Colors();

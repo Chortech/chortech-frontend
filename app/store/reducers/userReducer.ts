@@ -476,6 +476,7 @@ export const userReducer = createReducer(initialState, {
     if (action.payload.response != undefined) {
       const balances: FriendBalance[] = action.payload.response;
       state.friends.forEach((friend) => {
+        friend.balance = 0;
         let index = balances.findIndex((balance) => balance.other == friend.id);
         if (index > -1) {
           friend.balance = balances[index].balance;

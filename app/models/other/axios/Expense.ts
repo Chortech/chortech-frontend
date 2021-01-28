@@ -30,4 +30,6 @@ export interface ExpenseBalance {
   category?: number;
   description?: string;
   total?: number;
+  from?: string;
+  to?: string;
 }
