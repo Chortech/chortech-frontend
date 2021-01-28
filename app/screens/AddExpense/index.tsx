@@ -26,6 +26,8 @@ import { Searchbar } from "react-native-paper";
 import SelectableItem from "../../components/SelectableItem";
 import { log } from "../../utils/logger";
 import { text } from "@fortawesome/fontawesome-svg-core";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { Participant, PRole } from "../../models/other/axios/Participant";
 import { faElementor } from "@fortawesome/free-brands-svg-icons";
 import { lightGreenA700 } from "react-native-paper/lib/typescript/src/styles/colors";
@@ -48,6 +50,14 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     description: params.description != undefined ? params.description : "",
     expenseAmount: params.total != undefined ? params.total : "",
     isValidExpenseAmount: true,
+    categories: [{id:"0", selected:false,  name: "مواد غذایی", icon: "utensils"}, 
+                    {id:"1", selected:false,  name: "پوشاک", icon: "tshirt"}, 
+                    {id:"2", selected:false,  name: "هدیه", icon: "gift"},
+                    {id:"3", selected:false,  name: "سلامت", icon: "heartbeat"},
+                    {id:"4", selected:false,  name: "لوازم تحریر", icon: "pencil-ruler"},
+                    {id:"5", selected:false,  name: "ورزش", icon: "dumbbell"},
+                    {id:"6", selected:false,  name: "سفر", icon: "suitcase-rolling"},
+                    {id:"7", selected:false,  name: "کالای دیجیتال", icon: "laptop"}]
   });
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
   const [items, setItems] = useState<Array<Item>>([]);
@@ -306,6 +316,35 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     setRenderFlatList(!renderFlatList);
   };
 
+  const renderCategory: any = ({ item }) => (
+    <>
+    <SelectableItem
+      id={item.id}
+      Name={item.name}
+      selected={item.selected}
+      onPressItem={() => {data.categories[item.id].selected = !data.categories[item.id].selected;
+        setRenderFlatList(!renderFlatList);
+      }
+    }
+    />
+      <FontAwesomeIcon icon={item.icon} size={20} style={{position: "relative", top:20}}/>
+    </>
+  );
+
+  const renderFooterComponent = (): JSX.Element => {
+    return (
+      <>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.addButton} onPress={confirm}>
+            <Text style={styles.addButtonText}>ایجاد هزینه</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.removeButton} onPress={cancel}>
+            <Text style={styles.removeButtonText}>انصراف</Text>
+          </TouchableOpacity>
+        </View>
+      </>
+    );
+      
   const showCreditorModal = () => {
     if (Number(data.expenseAmount) > 0) {
       let userItem: Item = {
@@ -455,7 +494,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     setDivideEqual(false);
     setModalVisibility(false);
   };
-
   return (
     <>
       {loading ? (
@@ -515,6 +553,34 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               iconColor="#1AD927"
               onIconPress={() => onChangeSearchQuery(searchQuery)}
             />
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="نام فعالیت"
+                placeholderTextColor="#A4A4A4"
+                value={data.activityName}
+                style={styles.textInput}
+                onChangeText={setActivityName}
+              />
+              <TextInput
+                placeholder="مبلغ (تومان)"
+                value={data.expenseAmount}
+                placeholderTextColor="#A4A4A4"
+                style={styles.textInput}
+                keyboardType="numeric"
+                onChangeText={setExpenseAmount}
+              />
+              <FlatList
+                horizontal={true}
+                data={data.categories}
+                renderItem={renderCategory}
+                extraData={renderFlatList}
+                scrollEnabled={true}
+                keyExtractor={item => item.id}
+              />
+              <TouchableOpacity onPress={showModal} style={styles.showModalButton}>
+                <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
+              </TouchableOpacity>
+            </View>
             <FlatList
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               ListHeaderComponent={
