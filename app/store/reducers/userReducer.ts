@@ -369,7 +369,10 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<UserActivities>>
   ): IUserState {
-    return state;
+    return {
+      ...state,
+      activities: action.payload.response!.activities
+    }
   },
   [types.GET_USER_ACTIVITIES_FAIL](state: IUserState, action: Action<Response<UserActivities>>): IUserState {
     return state;

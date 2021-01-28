@@ -1,14 +1,10 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_ACTIVITY_URL } from "../../../../local_env_vars";
 import { activityApi } from "../../../models/api/axios-api/activity";
-import { Participant } from "../../../models/other/axios/Participant";
 import { Token } from "../../../models/other/axios/Token";
-import { IUserState } from "../../../models/reducers/default";
 import { Response } from "../../../models/responses/axios/response";
 import { UserActivities } from "../../../models/responses/axios/user";
-import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
-import { validateToken } from "../../../utils/tokenValidator";
 
 export class ActivityAPI implements activityApi {
     client: AxiosInstance;
@@ -31,6 +27,31 @@ export class ActivityAPI implements activityApi {
             success: false,
             status: -1,
         };
+
+        try {
+            let response: AxiosResponse = await this.client.get("/activity");
+
+            if (response.status == 200) {
+                result = {
+                    success: true,
+                    status: response.status,
+                    response: response.data,
+                };
+            } else {
+                result.status = response.status;
+            }
+            log("get activities api result");
+            log(result);
+        } catch (e) {
+            log("get activities api error");
+            if (e.isAxiosError) {
+                const error: AxiosError = e as AxiosError;
+                result.status = error.response?.status != undefined ? error.response?.status : -1;
+                log(error.response?.data);
+            } else {
+                log(e.response);
+            }
+        }
 
         return result;
     }
