@@ -7,5 +7,5 @@ export type Friend = {
   phone?: string;
   picture?: string;
   balance?: number;
-  expenses?: FriendBalance[];
+  balances?: FriendBalance[];
 };

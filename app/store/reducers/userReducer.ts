@@ -1,6 +1,7 @@
 import { act } from "react-test-renderer";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
+import { ExpenseBalance } from "../../models/other/axios/Expense";
 import { IUserState } from "../../models/reducers/default";
 import {
   AddFriendRequest,
@@ -473,24 +474,11 @@ export const userReducer = createReducer(initialState, {
     action: Action<Response<FriendBalance[]>>
   ): IUserState {
     if (action.payload.response != undefined) {
+      const balances: FriendBalance[] = action.payload.response;
       state.friends.forEach((friend) => {
-        friend.balance = {
-          self: {
-            id: state.id,
-            name: state.name,
-          },
-          other: {
-            id: "-1",
-            name: state.name,
-          },
-          balance: 0,
-          expenses: [],
-        };
-        let index = action.payload.response!.findIndex(
-          (friendBalance) => friendBalance.other.id == friend.id
-        );
+        let index = balances.findIndex((balance) => balance.other == friend.id);
         if (index > -1) {
-          friend.balance = action.payload.response![index];
+          friend.balance = balances[index].balance;
         }
       });
     }
@@ -510,30 +498,21 @@ export const userReducer = createReducer(initialState, {
   },
   [types.GET_FRIEND_BALANCE_RESPONSE](
     state: IUserState,
-    action: Action<Response<FriendBalance[]>>
+    action: Action<Response<FriendBalance>>
   ): IUserState {
-    if (action.payload.response != undefined) {
-      let balances: FriendBalance[] = action.payload.response;
-      balances.filter((balance) => balance.self.id == state.id);
-      balances.forEach((balance) => {
-        let index = state.friends.findIndex((friend) => friend.id == balance.other.id);
-        if (state.friends[index].balance != undefined) {
-          state.friends[index].balance!.expenses = balance.expenses;
-        } else {
-          state.friends[index].balance = {
-            self: balance.self,
-            other: balance.other,
-            balance: balance.balance != undefined ? balance.balance : 0,
-            expenses: balance.expenses != undefined ? balance.expenses : [],
-          };
-        }
-      });
+    const response = action.payload.response;
+    if (response != undefined) {
+      let balances: ExpenseBalance[] = response.balances != undefined ? response.balances : [];
+      let index = state.friends.findIndex((friend) => friend.id == response.other);
+      if (index > -1) {
+        state.friends[index].balances = balances;
+      }
     }
     return state;
   },
   [types.GET_FRIEND_BALANCE_FAIL](
     state: IUserState,
-    action: Action<Response<FriendBalance[]>>
+    action: Action<Response<FriendBalance>>
   ): IUserState {
     return state;
   },

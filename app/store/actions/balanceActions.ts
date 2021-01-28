@@ -56,8 +56,8 @@ export function onGetFriendBalanceRequest(
 }
 
 export function onGetFriendBalanceResponse(
-  response: Response<FriendBalance[]>
-): Action<Response<FriendBalance[]>> {
+  response: Response<FriendBalance>
+): Action<Response<FriendBalance>> {
   return {
     type: types.GET_FRIEND_BALANCE_RESPONSE,
     payload: {
@@ -68,7 +68,7 @@ export function onGetFriendBalanceResponse(
   };
 }
 
-export function onGetFriendBalanceFail(): Action<Response<FriendBalance[]>> {
+export function onGetFriendBalanceFail(): Action<Response<FriendBalance>> {
   return {
     type: types.GET_FRIEND_BALANCE_FAIL,
     payload: {

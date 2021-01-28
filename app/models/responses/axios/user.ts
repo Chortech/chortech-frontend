@@ -91,10 +91,9 @@ export interface UploadImage {
 }
 
 export interface FriendBalance {
-  self?: User;
-  other?: string | User;
+  other?: string;
   balance?: number;
-  expenses?: ExpenseBalance[];
+  balances?: ExpenseBalance[];
 }
 
 export interface UserActivities {
