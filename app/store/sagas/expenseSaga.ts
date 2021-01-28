@@ -234,35 +234,3 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
   }
   yield put(expenseActions.onLoadingDisable());
 }
-
-export function* getFriendsBalanceRequest(action: Action<GetFriendsBalanceRequest>) {
-  let api: ExpenseAPI = new ExpenseAPI(action.payload.token);
-  let response: Response<FriendBalance[]> = yield api.getFriendsBalance();
-
-  if (response.success) {
-    yield put(expenseActions.onGetFriendsBalanceResponse(response));
-  } else {
-    yield put(expenseActions.onGetFriendsBalanceFail());
-    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
-  }
-}
-
-export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>) {
-  yield put(expenseActions.onLoadingEnable());
-  const { token, friendId, friendName } = action.payload;
-  let api: ExpenseAPI = new ExpenseAPI(token);
-  let response: Response<FriendBalance[]> = yield api.getFriendBalance(friendId);
-
-  if (response.success) {
-    yield put(expenseActions.onGetFriendBalanceResponse(response));
-    yield navigationRef.current?.navigate("Friend", {
-      id: friendId,
-      name: friendName,
-      friendBalance: response.response,
-    });
-  } else {
-    yield put(expenseActions.onGetFriendBalanceFail());
-    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
-  }
-  yield put(expenseActions.onLoadingDisable());
-}

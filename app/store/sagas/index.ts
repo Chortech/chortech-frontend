@@ -9,6 +9,7 @@ import * as userSaga from "./userSaga";
 import * as groupSaga from "./groupSaga";
 import * as friendSaga from "./friendSaga";
 import * as expenseSaga from "./expenseSaga";
+import * as balanceSaga from "./balanceSaga";
 
 export default function* watch() {
   yield all([
@@ -33,8 +34,8 @@ export default function* watch() {
     takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
     takeLatest(types.ADD_COMMENT_REQUEST, expenseSaga.addCommentAsync),
     takeLatest(types.GET_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
-    takeLatest(types.GET_FRIENDS_BALANCE_REQUEST, expenseSaga.getFriendsBalanceRequest),
-    takeLatest(types.GET_FRIEND_BALANCE_REQUEST, expenseSaga.getFriendBalanceRequest),
+    takeLatest(types.GET_FRIENDS_BALANCE_REQUEST, balanceSaga.getFriendsBalanceRequest),
+    takeLatest(types.GET_FRIEND_BALANCE_REQUEST, balanceSaga.getFriendBalanceRequest),
     takeLatest(types.UPLOAD_IMAGE_REQUEST, userSaga.uploadImageAsync),
     takeLatest(types.ADD_GROUP_REQUEST, groupSaga.createGroupAsync),
     takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.GetUserGroupsAsync),
