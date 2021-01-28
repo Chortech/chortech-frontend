@@ -91,8 +91,8 @@ export interface UploadImage {
 }
 
 export interface FriendBalance {
-  self: User;
-  other: User;
+  self?: User;
+  other?: string | User;
   balance?: number;
   expenses?: ExpenseBalance[];
 }
@@ -107,7 +107,7 @@ export interface UserPayment {
 
 export interface AddPayment {
   id: string;
-  from: string; 
+  from: string;
   to: string;
   amount: number;
   paid_at: number;

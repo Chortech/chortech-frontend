@@ -20,12 +20,14 @@ export interface You {
 }
 
 export interface ExpenseBalance {
+  id: string;
+  type: string;
   balance: number;
-  expense: {
-    id: string;
-    creator: string;
-    total: number;
-    description: string;
-    category: number;
-  };
+  created_at: number;
+  notes?: string;
+  amount?: number;
+  paid_at?: number;
+  category?: number;
+  description?: string;
+  total?: number;
 }

@@ -106,7 +106,6 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<UserProfile>>
   ): IUserState {
-    log(action.payload.response);
     return {
       ...state,
       name: action.payload.response!.name,
@@ -359,7 +358,10 @@ export const userReducer = createReducer(initialState, {
   [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.GET_USER_ACTIVITIES_REQUEST](state: IUserState, action: Action<GetUserActivitiesRequest>): IUserState {
+  [types.GET_USER_ACTIVITIES_REQUEST](
+    state: IUserState,
+    action: Action<GetUserActivitiesRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
@@ -371,10 +373,13 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return {
       ...state,
-      activities: action.payload.response!.activities
-    }
+      activities: action.payload.response!.activities,
+    };
   },
-  [types.GET_USER_ACTIVITIES_FAIL](state: IUserState, action: Action<Response<UserActivities>>): IUserState {
+  [types.GET_USER_ACTIVITIES_FAIL](
+    state: IUserState,
+    action: Action<Response<UserActivities>>
+  ): IUserState {
     return state;
   },
   [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
@@ -530,10 +535,13 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<FriendBalance[]>>
   ): IUserState {
-        return state;
+    return state;
   },
 
-  [types.GET_USER_PAYMENT_REQUEST](state: IUserState, action: Action<GetPaymentRequest>): IUserState {
+  [types.GET_USER_PAYMENT_REQUEST](
+    state: IUserState,
+    action: Action<GetPaymentRequest>
+  ): IUserState {
     return {
       ...state,
       token: action.payload.token,
@@ -543,12 +551,15 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<UserPayment>>
   ): IUserState {
-    return  {
+    return {
       ...state,
-      payment: action.payload.response!.payment
+      payment: action.payload.response!.payment,
     };
   },
-  [types.GET_USER_PAYMENT_FAIL](state: IUserState, action: Action<Response<UserPayment>>): IUserState {
+  [types.GET_USER_PAYMENT_FAIL](
+    state: IUserState,
+    action: Action<Response<UserPayment>>
+  ): IUserState {
     return state;
   },
 
@@ -571,9 +582,9 @@ export const userReducer = createReducer(initialState, {
         amount: action.payload.response!.amount,
         paid_at: action.payload.response!.paid_at,
         group: action.payload.response!.group,
-        notes: action.payload.response!.notes
-      }
-    }  
+        notes: action.payload.response!.notes,
+      },
+    };
   },
   [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
     return state;
@@ -585,11 +596,14 @@ export const userReducer = createReducer(initialState, {
       token: action.payload.token,
     };
   },
-  [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
+  [types.EDIT_PAYMENT_RESPONSE](
+    state: IUserState,
+    action: Action<Response<EditPayment>>
+  ): IUserState {
     return {
       ...state,
-      payment: action.payload.response!.payment
-    }
+      payment: action.payload.response!.payment,
+    };
   },
   [types.EDIT_PAYMENT_FAIL](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
     return state;
@@ -599,9 +613,9 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<DeletePaymentRequest>
   ): IUserState {
-    return { 
+    return {
       ...state,
-      token: action.payload.token 
+      token: action.payload.token,
     };
   },
   [types.DELETE_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {

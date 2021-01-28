@@ -99,7 +99,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
     }
   };
 
-  log(searchedContacts);
   const onSelectContact = (contact: CustomContact) => {
     contact.selected = !contact.selected;
     let index = selectedContacts.current?.findIndex((c) => c.recordID == contact.recordID);

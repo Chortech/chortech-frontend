@@ -557,21 +557,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               onIconPress={() => onChangeSearchQuery(searchQuery)}
             />
             <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="نام فعالیت"
-                placeholderTextColor="#A4A4A4"
-                value={params.description}
-                style={styles.textInput}
-                onChangeText={setDescription}
-              />
-              <TextInput
-                placeholder="مبلغ (تومان)"
-                value={data.expenseAmount}
-                placeholderTextColor="#A4A4A4"
-                style={styles.textInput}
-                keyboardType="numeric"
-                onChangeText={setExpenseAmount}
-              />
               <FlatList
                 horizontal={true}
                 data={data.categories}
@@ -580,9 +565,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
                 scrollEnabled={true}
                 keyExtractor={(item) => item.id}
               />
-              {/* <TouchableOpacity onPress={showModal} style={styles.showModalButton}>
-                <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
-              </TouchableOpacity> */}
             </View>
             <FlatList
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

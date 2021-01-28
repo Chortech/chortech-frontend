@@ -36,7 +36,6 @@ export function* loginAsync(action: Action<LoginRequest>) {
   };
 
   if (inputType == InputType.Email) {
-    log("call");
     response = yield AuthAPI.loginByEmail(email, password);
   } else if (inputType == InputType.Phone) {
     response = yield AuthAPI.loginByPhone(phone, password);

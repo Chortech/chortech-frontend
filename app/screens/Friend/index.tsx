@@ -42,9 +42,6 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
     }
   };
 
-  // log("friend balance");
-  // log(friendBalance);
-
   const onPopupEvent = (eventName, index) => {
     if (eventName !== "itemSelected") return;
     if (index === 0) {

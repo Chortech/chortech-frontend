@@ -36,7 +36,6 @@ const Profile: React.FC = (): JSX.Element => {
     if (validateToken(loggedInUser.token)) {
       dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
     }
-    log("fetched user");
   };
 
   const onRefresh = useCallback(() => {

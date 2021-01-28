@@ -32,7 +32,7 @@ const PopupMenu: React.FC<Props> = (props: Props) => {
   };
 
   const onError = () => {
-    console.log("Popup Error");
+    log("popup error");
   };
 
   return (
