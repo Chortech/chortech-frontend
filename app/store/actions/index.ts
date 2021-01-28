@@ -5,6 +5,7 @@ import * as expenseActions from "./expenseActions";
 import * as friendActions from "./friendActions";
 import * as groupActions from "./groupActions";
 import * as verificationActions from "./verificationActions";
+import * as balanceActions from "./balanceActions";
 
 export const ActionCreators = Object.assign(
   {},
@@ -13,5 +14,6 @@ export const ActionCreators = Object.assign(
   expenseActions,
   friendActions,
   groupActions,
-  verificationActions
+  verificationActions,
+  balanceActions
 );
