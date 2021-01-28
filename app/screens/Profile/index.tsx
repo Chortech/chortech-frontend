@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  ImageBackground,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
@@ -9,22 +17,67 @@ import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { styles } from "./styles";
+import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
+import { InputType } from "../../utils/inputTypes";
+import * as ImagePicker from "react-native-image-picker";
 
 type IState = {
   userReducer: IUserState;
 };
 
-const Profile: React.FC = (): JSX.Element => {
-  const loggedInUserId: string = useStore().getState()["authReducer"].id;
-  const user = useSelector((state: IState) => state.userReducer);
-  const dispatch = useDispatch();
+const options = {
+  title: "Select Avatar",
+  storageOptions: {
+    skipBackup: true,
+    path: "images",
+  },
+  includeBase64: true,
+};
 
+const Profile: React.FC = (): JSX.Element => {
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const dispatch = useDispatch();
+  const [data, setData] = useState({
+    imageUri: user?.imageUri,
+  });
   const fetchUser = () => {
-    dispatch(userActions.onGetUserRequest(loggedInUserId));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token!));
+    }
   };
-  const onPressFriendsList = () => NavigationService.navigate("FriendList");
-  const onPressEditProfile = () => NavigationService.navigate("EditProfile");
-  const onLogout = () => dispatch(authActions.onLogout());
+
+  const onPressUpdateImage = () => {
+    let uri = "../../assets/images/chortech_1.png";
+    ImagePicker.launchImageLibrary(options, (response: any) => {
+      uri = response.uri;
+      setData({
+        ...data,
+        imageUri: uri,
+      });
+      user = {
+        ...user,
+        imageUri: data.imageUri,
+      };
+      if (validateToken(loggedInUser.token)) {
+        dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
+      } 
+    });
+  };
+
+  const onLogout = () => {
+    // dispatch(userActions.onClearTokenRequest());
+    dispatch(authActions.onLogout());
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchUser();
+    setRefreshing(false);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchUser();
@@ -32,50 +85,68 @@ const Profile: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
-            <Image
-              style={styles.profileImage}
-              source={require("../../assets/images/friend-image.jpg")}
-            />
-            <TouchableOpacity style={styles.logoutIcon} onPress={onLogout}>
-              <FontAwesomeIcon icon="sign-out-alt" style={{ color: "#ff0000" }} size={25} />
-            </TouchableOpacity>
-            <Text style={styles.userNameText}>{user.name}</Text>
+            <ImageBackground
+              source={
+                data.imageUri && data.imageUri !== ""
+                  ? { uri: data.imageUri }
+                  : require("../../assets/images/friend-image.jpg")
+              }
+              style={styles.imageContainer}>
+              <TouchableOpacity style={styles.cameraIconContainer} onPress={onPressUpdateImage}>
+                <FontAwesomeIcon icon="camera" style={styles.cameraIcon} size={20} />
+              </TouchableOpacity>
+            </ImageBackground>
           </View>
-          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.email}</Text>
-              </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>ایمیل</Text>
-              </View>
-            </View>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{user.phone}</Text>
-              </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>تلفن همراه</Text>
-              </View>
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={onPressFriendsList}>
-                <Text style={styles.buttonText}>دوستان</Text>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
+            {user.name != "" ? <Text style={styles.screenTitleText}>{user.name}</Text> : null}
+            <ScrollView
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              showsVerticalScrollIndicator={true}>
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={() => NavigationService.navigate("ProfileInfo")}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>اطلاعات حساب کاربری</Text>
+                </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={onPressEditProfile}>
-                <Text style={styles.buttonText}>ویرایش اطلاعات</Text>
+
+              <TouchableOpacity style={styles.buttonContainer}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>کارت‌های برگزیده</Text>
+                </View>
               </TouchableOpacity>
-            </View>
+              <TouchableOpacity style={styles.buttonContainer}>
+                <View style={styles.arrowIconContainer}>
+                  <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.titleText}>مدیریت اعتبار</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonContainer} onPress={onLogout}>
+                <View style={styles.logoutIconContainer}>
+                  <FontAwesomeIcon icon="sign-out-alt" style={styles.logoutIcon} size={20} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={{ ...styles.titleText, color: "red" }}>خروج از حساب کاربری</Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
           </Animatable.View>
         </View>
       )}
     </>
   );
 };
-
 export default Profile;

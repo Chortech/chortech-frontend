@@ -1,167 +1,250 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import * as Animatable from "react-native-animatable";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
+import * as authActions from "../../store/actions/authActions";
 import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
+import { log } from "../../utils/logger";
+import CustomInput from "../../components/CustomInput";
+import { validateToken } from "../../utils/tokenValidator";
+import { RootStackParamList } from "../../navigation/rootStackParams";
+import { RouteProp } from "@react-navigation/native";
+
+type Props = {
+  route: RouteProp<RootStackParamList, "EditProfile">;
+};
 
 type IState = {
   userReducer: IUserState;
 };
 
-const EditProfile: React.FC = (): JSX.Element => {
-  let user = useSelector((state: IState) => state.userReducer);
+const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const props = route.params;
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    name: user.name,
-    email: user.email,
-    phone: user.phone,
-    password: user.password,
+    name: user?.name,
+    email: loggedInUser?.email,
+    phone: loggedInUser?.phone,
+    currentPassword: "",
+    newPassword: "",
     validName: true,
     validEmail: true,
     validPhone: true,
-    validPassword: true,
+    validCurrentPassword: true,
+    validNewPassword: true,
+    secureTextEntry: false,
   });
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const onPressUpdateUser = () => {
-    let validInput: boolean =
-      data.validEmail &&
-      data.validPhone &&
-      (data.email != "" || data.phone != "") &&
-      data.validName &&
-      data.name != "" &&
-      data.validPassword &&
-      data.password != "";
-    if (validInput) {
-      user = {
-        ...user,
-        name: data.name,
-        password: data.password,
-        phone: data.phone,
-        email: data.email,
-      };
-      dispatch(userActions.onUpdateUserRequest(user));
-    } else {
-      ToastAndroid.show("اطلاعات وارد شده کافی نمی‌باشد.", ToastAndroid.SHORT);
+  const onPressEditInfo = () => {
+    if (props.name) {
+      onPressEditName();
+    } else if (props.email) {
+      onPressEditEmail();
+    } else if (props.phone) {
+      onPressEditPhone();
+    } else if (props.password) {
+      onPressEditPassword();
     }
   };
 
-  const onChangeName = (text: string) => {
+  const onPressEditName = () => {
+    if (!data.validName) {
+      ToastAndroid.show("نام واردشده معتبر نیست", ToastAndroid.SHORT);
+      return;
+    }
+    if (data.name == user.name) {
+      ToastAndroid.show("نام واردشده تکراری است", ToastAndroid.SHORT);
+      return;
+    }
+    if (!validateToken(loggedInUser.token)) {
+      ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
+      return;
+    }
+    dispatch(userActions.onEditUserProfileRequest(loggedInUser.token, data.name, user.picture));
+  };
+
+  const onPressEditEmail = () => {
+    if (validateToken(loggedInUser.token)) {
+      if (data.validEmail) {
+        if (data.email != loggedInUser.email) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: data.email,
+            phone: "",
+            password: loggedInUser.password,
+            inputType: InputType.Email,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("لطفا ایمیل جدید وارد کنید", ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show("ایمیل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
+    }
+  };
+
+  const onPressEditPhone = () => {
+    if (validateToken(loggedInUser.token)) {
+      if (data.validPhone) {
+        if (data.phone != loggedInUser.phone) {
+          NavigationService.navigate("CodeVerification", {
+            parentScreen: "EditProfile",
+            name: "",
+            email: "",
+            phone: data.phone,
+            password: loggedInUser.password,
+            inputType: InputType.Phone,
+            token: loggedInUser.token,
+          });
+        } else {
+          ToastAndroid.show("لطفا شماره موبایل جدید وارد کنید", ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show("شماره موبایل واردشده معتبر نیست", ToastAndroid.SHORT);
+      }
+    }
+  };
+
+  const onPressEditPassword = () => {
+    if (validateToken(loggedInUser.token)) {
+      if (data.validCurrentPassword) {
+        dispatch(
+          authActions.onChangePasswordRequest(
+            loggedInUser.token,
+            loggedInUser.email,
+            loggedInUser.phone,
+            loggedInUser.authInputType,
+            data.newPassword,
+            data.currentPassword
+          )
+        );
+      } else {
+        ToastAndroid.show("رمز عبور داده‌شده نامعتبر است", ToastAndroid.SHORT);
+      }
+    }
+    setData({ ...data, newPassword: "********", currentPassword: "********" });
+  };
+
+  const onChangeNameText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateName(text) == InputType.Name;
     setData({
       ...data,
       name: text,
-      validName: RegexValidator.validateName(text) == InputType.Name,
+      validName: validInput,
     });
   };
 
-  const onChangeEmail = (text: string) => {
+  const onChangeEmailText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateEmailOrPhone(text) == InputType.Email;
     setData({
       ...data,
       email: text,
-      validEmail: RegexValidator.validateEmailOrPhone(text) == InputType.Email || text == "",
+      validEmail: validInput,
     });
   };
-  const onChangePhone = (text: string) => {
+  const onChangePhoneText = (text: string) => {
+    let validInput: boolean = RegexValidator.validateEmailOrPhone(text) == InputType.Phone;
     setData({
       ...data,
       phone: text,
-      validPhone: RegexValidator.validateEmailOrPhone(text) == InputType.Phone || text == "",
+      validPhone: validInput,
     });
   };
-  const onChangePassword = (text: string) => {
+
+  const onChangeCurrentPasswordText = (text: string) => {
+    let validInput: boolean = RegexValidator.validatePassword(text) == InputType.Password;
     setData({
       ...data,
-      password: text,
-      validPassword: RegexValidator.validatePassword(text) == InputType.Password,
+      currentPassword: text,
+      validCurrentPassword: validInput,
     });
   };
 
-  const togglePassword = (): void => {
-    setSecureTextEntry(!secureTextEntry);
+  const onChangePasswordText = (text: string) => {
+    let validInput: boolean = RegexValidator.validatePassword(text) == InputType.Password;
+    setData({
+      ...data,
+      newPassword: text,
+      validNewPassword: validInput,
+    });
   };
-
-  const cancel = () => NavigationService.goBack();
 
   return (
     <>
-      {user.loading ? (
+      {user?.loading ? (
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>ویرایش اطلاعات</Text>
-          </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+            <Text style={styles.screenTitleText}>اطلاعات حساب کاربری</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>نام و نام خانوادگی</Text>
-                <View style={data.validName ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.name}
-                    placeholder="نام و نام خانوادگی"
-                    style={styles.textInput}
-                    onChangeText={onChangeName}
+              {props.name ? (
+                <CustomInput
+                  label="نام و نام خانوادگی"
+                  validInput={data.validName}
+                  defaultValue={data.name}
+                  onChangeText={onChangeNameText}
+                />
+              ) : null}
+              {props.email ? (
+                <CustomInput
+                  label="ایمیل"
+                  validInput={data.validEmail}
+                  defaultValue={data.email}
+                  placeholder="ایمیل"
+                  onChangeText={onChangeEmailText}
+                />
+              ) : null}
+              {props.phone ? (
+                <CustomInput
+                  label="شماره تلفن"
+                  validInput={data.validPhone}
+                  defaultValue={data.phone}
+                  placeholder="شماره تلفن"
+                  onChangeText={onChangePhoneText}
+                />
+              ) : null}
+              {props.password ? (
+                <>
+                  <CustomInput
+                    label="رمز عبور فعلی"
+                    passwordInput={true}
+                    defaultValue={data.currentPassword}
+                    placeholder="********"
+                    validInput={data.validCurrentPassword}
+                    onChangeText={onChangeCurrentPasswordText}
                   />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>ایمیل</Text>
-                <View style={data.validEmail ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.email}
-                    placeholder="ایمیل"
-                    style={styles.textInput}
-                    onChangeText={onChangeEmail}
+                  <CustomInput
+                    label="رمز عبور جدید"
+                    passwordInput={true}
+                    defaultValue={data.newPassword}
+                    placeholder="********"
+                    validInput={data.validNewPassword}
+                    onChangeText={onChangePasswordText}
                   />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>شماره تلفن</Text>
-                <View style={data.validPhone ? styles.inputContainer : styles.inputContainerError}>
-                  <TextInput
-                    defaultValue={data.phone}
-                    placeholder="شماره تلفن"
-                    style={styles.textInput}
-                    onChangeText={onChangePhone}
-                  />
-                </View>
-              </View>
-              <View style={styles.customInputContainer}>
-                <Text style={styles.label}>رمز عبور</Text>
-                <View
-                  style={data.validPassword ? styles.inputContainer : styles.inputContainerError}>
-                  <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
-                    {secureTextEntry ? (
-                      <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
-                    ) : (
-                      <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
-                    )}
-                  </TouchableOpacity>
-                  <TextInput
-                    defaultValue={data.password}
-                    placeholder="رمز عبور"
-                    secureTextEntry={secureTextEntry}
-                    style={styles.textInput}
-                    onChangeText={onChangePassword}
-                  />
-                </View>
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.filledButton} onPress={onPressUpdateUser}>
-                  <Text style={styles.filledButtonText}>تایید</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.outlinedButton} onPress={cancel}>
-                  <Text style={styles.outlinedButtonText}>انصراف</Text>
-                </TouchableOpacity>
-              </View>
+                </>
+              ) : null}
             </ScrollView>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.filledButton} onPress={onPressEditInfo}>
+                <Animatable.Text
+                  style={styles.filledButtonText}
+                  animation="bounceIn"
+                  duration={1500}>
+                  ذخیره اطلاعات
+                </Animatable.Text>
+              </TouchableOpacity>
+            </View>
           </Animatable.View>
         </View>
       )}

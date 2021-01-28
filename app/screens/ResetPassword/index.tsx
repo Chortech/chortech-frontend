@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
@@ -15,21 +9,27 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
+import { RootStackParamList } from "../../navigation/rootStackParams";
+import { RouteProp } from "@react-navigation/native";
+import { navigationRef } from "../../navigation/navigationService";
+
+type Props = {
+  route: RouteProp<RootStackParamList, "ResetPassword">;
+};
 
 type IState = {
   authReducer: IUserState;
 };
 
-const ResetPassword: React.FC = (): JSX.Element => {
-  const { id, loading } = useSelector((state: IState) => state.authReducer);
+const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const props = route.params;
+  const { loading } = useSelector((state: IState) => state.authReducer);
   const dispatch = useDispatch();
   const resetToHome = () => {
-    if (
-      data.password == data.confirmPassword &&
-      data.validPassword &&
-      data.validConfirmPassword
-    ) {
-      dispatch(authActions.onResetPasswordRequest(id, data.password));
+    if (data.password == data.confirmPassword && data.validPassword && data.validConfirmPassword) {
+      dispatch(
+        authActions.onResetPasswordRequest(props.email, props.phone, data.password, props.inputType)
+      );
     } else {
       ToastAndroid.show("رمز عبور واردشده معتبر نیست", ToastAndroid.SHORT);
     }
@@ -48,8 +48,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
     setData({
       ...data,
       password: text,
-      validPassword:
-        RegexValidator.validatePassword(text) === InputType.Password,
+      validPassword: RegexValidator.validatePassword(text) === InputType.Password,
     });
   };
 
@@ -57,8 +56,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
     setData({
       ...data,
       confirmPassword: text,
-      validConfirmPassword:
-        RegexValidator.validatePassword(text) === InputType.Password,
+      validConfirmPassword: RegexValidator.validatePassword(text) === InputType.Password,
     });
   };
 
@@ -82,29 +80,14 @@ const ResetPassword: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>بازیابی کلمه عبور</Text>
-          </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={600}
-            style={styles.infoContainer}>
-            <View style={styles.inputContainer}>
-              <TouchableOpacity
-                onPress={togglePassword}
-                style={styles.toggleIcon}>
+          <Animatable.View animation="slideInUp" duration={1500} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>تغییر رمز عبور</Text>
+            <View style={styles.textInputContainer}>
+              <TouchableOpacity onPress={togglePassword} style={styles.toggleIcon}>
                 {data.secureTextEntry ? (
-                  <FontAwesomeIcon
-                    icon="eye-slash"
-                    size={20}
-                    style={{ color: "red" }}
-                  />
+                  <FontAwesomeIcon icon="eye-slash" size={20} style={styles.invisiblePassword} />
                 ) : (
-                  <FontAwesomeIcon
-                    icon="eye"
-                    size={20}
-                    style={{ color: "#1AD927" }}
-                  />
+                  <FontAwesomeIcon icon="eye" size={20} style={styles.visiblePassword} />
                 )}
               </TouchableOpacity>
               <TextInput
@@ -115,29 +98,16 @@ const ResetPassword: React.FC = (): JSX.Element => {
               />
             </View>
             {!data.validPassword ? (
-              <Animatable.Text
-                style={styles.validationText}
-                animation="fadeIn"
-                duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
                 رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
               </Animatable.Text>
             ) : null}
-            <View style={styles.inputContainer}>
-              <TouchableOpacity
-                onPress={toggleConfirmPassword}
-                style={styles.toggleIcon}>
+            <View style={styles.textInputContainer}>
+              <TouchableOpacity onPress={toggleConfirmPassword} style={styles.toggleIcon}>
                 {data.confirmSecureTextEntry ? (
-                  <FontAwesomeIcon
-                    icon="eye-slash"
-                    size={20}
-                    style={{ color: "red" }}
-                  />
+                  <FontAwesomeIcon icon="eye-slash" size={20} style={styles.invisiblePassword} />
                 ) : (
-                  <FontAwesomeIcon
-                    icon="eye"
-                    size={20}
-                    style={{ color: "#1AD927" }}
-                  />
+                  <FontAwesomeIcon icon="eye" size={20} style={styles.visiblePassword} />
                 )}
               </TouchableOpacity>
               <TextInput
@@ -148,17 +118,12 @@ const ResetPassword: React.FC = (): JSX.Element => {
               />
             </View>
             {!data.validConfirmPassword ? (
-              <Animatable.Text
-                style={styles.validationText}
-                animation="fadeIn"
-                duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={1500}>
                 رمز عبور باید حداقل ۸ و حداکثر ۱۶ کاراکتر داشته باشد
               </Animatable.Text>
             ) : null}
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={resetToHome}>
+              <TouchableOpacity style={styles.confirmButton} onPress={resetToHome}>
                 <Text style={styles.confirmButtonText}>تایید</Text>
               </TouchableOpacity>
             </View>

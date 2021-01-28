@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
 
@@ -35,9 +28,14 @@ const AccountIdentification: React.FC = () => {
     if (data.emailOrPhone != "" && data.validEmailOrPhone) {
       const email = data.inputType == InputType.Email ? data.emailOrPhone : "";
       const phone = data.inputType == InputType.Phone ? data.emailOrPhone : "";
-      dispatch(
-        authActions.onIdentifyAccountRequest(email, phone, data.inputType)
-      );
+      NavigationService.navigate("CodeVerification", {
+        parentScreen: "AccountIdentification",
+        name: "",
+        email: email,
+        phone: phone,
+        password: "",
+        inputType: data.inputType,
+      });
     } else {
       ToastAndroid.show("اطلاعات وارد شده معتبر نمی‌باشد", ToastAndroid.SHORT);
     }
@@ -48,8 +46,7 @@ const AccountIdentification: React.FC = () => {
     setData({
       ...data,
       emailOrPhone: text,
-      validEmailOrPhone:
-        text == "" || type == InputType.Email || type == InputType.Phone,
+      validEmailOrPhone: text == "" || type == InputType.Email || type == InputType.Phone,
       inputType: type,
     });
   };
@@ -60,15 +57,11 @@ const AccountIdentification: React.FC = () => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <StatusBar backgroundColor="#009387" barStyle="light-content" />
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Chortech</Text>
-          </View>
-          <Animatable.View
-            animation="slideInUp"
-            duration={1000}
-            style={styles.footer}>
-            <View style={styles.inputContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>
+              ایمیل یا شماره‌موبایل موردنظر خود را وارد کنید
+            </Text>
+            <View style={styles.textInputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
                 style={styles.textInput}
@@ -76,20 +69,13 @@ const AccountIdentification: React.FC = () => {
               />
             </View>
             {!data.validEmailOrPhone ? (
-              <Animatable.Text
-                style={styles.validationText}
-                animation="fadeIn"
-                duration={500}>
+              <Animatable.Text style={styles.validationText} animation="fadeIn" duration={500}>
                 ایمیل یا شماره موبایل وارد شده معتبر نیست
               </Animatable.Text>
             ) : null}
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.verifyScreenButton}
-                onPress={onVerify}>
-                <Text style={styles.verifyScreenButtonText}>
-                  ادامه و دریافت کد تایید
-                </Text>
+              <TouchableOpacity style={styles.confirmButton} onPress={onVerify}>
+                <Text style={styles.confirmButtonText}>ادامه و دریافت کد تایید</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

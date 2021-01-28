@@ -7,18 +7,24 @@ import {
   TextInput,
   StatusBar,
   ToastAndroid,
+  PointPropType,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import NavigationService from "../../navigation/navigationService";
+import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { styles } from "./styles";
+import * as verificationActions from "../../store/actions/verificationActions";
 import * as authActions from "../../store/actions/authActions";
-import { ILoginState } from "../../models/reducers/login";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import { User } from "../../models/other/User";
+import { User } from "../../models/other/graphql/User";
+import { log } from "../../utils/logger";
+import { validateToken } from "../../utils/tokenValidator";
+import { Response } from "../../models/responses/axios/response";
+import { colors } from "react-native-elements";
+import { ChangeEmailOrPhone, SignUp } from "../../models/responses/axios/auth";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;
@@ -33,57 +39,60 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
   const props = route.params;
   const { loading } = useSelector((state: IState) => state.authReducer);
   const [ref, setRef] = useState<any>(null);
+  const [timerFinished, setTimerFinished] = useState<boolean>(false);
   const [data, setData] = useState({
     verificationCode: "",
-    validCode: false,
+    validCodeLength: false,
   });
-  const dispatch = useDispatch();
 
-  useEffect(() => {
+  const dispatch = useDispatch();
+  const generateCode = () => {
     dispatch(
-      authActions.onGenerateCodeRequest(
+      verificationActions.onGenerateCodeRequest(
         props.email,
         props.phone,
-        props.inputType
+        props.inputType,
+        props.parentScreen,
+        props.name,
+        props.password,
+        state.token
       )
     );
+  };
+
+  useEffect(() => {
+    generateCode();
   }, [dispatch]);
 
   const onNextScreen = () => {
-    if (data.validCode) {
-      if (props.parentScreen == "AccountIdentification") {
-        NavigationService.navigate("ResetPassword");
-      } else {
-        dispatch(
-          authActions.onSignUpRequest(
-            props.name,
-            props.email,
-            props.phone,
-            props.password,
-            props.inputType
-          )
-        );
-      }
+    if (data.validCodeLength) {
+      dispatch(
+        verificationActions.onVerifyCodeRequest(
+          props.name,
+          props.email,
+          props.phone,
+          props.password,
+          props.inputType,
+          data.verificationCode,
+          props.parentScreen,
+          state.token
+        )
+      );
     } else {
-      ToastAndroid.show("کد وارد شده اشتباه است", ToastAndroid.SHORT);
+      ToastAndroid.show("کد تایید واردشده باید ۶ رقمی باشد", ToastAndroid.SHORT);
     }
   };
 
   const regenerateCode = (): void => {
-    dispatch(
-      authActions.onGenerateCodeRequest(
-        props.email,
-        props.phone,
-        props.inputType
-      )
-    );
+    generateCode();
     ref.resetCountDown();
+    setTimerFinished(false);
   };
 
   const setCode = (code: string): void => {
     setData({
       verificationCode: code,
-      validCode: code === "12345",
+      validCodeLength: code.length == 6,
     });
   };
 
@@ -93,19 +102,14 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <StatusBar backgroundColor="#009387" barStyle="light-content" />
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Chortech</Text>
-          </View>
-          <Animatable.View
-            animation="fadeInUpBig"
-            duration={500}
-            style={styles.footer}>
-            <View style={styles.inputContainer}>
+          <Animatable.View animation="fadeInUpBig" duration={500} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>لطفا کد فعال‌سازی را وارد کنید</Text>
+            <View style={styles.textInputContainer}>
               <TextInput
-                placeholder="لطفا کد فعال‌سازی را وارد کنید"
+                placeholder="کد فعال‌سازی"
                 style={styles.textInput}
                 keyboardType="number-pad"
+                maxLength={6}
                 onChangeText={(text) => setCode(text)}
               />
             </View>
@@ -114,10 +118,10 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 ref={(ref: any) => {
                   setRef(ref);
                 }}
-                initialSeconds={120}
+                initialSeconds={20}
                 digitFontSize={20}
                 labelFontSize={20}
-                onTimeOut={(): void => {}}
+                onTimeOut={(): void => setTimerFinished(true)}
                 showHours={false}
                 showSeparator
                 separatorStyle={styles.seperatorLabel}
@@ -126,16 +130,18 @@ const CodeVerification: React.FC<Props> = ({ route }: Props) => {
                 width="40%"
                 height={40}
               />
-              <View>
-                <TouchableOpacity onPress={regenerateCode}>
-                  <Text style={styles.buttonResend}>ارسال مجدد کد</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={regenerateCode} disabled={!timerFinished}>
+                <Text
+                  style={{
+                    ...styles.resendButtonText,
+                    color: timerFinished ? "black" : "#aaaaaa",
+                  }}>
+                  ارسال مجدد کد
+                </Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={onNextScreen}>
+              <TouchableOpacity style={styles.confirmButton} onPress={onNextScreen}>
                 <Text style={styles.confirmButtonText}>تایید</Text>
               </TouchableOpacity>
             </View>
