@@ -30,7 +30,9 @@ import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
 import { lightBlue100 } from "react-native-paper/lib/typescript/src/styles/colors";
 
-import { NavigationRoute, NavigationParams } from 'react-navigation';
+import { NavigationRoute, NavigationParams } from "react-navigation";
+import colors from "../assets/resources/colors";
+import fonts from "../assets/resources/fonts";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -91,12 +93,31 @@ const AuthNavigator = () => {
 const LoggedInNavigator = () => (
   <LoggedInTab.Navigator
     initialRouteName="GroupList"
-    screenOptions={({ route }) => ({})}>
+    screenOptions={({ route }) => ({})}
+    tabBarOptions={{
+      allowFontScaling: true,
+      keyboardHidesTabBar: true,
+      activeTintColor: colors.mainColor,
+      tabStyle: {
+        paddingTop: 6,
+        justifyContent: "center",
+      },
+      iconStyle: {
+        fontSize: 12,
+      },
+      labelStyle: {
+        fontFamily: fonts.IranSans_Medium,
+        fontSize: 12,
+        textAlign: "center",
+        padding: 2,
+      },
+    }}>
     <LoggedInTab.Screen
       name="GroupList"
       component={GroupNavigator}
       options={{
-        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Group' || 'AddGroup' ? false : true,
+        tabBarVisible:
+          navigationRef.current?.getCurrentRoute()?.name === "Group" || "AddGroup" ? true : false,
         tabBarLabel: "گروه‌ها",
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="home-group" color={color} size={26} />
@@ -107,7 +128,10 @@ const LoggedInNavigator = () => (
       name="FriendList"
       component={FriendNavigator}
       options={{
-        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Friend' || 'InviteFriend' ? false : true,
+        tabBarVisible:
+          navigationRef.current?.getCurrentRoute()?.name === "Friend" || "InviteFriend"
+            ? true
+            : false,
         tabBarLabel: "دوستان",
         tabBarIcon: ({ color }) => <FontAwesomeIcon icon="users" color={color} size={26} />,
       }}
@@ -116,7 +140,8 @@ const LoggedInNavigator = () => (
       name="ActivityList"
       component={ActivityNavigator}
       options={{
-        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'Activity' || 'AddActivity' ? false : true,
+        tabBarVisible:
+          navigationRef.current?.getCurrentRoute()?.name === "ActivityList" ? true : false,
         tabBarLabel: "فعالیت‌ها",
         tabBarIcon: ({ color }) => (
           <FontAwesomeIcon icon="shopping-basket" color={color} size={26} />
@@ -127,7 +152,7 @@ const LoggedInNavigator = () => (
       name="Profile"
       component={ProfileNavigator}
       options={{
-        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === 'EditProfile' ? false : true,
+        tabBarVisible: navigationRef.current?.getCurrentRoute()?.name === "Profile" ? true : false,
         tabBarLabel: "صفحه شخصی",
         tabBarIcon: ({ color }) => <FontAwesomeIcon icon="user" color={color} size={26} />,
       }}
@@ -141,20 +166,9 @@ const GroupNavigator = () => (
     screenOptions={{
       headerShown: false,
     }}>
-    <LoggedInTab.Screen
-      name="GroupList"
-      component={GroupList}
-     
-    />
-    <LoggedInTab.Screen
-      name="Group"
-      component={Group}
-    />
-    <LoggedInTab.Screen
-      name="AddGroup"
-      component={AddGroup}
-      
-    />
+    <LoggedInTab.Screen name="GroupList" component={GroupList} />
+    <LoggedInTab.Screen name="Group" component={Group} />
+    <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
   </GroupStack.Navigator>
 );
 
@@ -164,25 +178,10 @@ const ActivityNavigator = () => (
       headerShown: false,
     }}
     initialRouteName="ActivityList">
-    <LoggedInTab.Screen
-      name="ActivityList"
-      component={ActivityList}
-     
-    />
-    <LoggedInTab.Screen
-      name="Activity"
-      component={Activity}
-    />
-    <LoggedInTab.Screen
-      name="AddExpense"
-      component={AddExpense}
-     
-    />
-    <LoggedInTab.Screen
-      name="AddComment"
-      component={AddComment}
-      
-    />
+    <LoggedInTab.Screen name="ActivityList" component={ActivityList} />
+    <LoggedInTab.Screen name="Activity" component={Activity} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
+    <LoggedInTab.Screen name="AddComment" component={AddComment} />
   </ActivityStack.Navigator>
 );
 
@@ -192,32 +191,17 @@ const FriendNavigator = () => (
       headerShown: false,
     }}
     initialRouteName="FriendList">
-    <LoggedInTab.Screen
-      name="FriendList"
-      component={FriendList}
-     
-    />
-    <LoggedInTab.Screen
-      name="Friend"
-      component={Friend}
-    />
-    <LoggedInTab.Screen
-      name="InviteFriend"
-      component={InviteFriend}
-     
-    />
-    <LoggedInTab.Screen
-      name="SettleUp"
-      component={SettleUp}
-      options={{ title: "تسویه حساب" }}
-    />
+    <LoggedInTab.Screen name="FriendList" component={FriendList} />
+    <LoggedInTab.Screen name="Friend" component={Friend} />
+    <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
+    <LoggedInTab.Screen name="SettleUp" component={SettleUp} options={{ title: "تسویه حساب" }} />
   </FriendStack.Navigator>
 );
 
 const ProfileNavigator = () => (
-  <ProfileStack.Navigator screenOptions={{ headerShown: false}} initialRouteName="Profile">
-    <LoggedInTab.Screen name="Profile" component={Profile}/>
-    <LoggedInTab.Screen name="EditProfile" component={EditProfile}/>
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Profile">
+    <LoggedInTab.Screen name="Profile" component={Profile} />
+    <LoggedInTab.Screen name="EditProfile" component={EditProfile} />
     <LoggedInTab.Screen name="CodeVerification" component={CodeVerification} />
     <LoggedInTab.Screen name="ProfileInfo" component={ProfileInfo} />
   </ProfileStack.Navigator>
