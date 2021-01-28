@@ -561,7 +561,15 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return {
       ...state,
-      
+      payment: {
+        id: action.payload.response!.id,
+        from: action.payload.response!.from,
+        to: action.payload.response!.to,
+        amount: action.payload.response!.amount,
+        paid_at: action.payload.response!.paid_at,
+        group: action.payload.response!.group,
+        notes: action.payload.response!.notes
+      }
     }  
   },
   [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
@@ -575,7 +583,10 @@ export const userReducer = createReducer(initialState, {
     };
   },
   [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
-    return state;
+    return {
+      ...state,
+      payment: action.payload.response!.payment
+    }
   },
   [types.EDIT_PAYMENT_FAIL](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
     return state;
@@ -585,7 +596,10 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<DeletePaymentRequest>
   ): IUserState {
-    return { ...state, token: action.payload.token };
+    return { 
+      ...state,
+      token: action.payload.token 
+    };
   },
   [types.DELETE_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
