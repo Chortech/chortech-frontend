@@ -3,12 +3,9 @@ import { call, put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
 import { GetUserActivitiesRequest } from "../../models/requests/axios/user";
 import { UserActivities } from "../../models/responses/axios/user";
-import { navigationRef } from "../../navigation/navigationService";
 import { ActivityAPI } from "../../services/api/axios/activityApi";
 import { Response } from "../../models/responses/axios/response";
 import * as activityActions from "../actions/activityActions";
-import * as friendActions from "../actions/friendActions";
-import * as friendSaga from "./friendSaga";
 
 export function* getUserActivitiesAsync(action: Action<GetUserActivitiesRequest>) {
     yield put(activityActions.onLoadingEnable());
