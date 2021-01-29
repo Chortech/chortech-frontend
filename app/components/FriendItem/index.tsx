@@ -3,7 +3,9 @@ import { GestureResponderEvent, Image, ImageSourcePropType, Text, View } from "r
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
+import convertor from "../../utils/numberConvertor";
 import { styles } from "./styles";
+import { ArabicNumbers } from "react-native-arabic-numbers";
 
 type Props = {
   onPressFriendItem: (event: GestureResponderEvent) => void | undefined;
@@ -38,7 +40,7 @@ const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
                     ...styles.balanceNumber,
                     color: color,
                   }}>
-                  {Math.abs(props.Balance)}
+                  {ArabicNumbers(Math.abs(props.Balance))}
                 </Text>
               </View>
               <Text
@@ -50,7 +52,7 @@ const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
               </Text>
             </>
           ) : (
-            <Text style={styles.settledUp}>تسویه‌شده</Text>
+            <Text style={styles.settledUp}>بی‌حساب</Text>
           )}
         </View>
         <Text style={styles.friendText}>{props.Name}</Text>

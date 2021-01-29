@@ -6,6 +6,7 @@ import colors from "../../assets/resources/colors";
 import { ExpenseBalance } from "../../models/other/axios/Expense";
 import { IUserState } from "../../models/reducers/default";
 import { styles } from "./styles";
+import { ArabicNumbers } from "react-native-arabic-numbers";
 
 type Props = {
   item: ExpenseBalance;
@@ -16,8 +17,10 @@ const FriendBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
   let paymentSentence =
     props.item.type === "payment"
       ? props.item.balance > 0
-        ? `${props.item.to} ${props.item.amount} به شما پرداخت کرده‌است`
-        : `شما ${props.item.amount} به ${props.item.to} پرداخت کرده‌اید`
+        ? `${props.item.to} ${props.item.amount
+            ?.toString()
+            .fontcolor(colors.red)} به شما پرداخت کرده‌است`
+        : `شما ${ArabicNumbers(props.item.amount)} به ${props.item.to} پرداخت کرده‌اید`
       : "";
 
   return (
@@ -26,13 +29,13 @@ const FriendBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
         <View style={styles.expenseContainer}>
           <View style={styles.expenseInfoContainer}>
             <Text style={styles.expenseDescription}>{props.item.description}</Text>
-            <Text style={styles.expenseTotal}>هزینه کل: {props.item.total}</Text>
+            <Text style={styles.expenseTotal}>هزینه کل: {ArabicNumbers(props.item.total)}</Text>
           </View>
           <View style={styles.expenseStatusContainer}>
             <View style={styles.expenseBalanceContainer}>
               <Text style={{ ...styles.expenseCurrency, color: color }}>تومان</Text>
               <Text style={{ ...styles.expenseBalance, color: color }}>
-                {Math.abs(props.item.balance)}
+                {ArabicNumbers(Math.abs(props.item.balance))}
               </Text>
             </View>
             <Text style={{ ...styles.expenseStatus, color: color }}>
@@ -42,8 +45,14 @@ const FriendBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
         </View>
       ) : (
         <View style={styles.paymentContainer}>
-          <FontAwesomeIcon icon="coins" size={25} style={styles.coinIcon} />
-          <Text style={styles.paymentText}>{paymentSentence}</Text>
+          <FontAwesomeIcon icon="coins" size={20} style={styles.coinIcon} />
+          <Text
+            lineBreakMode="head"
+            selectable
+            selectionColor={colors.lightGray}
+            style={styles.paymentText}>
+            {paymentSentence}
+          </Text>
         </View>
       )}
     </>

@@ -26,7 +26,7 @@ export function* getFriendsBalanceRequest(action: Action<GetFriendsBalanceReques
 
 export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>) {
   yield put(balanceActions.onLoadingEnable());
-  const { token, friendId, friendName } = action.payload;
+  const { token, friendId, friendName, balance } = action.payload;
   let api: BalanceAPI = new BalanceAPI(token);
   let response: Response<FriendBalance> = yield api.getFriendBalance(friendId);
 
@@ -35,6 +35,7 @@ export function* getFriendBalanceRequest(action: Action<GetFriendBalanceRequest>
     yield navigationRef.current?.navigate("Friend", {
       id: friendId,
       name: friendName,
+      balance: balance,
       balances: response.response?.balances != undefined ? response.response.balances : [],
     });
   } else {

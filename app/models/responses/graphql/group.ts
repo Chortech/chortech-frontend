@@ -1,4 +1,4 @@
-import { Group } from "../other/Group";
+import { Group } from "../../other/axios/Group";
 
 export interface AddGroupResponse {
   id: string;

@@ -1,3 +1,4 @@
+import { exp } from "react-native-reanimated";
 import { act } from "react-test-renderer";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
@@ -59,6 +60,7 @@ import {
   GetGroupByIdResponse,
   GetUserGroupsResponse,
 } from "../../models/responses/graphql/group";
+import FriendList from "../../screens/FriendList";
 import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as types from "../actions/types";
@@ -81,6 +83,7 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  expenses: [],
   payment: {
     id: "",
     from: "",
@@ -181,7 +184,7 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return {
       ...state,
-      activities: action.payload.response!.expenses,
+      expenses: action.payload.response!.expenses,
     };
   },
   [types.GET_USER_EXPENSES_FAIL](
@@ -205,9 +208,9 @@ export const userReducer = createReducer(initialState, {
     action: Action<Response<UserExpense>>
   ): IUserState {
     const expense = action.payload.response?.expense;
-    const index = state.activities.findIndex((ex) => ex.id == expense?.id);
+    const index = state.expenses.findIndex((ex) => ex.id == expense?.id);
     if (index > -1) {
-      state.activities[index].participants =
+      state.expenses[index].participants =
         expense?.participants != undefined ? expense.participants : [];
     }
     return state;
@@ -275,7 +278,7 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return {
       ...state,
-      groups: action.payload.response,
+      groups: action.payload.response?.groups != undefined ? action.payload.response.groups : [],
     };
   },
   [types.GET_USER_GROUPS_FAIL](
@@ -374,7 +377,8 @@ export const userReducer = createReducer(initialState, {
   ): IUserState {
     return {
       ...state,
-      activities: action.payload.response!.activities,
+      activities:
+        action.payload.response?.activities != undefined ? action.payload.response.activities : [],
     };
   },
   [types.GET_USER_ACTIVITIES_FAIL](
@@ -449,11 +453,11 @@ export const userReducer = createReducer(initialState, {
     state: IUserState,
     action: Action<Response<ExpenseComments>>
   ): IUserState {
-    const index = state.activities.findIndex(
-      (activity) => activity.id == action.payload.response?.expenseId
+    const index = state.expenses.findIndex(
+      (expense) => expense.id == action.payload.response?.expenseId
     );
     if (index > -1) {
-      state.activities[index].comments = action.payload.response?.comments;
+      state.expenses[index].comments = action.payload.response?.comments;
     }
     return state;
   },
@@ -477,6 +481,7 @@ export const userReducer = createReducer(initialState, {
       const balances: FriendBalance[] = action.payload.response;
       state.friends.forEach((friend) => {
         friend.balance = 0;
+        friend.balances = [];
         let index = balances.findIndex((balance) => balance.other == friend.id);
         if (index > -1) {
           friend.balance = balances[index].balance;

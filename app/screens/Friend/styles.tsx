@@ -1,4 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
+import { color } from "react-native-reanimated";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
 
@@ -8,7 +9,6 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.mainColor,
   },
   header: {
-    flex: 2,
     alignItems: "center",
     padding: 5,
   },
@@ -28,16 +28,26 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#fff",
   },
+  text: {
+    fontFamily: fonts.IranSans_Light,
+    fontSize: 14,
+    color: colors.white,
+    alignSelf: "center",
+  },
   userNameText: {
     fontSize: 25,
     marginTop: 10,
     paddingHorizontal: 10,
     borderRadius: 10,
     textAlign: "center",
-    backgroundColor: "#ffffff55",
     color: colors.white,
     alignItems: "center",
     fontFamily: fonts.IranSans_Bold,
+  },
+  balanceStatusContainer: {
+    flexDirection: "row-reverse",
+    justifyContent: "center",
+    padding: 5,
   },
   screenTitleText: {
     textAlign: "center",
@@ -58,8 +68,8 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
   },
   buttonContainer: {
-    // flex: 2,
-    justifyContent: "center",
+    flex: 2,
+    justifyContent: "flex-end",
   },
   removeButton: {
     elevation: 1,

@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Image } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+  Image,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,6 +23,7 @@ import { IUserState } from "../../models/reducers/default";
 import { log } from "../../utils/logger";
 import { Login } from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
+import { ArabicNumbers } from "react-native-arabic-numbers";
 
 interface IState {
   authReducer: IUserState;
@@ -87,6 +97,7 @@ const LoginSecreen: React.FC = (): JSX.Element => {
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
                 style={styles.textInput}
+                value={data.emailOrPhone}
                 onChangeText={(text) => setEmailOrPhone(text)}
               />
             </View>

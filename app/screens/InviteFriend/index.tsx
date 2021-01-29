@@ -52,13 +52,13 @@ const InviteFriend: React.FC = (): JSX.Element => {
   }, []);
 
   const fetchContacts = () => {
+    let result: CustomContact[] = [];
     try {
-      let result: CustomContact[] = [];
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS).then(
         (permission) => {
           if (permission === PermissionsAndroid.RESULTS.GRANTED) {
-            Contacts.getAll().then((data) => {
-              data.forEach((contact) => {
+            Contacts.getAll().then((contacts) => {
+              contacts.forEach((contact) => {
                 let phoneNumbers: string[] = extractPhoneNumbers(contact);
                 let emailAddresses: string[] = extractEmails(contact);
                 if (phoneNumbers.length > 0 || emailAddresses.length > 0) {
@@ -78,25 +78,25 @@ const InviteFriend: React.FC = (): JSX.Element => {
                 }
               });
             });
-          } else {
-            log("permission denied");
           }
         }
       );
-      result.forEach((contact) => {
-        selectedContacts.current?.forEach((item) => {
-          if (contact.recordID == item.recordID) {
-            contact.selected = item.selected;
-          }
-        });
-      });
-
-      setContacts(result);
-      setSearchedContacts(result);
-      setRenderVerticalList(!renderVerticalList);
     } catch (error) {
       log(error);
     }
+
+    log(result);
+
+    result.forEach((contact) => {
+      selectedContacts.current?.forEach((item) => {
+        if (contact.recordID == item.recordID) {
+          contact.selected = item.selected;
+        }
+      });
+    });
+    setContacts(result);
+    setSearchedContacts(result);
+    setRenderVerticalList(!renderVerticalList);
   };
 
   const onSelectContact = (contact: CustomContact) => {
@@ -172,7 +172,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // fetchContacts();
+    fetchContacts();
     setRefreshing(false);
   }, [dispatch]);
 
@@ -263,6 +263,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
       position: 2,
     },
   ];
+
   return (
     <>
       {loading ? (
@@ -305,35 +306,30 @@ const InviteFriend: React.FC = (): JSX.Element => {
                 removeClippedSubviews
               />
             ) : null}
-            {/* {permission != "authorized" ? (
-              <TouchableOpacity onPress={fetchContacts}>
-                <Text>بارگذاری مخاطبین</Text>
-              </TouchableOpacity>
+            {/* {searchedContacts.length > 0 ? (
+              <> */}
+            <Text style={styles.screenTitleText}>لیست مخاطبین</Text>
+            <FlatList
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              data={searchedContacts}
+              initialNumToRender={6}
+              style={styles.contactList}
+              renderItem={({ item }) => {
+                return (
+                  <ContactItem
+                    contact={item}
+                    selected={item.selected}
+                    onPressContact={() => onSelectContact(item)}
+                  />
+                );
+              }}
+              keyExtractor={(item) => item.recordID.toString()}
+              showsVerticalScrollIndicator={false}
+              extraData={renderVerticalList}
+              removeClippedSubviews
+            />
+            {/* </>
             ) : null} */}
-            {searchedContacts.length > 0 ? (
-              <>
-                <Text style={styles.screenTitleText}>لیست مخاطبین</Text>
-                <FlatList
-                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                  data={searchedContacts}
-                  initialNumToRender={6}
-                  style={styles.contactList}
-                  renderItem={({ item }) => {
-                    return (
-                      <ContactItem
-                        contact={item}
-                        selected={item.selected}
-                        onPressContact={() => onSelectContact(item)}
-                      />
-                    );
-                  }}
-                  keyExtractor={(item) => item.recordID.toString()}
-                  showsVerticalScrollIndicator={false}
-                  extraData={renderVerticalList}
-                  removeClippedSubviews
-                />
-              </>
-            ) : null}
           </Animatable.View>
           <FloatingAction
             actions={actions}

@@ -42,6 +42,14 @@ const initialState: IUserState = {
   friends: [],
   groups: [],
   activities: [],
+  payment: {
+    id: "",
+    from: "",
+    to: "",
+    amount: 0,
+    paid_at: 0,
+  },
+  expenses: [],
   myCreditCards: [],
   otherCreditCards: [],
 };

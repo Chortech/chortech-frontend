@@ -43,7 +43,8 @@ export function onGetFriendsBalanceFail(): Action<Response<FriendBalance[]>> {
 export function onGetFriendBalanceRequest(
   token: Token,
   friendId: string,
-  friendName: string
+  friendName: string,
+  balance: number
 ): Action<GetFriendBalanceRequest> {
   return {
     type: types.GET_FRIEND_BALANCE_REQUEST,
@@ -51,6 +52,7 @@ export function onGetFriendBalanceRequest(
       token: token,
       friendId: friendId,
       friendName: friendName,
+      balance: balance,
     },
   };
 }
