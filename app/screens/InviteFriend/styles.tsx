@@ -24,7 +24,22 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f2f2f2",
   },
-
+  loadContactsButtonContainer: {
+    flexDirection: "row",
+    margin: 10,
+    padding: 10,
+    alignSelf: "center",
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: colors.mainColor,
+  },
+  loadContactsButtonText: {
+    alignSelf: "center",
+    padding: 5,
+    textAlign: "center",
+    color: colors.mainColor,
+    fontFamily: fonts.IranSans_Medium,
+  },
   textInput: {
     borderWidth: 1,
     backgroundColor: colors.white,

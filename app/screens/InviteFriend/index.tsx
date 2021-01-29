@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PermissionsAndroid, RefreshControl, Text, ToastAndroid, View } from "react-native";
+import { ArabicNumbers } from "react-native-arabic-numbers";
 import * as Animatable from "react-native-animatable";
 import { Searchbar } from "react-native-paper";
 import Contacts, { Contact, EmailAddress, PhoneNumber } from "react-native-contacts";
@@ -43,60 +44,57 @@ const InviteFriend: React.FC = (): JSX.Element => {
   const [renderHorizontalList, setRenderHorizontalList] = useState(false);
   const selectedContacts = useRef<CustomContact[]>([]);
   const [tempID, setTempID] = useState(-1);
-  const [permission, setPermission] = useState("");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchContacts();
+    // fetchContacts();
   }, []);
 
   const fetchContacts = () => {
     let result: CustomContact[] = [];
-    try {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS).then(
-        (permission) => {
-          if (permission === PermissionsAndroid.RESULTS.GRANTED) {
-            Contacts.getAll().then((contacts) => {
-              contacts.forEach((contact) => {
-                let phoneNumbers: string[] = extractPhoneNumbers(contact);
-                let emailAddresses: string[] = extractEmails(contact);
-                if (phoneNumbers.length > 0 || emailAddresses.length > 0) {
-                  let temp: CustomContact = {
-                    recordID: contact.recordID,
-                    name: contact.givenName + " " + contact.familyName,
-                    phoneNumbers: phoneNumbers,
-                    emailAddresses: emailAddresses,
-                    inputType:
-                      phoneNumbers.length > 0
-                        ? InputType.Phone
-                        : emailAddresses.length > 0
-                        ? InputType.Email
-                        : InputType.None,
-                  };
-                  result.push(temp);
-                }
-              });
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS).then((permission) => {
+      if (permission == "granted") {
+        Contacts.getAll().then((contacts) => {
+          contacts.forEach((contact) => {
+            let phoneNumbers: string[] = extractPhoneNumbers(contact);
+            let emailAddresses: string[] = extractEmails(contact);
+            if (phoneNumbers.length > 0 || emailAddresses.length > 0) {
+              let temp: CustomContact = {
+                recordID: contact.recordID,
+                name: contact.givenName + " " + contact.familyName,
+                phoneNumbers: phoneNumbers,
+                emailAddresses: emailAddresses,
+                inputType:
+                  phoneNumbers.length > 0
+                    ? InputType.Phone
+                    : emailAddresses.length > 0
+                    ? InputType.Email
+                    : InputType.None,
+              };
+              result.push(temp);
+            }
+          });
+          log(result);
+
+          result.forEach((contact) => {
+            selectedContacts.current?.forEach((item) => {
+              if (contact.recordID == item.recordID) {
+                contact.selected = item.selected;
+              }
             });
-          }
-        }
-      );
-    } catch (error) {
-      log(error);
-    }
-
-    log(result);
-
-    result.forEach((contact) => {
-      selectedContacts.current?.forEach((item) => {
-        if (contact.recordID == item.recordID) {
-          contact.selected = item.selected;
-        }
-      });
+          });
+          setContacts(result);
+          setSearchedContacts(result);
+          setRenderVerticalList(!renderVerticalList);
+        });
+      }
     });
-    setContacts(result);
-    setSearchedContacts(result);
-    setRenderVerticalList(!renderVerticalList);
+
+    // try {
+    // } catch (error) {
+    //   log(error);
+    // }
   };
 
   const onSelectContact = (contact: CustomContact) => {
@@ -298,7 +296,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
                         <FontAwesomeIcon icon="times-circle" size={20} style={styles.cancelIcon} />
                       </TouchableOpacity>
                       <FontAwesomeIcon icon="user" style={styles.userIcon} size={25} />
-                      <Text style={styles.userText}>{item.name}</Text>
+                      <Text style={styles.userText}>{ArabicNumbers(item.name)}</Text>
                     </View>
                   );
                 }}
@@ -306,30 +304,39 @@ const InviteFriend: React.FC = (): JSX.Element => {
                 removeClippedSubviews
               />
             ) : null}
-            {/* {searchedContacts.length > 0 ? (
-              <> */}
-            <Text style={styles.screenTitleText}>لیست مخاطبین</Text>
-            <FlatList
-              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-              data={searchedContacts}
-              initialNumToRender={6}
-              style={styles.contactList}
-              renderItem={({ item }) => {
-                return (
-                  <ContactItem
-                    contact={item}
-                    selected={item.selected}
-                    onPressContact={() => onSelectContact(item)}
-                  />
-                );
-              }}
-              keyExtractor={(item) => item.recordID.toString()}
-              showsVerticalScrollIndicator={false}
-              extraData={renderVerticalList}
-              removeClippedSubviews
-            />
-            {/* </>
-            ) : null} */}
+            {searchedContacts.length > 0 ? (
+              <>
+                <Text style={styles.screenTitleText}>لیست مخاطبین</Text>
+                <FlatList
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                  data={searchedContacts}
+                  initialNumToRender={6}
+                  style={styles.contactList}
+                  renderItem={({ item }) => {
+                    return (
+                      <ContactItem
+                        contact={item}
+                        selected={item.selected}
+                        onPressContact={() => onSelectContact(item)}
+                      />
+                    );
+                  }}
+                  keyExtractor={(item) => item.recordID.toString()}
+                  showsVerticalScrollIndicator={false}
+                  extraData={renderVerticalList}
+                  removeClippedSubviews
+                />
+              </>
+            ) : (
+              <TouchableOpacity style={styles.loadContactsButtonContainer} onPress={fetchContacts}>
+                <Text style={styles.loadContactsButtonText}>دسترسی به مخاطبان</Text>
+                <FontAwesomeIcon
+                  icon="address-book"
+                  color={colors.mainColor}
+                  style={{ alignSelf: "center" }}
+                />
+              </TouchableOpacity>
+            )}
           </Animatable.View>
           <FloatingAction
             actions={actions}
