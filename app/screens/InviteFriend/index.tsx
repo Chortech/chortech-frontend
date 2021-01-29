@@ -186,6 +186,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
             contact.inputType
           )
         );
+        selectedContacts.current = [];
       } else if (contact.inputType == InputType.Phone) {
         dispatch(
           friendActions.onAddFriendRequest(
@@ -195,6 +196,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
             contact.inputType
           )
         );
+        selectedContacts.current = [];
       }
     }
   };
@@ -211,6 +213,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
             contact.inputType
           )
         );
+        selectedContacts.current = [];
       } else if (contact.inputType == InputType.Phone) {
         dispatch(
           friendActions.onInviteFriendRequest(
@@ -220,6 +223,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
             contact.inputType
           )
         );
+        selectedContacts.current = [];
       }
     }
   };

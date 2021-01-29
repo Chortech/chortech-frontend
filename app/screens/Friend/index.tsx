@@ -95,17 +95,24 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
                       fontFamily: fonts.IranSans_Bold,
                       fontSize: 18,
                     }}>
-                    {ArabicNumbers(Math.abs(balance))}
+                    {ArabicNumbers(Math.abs(balance))} تومان
                   </Text>
                   <Text style={styles.text}> به شما بدهکار است</Text>
                 </>
               ) : balance < 0 ? (
                 <>
-                  <Text style={styles.text}>شما</Text>
-                  <Text style={styles.text}>{ArabicNumbers(Math.abs(balance))}</Text>
-                  <Text style={styles.text}>به </Text>
+                  <Text style={styles.text}>شما </Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: fonts.IranSans_Bold,
+                      fontSize: 18,
+                    }}>
+                    {ArabicNumbers(Math.abs(balance))} تومان
+                  </Text>
+                  <Text style={styles.text}> به </Text>
                   <Text style={styles.text}>{name}</Text>
-                  <Text style={styles.text}>بدهکار هستید</Text>
+                  <Text style={styles.text}> بدهکار هستید </Text>
                 </>
               ) : (
                 <Text style={styles.text}>شما بی‌حساب هستید</Text>

@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     borderTopRightRadius: common.baseBorderRadius + 30,
     borderBottomRightRadius: common.baseBorderRadius + 30,
-    borderWidth: 4,
+    borderWidth: 3,
     borderLeftWidth: 0,
     borderColor: colors.ultraLightGray,
     backgroundColor: colors.ultraXLightGray,

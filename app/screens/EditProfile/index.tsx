@@ -15,6 +15,7 @@ import CustomInput from "../../components/CustomInput";
 import { validateToken } from "../../utils/tokenValidator";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import { RouteProp } from "@react-navigation/native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type Props = {
   route: RouteProp<RootStackParamList, "EditProfile">;
@@ -186,7 +187,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <Text style={styles.screenTitleText}>اطلاعات حساب کاربری</Text>
+            <Text style={styles.screenTitleText}>ویرایش اطلاعات</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
               {props.name ? (
                 <CustomInput

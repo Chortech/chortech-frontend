@@ -56,9 +56,6 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: "center",
     alignSelf: "center",
-    borderWidth: 1,
-    borderRadius: common.baseBorderRadius,
-    borderColor: colors.mainColor,
   },
   addNewContactButtonText: {
     fontFamily: fonts.IranSans_Medium,

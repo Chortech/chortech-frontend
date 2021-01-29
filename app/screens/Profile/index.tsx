@@ -108,6 +108,7 @@ const Profile: React.FC = (): JSX.Element => {
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={true}>
               <TouchableOpacity
+                activeOpacity={0.5}
                 style={styles.buttonContainer}
                 onPress={() => NavigationService.navigate("ProfileInfo")}>
                 <View style={styles.arrowIconContainer}>
@@ -118,7 +119,7 @@ const Profile: React.FC = (): JSX.Element => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.5}>
                 <View style={styles.arrowIconContainer}>
                   <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
@@ -126,7 +127,7 @@ const Profile: React.FC = (): JSX.Element => {
                   <Text style={styles.titleText}>کارت‌های برگزیده</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.5}>
                 <View style={styles.arrowIconContainer}>
                   <FontAwesomeIcon icon="chevron-left" style={styles.arrowIcon} size={15} />
                 </View>
@@ -134,7 +135,10 @@ const Profile: React.FC = (): JSX.Element => {
                   <Text style={styles.titleText}>مدیریت اعتبار</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer} onPress={onLogout}>
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={onLogout}
+                activeOpacity={0.5}>
                 <View style={styles.logoutIconContainer}>
                   <FontAwesomeIcon icon="sign-out-alt" style={styles.logoutIcon} size={20} />
                 </View>

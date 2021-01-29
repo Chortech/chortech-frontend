@@ -14,6 +14,7 @@ class Colors {
   public green = "green";
   public textInputBackground = "#f2f2f2";
   public loginLogoBackground = "#f7f7f7";
+  public transparentBlack = "#00000077";
 }
 
 const colors = new Colors();

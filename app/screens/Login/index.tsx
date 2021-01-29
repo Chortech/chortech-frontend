@@ -82,6 +82,8 @@ const LoginSecreen: React.FC = (): JSX.Element => {
     });
   };
 
+  const [input, setRef] = useState<TextInput | null>(null);
+
   return (
     <>
       {state.loading ? (
