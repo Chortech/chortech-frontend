@@ -43,6 +43,10 @@ export interface RemoveMemberRequest {
   memberId: string;
 }
 
-export interface GetGroupBalances {
+export interface GetGroupsBalances {
+  token: Token;
+}
+
+export interface GetGroupMembersBalances {
   token: Token;
 }

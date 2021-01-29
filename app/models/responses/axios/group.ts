@@ -1,4 +1,4 @@
-import { GroupBalance } from "../../other/axios/Balance";
+import { ExpenseBalance, GroupBalance } from "../../other/axios/Balance";
 import { Group } from "../../other/axios/Group";
 
 export interface GetUserGroupsResponse {
@@ -29,6 +29,7 @@ export interface GetGroupInfoResponse {
   group: Group;
 }
 
-export interface GetGroupsBalances {
-  balances: GroupBalance[];
+export interface GroupExpenses {
+  group: GroupBalance;
+  expenses: ExpenseBalance[];
 }
