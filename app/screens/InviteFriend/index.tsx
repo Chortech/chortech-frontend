@@ -268,7 +268,7 @@ const InviteFriend: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <Animatable.View animation="slideInUp" duration={500} style={styles.contactsContainer}>
+          <Animatable.View animation="slideInUp" duration={500}>
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"

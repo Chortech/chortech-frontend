@@ -3,7 +3,6 @@ import { GestureResponderEvent, Image, ImageSourcePropType, Text, View } from "r
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
-import convertor from "../../utils/numberConvertor";
 import { styles } from "./styles";
 import { ArabicNumbers } from "react-native-arabic-numbers";
 

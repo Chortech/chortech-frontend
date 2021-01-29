@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
 import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
-const mainColor = "#00bb5d";
-const borderRadius = 20;
-const textColor = "#333333";
-const baseFontSize = 16;
-const grayColor = "#aaaaaa22";
+// const mainColor = "#00bb5d";
+// const borderRadius = 20;
+// const textColor = "#333333";
+// const baseFontSize = 16;
+// const grayColor = "#aaaaaa22";
 
 export const styles = StyleSheet.create({
   friendContainer: {
@@ -14,12 +15,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
     flexDirection: "row",
-    borderTopRightRadius: borderRadius + 30,
-    borderBottomRightRadius: borderRadius + 30,
+    borderTopRightRadius: common.baseBorderRadius + 30,
+    borderBottomRightRadius: common.baseBorderRadius + 30,
     borderWidth: 4,
     borderLeftWidth: 0,
     borderColor: colors.ultraLightGray,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.ultraXLightGray,
   },
   balanceContainer: {
     flex: 4,
@@ -30,12 +31,12 @@ export const styles = StyleSheet.create({
     marginLeft: 3,
     textAlign: "center",
     fontFamily: fonts.IranSans_Medium,
-    fontSize: 20,
+    fontSize: common.baseFontSize + 4,
   },
   balanceStatus: {
     textAlign: "center",
     fontFamily: fonts.IranSans_Light,
-    fontSize: 14,
+    fontSize: common.baseFontSize - 2,
   },
   settledUp: {
     textAlign: "center",
@@ -48,16 +49,16 @@ export const styles = StyleSheet.create({
     letterSpacing: 1,
     alignSelf: "center",
     marginTop: 10,
-    color: textColor,
+    color: colors.textBlack,
     textAlign: "right",
-    fontFamily: "IRANSansWeb_Medium",
-    fontSize: baseFontSize - 2,
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: common.baseFontSize - 2,
     writingDirection: "rtl",
   },
   friendImage: {
     height: 60,
     width: 60,
-    borderRadius: 30,
+    borderRadius: common.baseBorderRadius + 5,
     alignSelf: "center",
   },
 });

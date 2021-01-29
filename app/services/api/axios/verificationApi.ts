@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_VERIFICATION_URL } from "../../../../local_env_vars";
+import messages from "../../../assets/resources/messages";
 import { VerificationApi } from "../../../models/api/axios-api/verification";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
@@ -116,9 +117,12 @@ class CodeVerificationAPI implements VerificationApi {
       log("verify code api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        if (error.response?.data.errors[0].message == "Something went wrong") {
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
           result.status = -2;
-        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+        } else if (message == "Wrong code!") {
           result.status = -3;
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
@@ -156,9 +160,12 @@ class CodeVerificationAPI implements VerificationApi {
       log("verify code api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        if (error.response?.data.errors[0].message == "Something went wrong") {
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
           result.status = -2;
-        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+        } else if (message == "Wrong code!") {
           result.status = -3;
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;

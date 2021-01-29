@@ -39,12 +39,9 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onPressFriendItem = (id: string, name: string, balance: number) => {
-    // let index = friends.findIndex((friend) => friend.id == id);
-    // if (index > -1) {
     if (validateToken(loggedInUser.token)) {
       dispatch(balanceActions.onGetFriendBalanceRequest(loggedInUser.token, id, name, balance));
     }
-    // }
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);

@@ -12,6 +12,7 @@ import { VerificationAPI } from "../../services/api/axios/verificationApi";
 import { InputType } from "../../utils/inputTypes";
 import * as verificationActions from "../actions/verificationActions";
 import * as authActions from "../actions/authActions";
+import { log } from "../../utils/logger";
 
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   yield put(verificationActions.onLoadingEnable());
@@ -30,6 +31,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
     response = yield VerificationAPI.generateCodeRequestByPhone(phone);
   }
 
+  log(response.status);
   if (response.success) {
     yield put(verificationActions.onGenerateCodeResponse(response));
     ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
@@ -65,6 +67,7 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
 }
 
 export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
+  yield put(verificationActions.onLoadingEnable());
   const { token, email, phone, code, inputType, parentScreen, name, password } = action.payload;
   let response: Response<null> = {
     success: false,
@@ -103,6 +106,7 @@ export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
   }
+  yield put(verificationActions.onLoadingDisable());
 }
 
 export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {

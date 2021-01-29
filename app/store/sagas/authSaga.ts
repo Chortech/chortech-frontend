@@ -26,6 +26,7 @@ import { AuthenticationApi, AuthAPI } from "../../services/api/axios/authApi";
 import configureStore from "..";
 import { IUserState } from "../../models/reducers/default";
 import { log } from "../../utils/logger";
+import messages from "../../assets/resources/messages";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -104,13 +105,14 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
   if (inputType == InputType.Email) {
     response = yield AuthAPI.resetPasswordByEmail(email, newPassword);
   } else if (inputType == InputType.Phone) {
-    response = yield AuthAPI.resetPasswordByEmail(phone, newPassword);
+    response = yield AuthAPI.resetPasswordByPhone(phone, newPassword);
   }
 
   yield put(authActions.onLoadingDisable());
 
   if (response.success) {
     yield put(authActions.onResetPasswordResponse(response));
+    ToastAndroid.show(messages.resetPasswordSuccess, ToastAndroid.SHORT);
     yield navigationRef.current?.reset({
       index: 0,
       routes: [{ name: "Login" }],

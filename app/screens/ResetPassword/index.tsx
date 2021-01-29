@@ -48,7 +48,7 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
     setData({
       ...data,
       password: text,
-      validPassword: RegexValidator.validatePassword(text) === InputType.Password,
+      validPassword: text == "" || RegexValidator.validatePassword(text) === InputType.Password,
     });
   };
 
@@ -56,7 +56,8 @@ const ResetPassword: React.FC<Props> = ({ route }: Props): JSX.Element => {
     setData({
       ...data,
       confirmPassword: text,
-      validConfirmPassword: RegexValidator.validatePassword(text) === InputType.Password,
+      validConfirmPassword:
+        text == "" || RegexValidator.validatePassword(text) === InputType.Password,
     });
   };
 

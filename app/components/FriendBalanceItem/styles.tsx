@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
 import { color } from "react-native-reanimated";
 import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   expenseContainer: {
     marginTop: 10,
     borderWidth: 3,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 20,
+    backgroundColor: colors.ultraXLightGray,
+    borderRadius: common.baseBorderRadius - 5,
     borderColor: colors.ultraLightGray,
     padding: 15,
     flexDirection: "row-reverse",
@@ -21,13 +22,13 @@ export const styles = StyleSheet.create({
     textAlign: "right",
     color: colors.textBlack,
     fontFamily: fonts.IranSans_Bold,
-    fontSize: 18,
+    fontSize: common.baseFontSize + 2,
   },
   expenseTotal: {
     textAlign: "right",
     color: colors.textBlack,
     fontFamily: fonts.IranSans_Light,
-    fontSize: 14,
+    fontSize: common.baseFontSize - 2,
   },
   expenseStatusContainer: {
     flex: 1,
@@ -40,19 +41,19 @@ export const styles = StyleSheet.create({
   },
   expenseCurrency: {
     fontFamily: fonts.IranSans_Light,
-    fontSize: 12,
+    fontSize: common.baseFontSize - 2,
     alignSelf: "center",
   },
   expenseStatus: {
     textAlign: "center",
     fontFamily: fonts.IranSans_Light,
-    fontSize: 14,
+    fontSize: common.baseFontSize - 2,
   },
   expenseBalance: {
     marginLeft: 3,
     textAlign: "center",
     fontFamily: fonts.IranSans_Medium,
-    fontSize: 18,
+    fontSize: common.baseFontSize + 2,
   },
   paymentContainer: {
     padding: 10,
@@ -60,7 +61,7 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 15,
     borderColor: colors.ultraLightGray,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.ultraXLightGray,
     flexDirection: "row-reverse",
     justifyContent: "center",
   },
