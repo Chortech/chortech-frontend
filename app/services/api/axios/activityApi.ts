@@ -7,52 +7,52 @@ import { UserActivities } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
 export class ActivityAPI implements activityApi {
-    client: AxiosInstance;
+  client: AxiosInstance;
 
-    constructor(token: Token) {
-        this.client = axios.create({
-            baseURL: SERVER_ACTIVITY_URL,
-        });
+  constructor(token: Token) {
+    this.client = axios.create({
+      baseURL: SERVER_ACTIVITY_URL,
+    });
 
-        this.client.interceptors.request.use(function (config) {
-            if (token != undefined && token != null) {
-                config.headers["Authorization"] = `Bearer ${token.access}`;
-            }
-            return config;
-        });
-    }
+    this.client.interceptors.request.use(function (config) {
+      if (token != undefined && token != null) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
+      }
+      return config;
+    });
+  }
 
-    async getActivities(): Promise<Response<UserActivities>> {
-        let result: Response<UserActivities> = {
-            success: false,
-            status: -1,
+  async getActivities(): Promise<Response<UserActivities>> {
+    let result: Response<UserActivities> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get("/activity");
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
         };
-
-        try {
-            let response: AxiosResponse = await this.client.get("/activity");
-
-            if (response.status == 200) {
-                result = {
-                    success: true,
-                    status: response.status,
-                    response: response.data,
-                };
-            } else {
-                result.status = response.status;
-            }
-            log("get activities api result");
-            log(result);
-        } catch (e) {
-            log("get activities api error");
-            if (e.isAxiosError) {
-                const error: AxiosError = e as AxiosError;
-                result.status = error.response?.status != undefined ? error.response?.status : -1;
-                log(error.response?.data);
-            } else {
-                log(e.response);
-            }
-        }
-
-        return result;
+      } else {
+        result.status = response.status;
+      }
+      log("get activities api result");
+      log(result, false);
+    } catch (e) {
+      log("get activities api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data, false);
+      } else {
+        log(e.response, false);
+      }
     }
+
+    return result;
+  }
 }

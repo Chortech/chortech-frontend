@@ -42,15 +42,15 @@ export class BalanceAPI implements balanceApi {
         result.status = response.status;
       }
       log("get user friends balance api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get user friends balance api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data.false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -88,9 +88,9 @@ export class BalanceAPI implements balanceApi {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data.false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -114,15 +114,15 @@ export class BalanceAPI implements balanceApi {
         };
       }
       log("get groups balances api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get groups balances api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data.false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -153,15 +153,15 @@ export class BalanceAPI implements balanceApi {
         };
       }
       log("get group members balances api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get group members balances api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data.false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 

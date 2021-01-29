@@ -75,7 +75,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
               result.push(temp);
             }
           });
-          log(result);
 
           result.forEach((contact) => {
             selectedContacts.current?.forEach((item) => {
@@ -90,11 +89,6 @@ const InviteFriend: React.FC = (): JSX.Element => {
         });
       }
     });
-
-    // try {
-    // } catch (error) {
-    //   log(error);
-    // }
   };
 
   const onSelectContact = (contact: CustomContact) => {

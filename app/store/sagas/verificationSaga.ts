@@ -31,7 +31,6 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
     response = yield VerificationAPI.generateCodeRequestByPhone(phone);
   }
 
-  log(response.status);
   if (response.success) {
     yield put(verificationActions.onGenerateCodeResponse(response));
     ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);

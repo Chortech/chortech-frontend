@@ -55,15 +55,15 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("get expenses api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get expenses api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response);
+        log(error.response, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -88,7 +88,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("get expense api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get expenses api error");
       if (e.isAxiosError) {
@@ -96,7 +96,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -118,7 +118,7 @@ export class ExpenseAPI implements expenseApi {
         };
       } else result.status = response.status;
       log("get friend relations api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get friend relations api error");
       if (e.isAxiosError) {
@@ -126,7 +126,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -176,7 +176,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -226,7 +226,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -251,7 +251,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("delete expense api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("delete expense api error");
       if (e.isAxiosError) {
@@ -259,7 +259,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -288,7 +288,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("add comment api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("add comment api error");
       if (e.isAxiosError) {
@@ -303,7 +303,7 @@ export class ExpenseAPI implements expenseApi {
         }
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -331,7 +331,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = response.status;
       }
       log("get comment api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get comment api error");
       if (e.isAxiosError) {
@@ -339,7 +339,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -372,7 +372,7 @@ export class ExpenseAPI implements expenseApi {
         };
       }
       log("get group expenses api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get group expenses api error");
       if (e.isAxiosError) {
@@ -380,7 +380,7 @@ export class ExpenseAPI implements expenseApi {
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 

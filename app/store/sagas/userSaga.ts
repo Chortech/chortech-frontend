@@ -79,7 +79,6 @@ export function* uploadImageAsync(action: Action<UploadImageRequest>) {
     if (response.status == 400) {
       ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
     } else {
-      console.log(response);
       ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
     }
   }

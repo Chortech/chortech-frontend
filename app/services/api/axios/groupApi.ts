@@ -55,15 +55,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("get user groups api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("get user groups api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -89,15 +89,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("create group api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("create group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -123,15 +123,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("group info api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("group info api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -157,15 +157,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("delete group api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("delete group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -191,15 +191,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("add friend to group api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("add friend to group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -225,15 +225,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("edit group api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("edit group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -259,15 +259,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("leave group api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("leave group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -293,15 +293,15 @@ export class GroupAPI implements groupApi {
         result.status = response.status;
       }
       log("remove member api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("remove member api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 

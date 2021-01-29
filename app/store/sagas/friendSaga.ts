@@ -30,7 +30,7 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   if (response.success) {
     yield put(friendActions.onGetUserFriendsResponse(response));
     yield call(
-      balanceSaga.getFriendsBalanceRequest,
+      balanceSaga.getFriendsBalanceAsync,
       balanceActions.onGetFriendsBalanceRequest(token)
     );
   } else {
