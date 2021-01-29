@@ -13,6 +13,7 @@ import {
 } from "../../models/requests/axios/group";
 import { GroupBalance, MemberBalance } from "../../models/other/axios/Balance";
 import { TapGestureHandler } from "react-native-gesture-handler";
+import { GroupMembersBalances } from "../../models/responses/axios/group";
 
 export function onGetFriendsBalanceRequest(token: Token): Action<GetFriendsBalanceRequest> {
   return {
@@ -113,26 +114,28 @@ export function onGetGroupsBalanceFail(): Action<Response<GroupBalance[]>> {
 }
 
 export function onGetGroupMembersBalancesRequest(
-  token: Token
+  token: Token,
+  groupId: string
 ): Action<GetGroupMembersBalancesRequest> {
   return {
     type: types.GET_GROUP_MEMBERS_BALANCES_REQUEST,
     payload: {
       token: token,
+      groupId: groupId,
     },
   };
 }
 
 export function onGetGroupMembersBalancesResponse(
-  response: Response<MemberBalance[]>
-): Action<Response<MemberBalance[]>> {
+  response: Response<GroupMembersBalances>
+): Action<Response<GroupMembersBalances>> {
   return {
     type: types.GET_GROUP_MEMBERS_BALANCES_RESPONSE,
     payload: response,
   };
 }
 
-export function onGetGroupMembersBalancesFail(): Action<Response<MemberBalance[]>> {
+export function onGetGroupMembersBalancesFail(): Action<Response<GroupMembersBalances>> {
   return {
     type: types.GET_GROUP_MEMBERS_BALANCES_FAIL,
     payload: {

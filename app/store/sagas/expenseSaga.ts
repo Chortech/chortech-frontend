@@ -28,6 +28,9 @@ import * as friendActions from "../actions/friendActions";
 import * as friendSaga from "./friendSaga";
 import messages from "../../assets/resources/messages";
 import { log } from "../../utils/logger";
+import { GetGroupExpensesRequest } from "../../models/requests/axios/group";
+import { exp } from "react-native-reanimated";
+import { GroupExpenses } from "../../models/responses/axios/group";
 
 export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
@@ -232,5 +235,21 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
       ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
     }
   }
+  yield put(expenseActions.onLoadingDisable());
+}
+
+export function* getGroupsExpensesAsync(action: Action<GetGroupExpensesRequest>) {
+  yield put(expenseActions.onLoadingEnable());
+  const { groupId, token } = action.payload;
+  let api: ExpenseAPI = new ExpenseAPI(token);
+  let response: Response<GroupExpenses> = yield api.getGroupExpenses(groupId);
+
+  if (response.success) {
+    yield put(expenseActions.onGetGroupExpensesResponse(response));
+  } else {
+    yield put(expenseActions.onGetGroupExpensesFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+  }
+
   yield put(expenseActions.onLoadingDisable());
 }

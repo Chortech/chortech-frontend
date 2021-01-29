@@ -6,7 +6,7 @@ import { SERVER_BALANCES_URL } from "../../../../local_env_vars";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
 import { GroupBalance, MemberBalance } from "../../../models/other/axios/Balance";
-import { GroupExpenses } from "../../../models/responses/axios/group";
+import { GroupExpenses, GroupMembersBalances } from "../../../models/responses/axios/group";
 
 export class BalanceAPI implements balanceApi {
   client: AxiosInstance;
@@ -101,6 +101,7 @@ export class BalanceAPI implements balanceApi {
     let result: Response<GroupBalance[]> = {
       success: false,
       status: -1,
+      response: [],
     };
 
     try {
@@ -128,10 +129,14 @@ export class BalanceAPI implements balanceApi {
     return result;
   }
 
-  async getGroupMembersBalances(groupId: string): Promise<Response<MemberBalance[]>> {
-    let result: Response<MemberBalance[]> = {
+  async getGroupMembersBalances(groupId: string): Promise<Response<GroupMembersBalances>> {
+    let result: Response<GroupMembersBalances> = {
       success: false,
       status: -1,
+      response: {
+        groupId: groupId,
+        membersBalances: [],
+      },
     };
 
     try {
@@ -141,7 +146,10 @@ export class BalanceAPI implements balanceApi {
         result = {
           success: true,
           status: response.status,
-          response: response.data,
+          response: {
+            ...result.response!,
+            membersBalances: response.data,
+          },
         };
       }
       log("get group members balances api result");

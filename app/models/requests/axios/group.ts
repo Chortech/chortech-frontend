@@ -49,8 +49,10 @@ export interface GetGroupsBalancesRequest {
 
 export interface GetGroupExpensesRequest {
   token: Token;
+  groupId: string;
 }
 
 export interface GetGroupMembersBalancesRequest {
   token: Token;
+  groupId: string;
 }

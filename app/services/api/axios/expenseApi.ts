@@ -349,6 +349,16 @@ export class ExpenseAPI implements expenseApi {
     let result: Response<GroupExpenses> = {
       success: false,
       status: -1,
+      response: {
+        group: {
+          id: "-1",
+          memebers: [],
+          name: "",
+          owner: "-1",
+          balance: 0,
+        },
+        expenses: [],
+      },
     };
 
     try {

@@ -2,8 +2,13 @@ import { exp } from "react-native-reanimated";
 import { act } from "react-test-renderer";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
-import { ExpenseBalance } from "../../models/other/axios/Balance";
+import { ExpenseBalance, GroupBalance, MemberBalance } from "../../models/other/axios/Balance";
 import { IUserState } from "../../models/reducers/default";
+import {
+  GetGroupExpensesRequest,
+  GetGroupMembersBalancesRequest,
+  GetGroupsBalancesRequest,
+} from "../../models/requests/axios/group";
 import {
   AddFriendRequest,
   DeleteFriendRequest,
@@ -34,6 +39,7 @@ import {
   GetGroupByIdRequest,
   GetUserGroupsRequest,
 } from "../../models/requests/graphql/group";
+import { GroupExpenses, GroupMembersBalances } from "../../models/responses/axios/group";
 import { Response } from "../../models/responses/axios/response";
 import {
   AddFriend,
@@ -519,6 +525,88 @@ export const userReducer = createReducer(initialState, {
   [types.GET_FRIEND_BALANCE_FAIL](
     state: IUserState,
     action: Action<Response<FriendBalance>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUPS_BALANCES_REQUEST](
+    state: IUserState,
+    action: Action<GetGroupsBalancesRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUPS_BALANCES_RESPONSE](
+    state: IUserState,
+    action: Action<Response<GroupBalance[]>>
+  ): IUserState {
+    if (action.payload.response != undefined) {
+      let response = action.payload.response;
+      state.groups.forEach((group) => {
+        let index = response.findIndex((balance) => balance.id == group.id);
+        if (index > -1) {
+          group.balance = response[index].balance;
+        }
+      });
+    }
+    return state;
+  },
+  [types.GET_GROUPS_BALANCES_FAIL](
+    state: IUserState,
+    action: Action<Response<GroupBalance[]>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUP_EXPENSES_REQUEST](
+    state: IUserState,
+    action: Action<GetGroupExpensesRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUP_EXPENSES_RESPONSE](
+    state: IUserState,
+    action: Action<Response<GroupExpenses>>
+  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      let index = state.groups.findIndex((group) => group.id == response.group.id);
+      if (index > -1) {
+        state.groups[index].expenses = response.expenses;
+      }
+    }
+    return state;
+  },
+  [types.GET_GROUP_EXPENSES_FAIL](
+    state: IUserState,
+    action: Action<Response<GroupExpenses>>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUP_MEMBERS_BALANCES_REQUEST](
+    state: IUserState,
+    action: Action<GetGroupMembersBalancesRequest>
+  ): IUserState {
+    return state;
+  },
+  [types.GET_GROUP_MEMBERS_BALANCES_RESPONSE](
+    state: IUserState,
+    action: Action<Response<GroupMembersBalances>>
+  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      let group = state.groups.find((group) => group.id == response.groupId);
+      if (group != undefined) {
+        group.members?.forEach((member) => {
+          let index = response.membersBalances.findIndex((balance) => balance.id == member.id);
+          if (index > -1) {
+            member.balances = response.membersBalances[index].balances;
+          }
+        });
+      }
+    }
+    return state;
+  },
+  [types.GET_GROUP_MEMBERS_BALANCES_FAIL](
+    state: IUserState,
+    action: Action<Response<GroupMembersBalances>>
   ): IUserState {
     return state;
   },

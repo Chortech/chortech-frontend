@@ -290,11 +290,15 @@ export function onAddCommentFail(): Action<Response<null>> {
   };
 }
 
-export function onGetGroupExpensesRequest(token: Token): Action<GetGroupExpensesRequest> {
+export function onGetGroupExpensesRequest(
+  token: Token,
+  groupId: string
+): Action<GetGroupExpensesRequest> {
   return {
     type: types.GET_GROUP_EXPENSES_REQUEST,
     payload: {
       token: token,
+      groupId: groupId,
     },
   };
 }
