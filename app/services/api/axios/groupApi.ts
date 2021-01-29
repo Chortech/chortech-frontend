@@ -4,13 +4,13 @@ import { groupApi } from "../../../models/api/axios-api/group";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
 import {
-    AddFriendToGroupResponse,
-    DeleteGroupResponse,
-    EditGroupResponse,
-    GetGroupInfoResponse,
-    GetUserGroupsResponse,
-    LeaveGroupResponse,
-    RemoveMemberResponse,
+  AddFriendToGroupResponse,
+  DeleteGroupResponse,
+  EditGroupResponse,
+  GetGroupInfoResponse,
+  GetUserGroupsResponse,
+  LeaveGroupResponse,
+  RemoveMemberResponse,
 } from "../../../models/responses/axios/group";
 import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
@@ -75,9 +75,9 @@ export class GroupAPI implements groupApi {
       success: false,
       status: -1,
     };
-    picture = "../../../assets/images/group-image.jpg"
+    picture = "../../../assets/images/group-image.jpg";
     try {
-      let response: AxiosResponse = await this.client.post("", {name, picture});
+      let response: AxiosResponse = await this.client.post("", { name, picture });
 
       if (response.status == 201) {
         result = {

@@ -1,6 +1,7 @@
 import { Activity } from "../../other/axios/Activity";
 import { Comment } from "../../other/axios/Comment";
-import { Expense, ExpenseBalance } from "../../other/axios/Expense";
+import { Expense } from "../../other/axios/Expense";
+import { ExpenseBalance } from "../../other/axios/Balance";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
 import { Payment } from "../../other/axios/Payment";

@@ -14,7 +14,7 @@ import NavigationService from "../../navigation/navigationService";
 import { AxiosInstance } from "axios";
 import { Friend } from "../../models/other/axios/Friend";
 import { log } from "../../utils/logger";
-import { ExpenseBalance } from "../../models/other/axios/Expense";
+import { ExpenseBalance } from "../../models/other/axios/Balance";
 import colors from "../../assets/resources/colors";
 import FriendBalanceItem from "../../components/FriendBalanceItem";
 import PopupMenu from "../../components/PopupMenu";

@@ -3,7 +3,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { useStore } from "react-redux";
 import colors from "../../assets/resources/colors";
-import { ExpenseBalance } from "../../models/other/axios/Expense";
+import { ExpenseBalance } from "../../models/other/axios/Balance";
 import { IUserState } from "../../models/reducers/default";
 import { styles } from "./styles";
 import { ArabicNumbers } from "react-native-arabic-numbers";

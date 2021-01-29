@@ -2,7 +2,7 @@ import { exp } from "react-native-reanimated";
 import { act } from "react-test-renderer";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
-import { ExpenseBalance } from "../../models/other/axios/Expense";
+import { ExpenseBalance } from "../../models/other/axios/Balance";
 import { IUserState } from "../../models/reducers/default";
 import {
   AddFriendRequest,
