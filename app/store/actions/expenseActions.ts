@@ -23,6 +23,8 @@ import {
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
 import { log } from "../../utils/logger";
+import { GetGroupExpensesRequest } from "../../models/requests/axios/group";
+import { GroupExpenses } from "../../models/responses/axios/group";
 
 export function onGetUserExpensesRequest(token: Token): Action<GetUserExpensesRequest> {
   return {
@@ -281,6 +283,38 @@ export function onAddCommentResponse(response: Response<null>): Action<Response<
 export function onAddCommentFail(): Action<Response<null>> {
   return {
     type: types.ADD_COMMENT_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetGroupExpensesRequest(token: Token): Action<GetGroupExpensesRequest> {
+  return {
+    type: types.GET_GROUP_EXPENSES_REQUEST,
+    payload: {
+      token: token,
+    },
+  };
+}
+
+export function onGetGroupExpensesResponse(
+  response: Response<GroupExpenses>
+): Action<Response<GroupExpenses>> {
+  return {
+    type: types.GET_GROUP_EXPENSES_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    },
+  };
+}
+
+export function onGetGroupExpensesFail(): Action<Response<GroupExpenses>> {
+  return {
+    type: types.GET_GROUP_EXPENSES_FAIL,
     payload: {
       success: false,
       status: -1,

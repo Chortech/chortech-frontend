@@ -7,6 +7,12 @@ import {
 import { FriendBalance } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
+import {
+  GetGroupMembersBalancesRequest,
+  GetGroupsBalancesRequest,
+} from "../../models/requests/axios/group";
+import { GroupBalance, MemberBalance } from "../../models/other/axios/Balance";
+import { TapGestureHandler } from "react-native-gesture-handler";
 
 export function onGetFriendsBalanceRequest(token: Token): Action<GetFriendsBalanceRequest> {
   return {
@@ -73,6 +79,62 @@ export function onGetFriendBalanceResponse(
 export function onGetFriendBalanceFail(): Action<Response<FriendBalance>> {
   return {
     type: types.GET_FRIEND_BALANCE_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetGroupsBalancesRequest(token: Token): Action<GetGroupsBalancesRequest> {
+  return {
+    type: types.GET_GROUPS_BALANCES_REQUEST,
+    payload: { token: token },
+  };
+}
+
+export function onGetGroupsBalanceResponse(
+  response: Response<GroupBalance[]>
+): Action<Response<GroupBalance[]>> {
+  return {
+    type: types.GET_GROUPS_BALANCES_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onGetGroupsBalanceFail(): Action<Response<GroupBalance[]>> {
+  return {
+    type: types.GET_GROUPS_BALANCES_FAIL,
+    payload: {
+      success: false,
+      status: -1,
+    },
+  };
+}
+
+export function onGetGroupMembersBalancesRequest(
+  token: Token
+): Action<GetGroupMembersBalancesRequest> {
+  return {
+    type: types.GET_GROUP_MEMBERS_BALANCES_REQUEST,
+    payload: {
+      token: token,
+    },
+  };
+}
+
+export function onGetGroupMembersBalancesResponse(
+  response: Response<MemberBalance[]>
+): Action<Response<MemberBalance[]>> {
+  return {
+    type: types.GET_GROUP_MEMBERS_BALANCES_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onGetGroupMembersBalancesFail(): Action<Response<MemberBalance[]>> {
+  return {
+    type: types.GET_GROUP_MEMBERS_BALANCES_FAIL,
     payload: {
       success: false,
       status: -1,
