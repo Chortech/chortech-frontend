@@ -5,6 +5,8 @@ import { FriendBalance } from "../../../models/responses/axios/user";
 import { SERVER_BALANCES_URL } from "../../../../local_env_vars";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
+import { GroupBalance, MemberBalance } from "../../../models/other/axios/Balance";
+import { GroupExpenses } from "../../../models/responses/axios/group";
 
 export class BalanceAPI implements balanceApi {
   client: AxiosInstance;
@@ -83,6 +85,69 @@ export class BalanceAPI implements balanceApi {
       log(result.response);
     } catch (e) {
       log("get user friend balance api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
+    return result;
+  }
+
+  async getGroupsBalances(): Promise<Response<GroupBalance[]>> {
+    let result: Response<GroupBalance[]> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client("/groups");
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      }
+      log("get groups balances api result");
+      log(result);
+    } catch (e) {
+      log("get groups balances api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
+    return result;
+  }
+
+  async getGroupMembersBalances(groupId: string): Promise<Response<MemberBalance[]>> {
+    let result: Response<MemberBalance[]> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get(`/groups/${groupId}`);
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      }
+      log("get group members balances api result");
+      log(result);
+    } catch (e) {
+      log("get group members balances api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;

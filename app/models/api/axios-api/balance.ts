@@ -6,7 +6,6 @@ import { GroupExpenses } from "../../responses/axios/group";
 export interface balanceApi {
   getFriendsBalance(): Promise<Response<FriendBalance[]>>;
   getFriendBalance(friendId: string): Promise<Response<FriendBalance>>;
-  getGroupsBalances(): Promise<Response<GroupBalance>>;
-  getGroupExpenses(groupId: string): Promise<Response<GroupExpenses>>;
+  getGroupsBalances(): Promise<Response<GroupBalance[]>>;
   getGroupMembersBalances(groupId: string): Promise<Response<MemberBalance[]>>;
 }

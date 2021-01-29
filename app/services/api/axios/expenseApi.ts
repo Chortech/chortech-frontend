@@ -4,6 +4,7 @@ import { expenseApi } from "../../../models/api/axios-api/expense";
 import { Participant } from "../../../models/other/axios/Participant";
 import { Token } from "../../../models/other/axios/Token";
 import { IUserState } from "../../../models/reducers/default";
+import { GroupExpenses } from "../../../models/responses/axios/group";
 import { Response } from "../../../models/responses/axios/response";
 import {
   UserExpenses,
@@ -341,6 +342,38 @@ export class ExpenseAPI implements expenseApi {
         log(e.response);
       }
     }
+    return result;
+  }
+
+  async getGroupExpenses(groupId: string): Promise<Response<GroupExpenses>> {
+    let result: Response<GroupExpenses> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.get(`/groups/${groupId}`);
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      }
+      log("get group expenses api result");
+      log(result);
+    } catch (e) {
+      log("get group expenses api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
+    }
+
     return result;
   }
 }

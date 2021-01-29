@@ -9,6 +9,7 @@ import {
   FriendBalance,
 } from "../../responses/axios/user";
 import { Response } from "../../responses/axios/response";
+import { GroupExpenses } from "../../responses/axios/group";
 
 export interface expenseApi {
   getExpenses(): Promise<Response<UserExpenses>>;
@@ -36,4 +37,5 @@ export interface expenseApi {
   ): Promise<Response<EditExpense>>;
   deleteExpense(expenseId: string): Promise<Response<null>>;
   addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>>;
+  getGroupExpenses(groupId: string): Promise<Response<GroupExpenses>>;
 }
