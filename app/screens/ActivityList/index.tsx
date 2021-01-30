@@ -2,14 +2,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { FloatingAction } from "react-native-floating-action";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import colors from "../../assets/resources/colors";
+import ActivityItem from "../../components/ActivityItem/index";
 import SelectableItem from "../../components/SelectableItem";
 import { Item } from "../../models/other/axios/Item";
 import { IUserState } from "../../models/reducers/default";
 import NavigationService from "../../navigation/navigationService";
-import * as expenseActions from "../../store/actions/expenseActions";
+import * as activityActions from "../../store/actions/activityActions";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
+import LoadingIndicator from "../Loading";
 import styles from "./styles";
 
 type IState = {
@@ -31,16 +35,19 @@ const ActivityList: React.FC = () => {
   //     { id: "7", selected: false, name: "کالای دیجیتال", icon: "laptop" },
   //   ],
   // });
-  const { activities } = useSelector((state: IState) => state.userReducer);
+  const { loading, activities } = useSelector((state: IState) => state.userReducer);
   const user = useSelector((state: IState) => state.userReducer);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
-  const onPressActivityItem = (id: string, name: string, category: string, total: number) =>
+
+  const onPressActivityItem = () =>
     NavigationService.navigate("Activity", {
-      id: id,
-      activityName: name,
-      category: category,
-      total: total.toString(),
+      // id: id,
+      // activityName: name,
+      // category: category,
+      // total: total.toString(),
     });
+
   const onAddExpense = () => {
     let items: Array<Item> = [];
 
@@ -54,12 +61,13 @@ const ActivityList: React.FC = () => {
     });
     NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
   };
-  const [refreshing, setRefreshing] = useState(false);
+
   const fetchActivities = (): void => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
+      dispatch(activityActions.onGetUserActivitiesRequest(loggedInUser.token));
     }
   };
+
   useEffect(() => {
     fetchActivities();
   }, [dispatch]);
@@ -84,6 +92,13 @@ const ActivityList: React.FC = () => {
   //     <FontAwesomeIcon icon={item.icon} size={20} style={{ top: 30 }} />
   //   </>
   // );
+
+  const renderActivityItem: any = ({ item }) => (
+    <ActivityItem
+      onPressActivityItem={() => onPressActivityItem()}
+      Text="hmm"
+    />
+  );
 
   return (
     <>
@@ -131,6 +146,7 @@ const ActivityList: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
+
     </>
   );
 };

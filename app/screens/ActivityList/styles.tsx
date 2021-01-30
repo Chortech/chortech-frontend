@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import colors from "../../assets/resources/colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,6 +16,17 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     writingDirection: "auto",
     fontFamily: "IRANSansWeb_Bold",
+  },
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    color: colors.textBlack,
+    fontSize: 16,
+    marginHorizontal: 30,
+    paddingTop: 10,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
   },
   infoContainer: {
     flex: 8,
