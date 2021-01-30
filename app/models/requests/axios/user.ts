@@ -97,6 +97,7 @@ export interface GetFriendBalanceRequest {
   token: Token;
   friendId: string;
   friendName: string;
+  balance: number;
 }
 
 export interface GetUserActivitiesRequest {
@@ -130,4 +131,62 @@ export interface EditPaymentRequest {
   paid_at?: number;
   group?: string;
   notes?: string;
+}
+
+export interface GetUserGroupsRequest {
+  token: Token;
+}
+
+export interface AddGroupRequest {
+  token: Token;
+  name: string;
+  picture?: string;
+}
+
+export interface GetGroupInfoRequest {
+  token: Token;
+  groupId: string;
+}
+
+export interface DeleteGroupRequest {
+  token: Token;
+  groupId: string;
+}
+
+export interface AddFriendToGroupRequest {
+  token: Token;
+  groupId: string;
+  members: string[];
+}
+
+export interface EditGroupRequest {
+  token: Token;
+  groupId: string;
+  name: string;
+  picture?: string;
+}
+
+export interface LeaveGroupRequest {
+  token: Token;
+  groupId: string;
+}
+
+export interface RemoveMemberRequest {
+  token: Token;
+  groupId: string;
+  memberId: string;
+}
+
+export interface GetGroupsBalancesRequest {
+  token: Token;
+}
+
+export interface GetGroupExpensesRequest {
+  token: Token;
+  groupId: string;
+}
+
+export interface GetGroupMembersBalancesRequest {
+  token: Token;
+  groupId: string;
 }

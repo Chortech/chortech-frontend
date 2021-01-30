@@ -1,241 +1,172 @@
 import { ToastAndroid } from "react-native";
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import { Action } from "../../models/actions/action";
+import { Group } from "../../models/other/axios/Group";
 import {
-  AddFriendToGroupRequest,
-  CreateGroupRequest,
-  DeleteGroupRequest,
-  EditGroupRequest,
-  GetGroupInfoRequest,
   GetUserGroupsRequest,
+  GetGroupInfoRequest,
+  AddGroupRequest,
+  EditGroupRequest,
+  DeleteGroupRequest,
+  AddFriendToGroupRequest,
   LeaveGroupRequest,
   RemoveMemberRequest,
-} from "../../models/requests/axios/group";
-import {
-  AddFriendToGroupResponse,
-  DeleteGroupResponse,
-  EditGroupResponse,
-  GetGroupInfoResponse,
-  GetUserGroupsResponse,
-  LeaveGroupResponse,
-  RemoveMemberResponse,
-} from "../../models/responses/axios/group";
+} from "../../models/requests/axios/user";
 import { Response } from "../../models/responses/axios/response";
+import { RemoveGroupMember } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { GroupAPI } from "../../services/api/axios/groupApi";
 import * as groupActions from "../actions/groupActions";
+import * as balanceActions from "../actions/balanceActions";
+import * as balanceSaga from "./balanceSaga";
+import messages from "../../assets/resources/messages";
 
-export function* createGroupAsync(action: Action<CreateGroupRequest>) {
-  yield put(groupActions.onLoadingEnable());
-
-  const token = action.payload.token;
-  const name = action.payload.name;
-  const picture = action.payload.picture;
-
-  let response: Response<null> = {
-    success: false,
-    status: -1,
-  };
-
-  const api: GroupAPI = new GroupAPI(token);
-  response = yield api.createGroup(name, picture);
-
-  yield put(groupActions.onLoadingDisable());
-
-  if (response.success) {
-    yield put(groupActions.onCreateGroupResponse(response));
-  } else {
-    // yield put(groupActions.onCreateGroupFail());
-    if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
-    }
-  }
-}
-
-export function* GetUserGroupsAsync(action: Action<GetUserGroupsRequest>) {
+export function* getUserGroupsAsync(action: Action<GetUserGroupsRequest>) {
   yield put(groupActions.onLoadingEnable());
   const token = action.payload.token;
-  let response: Response<GetUserGroupsResponse> = {
-    success: false,
-    status: -1,
-  };
-
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.getUserGroups();
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<Group[]> = yield api.getUserGroups();
 
   if (response.success) {
     yield put(groupActions.onGetUserGroupsResponse(response));
+    yield call(
+      balanceSaga.getGroupsBalancesAsync,
+      balanceActions.onGetGroupsBalancesRequest(token)
+    );
   } else {
-    // yield put(groupActions.onGetUserGroupsFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }
 
-export function* DeleteGroupAsync(action: Action<DeleteGroupRequest>) {
+export function* getGroupInfoAsync(action: Action<GetGroupInfoRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const id = action.payload.id;
-  const token = action.payload.token;
-
-  let response: Response<DeleteGroupResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { groupId, token } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.deleteGroup(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<Group> = yield api.getGroupInfo(groupId);
 
   if (response.success) {
-    yield put(groupActions.onDeleteGroupResponse(response.response));
+    yield put(groupActions.onGetGroupInfoResponse(response));
   } else {
-    yield put(groupActions.onDeleteGroupFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }
 
-export function* GetGroupInfoAsync(action: Action<GetGroupInfoRequest>) {
+export function* addGroupAsync(action: Action<AddGroupRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const id = action.payload.id;
-  const token = action.payload.token;
-
-  let response: Response<GetGroupInfoResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { token, name, picture } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.getGroupInfo(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<Group> = yield api.addGroup(name, picture);
 
   if (response.success) {
-    yield put(groupActions.onGetGroupByIdResponse(response.response));
+    yield put(groupActions.onAddGroupResponse(response));
+    yield call(getUserGroupsAsync, groupActions.onGetUserGroupsRequest(token));
+    navigationRef.current?.navigate("GroupList");
   } else {
-    yield put(groupActions.onGetGroupByIdFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }
 
 export function* EditGroupAsync(action: Action<EditGroupRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const id = action.payload.id;
-  const token = action.payload.token;
-
-  let response: Response<EditGroupResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { token, groupId, name, picture } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.editGroup(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<Group> = yield api.editGroup(groupId, name, picture);
 
   if (response.success) {
-    yield put(groupActions.onEditGroupResponse(response.response));
+    yield put(groupActions.onEditGroupResponse(response));
   } else {
-    // yield put(groupActions.onEditGroupFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
+}
+
+export function* DeleteGroupAsync(action: Action<DeleteGroupRequest>) {
+  yield put(groupActions.onLoadingEnable());
+  const { groupId, token } = action.payload;
+  const api: GroupAPI = new GroupAPI(token);
+  let response: Response<null> = yield api.deleteGroup(groupId);
+
+  if (response.success) {
+    yield put(groupActions.onDeleteGroupResponse(response));
+  } else {
+    if (response.status == 400) {
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+    }
+  }
+  yield put(groupActions.onLoadingDisable());
 }
 
 export function* AddFriendToGroupAsync(action: Action<AddFriendToGroupRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const id = action.payload.id;
-  const token = action.payload.token;
-
-  let response: Response<AddFriendToGroupResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { token, groupId, members } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.addFriendToGroup(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<Group> = yield api.addFriendToGroup(groupId, members);
 
   if (response.success) {
-    yield put(groupActions.onAddFriendToGroupResponse(response.response));
+    yield put(groupActions.onAddFriendToGroupResponse(response));
   } else {
-    // yield put(groupActions.onAddFriendToGroupFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }
 
 export function* LeaveGroupAsync(action: Action<LeaveGroupRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const id = action.payload.id;
-  const token = action.payload.token;
-
-  let response: Response<LeaveGroupResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { groupId, token } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.leaveGroup(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<null> = yield api.leaveGroup(groupId);
 
   if (response.success) {
-    yield put(groupActions.onLeaveGroupResponse(response.response));
+    yield put(groupActions.onLeaveGroupResponse(response));
   } else {
-    // yield put(groupActions.onLeaveGroupFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }
 
 export function* RemoveMemberAsync(action: Action<RemoveMemberRequest>) {
   yield put(groupActions.onLoadingEnable());
-  
-  const token = action.payload.token;
-  const id = action.payload.memberId;
-
-  let response: Response<RemoveMemberResponse> = {
-    success: false,
-    status: -1,
-  };
-
+  const { token, groupId, memberId } = action.payload;
   const api: GroupAPI = new GroupAPI(token);
-  response = yield api.removeMember(id);
-  yield put(groupActions.onLoadingDisable());
+  let response: Response<RemoveGroupMember> = yield api.removeMember(groupId, memberId);
 
   if (response.success) {
-    yield put(groupActions.onRemoveMemberResponse(response.response));
+    yield put(groupActions.onRemoveMemberResponse(response));
   } else {
-    // yield put(groupActions.onRemoveMemberFail(response.response));
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(groupActions.onLoadingDisable());
 }

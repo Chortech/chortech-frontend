@@ -7,8 +7,8 @@ import NavigationService, { navigationRef } from "../../navigation/navigationSer
 import * as groupActions from "../../store/actions/groupActions";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
-import { error, log, warn } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
@@ -20,18 +20,21 @@ const GroupList: React.FC = () => {
   const { groups } = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   const onAddGroup = () => NavigationService.navigate("AddGroup");
-  const onGroup = (id: string, name: string) =>
-    NavigationService.navigate("Group", {
+  const onGroup = (id: string, name: string) => {
+    log("pressed");
+    navigationRef.current?.navigate("Group", {
       id: id,
       groupName: name,
       ImageUrl: "",
     });
+  };
   const fetchGroups = (): void => {
-    // if (validateToken(loggedInUser.token)) {
-    //   dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.token));
-    // }
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetUserGroupsRequest(loggedInUser.token));
+    }
   };
 
+  log(groups);
   useEffect(() => {
     fetchGroups();
   }, [dispatch]);

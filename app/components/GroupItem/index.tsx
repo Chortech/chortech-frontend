@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  ImageSourcePropType,
-  Text,
-  View,
-} from "react-native";
+import { GestureResponderEvent, Image, ImageSourcePropType, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { styles } from "./styles";
 

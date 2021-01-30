@@ -1,43 +1,39 @@
 import { StyleSheet, Platform } from "react-native";
-
-const mainColor = "#00bb5d";
-const borderRadius = 20;
-const textColor = "#333333";
-const baseFontSize = 16;
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   formsContainer: {
     flex: 5,
     paddingHorizontal: 20,
     paddingVertical: 20,
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
   screenTitleText: {
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: textColor,
-    fontSize: baseFontSize,
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
     margin: 5,
   },
   textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#f2f2f2",
-    borderRadius: borderRadius,
-    backgroundColor: "#f2f2f2",
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
     padding: 5,
   },
   textInput: {
     flex: 5,
-    color: textColor,
+    color: colors.textBlack,
     padding: 10,
-    fontFamily: "IRANSansWeb_Light",
+    fontFamily: fonts.IranSans_Light,
     writingDirection: "auto",
     textAlign: "center",
   },
@@ -48,23 +44,23 @@ export const styles = StyleSheet.create({
   confirmButton: {
     width: "80%",
     alignSelf: "center",
-    backgroundColor: mainColor,
-    borderRadius: borderRadius,
+    backgroundColor: colors.mainColor,
+    borderRadius: common.baseBorderRadius,
     paddingVertical: 10,
   },
   confirmButtonText: {
-    fontSize: baseFontSize + 2,
-    color: "#fff",
+    fontSize: common.baseFontSize + 2,
+    color: colors.white,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
   resendButtonText: {
-    fontSize: baseFontSize,
-    color: textColor,
+    fontSize: common.baseFontSize,
+    color: colors.textBlack,
     margin: 15,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
   timerContainer: {
@@ -74,11 +70,11 @@ export const styles = StyleSheet.create({
   timerLabel: {
     fontFamily: "Alex",
     borderWidth: 1,
-    borderColor: mainColor,
+    borderColor: colors.mainColor,
     padding: 2,
   },
   seperatorLabel: {
-    fontSize: baseFontSize + 2,
-    color: mainColor,
+    fontSize: common.baseFontSize + 2,
+    color: colors.mainColor,
   },
 });

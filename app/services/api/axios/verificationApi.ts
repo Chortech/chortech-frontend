@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_VERIFICATION_URL } from "../../../../local_env_vars";
+import messages from "../../../assets/resources/messages";
 import { VerificationApi } from "../../../models/api/axios-api/verification";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
@@ -32,7 +33,7 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("generate code api (email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("generate code api (email) error");
       if (e.isAxiosError) {
@@ -47,9 +48,9 @@ class CodeVerificationAPI implements VerificationApi {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
         result.response = error.response != undefined ? error.response.data : result.response;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -73,7 +74,7 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("generate code api (phone) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("generate code api (phone) error");
       if (e.isAxiosError) {
@@ -83,9 +84,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -111,21 +112,24 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("verify code api (email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("verify code api (email) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        if (error.response?.data.errors[0].message == "Something went wrong") {
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
           result.status = -2;
-        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+        } else if (message == "Wrong code!") {
           result.status = -3;
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -151,21 +155,24 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("verify code api (phone) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("verify code api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
-        if (error.response?.data.errors[0].message == "Something went wrong") {
+        let message: string =
+          error.response?.data.errors != undefined ? error.response?.data.errors[0].message : "";
+
+        if (message == "Something went wrong") {
           result.status = -2;
-        } else if (error.response?.data.errors[0].message == "Wrong code!") {
+        } else if (message == "Wrong code!") {
           result.status = -3;
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
     return result;
@@ -191,7 +198,7 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("cancel code api(email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("cancel code api (email) error");
       if (e.isAxiosError) {
@@ -201,9 +208,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -229,7 +236,7 @@ class CodeVerificationAPI implements VerificationApi {
         result.status = response.status;
       }
       log("cancel code api (phone) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("cancel code api (phone) error");
       if (e.isAxiosError) {
@@ -239,9 +246,9 @@ class CodeVerificationAPI implements VerificationApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 

@@ -25,7 +25,7 @@ const AddGroup: React.FC = (): JSX.Element => {
     if (groupName == "") {
       ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
     } else {
-      dispatch(groupActions.onCreateGroupRequest(loggedInUser.token, groupName, ""));
+      dispatch(groupActions.onAddGroupRequest(loggedInUser.token, groupName, ""));
     }
   };
 

@@ -13,18 +13,10 @@ import * as Animatable from "react-native-animatable";
 import { CountDown } from "react-native-customizable-countdown";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import NavigationService, { navigationRef } from "../../navigation/navigationService";
 import { styles } from "./styles";
 import * as verificationActions from "../../store/actions/verificationActions";
-import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
-import { User } from "../../models/other/graphql/User";
-import { log } from "../../utils/logger";
-import { validateToken } from "../../utils/tokenValidator";
-import { Response } from "../../models/responses/axios/response";
-import { colors } from "react-native-elements";
-import { ChangeEmailOrPhone, SignUp } from "../../models/responses/axios/auth";
 
 type Props = {
   route: RouteProp<RootStackParamList, "CodeVerification">;

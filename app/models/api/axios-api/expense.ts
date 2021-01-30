@@ -4,15 +4,14 @@ import {
   EditExpense,
   FriendRelations,
   ExpenseComments,
-  UserExpense,
-  UserExpenses,
-  FriendBalance,
+  GroupExpenses,
 } from "../../responses/axios/user";
 import { Response } from "../../responses/axios/response";
+import { Expense } from "../../other/axios/Expense";
 
 export interface expenseApi {
-  getExpenses(): Promise<Response<UserExpenses>>;
-  getExpense(expenseId: string): Promise<Response<UserExpense>>;
+  getUserExpenses(): Promise<Response<Expense[]>>;
+  getUserExpense(expenseId: string): Promise<Response<Expense>>;
   getFriendRelations(): Promise<Response<FriendRelations>>;
   getExpenseComments(expenseId: string): Promise<Response<ExpenseComments>>;
   addExpense(
@@ -36,6 +35,5 @@ export interface expenseApi {
   ): Promise<Response<EditExpense>>;
   deleteExpense(expenseId: string): Promise<Response<null>>;
   addComment(text: string, created_at: number, expenseId: string): Promise<Response<null>>;
-  getFriendsBalance(): Promise<Response<FriendBalance[]>>;
-  getFriendBalance(friendId: string): Promise<Response<FriendBalance[]>>;
+  getGroupExpenses(groupId: string): Promise<Response<GroupExpenses>>;
 }

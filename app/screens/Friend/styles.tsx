@@ -1,5 +1,7 @@
 import { StyleSheet, Platform } from "react-native";
+import { color } from "react-native-reanimated";
 import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
@@ -8,7 +10,6 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.mainColor,
   },
   header: {
-    flex: 2,
     alignItems: "center",
     padding: 5,
   },
@@ -26,29 +27,37 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: colors.white,
+  },
+  text: {
+    fontFamily: fonts.IranSans_Light,
+    fontSize: 14,
+    color: colors.white,
+    alignSelf: "center",
   },
   userNameText: {
     fontSize: 25,
     marginTop: 10,
     paddingHorizontal: 10,
-    borderRadius: 10,
     textAlign: "center",
-    backgroundColor: "#ffffff55",
     color: colors.white,
     alignItems: "center",
     fontFamily: fonts.IranSans_Bold,
   },
+  balanceStatusContainer: {
+    flexDirection: "row-reverse",
+    justifyContent: "center",
+    padding: 5,
+  },
   screenTitleText: {
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     color: colors.textBlack,
-    fontSize: 16,
+    fontSize: common.baseFontSize,
     marginHorizontal: 30,
-    paddingTop: 10,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderBottomColor: colors.textInputBackground,
   },
   infoContainer: {
     flex: 6,
@@ -58,32 +67,14 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
   },
   buttonContainer: {
-    // flex: 2,
-    justifyContent: "center",
-  },
-  removeButton: {
-    elevation: 1,
-    backgroundColor: colors.red,
-    borderRadius: 25,
-    marginVertical: 10,
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: 10,
-  },
-  removeButtonText: {
-    fontSize: 16,
-    color: colors.white,
-    paddingHorizontal: 10,
-    alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    writingDirection: "auto",
+    flex: 2,
+    justifyContent: "flex-end",
   },
   settleUpButton: {
-    elevation: 1,
     backgroundColor: colors.white,
     borderWidth: 2,
     borderColor: colors.mainColor,
-    borderRadius: 25,
+    borderRadius: common.baseBorderRadius,
     marginVertical: 15,
     marginHorizontal: 50,
     flexDirection: "row",
@@ -95,28 +86,7 @@ export const styles = StyleSheet.create({
     color: colors.mainColor,
     paddingHorizontal: 10,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
-  },
-  minus: {
-    marginRight: 10,
-    fontSize: 30,
-    color: "red",
-    alignSelf: "flex-end",
-    fontFamily: "IRANSansWeb_Bold",
-    writingDirection: "auto",
-  },
-  textContainer: {
-    padding: 15,
-    borderBottomColor: "#EBE8E8",
-    borderBottomWidth: 1,
-    alignItems: "center",
-  },
-  textInfo: {
-    fontSize: 14,
-    padding: 2,
-    color: "#053751",
-    writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Bold",
   },
 });

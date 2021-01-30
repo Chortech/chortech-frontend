@@ -1,4 +1,3 @@
-import { Token } from "../../other/axios/Token";
 import { ChangeEmailOrPhone, ChangePassword, Login, SignUp } from "../../responses/axios/auth";
 import { Response } from "../../responses/axios/response";
 

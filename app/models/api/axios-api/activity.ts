@@ -1,6 +1,6 @@
-import { UserActivities } from "../../responses/axios/user";
+import { Activity } from "../../other/axios/Activity";
 import { Response } from "../../responses/axios/response";
 
 export interface activityApi {
-    getActivities(): Promise<Response<UserActivities>>;
+  getActivities(): Promise<Response<Activity[]>>;
 }
