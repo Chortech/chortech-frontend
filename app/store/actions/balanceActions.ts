@@ -3,17 +3,13 @@ import { Token } from "../../models/other/axios/Token";
 import {
   GetFriendsBalanceRequest,
   GetFriendBalanceRequest,
+  GetGroupsBalancesRequest,
+  GetGroupMembersBalancesRequest,
 } from "../../models/requests/axios/user";
-import { FriendBalance } from "../../models/responses/axios/user";
+import { FriendBalance, GroupMembersBalances } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
-import {
-  GetGroupMembersBalancesRequest,
-  GetGroupsBalancesRequest,
-} from "../../models/requests/axios/group";
-import { GroupBalance, MemberBalance } from "../../models/other/axios/Balance";
-import { TapGestureHandler } from "react-native-gesture-handler";
-import { GroupMembersBalances } from "../../models/responses/axios/group";
+import { GroupBalance } from "../../models/other/axios/Balance";
 
 export function onGetFriendsBalanceRequest(token: Token): Action<GetFriendsBalanceRequest> {
   return {
@@ -33,16 +29,6 @@ export function onGetFriendsBalanceResponse(
       success: response.success,
       status: response.status,
       response: response.response,
-    },
-  };
-}
-
-export function onGetFriendsBalanceFail(): Action<Response<FriendBalance[]>> {
-  return {
-    type: types.GET_FRIENDS_BALANCE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
     },
   };
 }
@@ -77,16 +63,6 @@ export function onGetFriendBalanceResponse(
   };
 }
 
-export function onGetFriendBalanceFail(): Action<Response<FriendBalance>> {
-  return {
-    type: types.GET_FRIEND_BALANCE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onGetGroupsBalancesRequest(token: Token): Action<GetGroupsBalancesRequest> {
   return {
     type: types.GET_GROUPS_BALANCES_REQUEST,
@@ -100,16 +76,6 @@ export function onGetGroupsBalanceResponse(
   return {
     type: types.GET_GROUPS_BALANCES_RESPONSE,
     payload: response,
-  };
-}
-
-export function onGetGroupsBalanceFail(): Action<Response<GroupBalance[]>> {
-  return {
-    type: types.GET_GROUPS_BALANCES_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 
@@ -132,16 +98,6 @@ export function onGetGroupMembersBalancesResponse(
   return {
     type: types.GET_GROUP_MEMBERS_BALANCES_RESPONSE,
     payload: response,
-  };
-}
-
-export function onGetGroupMembersBalancesFail(): Action<Response<GroupMembersBalances>> {
-  return {
-    type: types.GET_GROUP_MEMBERS_BALANCES_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 

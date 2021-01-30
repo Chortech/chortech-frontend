@@ -69,7 +69,6 @@ const Profile: React.FC = (): JSX.Element => {
   };
 
   const onLogout = () => {
-    // dispatch(userActions.onClearTokenRequest());
     dispatch(authActions.onLogout());
   };
 

@@ -4,23 +4,29 @@ import { User } from "./User";
 export interface Group {
   id: string;
   name: string;
-  creator: Creator;
-  members?: Array<Member>;
+  creator: Creator | string;
+  picture: string;
+  createdAt: number;
+  updatedAt: number;
+  members?: Member[];
   balance?: number;
   expenses?: ExpenseBalance[];
 }
 
 export interface Creator {
+  id: string;
   name: string;
-  email: string;
-  picture: string;
+  email?: string;
+  phone?: string;
+  picture?: string;
 }
 
 export interface Member {
-  id?: string;
+  id: string;
   name: string;
-  email: string;
-  picture: string;
-  totalBalance: number;
-  balances: User[];
+  email?: string;
+  phone?: string;
+  picture?: string;
+  totalBalance?: number;
+  balances?: User[];
 }

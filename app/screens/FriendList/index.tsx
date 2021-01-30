@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import { View, Text, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
-// import cron from "node-cron";
-
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
@@ -11,7 +9,6 @@ import * as friendActions from "../../store/actions/friendActions";
 import * as balanceActions from "../../store/actions/balanceActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
-import { log } from "../../utils/logger";
 import { FloatingAction } from "react-native-floating-action";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";

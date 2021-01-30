@@ -4,16 +4,13 @@ import messages from "../../assets/resources/messages";
 import { Action } from "../../models/actions/action";
 import { GroupBalance } from "../../models/other/axios/Balance";
 import {
-  GetGroupMembersBalancesRequest,
-  GetGroupsBalancesRequest,
-} from "../../models/requests/axios/group";
-import {
   GetFriendsBalanceRequest,
   GetFriendBalanceRequest,
+  GetGroupMembersBalancesRequest,
+  GetGroupsBalancesRequest,
 } from "../../models/requests/axios/user";
-import { GroupMembersBalances } from "../../models/responses/axios/group";
 import { Response } from "../../models/responses/axios/response";
-import { FriendBalance } from "../../models/responses/axios/user";
+import { FriendBalance, GroupMembersBalances } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { BalanceAPI } from "../../services/api/axios/balanceApi";
 import * as balanceActions from "../actions/balanceActions";
@@ -25,7 +22,6 @@ export function* getFriendsBalanceAsync(action: Action<GetFriendsBalanceRequest>
   if (response.success) {
     yield put(balanceActions.onGetFriendsBalanceResponse(response));
   } else {
-    yield put(balanceActions.onGetFriendsBalanceFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
 }
@@ -45,7 +41,6 @@ export function* getFriendBalanceAsync(action: Action<GetFriendBalanceRequest>) 
       balances: response.response?.balances != undefined ? response.response.balances : [],
     });
   } else {
-    yield put(balanceActions.onGetFriendBalanceFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
   yield put(balanceActions.onLoadingDisable());
@@ -60,7 +55,6 @@ export function* getGroupsBalancesAsync(action: Action<GetGroupsBalancesRequest>
   if (response.success) {
     yield put(balanceActions.onGetGroupsBalanceResponse(response));
   } else {
-    yield put(balanceActions.onGetGroupsBalanceFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
 }
@@ -74,7 +68,6 @@ export function* getGroupMembersBalancesAsync(action: Action<GetGroupMembersBala
   if (response.success) {
     yield put(balanceActions.onGetGroupMembersBalancesResponse(response));
   } else {
-    yield put(balanceActions.onGetGroupMembersBalancesFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
 }

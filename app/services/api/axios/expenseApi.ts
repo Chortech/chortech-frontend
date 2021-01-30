@@ -1,24 +1,18 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_EXPENSE_URL } from "../../../../local_env_vars";
 import { expenseApi } from "../../../models/api/axios-api/expense";
+import { Expense } from "../../../models/other/axios/Expense";
 import { Participant } from "../../../models/other/axios/Participant";
 import { Token } from "../../../models/other/axios/Token";
-import { IUserState } from "../../../models/reducers/default";
-import { GroupExpenses } from "../../../models/responses/axios/group";
 import { Response } from "../../../models/responses/axios/response";
 import {
-  UserExpenses,
   AddExpense,
-  UserExpense,
   ExpenseComments,
   EditExpense,
-  FriendRelation,
   FriendRelations,
-  FriendBalance,
+  GroupExpenses,
 } from "../../../models/responses/axios/user";
-import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
-import { validateToken } from "../../../utils/tokenValidator";
 
 export class ExpenseAPI implements expenseApi {
   client: AxiosInstance;
@@ -36,10 +30,11 @@ export class ExpenseAPI implements expenseApi {
     });
   }
 
-  async getExpenses(): Promise<Response<UserExpenses>> {
-    let result: Response<UserExpenses> = {
+  async getUserExpenses(): Promise<Response<Expense[]>> {
+    let result: Response<Expense[]> = {
       success: false,
       status: -1,
+      response: [],
     };
 
     try {
@@ -49,10 +44,8 @@ export class ExpenseAPI implements expenseApi {
         result = {
           success: true,
           status: response.status,
-          response: { expenses: response.data },
+          response: response.data,
         };
-      } else {
-        result.status = response.status;
       }
       log("get expenses api result");
       log(result, false);
@@ -69,8 +62,8 @@ export class ExpenseAPI implements expenseApi {
     return result;
   }
 
-  async getExpense(expenseId: string): Promise<Response<UserExpense>> {
-    let result: Response<UserExpense> = {
+  async getUserExpense(expenseId: string): Promise<Response<Expense>> {
+    let result: Response<Expense> = {
       success: false,
       status: -1,
     };
@@ -82,7 +75,7 @@ export class ExpenseAPI implements expenseApi {
         result = {
           success: true,
           status: response.status,
-          response: { expense: response.data },
+          response: response.data,
         };
       } else {
         result.status = response.status;

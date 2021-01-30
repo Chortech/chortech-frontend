@@ -1,6 +1,3 @@
-/**
- *  Redux saga class init
- */
 import { takeLatest, all } from "redux-saga/effects";
 import * as types from "../actions/types";
 import * as authSaga from "./authSaga";
@@ -10,6 +7,8 @@ import * as groupSaga from "./groupSaga";
 import * as friendSaga from "./friendSaga";
 import * as expenseSaga from "./expenseSaga";
 import * as balanceSaga from "./balanceSaga";
+import * as paymentSaga from "./paymentSaga";
+import * as activitySaga from "./activitySaga";
 
 export default function* watch() {
   yield all([
@@ -32,21 +31,27 @@ export default function* watch() {
     takeLatest(types.ADD_EXPENSE_REQUEST, expenseSaga.addExpenseAsync),
     takeLatest(types.EDIT_EXPENSE_REQUEST, expenseSaga.editExpenseAsync),
     takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
-    takeLatest(types.ADD_COMMENT_REQUEST, expenseSaga.addCommentAsync),
-    takeLatest(types.GET_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
+    takeLatest(types.ADD_EXPENSE_COMMENT_REQUEST, expenseSaga.addExpenseCommentAsync),
+    takeLatest(types.GET_EXPENSE_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
     takeLatest(types.GET_GROUP_EXPENSES_REQUEST, expenseSaga.getGroupsExpensesAsync),
     takeLatest(types.GET_FRIENDS_BALANCE_REQUEST, balanceSaga.getFriendsBalanceAsync),
     takeLatest(types.GET_FRIEND_BALANCE_REQUEST, balanceSaga.getFriendBalanceAsync),
     takeLatest(types.GET_GROUPS_BALANCES_REQUEST, balanceSaga.getGroupsBalancesAsync),
     takeLatest(types.GET_GROUP_MEMBERS_BALANCES_REQUEST, balanceSaga.getGroupMembersBalancesAsync),
     takeLatest(types.UPLOAD_IMAGE_REQUEST, userSaga.uploadImageAsync),
-    takeLatest(types.ADD_GROUP_REQUEST, groupSaga.createGroupAsync),
-    takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.GetUserGroupsAsync),
-    takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.DeleteGroupAsync),
-    takeLatest(types.GET_GROUP_BY_ID_REQUEST, groupSaga.GetGroupInfoAsync),
+    takeLatest(types.GET_USER_GROUPS_REQUEST, groupSaga.getUserGroupsAsync),
+    takeLatest(types.GET_GROUP_INFO_REQUEST, groupSaga.getGroupInfoAsync),
+    takeLatest(types.ADD_GROUP_REQUEST, groupSaga.addGroupAsync),
     takeLatest(types.EDIT_GROUP_REQUEST, groupSaga.EditGroupAsync),
+    takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.DeleteGroupAsync),
+    takeLatest(types.ADD_FRIEND_TO_GROUP_REQUEST, groupSaga.AddFriendToGroupAsync),
     takeLatest(types.LEAVE_GROUP_REQUEST, groupSaga.LeaveGroupAsync),
     takeLatest(types.REMOVE_MEMBER_REQUEST, groupSaga.RemoveMemberAsync),
-    takeLatest(types.ADD_FRIEND_TO_GROUP_REQUEST, groupSaga.AddFriendToGroupAsync),
+    takeLatest(types.GET_USER_PAYMENT_REQUEST, paymentSaga.getUserPaymentAsync),
+    takeLatest(types.ADD_PAYMENT_REQUEST, paymentSaga.addPaymentAsync),
+    takeLatest(types.EDIT_PAYMENT_REQUEST, paymentSaga.editPaymentAsync),
+    takeLatest(types.DELETE_PAYMENT_REQUEST, paymentSaga.deletePaymentAsync),
+    takeLatest(types.ADD_PAYMENT_COMMENT_REQUEST, paymentSaga.addPaymentCommentAsync),
+    takeLatest(types.GET_USER_ACTIVITIES_REQUEST, activitySaga.getUserActivitiesAsync),
   ]);
 }

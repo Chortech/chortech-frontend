@@ -1,9 +1,9 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { SERVER_ACTIVITY_URL } from "../../../../local_env_vars";
 import { activityApi } from "../../../models/api/axios-api/activity";
+import { Activity } from "../../../models/other/axios/Activity";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
-import { UserActivities } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
 export class ActivityAPI implements activityApi {
@@ -22,8 +22,8 @@ export class ActivityAPI implements activityApi {
     });
   }
 
-  async getActivities(): Promise<Response<UserActivities>> {
-    let result: Response<UserActivities> = {
+  async getActivities(): Promise<Response<Activity[]>> {
+    let result: Response<Activity[]> = {
       success: false,
       status: -1,
     };

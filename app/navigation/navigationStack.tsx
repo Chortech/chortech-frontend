@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
 import { navigationRef } from "./navigationService";
@@ -28,9 +27,6 @@ import SettleUp from "../screens/SettleUp";
 import ProfileInfo from "../screens/ProfileInfo";
 import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
-import { lightBlue100 } from "react-native-paper/lib/typescript/src/styles/colors";
-
-import { NavigationRoute, NavigationParams } from "react-navigation";
 import colors from "../assets/resources/colors";
 import fonts from "../assets/resources/fonts";
 

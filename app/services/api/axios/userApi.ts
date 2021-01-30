@@ -4,22 +4,17 @@ import { userApi } from "../../../models/api/axios-api/user";
 import { InviteeByEmail, InviteeByPhone } from "../../../models/other/axios/Invitee";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
-import * as authActions from "../../../store/actions/authActions";
 import {
   AddFriend,
-  GetUserFriends,
-  DeleteFriend,
   UserProfile,
   UploadImage,
   EditProfile,
-  FriendBalance,
 } from "../../../models/responses/axios/user";
-import configureStore from "../../../store";
 import { log } from "../../../utils/logger";
 import { validateToken } from "../../../utils/tokenValidator";
-import { IUserState } from "../../../models/reducers/default";
 
 import { Buffer } from "buffer";
+import { Friend } from "../../../models/other/axios/Friend";
 
 export class UserAPI implements userApi {
   client: AxiosInstance;
@@ -107,8 +102,8 @@ export class UserAPI implements userApi {
     return result;
   }
 
-  async getUserFriends(): Promise<Response<GetUserFriends>> {
-    let result: Response<GetUserFriends> = {
+  async getUserFriends(): Promise<Response<Friend[]>> {
+    let result: Response<Friend[]> = {
       success: false,
       status: -1,
     };
@@ -120,9 +115,7 @@ export class UserAPI implements userApi {
         result = {
           success: true,
           status: response.status,
-          response: {
-            friends: response.data.friends,
-          },
+          response: response.data.friends,
         };
       } else {
         result.status = response.status;
@@ -229,8 +222,8 @@ export class UserAPI implements userApi {
     return result;
   }
 
-  async deleteFriend(friendId: string): Promise<Response<DeleteFriend>> {
-    let result: Response<DeleteFriend> = {
+  async deleteFriend(friendId: string): Promise<Response<Friend[]>> {
+    let result: Response<Friend[]> = {
       success: false,
       status: -1,
     };

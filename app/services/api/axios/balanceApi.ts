@@ -1,12 +1,11 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { balanceApi } from "../../../models/api/axios-api/balance";
 import { Token } from "../../../models/other/axios/Token";
-import { FriendBalance } from "../../../models/responses/axios/user";
+import { FriendBalance, GroupMembersBalances } from "../../../models/responses/axios/user";
 import { SERVER_BALANCES_URL } from "../../../../local_env_vars";
 import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
-import { GroupBalance, MemberBalance } from "../../../models/other/axios/Balance";
-import { GroupExpenses, GroupMembersBalances } from "../../../models/responses/axios/group";
+import { GroupBalance } from "../../../models/other/axios/Balance";
 
 export class BalanceAPI implements balanceApi {
   client: AxiosInstance;

@@ -5,13 +5,12 @@ import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import { RouteProp } from "@react-navigation/native";
-import { navigationRef } from "../../navigation/navigationService";
 
 type Props = {
   route: RouteProp<RootStackParamList, "ResetPassword">;

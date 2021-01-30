@@ -1,27 +1,14 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-  ToastAndroid,
-  KeyboardAvoidingView,
-  Image,
-  Keyboard,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Image } from "react-native";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as Animatable from "react-native-animatable";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import * as signUpActions from "../../store/actions/authActions";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import NavigationService, { navigationRef } from "../../navigation/navigationService";
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 interface IState {
   authReducer: IUserState;

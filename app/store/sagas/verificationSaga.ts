@@ -12,7 +12,7 @@ import { VerificationAPI } from "../../services/api/axios/verificationApi";
 import { InputType } from "../../utils/inputTypes";
 import * as verificationActions from "../actions/verificationActions";
 import * as authActions from "../actions/authActions";
-import { log } from "../../utils/logger";
+import messages from "../../assets/resources/messages";
 
 export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
   yield put(verificationActions.onLoadingEnable());
@@ -33,13 +33,12 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
 
   if (response.success) {
     yield put(verificationActions.onGenerateCodeResponse(response));
-    ToastAndroid.show("کد تایید با موفقیت برای شما ارسال شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.codeSentSuccess, ToastAndroid.SHORT);
   } else {
-    yield put(verificationActions.onGenerateCodeFail());
     if (response.status == -2) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == -3) {
-      ToastAndroid.show("اطلاعات کاربر تایید شده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.userVerified, ToastAndroid.SHORT);
       if (parentScreen == "AccountIdentification") {
         navigationRef.current?.navigate("ResetPassword", {
           email: email,
@@ -55,11 +54,11 @@ export function* generateCodeAsync(action: Action<GenerateCodeRequest>) {
         yield put(authActions.onSignUpRequest(name!, email, phone, password!, inputType));
       }
     } else if (response.status == 400) {
-      ToastAndroid.show("ارسال کد تایید با خطا مواجه شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.codeError, ToastAndroid.SHORT);
     } else if (response.status == 409) {
-      ToastAndroid.show("اطلاعات کاربر تایید شده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.userVerified, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(verificationActions.onLoadingDisable());
@@ -94,15 +93,14 @@ export function* verifyCodeAsync(action: Action<VerifyCodeRequest>) {
       yield put(authActions.onSignUpRequest(name, email, phone, password, inputType));
     }
   } else {
-    yield put(verificationActions.onVerifyCodeFail());
     if (response.status == -3) {
-      ToastAndroid.show("کد واردشده اشتباه است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.wrongCode, ToastAndroid.SHORT);
     } else if (response.status == -2) {
-      ToastAndroid.show("خطایی ناشناخته در تایید کد رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("کد واردشده معتبر نیست", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.wrongCode, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(verificationActions.onLoadingDisable());
@@ -124,6 +122,6 @@ export function* cancelCodeAsync(action: Action<CancelCodeRequest>) {
   if (response.success) {
     yield put(verificationActions.onCancelCodeResponse(response));
   } else {
-    yield put(verificationActions.onCancelCodeFail());
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
 }

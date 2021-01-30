@@ -27,16 +27,6 @@ export function onGetUserProfileResponse(
   };
 }
 
-export function onGetUserProfileFail(): Action<Response<UserProfile>> {
-  return {
-    type: types.GET_USER_PROFILE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest> {
   return {
     type: types.UPLOAD_IMAGE_REQUEST,
@@ -56,16 +46,6 @@ export function onUploadImageResponse(
       success: response.success,
       status: response.status,
       response: response.response,
-    },
-  };
-}
-
-export function onUploadImageFail(): Action<Response<UploadImage>> {
-  return {
-    type: types.UPLOAD_IMAGE_RESPONSE,
-    payload: {
-      success: false,
-      status: -1,
     },
   };
 }
@@ -95,23 +75,6 @@ export function onEditUserProfileResponse(
       status: response.status,
       response: response.response,
     },
-  };
-}
-
-export function onEditUserProfileFail(): Action<Response<EditProfile>> {
-  return {
-    type: types.EDIT_USER_PROFILE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onClearTokenRequest(): Action<any> {
-  return {
-    type: types.CLEAR_TOKEN_REQUEST,
-    payload: {},
   };
 }
 

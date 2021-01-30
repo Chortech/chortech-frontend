@@ -9,17 +9,9 @@ import {
   GetExpenseCommentsRequest,
   EditExpenseRequest,
   DeleteExpenseRequest,
-  GetFriendsBalanceRequest,
-  GetFriendBalanceRequest,
+  GetGroupExpensesRequest,
 } from "../../models/requests/axios/user";
-import {
-  AddExpense,
-  UserExpenses,
-  UserExpense,
-  ExpenseComments,
-  EditExpense,
-  FriendBalance,
-} from "../../models/responses/axios/user";
+import { AddExpense, ExpenseComments, GroupExpenses } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { ExpenseAPI } from "../../services/api/axios/expenseApi";
 import { Response } from "../../models/responses/axios/response";
@@ -27,31 +19,27 @@ import * as expenseActions from "../actions/expenseActions";
 import * as friendActions from "../actions/friendActions";
 import * as friendSaga from "./friendSaga";
 import messages from "../../assets/resources/messages";
-import { log } from "../../utils/logger";
-import { GetGroupExpensesRequest } from "../../models/requests/axios/group";
-import { exp } from "react-native-reanimated";
-import { GroupExpenses } from "../../models/responses/axios/group";
+import { Expense } from "../../models/other/axios/Expense";
 
 export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const { token } = action.payload;
-  let response: Response<UserExpenses> = {
+  let response: Response<Expense[]> = {
     success: false,
     status: -1,
   };
   yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
 
   let api: ExpenseAPI = new ExpenseAPI(token);
-  response = yield api.getExpenses();
+  response = yield api.getUserExpenses();
 
   if (response.success) {
     yield put(expenseActions.onGetUserExpensesResponse(response));
   } else {
-    yield put(expenseActions.onGetUserExpensesFail());
     if (response.status == 404) {
-      ToastAndroid.show("فعالیتی وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noExpenses, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(expenseActions.onLoadingDisable());
@@ -60,7 +48,7 @@ export function* getUserExpensesAsync(action: Action<GetUserExpensesRequest>) {
 export function* getUserExpenseAsync(action: Action<GetExpenseRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const { token, id } = action.payload;
-  let response: Response<UserExpense> = {
+  let response: Response<Expense> = {
     success: false,
     status: -1,
   };
@@ -68,16 +56,15 @@ export function* getUserExpenseAsync(action: Action<GetExpenseRequest>) {
   yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
 
   let api: ExpenseAPI = new ExpenseAPI(token);
-  response = yield api.getExpense(id);
+  response = yield api.getUserExpense(id);
 
   if (response.success) {
     yield put(expenseActions.onGetUserExpenseResponse(response));
   } else {
-    yield put(expenseActions.onGetUserExpenseFail());
     if (response.status == 404) {
-      ToastAndroid.show("فعالیت وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noExpense, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(expenseActions.onLoadingDisable());
@@ -97,15 +84,14 @@ export function* getExpenseCommentsAsync(action: Action<GetExpenseCommentsReques
   if (response.success) {
     yield put(expenseActions.onGetExpenseCommentsResponse(response));
   } else {
-    yield put(expenseActions.onAddExpenseFail());
     if (response.status == 401) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
     } else if (response.status == 403) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
     } else if (response.status == 404) {
-      ToastAndroid.show("هزینه با این مشخصات وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noExpense, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(expenseActions.onLoadingDisable());
@@ -141,12 +127,11 @@ export function* addExpenseAsync(action: Action<AddExpenseRequest>) {
 
   if (response.success) {
     yield put(expenseActions.onAddExpenseResponse(response));
-    yield put(expenseActions.onGetUserExpensesRequest(token));
+    yield call(getUserExpensesAsync, expenseActions.onGetUserExpensesRequest(token));
     navigationRef.current?.goBack();
-    ToastAndroid.show("هزینه با موفقیت اضافه شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.expenseAddedSuccess, ToastAndroid.SHORT);
   } else {
-    yield put(expenseActions.onAddExpenseFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
   yield put(expenseActions.onLoadingDisable());
 }
@@ -180,10 +165,9 @@ export function* editExpenseAsync(action: Action<EditExpenseRequest>) {
     yield call(getUserExpensesAsync, expenseActions.onGetUserExpensesRequest(payload.token));
     navigationRef.current?.goBack();
     navigationRef.current?.goBack();
-    ToastAndroid.show("هزینه با موفقیت ویرایش شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.expenseEditedSucess, ToastAndroid.SHORT);
   } else {
-    yield put(expenseActions.onEditExpenseFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
   yield put(expenseActions.onLoadingDisable());
 }
@@ -198,16 +182,15 @@ export function* deleteExpenseAsync(action: Action<DeleteExpenseRequest>) {
   if (response.success) {
     yield put(expenseActions.onDeleteExpenseResponse(response));
     yield call(getUserExpensesAsync, expenseActions.onGetUserExpensesRequest(token));
-    ToastAndroid.show("هزینه با موفقیت حذف شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.expenseDeletedSucces, ToastAndroid.SHORT);
     navigationRef.current?.goBack();
   } else {
-    yield put(expenseActions.onDeleteExpenseFail());
-    ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
   yield put(expenseActions.onLoadingDisable());
 }
 
-export function* addCommentAsync(action: Action<AddCommentRequest>) {
+export function* addExpenseCommentAsync(action: Action<AddCommentRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const { token, text, created_at, id } = action.payload;
   let response: Response<null> = {
@@ -221,18 +204,16 @@ export function* addCommentAsync(action: Action<AddCommentRequest>) {
   if (response.success) {
     yield put(expenseActions.onAddCommentResponse(response));
     yield call(getExpenseCommentsAsync, expenseActions.onGetExpenseCommentsRequest(token, id));
-    ToastAndroid.show("یادداشت با موفقیت اضافه شد", ToastAndroid.SHORT);
     navigationRef.current?.goBack();
   } else {
-    yield put(expenseActions.onAddCommentFail());
     if (response.status == -2) {
-      ToastAndroid.show("شما جزو اعضای این هزینه نیستید", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notExpenseParticipant, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == 404) {
-      ToastAndroid.show("این هزینه وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noExpense, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(expenseActions.onLoadingDisable());
@@ -247,7 +228,6 @@ export function* getGroupsExpensesAsync(action: Action<GetGroupExpensesRequest>)
   if (response.success) {
     yield put(expenseActions.onGetGroupExpensesResponse(response));
   } else {
-    yield put(expenseActions.onGetGroupExpensesFail());
     ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
   }
 

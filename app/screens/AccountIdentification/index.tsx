@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
-
-import * as authActions from "../../store/actions/authActions";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";

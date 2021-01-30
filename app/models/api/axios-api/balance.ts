@@ -1,7 +1,6 @@
-import { FriendBalance } from "../../responses/axios/user";
+import { FriendBalance, GroupMembersBalances } from "../../responses/axios/user";
 import { Response } from "../../responses/axios/response";
-import { GroupBalance, MemberBalance } from "../../other/axios/Balance";
-import { GroupExpenses, GroupMembersBalances } from "../../responses/axios/group";
+import { GroupBalance } from "../../other/axios/Balance";
 
 export interface balanceApi {
   getFriendsBalance(): Promise<Response<FriendBalance[]>>;

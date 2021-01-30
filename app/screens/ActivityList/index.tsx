@@ -45,7 +45,12 @@ const ActivityList: React.FC = () => {
     let items: Array<Item> = [];
 
     user.friends.forEach((element) => {
-      items.push({ id: element.id, name: element.name, amount: 0, selected: false });
+      items.push({
+        id: element.id,
+        name: element.name != undefined ? element.name : "",
+        amount: 0,
+        selected: false,
+      });
     });
     NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
   };

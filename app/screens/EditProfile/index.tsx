@@ -10,12 +10,10 @@ import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import { log } from "../../utils/logger";
 import CustomInput from "../../components/CustomInput";
 import { validateToken } from "../../utils/tokenValidator";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import { RouteProp } from "@react-navigation/native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type Props = {
   route: RouteProp<RootStackParamList, "EditProfile">;

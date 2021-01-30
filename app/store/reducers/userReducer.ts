@@ -1,72 +1,27 @@
-import { exp } from "react-native-reanimated";
-import { act } from "react-test-renderer";
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
-import { ExpenseBalance, GroupBalance, MemberBalance } from "../../models/other/axios/Balance";
+import { Activity } from "../../models/other/axios/Activity";
+import { ExpenseBalance, GroupBalance } from "../../models/other/axios/Balance";
+import { Expense } from "../../models/other/axios/Expense";
+import { Friend } from "../../models/other/axios/Friend";
+import { Group } from "../../models/other/axios/Group";
+import { Payment } from "../../models/other/axios/Payment";
 import { IUserState } from "../../models/reducers/default";
-import {
-  GetGroupExpensesRequest,
-  GetGroupMembersBalancesRequest,
-  GetGroupsBalancesRequest,
-} from "../../models/requests/axios/group";
-import {
-  AddFriendRequest,
-  DeleteFriendRequest,
-  EditProfileRequest,
-  GetUserFriendsRequest,
-  GetUserProfileRequest,
-  InviteFriendsRequest,
-  AddExpenseRequest,
-  GetUserExpensesRequest,
-  AddCommentRequest,
-  GetExpenseRequest,
-  GetExpenseCommentsRequest,
-  UploadImageRequest,
-  EditExpenseRequest,
-  DeleteExpenseRequest,
-  GetFriendBalanceRequest,
-  GetFriendsBalanceRequest,
-  GetUserActivitiesRequest,
-  AddPaymentRequest,
-  DeletePaymentRequest,
-  EditPaymentRequest,
-  GetPaymentRequest,
-} from "../../models/requests/axios/user";
-import {
-  AddGroupRequest,
-  UpdateGroupRequest,
-  DeleteGroupRequest,
-  GetGroupByIdRequest,
-  GetUserGroupsRequest,
-} from "../../models/requests/graphql/group";
-import { GroupExpenses, GroupMembersBalances } from "../../models/responses/axios/group";
 import { Response } from "../../models/responses/axios/response";
 import {
   AddFriend,
-  DeleteFriend,
-  GetUserFriends,
   UserProfile,
   AddExpense,
-  UserExpenses,
-  UserExpense,
   ExpenseComments,
-  EditExpense,
   UploadImage,
   EditProfile,
   FriendBalance,
-  UserActivities,
   AddPayment,
-  EditPayment,
-  UserPayment,
+  GetGroupInfo,
+  GroupExpenses,
+  GroupMembersBalances,
+  RemoveGroupMember,
 } from "../../models/responses/axios/user";
-import {
-  AddGroupResponse,
-  UpdateGroupResponse,
-  DeleteGroupResponse,
-  GetGroupByIdResponse,
-  GetUserGroupsResponse,
-} from "../../models/responses/graphql/group";
-import FriendList from "../../screens/FriendList";
 import { InputType } from "../../utils/inputTypes";
 import { log } from "../../utils/logger";
 import * as types from "../actions/types";
@@ -103,40 +58,19 @@ const initialState: IUserState = {
 };
 
 export const userReducer = createReducer(initialState, {
-  [types.GET_USER_PROFILE_REQUEST](
-    state: IUserState,
-    action: Action<GetUserProfileRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
   [types.GET_USER_PROFILE_RESPONSE](
     state: IUserState,
     action: Action<Response<UserProfile>>
   ): IUserState {
-    return {
-      ...state,
-      name: action.payload.response!.name,
-      email: action.payload.response!.email,
-      phone: action.payload.response!.phone,
-      picture: action.payload.response!.picture,
-      imageUri: action.payload.response!.picture,
-    };
-  },
-  [types.GET_USER_PROFILE_FAIL](
-    state: IUserState,
-    action: Action<Response<UserProfile>>
-  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.name = response.name;
+      state.email = response.email;
+      state.phone = response.phone;
+      state.picture = response.picture;
+      state.imageUri = response.picture;
+    }
     return state;
-  },
-
-  [types.EDIT_USER_PROFILE_REQUEST](
-    state: IUserState,
-    action: Action<EditProfileRequest>
-  ): IUserState {
-    return { ...state, token: action.payload.token };
   },
   [types.EDIT_USER_PROFILE_RESPONSE](
     state: IUserState,
@@ -152,18 +86,6 @@ export const userReducer = createReducer(initialState, {
       phone: phone,
     };
   },
-  [types.EDIT_USER_PROFILE_FAIL](
-    state: IUserState,
-    action: Action<Response<EditProfile>>
-  ): IUserState {
-    return state;
-  },
-  [types.UPLOAD_IMAGE_REQUEST](state: IUserState, action: Action<UploadImageRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
   [types.UPLOAD_IMAGE_RESPONSE](
     state: IUserState,
     action: Action<Response<UploadImage>>
@@ -172,158 +94,140 @@ export const userReducer = createReducer(initialState, {
       action.payload.response?.url != undefined ? action.payload.response.url : "";
     return { ...state, imageUri: imageUrl };
   },
-  [types.UPLOAD_IMAGE_FAIL](state: IUserState, action: Action<Response<UploadImage>>): IUserState {
-    return state;
-  },
-  [types.GET_USER_EXPENSES_REQUEST](
-    state: IUserState,
-    action: Action<GetUserExpensesRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
   [types.GET_USER_EXPENSES_RESPONSE](
     state: IUserState,
-    action: Action<Response<UserExpenses>>
+    action: Action<Response<Expense[]>>
   ): IUserState {
-    return {
-      ...state,
-      expenses: action.payload.response!.expenses,
-    };
-  },
-  [types.GET_USER_EXPENSES_FAIL](
-    state: IUserState,
-    action: Action<Response<UserExpenses>>
-  ): IUserState {
-    return state;
-  },
-
-  [types.GET_USER_EXPENSE_REQUEST](
-    state: IUserState,
-    action: Action<GetExpenseRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.GET_USER_EXPENSE_RESPONSE](
-    state: IUserState,
-    action: Action<Response<UserExpense>>
-  ): IUserState {
-    const expense = action.payload.response?.expense;
-    const index = state.expenses.findIndex((ex) => ex.id == expense?.id);
-    if (index > -1) {
-      state.expenses[index].participants =
-        expense?.participants != undefined ? expense.participants : [];
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.expenses = response;
     }
     return state;
   },
-  [types.GET_USER_EXPENSE_FAIL](
+  [types.GET_USER_EXPENSE_RESPONSE](
     state: IUserState,
-    action: Action<Response<UserExpense>>
+    action: Action<Response<Expense>>
+  ): IUserState {
+    const expense = action.payload.response;
+    if (expense != undefined) {
+      const index = state.expenses.findIndex((ex) => ex.id == expense.id);
+      if (index > -1) {
+        state.expenses[index].participants =
+          expense?.participants != undefined ? expense.participants : [];
+      }
+    }
+    return state;
+  },
+  [types.ADD_EXPENSE_RESPONSE](
+    state: IUserState,
+    action: Action<Response<AddExpense>>
   ): IUserState {
     return state;
   },
-  [types.ADD_GROUP_REQUEST](state: IUserState, action: Action<AddGroupRequest>): IUserState {
+  [types.EDIT_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.ADD_GROUP_RESPONSE](state: IUserState, action: Action<AddGroupResponse>): IUserState {
+  [types.DELETE_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.ADD_GROUP_FAIL](state: IUserState, action: Action<AddGroupResponse>): IUserState {
-    return state;
-  },
-  [types.UPDATE_GROUP_REQUEST](state: IUserState, action: Action<UpdateGroupRequest>): IUserState {
-    return state;
-  },
-  [types.UPDATE_GROUP_RESPONSE](
+  [types.GET_EXPENSE_COMMENTS_RESPONSE](
     state: IUserState,
-    action: Action<UpdateGroupResponse>
+    action: Action<Response<ExpenseComments>>
   ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      const index = state.expenses.findIndex((expense) => expense.id == response.expenseId);
+      if (index > -1) {
+        state.expenses[index].comments = action.payload.response?.comments;
+      }
+    }
     return state;
   },
-  [types.UPDATE_GROUP_FAIL](state: IUserState, action: Action<UpdateGroupResponse>): IUserState {
-    return state;
-  },
-  [types.DELETE_GROUP_REQUEST](state: IUserState, action: Action<DeleteGroupRequest>): IUserState {
-    return state;
-  },
-  [types.DELETE_GROUP_RESPONSE](
+  [types.ADD_EXPENSE_COMMENT_RESPONSE](
     state: IUserState,
-    action: Action<DeleteGroupResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.DELETE_GROUP_FAIL](state: IUserState, action: Action<DeleteGroupResponse>): IUserState {
-    return state;
-  },
-  [types.GET_GROUP_BY_ID_REQUEST](
-    state: IUserState,
-    action: Action<GetGroupByIdRequest>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_GROUP_BY_ID_RESPONSE](
-    state: IUserState,
-    action: Action<GetGroupByIdResponse>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_GROUP_BY_ID_FAIL](
-    state: IUserState,
-    action: Action<GetGroupByIdResponse>
+    action: Action<Response<null>>
   ): IUserState {
     return state;
   },
   [types.GET_USER_GROUPS_RESPONSE](
     state: IUserState,
-    action: Action<Response<GetUserGroupsResponse>>
+    action: Action<Response<Group[]>>
   ): IUserState {
     return {
       ...state,
-      groups: action.payload.response?.groups != undefined ? action.payload.response.groups : [],
+      groups: action.payload.response != undefined ? action.payload.response : [],
     };
   },
-  [types.GET_USER_GROUPS_FAIL](
+  [types.GET_GROUP_INFO_RESPONSE](
     state: IUserState,
-    action: Action<GetUserGroupsResponse>
+    action: Action<Response<GetGroupInfo>>
   ): IUserState {
-    return {
-      ...state,
-      groups: action.payload.groups,
-    };
+    const response = action.payload.response;
+    if (response != undefined) {
+      if (response.group != undefined) {
+        let index = state.groups.findIndex((group) => group.id == response.group?.id);
+        if (index > -1) {
+          state.groups[index] = response.group;
+        }
+      }
+    }
+    return state;
   },
-  [types.GET_USER_FRIENDS_REQUEST](
+  [types.ADD_GROUP_RESPONSE](state: IUserState, action: Action<Response<Group>>): IUserState {
+    return state;
+  },
+  [types.UPDATE_GROUP_RESPONSE](state: IUserState, action: Action<Response<Group>>): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      let index = state.groups.findIndex((group) => group.id == response.id);
+      if (index > -1) {
+        state.groups[index] = response;
+      }
+    }
+    return state;
+  },
+  [types.DELETE_GROUP_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.ADD_FRIEND_TO_GROUP_RESPONSE](
     state: IUserState,
-    action: Action<GetUserFriendsRequest>
+    action: Action<Response<Group>>
   ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
+    const response = action.payload.response;
+    if (response != undefined) {
+      let index = state.groups.findIndex((group) => group.id == response.id);
+      if (index > -1) {
+        state.groups[index] = response;
+      }
+    }
+    return state;
+  },
+  [types.LEAVE_GROUP_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+  [types.REMOVE_MEMBER_RESPONSE](
+    state: IUserState,
+    action: Action<Response<RemoveGroupMember>>
+  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      if (response.group != undefined) {
+        let index = state.groups.findIndex((group) => group.id == response.group?.id);
+        if (index > -1) {
+          state.groups[index] = response.group;
+        }
+      }
+    }
+    return state;
   },
   [types.GET_USER_FRIENDS_RESPONSE](
     state: IUserState,
-    action: Action<Response<GetUserFriends>>
+    action: Action<Response<Friend[]>>
   ): IUserState {
+    const response = action.payload.response;
     return {
       ...state,
-      friends: action.payload.response!.friends,
-    };
-  },
-  [types.GET_USER_FRIENDS_FAIL](
-    state: IUserState,
-    action: Action<Response<GetUserFriends>>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_FRIEND_REQUEST](state: IUserState, action: Action<AddFriendRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
+      friends: response != undefined ? response : [],
     };
   },
   [types.ADD_FRIEND_RESPONSE](state: IUserState, action: Action<Response<AddFriend>>): IUserState {
@@ -332,180 +236,45 @@ export const userReducer = createReducer(initialState, {
       friends: action.payload.response!.friends,
     };
   },
-  [types.ADD_FRIEND_FAIL](state: IUserState, action: Action<Response<AddFriend>>): IUserState {
-    return state;
-  },
-  [types.DELETE_USER_FRIEND_REQUEST](
-    state: IUserState,
-    action: Action<DeleteFriendRequest>
-  ): IUserState {
-    return state;
-  },
   [types.DELETE_USER_FRIEND_RESPONSE](
     state: IUserState,
-    action: Action<Response<DeleteFriend>>
+    action: Action<Response<Friend[]>>
   ): IUserState {
-    return {
-      ...state,
-      friends: action.payload.response!.friends,
-    };
-  },
-  [types.DELETE_USER_FRIEND_FAIL](
-    state: IUserState,
-    action: Action<Response<DeleteFriend>>
-  ): IUserState {
-    return state;
-  },
-  [types.INVITE_FRIEND_REQUEST](
-    state: IUserState,
-    action: Action<InviteFriendsRequest>
-  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.friends = response;
+    }
     return state;
   },
   [types.INVITE_FRIEND_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
-  [types.INVITE_FRIEND_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.GET_USER_ACTIVITIES_REQUEST](
-    state: IUserState,
-    action: Action<GetUserActivitiesRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
   [types.GET_USER_ACTIVITIES_RESPONSE](
     state: IUserState,
-    action: Action<Response<UserActivities>>
+    action: Action<Response<Activity[]>>
   ): IUserState {
-    return {
-      ...state,
-      activities:
-        action.payload.response?.activities != undefined ? action.payload.response.activities : [],
-    };
-  },
-  [types.GET_USER_ACTIVITIES_FAIL](
-    state: IUserState,
-    action: Action<Response<UserActivities>>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_EXPENSE_REQUEST](state: IUserState, action: Action<AddExpenseRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.ADD_EXPENSE_RESPONSE](
-    state: IUserState,
-    action: Action<Response<AddExpense>>
-  ): IUserState {
-    return state;
-  },
-  [types.ADD_EXPENSE_FAIL](state: IUserState, action: Action<Response<AddExpense>>): IUserState {
-    return state;
-  },
-  [types.EDIT_EXPENSE_REQUEST](state: IUserState, action: Action<EditExpenseRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.EDIT_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.EDIT_EXPENSE_FAIL](state: IUserState, action: Action<Response<EditExpense>>): IUserState {
-    return state;
-  },
-
-  [types.DELETE_EXPENSE_REQUEST](
-    state: IUserState,
-    action: Action<DeleteExpenseRequest>
-  ): IUserState {
-    return { ...state, token: action.payload.token };
-  },
-  [types.DELETE_EXPENSE_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.DELETE_EXPENSE_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.ADD_COMMENT_REQUEST](state: IUserState, action: Action<AddCommentRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.ADD_COMMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-  [types.ADD_COMMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-
-  [types.GET_COMMENTS_REQUEST](
-    state: IUserState,
-    action: Action<GetExpenseCommentsRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.GET_COMMENTS_RESPONSE](
-    state: IUserState,
-    action: Action<Response<ExpenseComments>>
-  ): IUserState {
-    const index = state.expenses.findIndex(
-      (expense) => expense.id == action.payload.response?.expenseId
-    );
-    if (index > -1) {
-      state.expenses[index].comments = action.payload.response?.comments;
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.activities = response;
     }
-    return state;
-  },
-  [types.GET_COMMENTS_FAIL](
-    state: IUserState,
-    action: Action<Response<ExpenseComments>>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_FRIENDS_BALANCE_REQUEST](
-    state: IUserState,
-    action: Action<GetFriendsBalanceRequest>
-  ): IUserState {
     return state;
   },
   [types.GET_FRIENDS_BALANCE_RESPONSE](
     state: IUserState,
     action: Action<Response<FriendBalance[]>>
   ): IUserState {
-    if (action.payload.response != undefined) {
-      const balances: FriendBalance[] = action.payload.response;
-      state.friends.forEach((friend) => {
-        friend.balance = 0;
-        friend.balances = [];
-        let index = balances.findIndex((balance) => balance.other == friend.id);
+    const response = action.payload.response;
+    if (response != undefined || response != null) {
+      const balances: FriendBalance[] = response;
+      for (let i = 0; i < state.friends.length; i++) {
+        state.friends[i].balance = 0;
+        state.friends[i].balances = [];
+        let index = balances.findIndex((balance) => balance.other == state.friends[i].id);
         if (index > -1) {
-          friend.balance = balances[index].balance;
+          state.friends[i].balance = balances[index].balance;
         }
-      });
+      }
     }
-    return state;
-  },
-  [types.GET_FRIENDS_BALANCE_FAIL](
-    state: IUserState,
-    action: Action<Response<FriendBalance[]>>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_FRIEND_BALANCE_REQUEST](
-    state: IUserState,
-    action: Action<GetFriendBalanceRequest>
-  ): IUserState {
     return state;
   },
   [types.GET_FRIEND_BALANCE_RESPONSE](
@@ -520,18 +289,6 @@ export const userReducer = createReducer(initialState, {
         state.friends[index].balances = balances;
       }
     }
-    return state;
-  },
-  [types.GET_FRIEND_BALANCE_FAIL](
-    state: IUserState,
-    action: Action<Response<FriendBalance>>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_GROUPS_BALANCES_REQUEST](
-    state: IUserState,
-    action: Action<GetGroupsBalancesRequest>
-  ): IUserState {
     return state;
   },
   [types.GET_GROUPS_BALANCES_RESPONSE](
@@ -549,18 +306,6 @@ export const userReducer = createReducer(initialState, {
     }
     return state;
   },
-  [types.GET_GROUPS_BALANCES_FAIL](
-    state: IUserState,
-    action: Action<Response<GroupBalance[]>>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_GROUP_EXPENSES_REQUEST](
-    state: IUserState,
-    action: Action<GetGroupExpensesRequest>
-  ): IUserState {
-    return state;
-  },
   [types.GET_GROUP_EXPENSES_RESPONSE](
     state: IUserState,
     action: Action<Response<GroupExpenses>>
@@ -574,27 +319,15 @@ export const userReducer = createReducer(initialState, {
     }
     return state;
   },
-  [types.GET_GROUP_EXPENSES_FAIL](
-    state: IUserState,
-    action: Action<Response<GroupExpenses>>
-  ): IUserState {
-    return state;
-  },
-  [types.GET_GROUP_MEMBERS_BALANCES_REQUEST](
-    state: IUserState,
-    action: Action<GetGroupMembersBalancesRequest>
-  ): IUserState {
-    return state;
-  },
   [types.GET_GROUP_MEMBERS_BALANCES_RESPONSE](
     state: IUserState,
     action: Action<Response<GroupMembersBalances>>
   ): IUserState {
     const response = action.payload.response;
     if (response != undefined) {
-      let group = state.groups.find((group) => group.id == response.groupId);
-      if (group != undefined) {
-        group.members?.forEach((member) => {
+      let index = state.groups.findIndex((group) => group.id == response.groupId);
+      if (index > -1) {
+        state.groups[index].members?.forEach((member) => {
           let index = response.membersBalances.findIndex((balance) => balance.id == member.id);
           if (index > -1) {
             member.balances = response.membersBalances[index].balances;
@@ -604,43 +337,15 @@ export const userReducer = createReducer(initialState, {
     }
     return state;
   },
-  [types.GET_GROUP_MEMBERS_BALANCES_FAIL](
-    state: IUserState,
-    action: Action<Response<GroupMembersBalances>>
-  ): IUserState {
-    return state;
-  },
-
-  [types.GET_USER_PAYMENT_REQUEST](
-    state: IUserState,
-    action: Action<GetPaymentRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
   [types.GET_USER_PAYMENT_RESPONSE](
     state: IUserState,
-    action: Action<Response<UserPayment>>
+    action: Action<Response<Payment>>
   ): IUserState {
-    return {
-      ...state,
-      payment: action.payload.response!.payment,
-    };
-  },
-  [types.GET_USER_PAYMENT_FAIL](
-    state: IUserState,
-    action: Action<Response<UserPayment>>
-  ): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.payment = response;
+    }
     return state;
-  },
-
-  [types.ADD_PAYMENT_REQUEST](state: IUserState, action: Action<AddPaymentRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
   },
   [types.ADD_PAYMENT_RESPONSE](
     state: IUserState,
@@ -659,54 +364,15 @@ export const userReducer = createReducer(initialState, {
       },
     };
   },
-  [types.ADD_PAYMENT_FAIL](state: IUserState, action: Action<Response<AddPayment>>): IUserState {
+  [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<Payment>>): IUserState {
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.payment = response;
+    }
     return state;
-  },
-
-  [types.EDIT_PAYMENT_REQUEST](state: IUserState, action: Action<EditPaymentRequest>): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.EDIT_PAYMENT_RESPONSE](
-    state: IUserState,
-    action: Action<Response<EditPayment>>
-  ): IUserState {
-    return {
-      ...state,
-      payment: action.payload.response!.payment,
-    };
-  },
-  [types.EDIT_PAYMENT_FAIL](state: IUserState, action: Action<Response<EditPayment>>): IUserState {
-    return state;
-  },
-
-  [types.DELETE_PAYMENT_REQUEST](
-    state: IUserState,
-    action: Action<DeletePaymentRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
   },
   [types.DELETE_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
-  },
-  [types.DELETE_PAYMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
-    return state;
-  },
-
-  [types.CLEAR_TOKEN_REQUEST](state: IUserState, action: Action<any>): IUserState {
-    return {
-      ...state,
-      token: {
-        access: "",
-        created: -1,
-        expires: -1,
-      },
-    };
   },
   [types.LOADING_ENABLED](state: IUserState, action: Action<any>): IUserState {
     return {

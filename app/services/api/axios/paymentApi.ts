@@ -3,8 +3,9 @@ import { SERVER_PAYMENTS_URL } from "../../../../local_env_vars";
 import { paymentApi } from "../../../models/api/axios-api/payment";
 import { Response } from "../../../models/responses/axios/response";
 import { Token } from "../../../models/other/axios/Token";
-import { AddPayment, EditPayment, UserPayment } from "../../../models/responses/axios/user";
+import { AddPayment } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
+import { Payment } from "../../../models/other/axios/Payment";
 
 export class PaymentAPI implements paymentApi {
   client: AxiosInstance;
@@ -22,8 +23,8 @@ export class PaymentAPI implements paymentApi {
     });
   }
 
-  async getPayment(id: string): Promise<Response<UserPayment>> {
-    let result: Response<UserPayment> = {
+  async getPayment(id: string): Promise<Response<Payment>> {
+    let result: Response<Payment> = {
       success: false,
       status: -1,
     };
@@ -110,8 +111,8 @@ export class PaymentAPI implements paymentApi {
     paid_at?: number,
     group?: string,
     notes?: string
-  ): Promise<Response<EditPayment>> {
-    let result: Response<EditPayment> = {
+  ): Promise<Response<Payment>> {
+    let result: Response<Payment> = {
       success: false,
       status: -1,
     };
