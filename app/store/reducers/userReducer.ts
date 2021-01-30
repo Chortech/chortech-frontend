@@ -24,6 +24,7 @@ import {
   DeletePaymentRequest,
   EditPaymentRequest,
   GetPaymentRequest,
+  PushNotificationRequest,
 } from "../../models/requests/axios/user";
 import {
   AddGroupRequest,
@@ -608,6 +609,21 @@ export const userReducer = createReducer(initialState, {
     return state;
   },
   [types.DELETE_PAYMENT_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
+    return state;
+  },
+
+  [types.PUSH_NOTIFICATION_REQUEST](state: IUserState, action: Action<PushNotificationRequest>): IUserState {
+    return {
+      ...state,
+      token: action.payload.token,
+    };
+  },
+  [types.PUSH_NOTIFICATION_RESPONSE](
+    state: IUserState,
+  ): IUserState {
+    return state;
+  },
+  [types.PUSH_NOTIFICATION_FAIL](state: IUserState, action: Action<Response<null>>): IUserState {
     return state;
   },
 

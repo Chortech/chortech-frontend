@@ -19,7 +19,7 @@ interface IState {
   authReducer: IUserState;
 }
 
-const LoginSecreen: React.FC = (): JSX.Element => {
+const LoginScreen: React.FC = (): JSX.Element => {
   const state = useSelector((state: IState) => state.authReducer);
 
   const dispatch = useDispatch();
@@ -140,4 +140,4 @@ const LoginSecreen: React.FC = (): JSX.Element => {
   );
 };
 
-export default LoginSecreen;
+export default LoginScreen;
