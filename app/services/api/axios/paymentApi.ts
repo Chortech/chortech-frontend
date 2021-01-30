@@ -29,7 +29,7 @@ export class PaymentAPI implements paymentApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.get(`/payments/${id}`);
+            let response: AxiosResponse = await this.client.get(`/${id}`);
 
             if (response.status == 200) {
                 result = {
@@ -70,7 +70,7 @@ export class PaymentAPI implements paymentApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.post("/payments", {
+            let response: AxiosResponse = await this.client.post("", {
                 from: from,
                 to: to,
                 amount: amount,
@@ -79,7 +79,7 @@ export class PaymentAPI implements paymentApi {
                 notes: notes
             });
 
-            if (response.status == 200) {
+            if (response.status == 201) {
                 result = {
                     success: true,
                     status: response.status,
@@ -117,7 +117,7 @@ export class PaymentAPI implements paymentApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.put(`/payments/${id}`, {
+            let response: AxiosResponse = await this.client.put(`/${id}`, {
                 amount: amount,
                 paid_at: paid_at,
                 group: group,
@@ -156,9 +156,9 @@ export class PaymentAPI implements paymentApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.delete(`/payments/${id}`);
+            let response: AxiosResponse = await this.client.delete(`/${id}`);
 
-            if (response.status == 200) {
+            if (response.status == 204) {
                 result = {
                     success: true,
                     status: response.status,
@@ -190,12 +190,12 @@ export class PaymentAPI implements paymentApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.post(`/payments/${id}/comments`, {
+            let response: AxiosResponse = await this.client.post(`/${id}/comments`, {
                 text: text,
                 created_at: created_at
             });
 
-            if (response.status == 200) {
+            if (response.status == 201) {
                 result = {
                     success: true,
                     status: response.status,

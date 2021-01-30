@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { SERVER_NOTIFICATION_URL } from "../../../../local_env_vars";
+import { SERVER_NOTIFICATIONS_URL } from "../../../../local_env_vars";
 import { notificationApi } from "../../../models/api/axios-api/notification";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
@@ -11,7 +11,7 @@ export class NotificationAPI implements notificationApi {
 
     constructor(token: Token) {
         this.client = axios.create({
-            baseURL: SERVER_NOTIFICATION_URL,
+            baseURL: SERVER_NOTIFICATIONS_URL,
         });
 
         this.client.interceptors.request.use(function (config) {
@@ -29,9 +29,9 @@ export class NotificationAPI implements notificationApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.post("/notification",
+            let response: AxiosResponse = await this.client.post("",
             { 
-                FCMToken: FCMToken
+                token: FCMToken
             });
 
             if (response.status == 204) {
