@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, Alert } from "react-native";
+import { ActivityIndicator, Alert, ToastAndroid } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -36,7 +36,7 @@ const RootNavigation: React.FC = () => {
 const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      ToastAndroid.show(remoteMessage.notification!.body!, ToastAndroid.SHORT);
     });
 
     messaging()
