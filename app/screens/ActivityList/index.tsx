@@ -2,14 +2,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
 import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { FloatingAction } from "react-native-floating-action";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import colors from "../../assets/resources/colors";
+import ActivityItem from "../../components/ActivityItem/index";
 import SelectableItem from "../../components/SelectableItem";
 import { Item } from "../../models/other/axios/Item";
 import { IUserState } from "../../models/reducers/default";
 import NavigationService from "../../navigation/navigationService";
-import * as expenseActions from "../../store/actions/expenseActions";
+import * as activityActions from "../../store/actions/activityActions";
 import { log } from "../../utils/logger";
 import { validateToken } from "../../utils/tokenValidator";
+import LoadingIndicator from "../Loading";
 import styles from "./styles";
 
 type IState = {
@@ -31,16 +35,19 @@ const ActivityList: React.FC = () => {
   //     { id: "7", selected: false, name: "کالای دیجیتال", icon: "laptop" },
   //   ],
   // });
-  const { activities } = useSelector((state: IState) => state.userReducer);
+  const { loading, activities } = useSelector((state: IState) => state.userReducer);
   const user = useSelector((state: IState) => state.userReducer);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
-  const onPressActivityItem = (id: string, name: string, category: string, total: number) =>
+
+  const onPressActivityItem = () =>
     NavigationService.navigate("Activity", {
-      id: id,
-      activityName: name,
-      category: category,
-      total: total.toString(),
+      // id: id,
+      // activityName: name,
+      // category: category,
+      // total: total.toString(),
     });
+
   const onAddExpense = () => {
     let items: Array<Item> = [];
 
@@ -49,12 +56,13 @@ const ActivityList: React.FC = () => {
     });
     NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
   };
-  const [refreshing, setRefreshing] = useState(false);
+
   const fetchActivities = (): void => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(expenseActions.onGetUserExpensesRequest(loggedInUser.token));
+      dispatch(activityActions.onGetUserActivitiesRequest(loggedInUser.token));
     }
   };
+
   useEffect(() => {
     fetchActivities();
   }, [dispatch]);
@@ -80,52 +88,38 @@ const ActivityList: React.FC = () => {
   //   </>
   // );
 
+  const renderActivityItem: any = ({ item }) => (
+    <ActivityItem
+      onPressActivityItem={() => onPressActivityItem()}
+      Text="hmm"
+    />
+  );
+
   return (
     <>
-      <View style={styles.container}>
-        {/* <FlatList
-          horizontal={true}
-          data={data.categories}
-          renderItem={renderCategory}
-          extraData={renderFlatList}
-          scrollEnabled={true}
-          keyExtractor={(item) => item.id}
-          style={{
-            position: "relative",
-            backgroundColor: "white",
-            marginHorizontal: 0,
-            paddingBottom: -10,
-            marginBottom: -40,
-          }}
-        /> */}
-        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-          <FlatList
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            showsVerticalScrollIndicator={false}
-            data={user?.activities}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    style={styles.activityContainer}
-                    onPress={() => onPressActivityItem(item.id, item.description, "", item.total)}>
-                    <Text style={styles.activityText}>{item.description}</Text>
-                    <Image
-                      style={styles.activityImage}
-                      source={require("../../assets/images/category-image.jpg")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </Animatable.View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onAddExpense}>
-            <Text style={styles.buttonText}>ثبت فعالیت جدید</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+          <View style={styles.container}>
+            <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
+              <Text style={styles.screenTitleText}>فعالیت‌ها</Text>
+              <FlatList
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                data={activities}
+                renderItem={renderActivityItem}
+                showsVerticalScrollIndicator={false}
+                removeClippedSubviews
+              />
+            </Animatable.View>
+            <FloatingAction
+              color={colors.mainColor}
+              position="left"
+              overlayColor="#00000000"
+              floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
+              onPressMain={onAddExpense}
+            />
+          </View>
+        )}
     </>
   );
 };
