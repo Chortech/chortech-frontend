@@ -41,16 +41,6 @@ export function onLoginResponse(response: Response<Login>): Action<Response<Logi
   };
 }
 
-export function onLoginFail(): Action<Response<Login>> {
-  return {
-    type: types.LOGIN_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onLogout(): Action<Response<Login>> {
   return {
     type: types.LOG_OUT,
@@ -87,16 +77,6 @@ export function onSignUpResponse(response: Response<SignUp>): Action<Response<Si
   };
 }
 
-export function onSignUpFail(): Action<Response<SignUp>> {
-  return {
-    type: types.SIGNUP_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onResetPasswordRequest(
   email: string,
   phone: string,
@@ -118,16 +98,6 @@ export function onResetPasswordResponse(response: Response<null>): Action<Respon
   return {
     type: types.RESET_PASSWORD_RESPONSE,
     payload: response,
-  };
-}
-
-export function onResetPasswordFail(): Action<Response<null>> {
-  return {
-    type: types.RESET_PASSWORD_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 
@@ -163,16 +133,6 @@ export function onChangeEmailOrPhoneResponse(
   };
 }
 
-export function onChangeEmailOrPhoneFail(): Action<Response<ChangeEmailOrPhone>> {
-  return {
-    type: types.CHANGE_EMAIL_OR_PHONE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onChangePasswordRequest(
   token: Token,
   email: string,
@@ -203,16 +163,6 @@ export function onChangePasswordResponse(
       success: response.success,
       status: response.status,
       response: response.response,
-    },
-  };
-}
-
-export function onChangePasswordFail(): Action<Response<ChangePassword>> {
-  return {
-    type: types.CHANGE_PASSWORD_FAIL,
-    payload: {
-      success: false,
-      status: -1,
     },
   };
 }

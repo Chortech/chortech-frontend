@@ -10,7 +10,6 @@ import {
   Modal,
   Button,
 } from "react-native";
-import { SearchBar } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import { RegexValidator } from "../../utils/regexValidator";
 import NavigationService from "../../navigation/navigationService";
@@ -19,18 +18,11 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import * as userActions from "../../store/actions/userActions";
-import * as friendActions from "../../store/actions/friendActions";
 import * as expenseActions from "../../store/actions/expenseActions";
-import { Api } from "../../services/api/graphQL/graphqlApi";
 import { Searchbar } from "react-native-paper";
 import SelectableItem from "../../components/SelectableItem";
-import { log } from "../../utils/logger";
-import { text } from "@fortawesome/fontawesome-svg-core";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Participant, PRole } from "../../models/other/axios/Participant";
-import { faElementor } from "@fortawesome/free-brands-svg-icons";
-import { lightGreenA700 } from "react-native-paper/lib/typescript/src/styles/colors";
 import { Item } from "../../models/other/axios/Item";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
@@ -557,21 +549,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               onIconPress={() => onChangeSearchQuery(searchQuery)}
             />
             <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="نام فعالیت"
-                placeholderTextColor="#A4A4A4"
-                value={params.description}
-                style={styles.textInput}
-                onChangeText={setDescription}
-              />
-              <TextInput
-                placeholder="مبلغ (تومان)"
-                value={data.expenseAmount}
-                placeholderTextColor="#A4A4A4"
-                style={styles.textInput}
-                keyboardType="numeric"
-                onChangeText={setExpenseAmount}
-              />
               <FlatList
                 horizontal={true}
                 data={data.categories}
@@ -580,9 +557,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
                 scrollEnabled={true}
                 keyExtractor={(item) => item.id}
               />
-              {/* <TouchableOpacity onPress={showModal} style={styles.showModalButton}>
-                <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
-              </TouchableOpacity> */}
             </View>
             <FlatList
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

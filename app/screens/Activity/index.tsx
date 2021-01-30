@@ -1,20 +1,16 @@
 import { RouteProp } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Image, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import * as expenseActions from "../../store/actions/expenseActions";
-import * as friendActions from "../../store/actions/friendActions";
 import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
-
 import { styles } from "./styles";
-import { log } from "../../utils/logger";
 import { Item } from "../../models/other/axios/Item";
 import { PRole } from "../../models/other/axios/Participant";
-import { faIdeal } from "@fortawesome/free-brands-svg-icons";
 import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
@@ -28,7 +24,7 @@ type IState = {
 const Activity: React.FC<Props> = ({ route }: Props) => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const params = route.params;
-  const { loading, activities, friends } = useSelector((state: IState) => state.userReducer);
+  const { loading, expenses, friends } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,9 +44,9 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
 
   const getItems = (): Array<Item> => {
     let items: Array<Item> = [];
-    let index = activities.findIndex((ac) => ac.id == params.id);
+    let index = expenses.findIndex((ac) => ac.id == params.id);
     if (index > -1) {
-      activities[index].participants?.forEach((element) => {
+      expenses[index].participants?.forEach((element) => {
         items.push({
           id: element.id,
           name: element.name!,
@@ -63,7 +59,12 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
     friends.forEach((fr) => {
       index = items.findIndex((i) => i.id == fr.id);
       if (index < 0) {
-        items.push({ id: fr.id, name: fr.name, amount: 0, selected: false });
+        items.push({
+          id: fr.id,
+          name: fr.name != undefined ? fr.name : "",
+          amount: 0,
+          selected: false,
+        });
       }
     });
 

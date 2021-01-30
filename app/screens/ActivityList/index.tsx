@@ -52,7 +52,12 @@ const ActivityList: React.FC = () => {
     let items: Array<Item> = [];
 
     user.friends.forEach((element) => {
-      items.push({ id: element.id, name: element.name, amount: 0, selected: false });
+      items.push({
+        id: element.id,
+        name: element.name != undefined ? element.name : "",
+        amount: 0,
+        selected: false,
+      });
     });
     NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
   };
@@ -97,29 +102,51 @@ const ActivityList: React.FC = () => {
 
   return (
     <>
-      {loading ? (
-        <LoadingIndicator />
-      ) : (
-          <View style={styles.container}>
-            <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
-              <Text style={styles.screenTitleText}>فعالیت‌ها</Text>
-              <FlatList
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                data={activities}
-                renderItem={renderActivityItem}
-                showsVerticalScrollIndicator={false}
-                removeClippedSubviews
-              />
-            </Animatable.View>
-            <FloatingAction
-              color={colors.mainColor}
-              position="left"
-              overlayColor="#00000000"
-              floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
-              onPressMain={onAddExpense}
-            />
-          </View>
-        )}
+      <View style={styles.container}>
+        {/* <FlatList
+          horizontal={true}
+          data={data.categories}
+          renderItem={renderCategory}
+          extraData={renderFlatList}
+          scrollEnabled={true}
+          keyExtractor={(item) => item.id}
+          style={{
+            position: "relative",
+            backgroundColor: "white",
+            marginHorizontal: 0,
+            paddingBottom: -10,
+            marginBottom: -40,
+          }}
+        /> */}
+        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+          <FlatList
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            showsVerticalScrollIndicator={false}
+            data={user?.expenses}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <TouchableOpacity
+                    style={styles.activityContainer}
+                    onPress={() => onPressActivityItem(item.id, item.description, "", item.total)}>
+                    <Text style={styles.activityText}>{item.description}</Text>
+                    <Image
+                      style={styles.activityImage}
+                      source={require("../../assets/images/category-image.jpg")}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </Animatable.View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={onAddExpense}>
+            <Text style={styles.buttonText}>ثبت فعالیت جدید</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useLinkProps } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, Image, ToastAndroid, FlatList, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
@@ -14,11 +14,12 @@ import NavigationService from "../../navigation/navigationService";
 import { AxiosInstance } from "axios";
 import { Friend } from "../../models/other/axios/Friend";
 import { log } from "../../utils/logger";
-import { ExpenseBalance } from "../../models/other/axios/Expense";
+import { ExpenseBalance } from "../../models/other/axios/Balance";
 import colors from "../../assets/resources/colors";
-import FriendExpenseItem from "../../components/FriendExpenseItem";
+import FriendBalanceItem from "../../components/FriendBalanceItem";
 import PopupMenu from "../../components/PopupMenu";
 import fonts from "../../assets/resources/fonts";
+import { ArabicNumbers } from "react-native-arabic-numbers";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Friend">;
@@ -30,8 +31,8 @@ type IState = {
 
 const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { id, name, image, friendBalance } = route.params;
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const { id, name, image, balance, balances } = route.params;
+  const { loading, friends } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressSettleUp = () => NavigationService.navigate("SettleUp");
@@ -41,9 +42,6 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
       dispatch(friendActions.onDeleteFriendRequest(loggedInUser.token, id));
     }
   };
-
-  // log("friend balance");
-  // log(friendBalance);
 
   const onPopupEvent = (eventName, index) => {
     if (eventName !== "itemSelected") return;
@@ -66,7 +64,10 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
         }
       );
     }
-    // onPressDeleteFriend();
+  };
+
+  const renderFriendBalanceItem = ({ item }) => {
+    return <FriendBalanceItem item={item} />;
   };
 
   return (
@@ -84,13 +85,46 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
               source={require("../../assets/images/friend-image.jpg")}
             />
             <Text style={styles.userNameText}>{name}</Text>
+            <View style={styles.balanceStatusContainer}>
+              {balance > 0 ? (
+                <>
+                  <Text style={styles.text}> {name}</Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: fonts.IranSans_Bold,
+                      fontSize: 18,
+                    }}>
+                    {ArabicNumbers(Math.abs(balance))} تومان
+                  </Text>
+                  <Text style={styles.text}> به شما بدهکار است</Text>
+                </>
+              ) : balance < 0 ? (
+                <>
+                  <Text style={styles.text}>شما </Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: fonts.IranSans_Bold,
+                      fontSize: 18,
+                    }}>
+                    {ArabicNumbers(Math.abs(balance))} تومان
+                  </Text>
+                  <Text style={styles.text}> به </Text>
+                  <Text style={styles.text}>{name}</Text>
+                  <Text style={styles.text}> بدهکار هستید </Text>
+                </>
+              ) : (
+                <Text style={styles.text}>شما بی‌حساب هستید</Text>
+              )}
+            </View>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            {friendBalance.length > 0 ? (
+            {balances.length > 0 ? (
               <FlatList
-                data={friendBalance[0].expenses}
-                renderItem={({ item }) => <FriendExpenseItem item={item} />}
-                keyExtractor={(item) => item.balance.toString()}
+                data={balances}
+                renderItem={renderFriendBalanceItem}
+                keyExtractor={(item) => item.id}
               />
             ) : null}
             <View style={styles.buttonContainer}>

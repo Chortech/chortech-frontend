@@ -1,6 +1,6 @@
+import { ExpenseBalance } from "../models/other/axios/Balance";
 import { Item } from "../models/other/axios/Item";
 import { Token } from "../models/other/axios/Token";
-import { FriendBalance } from "../models/responses/axios/user";
 import { InputType } from "../utils/inputTypes";
 
 export type RootStackParamList = {
@@ -33,7 +33,8 @@ export type RootStackParamList = {
     id: string;
     name: string;
     image: string;
-    friendBalance: FriendBalance[];
+    balance: number;
+    balances: ExpenseBalance[];
   };
   Group: {
     id: string;

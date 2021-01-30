@@ -1,14 +1,12 @@
 import { StyleSheet, Platform } from "react-native";
-
-const mainColor = "#00bb5d";
-const borderRadius = 20;
-const textColor = "#333333";
-const baseFontSize = 16;
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: colors.loginLogoBackground,
   },
   headerContainer: {
     flex: 2,
@@ -24,39 +22,37 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     elevation: 10,
-    backgroundColor: "#fff",
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
+    backgroundColor: colors.white,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
   screenTitleText: {
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: textColor,
-    fontSize: baseFontSize,
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
     margin: 5,
   },
   textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#f2f2f2",
-    borderRadius: borderRadius,
-    backgroundColor: "#f2f2f2",
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
     padding: 5,
   },
   textInput: {
     flex: 10,
-    color: textColor,
+    color: colors.textBlack,
     padding: 10,
-    fontSize: baseFontSize,
-    fontFamily: "IRANSansWeb_Light",
+    fontSize: common.baseFontSize,
+    fontFamily: fonts.IranSans_Light,
     textAlign: "right",
   },
   validationText: {
-    color: "red",
+    color: colors.red,
     padding: 5,
-    fontFamily: "IRANSansWeb_Bold",
-    fontSize: baseFontSize - 4,
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: common.baseFontSize - 4,
   },
   toggleIcon: {
     flex: 1,
@@ -65,10 +61,10 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   visiblePassword: {
-    color: mainColor,
+    color: colors.mainColor,
   },
   invisiblePassword: {
-    color: "gray",
+    color: colors.gray,
   },
   buttonsContainer: {
     marginTop: 50,
@@ -78,23 +74,23 @@ export const styles = StyleSheet.create({
     width: "70%",
     alignSelf: "center",
     marginHorizontal: 10,
-    backgroundColor: mainColor,
-    borderRadius: borderRadius,
+    backgroundColor: colors.mainColor,
+    borderRadius: common.baseBorderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
   codeVerificationScreenButtonText: {
-    fontSize: baseFontSize + 2,
-    color: "#fff",
+    fontSize: common.baseFontSize + 2,
+    color: colors.white,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
   loggedInBeforeText: {
     margin: 15,
-    fontSize: baseFontSize,
+    fontSize: common.baseFontSize,
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: mainColor,
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.mainColor,
   },
 });

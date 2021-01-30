@@ -1,34 +1,32 @@
 import { StyleSheet } from "react-native";
-
-const mainColor = "#00bb5d";
-const borderRadius = 25;
-const textColor = "#333333";
-const baseFontSize = 16;
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   screenTitleText: {
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: textColor,
-    fontSize: baseFontSize,
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
     margin: 10,
     marginHorizontal: 30,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderBottomColor: colors.ultraLightGray,
   },
 
   infoContainer: {
     flex: 6,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     paddingHorizontal: 15,
     paddingBottom: 10,
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
   buttonContainer: {
     marginVertical: 5,
@@ -36,7 +34,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddddddaa",
+    borderBottomColor: colors.ultraLightGray,
   },
   arrowIconContainer: {
     flex: 1,
@@ -45,7 +43,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   arrowIcon: {
-    color: textColor,
+    color: colors.textBlack,
   },
   textContainer: {
     flex: 6,
@@ -54,27 +52,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   titleText: {
-    fontSize: baseFontSize - 2,
-    color: textColor,
+    fontSize: common.baseFontSize - 2,
+    color: colors.textBlack,
     writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Medium",
+    fontFamily: fonts.IranSans_Medium,
     padding: 2,
   },
   infoText: {
-    fontSize: baseFontSize - 2,
+    fontSize: common.baseFontSize - 2,
     padding: 2,
-    color: textColor,
+    color: colors.textBlack,
     writingDirection: "auto",
     alignSelf: "flex-end",
-    fontFamily: "IRANSansWeb_Light",
-  },
-  logoutIconContainer: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 5,
-  },
-  logoutIcon: {
-    color: "red",
-    transform: [{ rotate: "180deg" }],
+    fontFamily: fonts.IranSans_Medium,
   },
 });

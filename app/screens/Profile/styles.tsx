@@ -1,14 +1,12 @@
 import { StyleSheet } from "react-native";
-
-const mainColor = "#00bb5d";
-const borderRadius = 25;
-const textColor = "#333333";
-const baseFontSize = 16;
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   header: {
     flex: 4,
@@ -18,45 +16,44 @@ export const styles = StyleSheet.create({
   },
   cameraIconContainer: {
     flex: 1,
-    backgroundColor: "#00000077",
+    backgroundColor: colors.transparentBlack,
     padding: 10,
     margin: 15,
     borderWidth: 1,
     position: "absolute",
-    borderColor: "#fff",
+    borderColor: colors.white,
     top: 0,
-    borderRadius: borderRadius,
+    borderRadius: common.baseBorderRadius,
   },
   cameraIcon: {
-    color: "#fff",
+    color: colors.white,
   },
   infoContainer: {
     flex: 6,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     paddingHorizontal: 10,
     paddingBottom: 10,
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
   screenTitleText: {
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: textColor,
-    fontSize: baseFontSize,
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
     margin: 10,
     marginHorizontal: 30,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderBottomColor: colors.textInputBackground,
   },
-
   buttonContainer: {
     marginVertical: 5,
     flex: 1,
     flexDirection: "row",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddddddaa",
+    borderBottomColor: colors.textInputBackground,
   },
   arrowIconContainer: {
     flex: 1,
@@ -65,7 +62,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   arrowIcon: {
-    color: textColor,
+    color: colors.textBlack,
   },
   textContainer: {
     flex: 6,
@@ -74,18 +71,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   titleText: {
-    fontSize: baseFontSize - 2,
-    color: textColor,
+    fontSize: common.baseFontSize - 2,
+    color: colors.textBlack,
     writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Medium",
+    fontFamily: fonts.IranSans_Medium,
   },
   infoText: {
-    fontSize: baseFontSize - 2,
+    fontSize: common.baseFontSize - 2,
     padding: 2,
-    color: textColor,
+    color: colors.textBlack,
     writingDirection: "auto",
     alignSelf: "flex-end",
-    fontFamily: "IRANSansWeb_Light",
+    fontFamily: fonts.IranSans_Light,
   },
   logoutIconContainer: {
     flex: 1,
@@ -93,7 +90,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   logoutIcon: {
-    color: "red",
+    color: colors.red,
     transform: [{ rotate: "180deg" }],
   },
 });

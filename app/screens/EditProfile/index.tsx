@@ -10,7 +10,6 @@ import * as userActions from "../../store/actions/userActions";
 import LoadingIndicator from "../Loading";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
-import { log } from "../../utils/logger";
 import CustomInput from "../../components/CustomInput";
 import { validateToken } from "../../utils/tokenValidator";
 import { RootStackParamList } from "../../navigation/rootStackParams";
@@ -186,7 +185,7 @@ const EditProfile: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-            <Text style={styles.screenTitleText}>اطلاعات حساب کاربری</Text>
+            <Text style={styles.screenTitleText}>ویرایش اطلاعات</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
               {props.name ? (
                 <CustomInput

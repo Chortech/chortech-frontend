@@ -5,7 +5,7 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import messaging from '@react-native-firebase/messaging';
+import messaging from "@react-native-firebase/messaging";
 import Navigator from "./app/navigation/navigationStack";
 import configureStore from "./app/store";
 import { cronJob } from "./app/utils/cronJob";
@@ -41,7 +41,9 @@ const App: React.FC = () => {
 
     messaging()
       .getToken()
-      .then(token => { console.log(token)})
+      .then((token) => {
+        // console.log(token)
+      });
 
     return unsubscribe;
   }, []);

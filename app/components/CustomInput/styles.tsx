@@ -1,65 +1,52 @@
 import { StyleSheet } from "react-native";
-
-const mainColor = "#00bb5d";
-const borderRadius = 15;
-const textColor = "#333333";
-const baseFontSize = 16;
-const grayColor = "#f2f2f2";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   customInputContainer: {
     marginTop: 15,
   },
   label: {
-    color: textColor,
-    fontFamily: "IRANSansWeb_Bold",
+    color: colors.textBlack,
+    fontFamily: fonts.IranSans_Bold,
     textAlign: "right",
     writingDirection: "rtl",
     paddingRight: 6,
-    fontSize: baseFontSize - 4,
+    fontSize: common.baseFontSize - 4,
   },
   inputContainer: {
     flex: 4,
     flexDirection: "row",
     marginTop: 5,
-    borderRadius: borderRadius,
-    backgroundColor: grayColor,
-    paddingBottom: 5,
-  },
-  textContainer: {
-    flex: 4,
-    flexDirection: "row",
-    marginTop: 5,
-    backgroundColor: "rgba(0,0,0,0)",
-    paddingBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: grayColor,
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
+    justifyContent: "center",
   },
   inputContainerError: {
     flex: 4,
     flexDirection: "row",
     marginTop: 5,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: colors.red,
     borderRadius: 10,
-    backgroundColor: grayColor,
-    paddingBottom: 5,
+    backgroundColor: colors.textInputBackground,
+    justifyContent: "center",
   },
   textInput: {
     flex: 10,
-    color: textColor,
+    color: colors.textBlack,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontFamily: fonts.IranSans_Light,
     textAlign: "right",
+    alignSelf: "center",
   },
   toggleIcon: {
     flex: 1,
     marginRight: 5,
-    marginTop: 4,
-    marginLeft: 10,
+    marginLeft: 15,
     justifyContent: "center",
     alignSelf: "center",
-    alignContent: "center",
   },
   cancelIcon: {
     flex: 1,

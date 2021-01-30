@@ -8,18 +8,20 @@ import {
   InviteFriendsRequest,
 } from "../../models/requests/axios/user";
 import { Response } from "../../models/responses/axios/response";
-import { GetUserFriends, AddFriend, DeleteFriend } from "../../models/responses/axios/user";
+import { AddFriend } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
 import { InputType } from "../../utils/inputTypes";
 import * as friendActions from "../actions/friendActions";
-import * as expenseActions from "../actions/expenseActions";
-import * as expenseSaga from "./expenseSaga";
+import * as balanceActions from "../actions/balanceActions";
+import * as balanceSaga from "./balanceSaga";
+import { Friend } from "../../models/other/axios/Friend";
+import messages from "../../assets/resources/messages";
 
 export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   yield put(friendActions.onLoadingEnable());
   const { token } = action.payload;
-  let response: Response<GetUserFriends> = {
+  let response: Response<Friend[]> = {
     success: false,
     status: -1,
   };
@@ -30,18 +32,14 @@ export function* getUserFriendsAsync(action: Action<GetUserFriendsRequest>) {
   if (response.success) {
     yield put(friendActions.onGetUserFriendsResponse(response));
     yield call(
-      expenseSaga.getFriendsBalanceRequest,
-      expenseActions.onGetFriendsBalanceRequest(token)
+      balanceSaga.getFriendsBalanceAsync,
+      balanceActions.onGetFriendsBalanceRequest(token)
     );
-    // yield response.response?.friends.forEach(friend => {
-    //   yield call(expenseSaga.getFriendBalanceRequest, expenseActions.onGetFriendBalanceRequest(token, friend.id));
-    // });
   } else {
-    yield put(friendActions.onGetUserFriendsFail());
     if (response.status == 404) {
-      ToastAndroid.show("اطلاعات کاربر وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noUserWithThisInfo, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(friendActions.onLoadingDisable());
@@ -66,24 +64,21 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
 
   if (response.success) {
     yield put(friendActions.onAddFriendResponse(response));
+    yield call(getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
     navigationRef.current?.navigate("FriendList");
   } else {
-    yield put(friendActions.onAddFriendFail());
     if (response.status == -3) {
-      ToastAndroid.show("این عملیات امکان‌پذیر نیست", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidOperation, ToastAndroid.SHORT);
     } else if (response.status == -2) {
-      ToastAndroid.show("عملیات با خطا مواجه شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.operationError, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("اطلاعات واردشده معتبر نیست", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidInputInfo, ToastAndroid.SHORT);
     } else if (response.status == 404) {
-      ToastAndroid.show("کاربر با این مشخصات وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noUserWithThisInfo, ToastAndroid.SHORT);
     } else if (response.status == 409) {
-      ToastAndroid.show(
-        "امکان اضافه‌کردن دوباره این کاربر به دوستان شما وجود ندارد",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show(messages.duplicateFriendError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }
@@ -91,7 +86,7 @@ export function* addFriendAsync(action: Action<AddFriendRequest>) {
 export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
   yield put(friendActions.onLoadingEnable());
   const { token, id } = action.payload;
-  let response: Response<DeleteFriend> = {
+  let response: Response<Friend[]> = {
     success: false,
     status: -1,
   };
@@ -103,17 +98,17 @@ export function* deleteFriendAsync(action: Action<DeleteFriendRequest>) {
 
   if (response.success) {
     yield put(friendActions.onDeleteFriendResponse(response));
+    yield call(getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
     yield navigationRef.current?.navigate("FriendList");
   } else {
-    yield put(friendActions.onDeleteFriendFail());
     if (response.status == -2) {
-      ToastAndroid.show("عملیات با خطا مواجه شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.operationError, ToastAndroid.SHORT);
     } else if (response.status == -3) {
-      ToastAndroid.show("امکان انجام این عملیات وجود ندارد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidOperation, ToastAndroid.SHORT);
     } else if (response.status == 404) {
-      ToastAndroid.show("کاربر مورد نظر دوست شما نیست", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.noUserWithThisInfo, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }
@@ -141,7 +136,6 @@ export function* inviteFriendAsync(action: Action<InviteFriendsRequest>) {
     ToastAndroid.show("دعوت‌نامه برای ایمیل یا شماره موبایل واردشده ارسال شد", ToastAndroid.SHORT);
     navigationRef.current?.navigate("FriendList");
   } else {
-    yield put(friendActions.onInviteFriendFail());
     if (response.status == -2) {
       ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
     } else if (response.status == -3) {

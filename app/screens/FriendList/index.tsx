@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import { View, Text, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
-// import cron from "node-cron";
-
 import { styles } from "./styles";
 import NavigationService from "../../navigation/navigationService";
 import FriendItem from "../../components/FriendItem/index";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as friendActions from "../../store/actions/friendActions";
-import * as expenseActions from "../../store/actions/expenseActions";
+import * as balanceActions from "../../store/actions/balanceActions";
 import { IUserState } from "../../models/reducers/default";
 import { validateToken } from "../../utils/tokenValidator";
-import { log } from "../../utils/logger";
 import { FloatingAction } from "react-native-floating-action";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";
@@ -38,12 +35,9 @@ const FriendList: React.FC = (): JSX.Element => {
   };
 
   const onAddFriend = () => NavigationService.navigate("InviteFriend");
-  const onPressFriendItem = (id: string, name: string) => {
-    let index = friends.findIndex((friend) => friend.id == id);
-    if (index > -1) {
-      if (validateToken(loggedInUser.token)) {
-        dispatch(expenseActions.onGetFriendBalanceRequest(loggedInUser.token, id, name));
-      }
+  const onPressFriendItem = (id: string, name: string, balance: number) => {
+    if (validateToken(loggedInUser.token)) {
+      dispatch(balanceActions.onGetFriendBalanceRequest(loggedInUser.token, id, name, balance));
     }
   };
   const onRefresh = useCallback(() => {
@@ -54,14 +48,14 @@ const FriendList: React.FC = (): JSX.Element => {
 
   const renderFriendItem: any = ({ item }) => (
     <FriendItem
-      onPressFriendItem={() => onPressFriendItem(item.id, item.name)}
+      onPressFriendItem={() => onPressFriendItem(item.id, item.name, item.balance)}
       Name={item.name}
       ImageUrl={
         item.picture != undefined
           ? { uri: item.picture }
           : require("../../assets/images/friend-image.jpg")
       }
-      Balance={item.balance?.balance}
+      Balance={item.balance}
     />
   );
 

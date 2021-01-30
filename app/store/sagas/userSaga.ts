@@ -1,5 +1,6 @@
 import { ToastAndroid } from "react-native";
 import { put } from "redux-saga/effects";
+import messages from "../../assets/resources/messages";
 import { Action } from "../../models/actions/action";
 import {
   EditProfileRequest,
@@ -28,11 +29,10 @@ export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   if (response.success) {
     yield put(userActions.onGetUserProfileResponse(response));
   } else {
-    yield put(userActions.onGetUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }
@@ -46,14 +46,13 @@ export function* editUserProfileAsync(action: Action<EditProfileRequest>) {
 
   if (response.success) {
     yield put(userActions.onEditUserProfileResponse(response));
-    ToastAndroid.show("ویرایش اطلاعات شما با موفقیت انجام شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.profileInfoEditedSucces, ToastAndroid.SHORT);
     yield navigationRef.current?.navigate("ProfileInfo");
   } else {
-    yield put(userActions.onEditUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == 401 || response.status == 403) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
     }
   }
 
@@ -75,12 +74,10 @@ export function* uploadImageAsync(action: Action<UploadImageRequest>) {
   if (response.success) {
     yield put(userActions.onUploadImageResponse(response));
   } else {
-    yield put(userActions.onGetUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      console.log(response);
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }

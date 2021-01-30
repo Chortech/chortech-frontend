@@ -8,7 +8,6 @@ import * as expenseActions from "../../store/actions/expenseActions";
 import LoadingIndicator from "../Loading";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import { log } from "../../utils/logger";
 
 type Props = {
   route: RouteProp<RootStackParamList, "AddComment">;
