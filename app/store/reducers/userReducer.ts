@@ -167,30 +167,6 @@ export const userReducer = createReducer(initialState, {
   [types.UPLOAD_IMAGE_FAIL](state: IUserState, action: Action<Response<UploadImage>>): IUserState {
     return state;
   },
-  [types.GET_USER_EXPENSES_REQUEST](
-    state: IUserState,
-    action: Action<GetUserExpensesRequest>
-  ): IUserState {
-    return {
-      ...state,
-      token: action.payload.token,
-    };
-  },
-  [types.GET_USER_EXPENSES_RESPONSE](
-    state: IUserState,
-    action: Action<Response<UserExpenses>>
-  ): IUserState {
-    return {
-      ...state,
-      activities: action.payload.response!.expenses,
-    };
-  },
-  [types.GET_USER_EXPENSES_FAIL](
-    state: IUserState,
-    action: Action<Response<UserExpenses>>
-  ): IUserState {
-    return state;
-  },
 
   [types.GET_USER_EXPENSE_REQUEST](
     state: IUserState,

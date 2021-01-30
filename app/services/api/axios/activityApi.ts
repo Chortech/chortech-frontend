@@ -29,7 +29,7 @@ export class ActivityAPI implements activityApi {
         };
 
         try {
-            let response: AxiosResponse = await this.client.get("/activity");
+            let response: AxiosResponse = await this.client.get("");
 
             if (response.status == 200) {
                 result = {
