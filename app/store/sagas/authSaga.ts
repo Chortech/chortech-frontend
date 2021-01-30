@@ -7,6 +7,9 @@ import * as userActions from "../actions/userActions";
 import * as groupActions from "../actions/groupActions";
 import * as friendActions from "../actions/friendActions";
 import * as expenseActions from "../actions/expenseActions";
+import * as notificationActions from "../actions/notificationActions";
+import * as notificationSaga from "../sagas/notificationSaga";
+import messaging from '@react-native-firebase/messaging';
 import {
   ChangeEmailOrPhoneRequest,
   ChangePasswordRequest,
@@ -44,6 +47,7 @@ export function* loginAsync(action: Action<LoginRequest>) {
 
   if (response.success) {
     yield put(authActions.onLoginResponse(response));
+    yield call(notificationSaga.pushNotificationAsync, notificationActions.onPushNotificationRequest(response.response!.token, yield messaging().getToken()));
     yield put(userActions.onGetUserProfileRequest(response.response!.token));
     yield put(friendActions.onGetUserFriendsRequest(response.response!.token));
     yield put(expenseActions.onGetUserExpensesRequest(response.response!.token));

@@ -1,17 +1,17 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { SERVER_ACTIVITY_URL } from "../../../../local_env_vars";
-import { activityApi } from "../../../models/api/axios-api/activity";
+import { SERVER_NOTIFICATIONS_URL } from "../../../../local_env_vars";
+import { notificationApi } from "../../../models/api/axios-api/notification";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
 import { UserActivities } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
-export class ActivityAPI implements activityApi {
+export class NotificationAPI implements notificationApi {
     client: AxiosInstance;
 
     constructor(token: Token) {
         this.client = axios.create({
-            baseURL: SERVER_ACTIVITY_URL,
+            baseURL: SERVER_NOTIFICATIONS_URL,
         });
 
         this.client.interceptors.request.use(function (config) {
@@ -22,16 +22,19 @@ export class ActivityAPI implements activityApi {
         });
     }
 
-    async getActivities(): Promise<Response<UserActivities>> {
+    async pushNotification(FCMToken: string): Promise<Response<null>> {
         let result: Response<UserActivities> = {
             success: false,
             status: -1,
         };
 
         try {
-            let response: AxiosResponse = await this.client.get("");
+            let response: AxiosResponse = await this.client.post("",
+            { 
+                token: FCMToken
+            });
 
-            if (response.status == 200) {
+            if (response.status == 204) {
                 result = {
                     success: true,
                     status: response.status,
@@ -40,10 +43,10 @@ export class ActivityAPI implements activityApi {
             } else {
                 result.status = response.status;
             }
-            log("get activities api result");
+            log("push notification api result");
             log(result);
         } catch (e) {
-            log("get activities api error");
+            log("push notification api error");
             if (e.isAxiosError) {
                 const error: AxiosError = e as AxiosError;
                 result.status = error.response?.status != undefined ? error.response?.status : -1;
