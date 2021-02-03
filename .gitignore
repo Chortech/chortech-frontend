@@ -57,3 +57,10 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+.vscode/
+
+
+local_env_vars.ts
+
+android/app/google-services.json
