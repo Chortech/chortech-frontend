@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, FlatList, RefreshControl, Image, TouchableOpacity, Button, 
-  TouchableHighlight, SafeAreaView, Alert} from "react-native";
+  TouchableHighlight, SafeAreaView, Alert, ScrollView} from "react-native";
   import CustomInput from "../../components/CustomInput";
 import Dialog, {
   DialogTitle,
@@ -62,6 +62,7 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
   }
 
   const onGroupNameChange = (text: string) => {
+    dispatch(groupActions.onEditGroupRequest(loggedInUser.token, id, text, ImageUrl))
   };
 
 
@@ -89,13 +90,15 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
                   style={styles.friendImage}
                   source={require("../../assets/images/group-image.jpg")}
                 />
-              <Text style={styles.screenTitleText}>{groupName}</Text>
-              <CustomInput
+              {/* <Text style={styles.screenTitleText}>{groupName}</Text> */}
+              <ScrollView showsVerticalScrollIndicator={false}>
+              <CustomInput 
                   label="نام گروه"
                   defaultValue={groupName}
                   placeholder="نام گروه"
                   onChangeText={onGroupNameChange}
                 />
+                </ScrollView>
           <Animatable.View animation="slideInUp" duration={500} style={styles.infoContainer}>
             <FlatList
               data={members}
