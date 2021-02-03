@@ -12,6 +12,7 @@ import * as groupActions from "../../store/actions/groupActions";
 import { Expense } from "../../models/other/graphql/Expense";
 import ExpenseItem from "../../components/ExpenseItem";
 import { log } from "../../utils/logger";
+import {Group} from "../../models/other/axios/Group"
 
 type Props = {
   route: RouteProp<RootStackParamList, "Group">;
@@ -24,15 +25,23 @@ type IState = {
 const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [renderFlatList, setRenderFlatList] = useState(false);
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { id, groupName, ImageUrl } = route.params;
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const { group } = route.params;
+  const { loading, groups } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
-
+  const [currentGroup, setCurrentGroup] = useState<Group>(); 
   const onAddExpense = () => NavigationService.navigate("AddExpense");
+  const onEditGroup = () => NavigationService.navigate("EditGroup", {
+    id: group.id,
+    groupName: group.name,
+    ImageUrl: group.picture,
+    members: group.members != undefined ? group.members : [],
+  });
   const onPressDeleteGroup = () => {
-    dispatch(groupActions.onDeleteGroupRequest(loggedInUser.token, id));
+    dispatch(groupActions.onDeleteGroupRequest(loggedInUser.token, group.id));
   };
-
+  useEffect(() => {
+    
+  }, [dispatch]);
   const onExpensePress = (
     id: string,
     name: string,
@@ -69,7 +78,7 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
               style={styles.groupImage}
               source={require("../../assets/images/group-image.jpg")}
             />
-            <Text style={styles.textHeader}>{groupName}</Text>
+            <Text style={styles.textHeader}>{group.name}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             {/* <FlatList
@@ -84,8 +93,13 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
                   </TouchableOpacity>
                 </View>
               }
-            /> */}
+            />  */}
           </Animatable.View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={onEditGroup}>
+                <Text style={styles.buttonText}>تنظیمات گروه</Text>
+              </TouchableOpacity>
+          </View>
         </View>
       )}
     </>
