@@ -132,6 +132,9 @@ export interface EditPaymentRequest {
   group?: string;
   notes?: string;
 }
+export interface PushNotificationRequest {
+  token: Token;
+  FCMToken: string;
 
 export interface GetUserGroupsRequest {
   token: Token;

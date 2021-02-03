@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, Alert, View, Modal } from "react-native";
+import { ActivityIndicator, Alert, ToastAndroid, View, Modal } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { library } from "@fortawesome/fontawesome-svg-core";
