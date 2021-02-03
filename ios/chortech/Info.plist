@@ -79,6 +79,10 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>IRANSansWeb_Bold.ttf</string>
+		<string>IRANSansWeb_Light.ttf</string>
+		<string>IRANSansWeb_Medium.ttf</string>
+		<string>IRANSansWeb_UltraLight.ttf</string>
+		<string>IRANSansWeb.ttf</string>
 	</array>
 </dict>
 </plist>
