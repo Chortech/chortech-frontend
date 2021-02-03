@@ -51,6 +51,8 @@ export function* getGroupInfoAsync(action: Action<GetGroupInfoRequest>) {
 
   if (response.success) {
     yield put(groupActions.onGetGroupInfoResponse(response));
+
+    yield navigationRef?.current?.navigate("Group", {group: response.response})
   } else {
     if (response.status == 400) {
       ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);

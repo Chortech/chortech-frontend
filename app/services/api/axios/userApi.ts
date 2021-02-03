@@ -201,6 +201,7 @@ export class UserAPI implements userApi {
       log("add user friend api(phone) result");
       log(result, false);
     } catch (e) {
+      console.log(e.response);
       log("add user friend api (phone) error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;

@@ -87,6 +87,24 @@ export const styles = StyleSheet.create({
     fontFamily: "IRANSansWeb_Bold",
     writingDirection: "auto",
   },
+  button: {
+    elevation: 1,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#1AD927",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    margin: 20,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#1AD927",
+    alignSelf: "center",
+    fontFamily: "IRANSansWeb_Bold",
+    writingDirection: "auto",
+  },
 });
+
 
 export default styles;

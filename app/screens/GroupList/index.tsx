@@ -22,11 +22,14 @@ const GroupList: React.FC = () => {
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) => {
     log("pressed");
-    navigationRef.current?.navigate("Group", {
-      id: id,
-      groupName: name,
-      ImageUrl: "",
-    });
+    // navigationRef.current?.navigate("Group", {
+    //   id: id,
+    //   groupName: name,
+    //   ImageUrl: "",
+    // });
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, id));
+    }
   };
   const fetchGroups = (): void => {
     if (validateToken(loggedInUser.token)) {

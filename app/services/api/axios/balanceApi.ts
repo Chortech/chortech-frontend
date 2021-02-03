@@ -41,7 +41,7 @@ export class BalanceAPI implements balanceApi {
         result.status = response.status;
       }
       log("get user friends balance api result");
-      log(result, false);
+      log(result, true);
     } catch (e) {
       log("get user friends balance api error");
       if (e.isAxiosError) {
