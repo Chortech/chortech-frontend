@@ -48,6 +48,7 @@ export type RootStackParamList = {
   };
   AddMember: {
     groupId: string;
+    members: Array<Member>;
   }
   Activity: {
     id: string;
