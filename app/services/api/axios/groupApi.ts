@@ -110,6 +110,7 @@ export class GroupAPI implements groupApi {
       log(result, false);
     } catch (e) {
       log("create group api error");
+      console.log(e.response)
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
@@ -197,7 +198,7 @@ export class GroupAPI implements groupApi {
     };
 
     try {
-      let response: AxiosResponse = await this.client.put(`/${groupId}`, {
+      let response: AxiosResponse = await this.client.post(`/${groupId}/members/`, {
         members: members,
       });
 
@@ -213,6 +214,7 @@ export class GroupAPI implements groupApi {
       log("add friend to group api result");
       log(result, false);
     } catch (e) {
+      console.log(e.response)
       log("add friend to group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
@@ -233,7 +235,7 @@ export class GroupAPI implements groupApi {
     };
 
     try {
-      let response: AxiosResponse = await this.client.delete(`/${groupId}/leave`);
+      let response: AxiosResponse = await this.client.delete(`/${groupId}/members/`);
 
       if (response.status == 200) {
         result = {
@@ -257,16 +259,14 @@ export class GroupAPI implements groupApi {
     return result;
   }
 
-  async removeMember(groupId: string, memberId: string): Promise<Response<RemoveGroupMember>> {
-    let result: Response<RemoveGroupMember> = {
+  async removeMember(groupId: string, memberId: string): Promise<Response<any>> {
+    let result: Response<any> = {
       success: false,
       status: -1,
     };
 
     try {
-      let response: AxiosResponse = await this.client.put(`/${groupId}/remove`, {
-        member: memberId,
-      });
+      let response: AxiosResponse = await this.client.put(`/${groupId}/members/${memberId}/`);
 
       if (response.status == 200) {
         result = {
@@ -280,6 +280,7 @@ export class GroupAPI implements groupApi {
       log("remove member api result");
       log(result, false);
     } catch (e) {
+      console.log(e.response);
       log("remove member api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
