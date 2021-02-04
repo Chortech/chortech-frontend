@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React from "react";
 import { Text, View } from "react-native";
-import { useStore } from "react-redux";
 import colors from "../../assets/resources/colors";
 import { ExpenseBalance } from "../../models/other/axios/Balance";
-import { IUserState } from "../../models/reducers/default";
 import { styles } from "./styles";
 import { ArabicNumbers } from "react-native-arabic-numbers";
 
@@ -12,14 +10,12 @@ type Props = {
   item: ExpenseBalance;
 };
 
-const FriendBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
+const BalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
   let color = props.item.balance < 0 ? colors.red : colors.mainColor;
   let paymentSentence =
     props.item.type === "payment"
       ? props.item.balance > 0
-        ? `${props.item.to} ${props.item.amount
-            ?.toString()
-            .fontcolor(colors.red)} به شما پرداخت کرده‌است`
+        ? `${props.item.to} ${props.item.amount} به شما پرداخت کرده‌است`
         : `شما ${ArabicNumbers(props.item.amount)} به ${props.item.to} پرداخت کرده‌اید`
       : "";
 
@@ -59,4 +55,4 @@ const FriendBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-export default FriendBalanceItem;
+export default BalanceItem;

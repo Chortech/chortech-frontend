@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
-import { color } from "react-native-reanimated";
 import colors from "../../assets/resources/colors";
 import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   expenseContainer: {
-    marginTop: 10,
+    marginTop: 15,
     borderWidth: 3,
     backgroundColor: colors.ultraXLightGray,
     borderRadius: common.baseBorderRadius - 5,
@@ -57,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   paymentContainer: {
     padding: 10,
-    marginTop: 10,
+    marginTop: 15,
     borderWidth: 3,
     borderRadius: 15,
     borderColor: colors.ultraLightGray,

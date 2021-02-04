@@ -9,6 +9,9 @@ import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
 import { validateToken } from "../../utils/tokenValidator";
 import { log } from "../../utils/logger";
+import { FloatingAction } from "react-native-floating-action";
+import colors from "../../assets/resources/colors";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type IState = {
   userReducer: IUserState;
@@ -21,12 +24,6 @@ const GroupList: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const onAddGroup = () => NavigationService.navigate("AddGroup");
   const onGroup = (id: string, name: string) => {
-    log("pressed");
-    // navigationRef.current?.navigate("Group", {
-    //   id: id,
-    //   groupName: name,
-    //   ImageUrl: "",
-    // });
     if (validateToken(loggedInUser.token)) {
       dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, id));
     }
@@ -37,7 +34,6 @@ const GroupList: React.FC = () => {
     }
   };
 
-  log(groups);
   useEffect(() => {
     fetchGroups();
   }, [dispatch]);
@@ -53,25 +49,29 @@ const GroupList: React.FC = () => {
       onPressGroupItem={() => onGroup(item.id, item.name)}
       Name={item.name}
       ImageUrl={require("../../assets/images/friend-image.jpg")}
+      Balance={item.balance}
     />
   );
 
   return (
     <View style={styles.container}>
       <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+        <Text style={styles.screenTitleText}>گروه‌ها</Text>
         <FlatList
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           data={groups}
           renderItem={renderGroupItem}
           showsVerticalScrollIndicator={false}
-          initialNumToRender={15}
+          initialNumToRender={8}
         />
       </Animatable.View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={onAddGroup}>
-          <Text style={styles.buttonText}>ایجاد گروه جدید</Text>
-        </TouchableOpacity>
-      </View>
+      <FloatingAction
+        color={colors.mainColor}
+        position="left"
+        overlayColor="#00000000"
+        floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
+        onPressMain={onAddGroup}
+      />
     </View>
   );
 };
