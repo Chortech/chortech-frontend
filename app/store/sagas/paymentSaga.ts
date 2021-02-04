@@ -8,7 +8,6 @@ import {
   EditPaymentRequest,
   GetPaymentRequest,
 } from "../../models/requests/axios/user";
-import { AddPayment } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { PaymentAPI } from "../../services/api/axios/paymentApi";
 import { Response } from "../../models/responses/axios/response";
@@ -42,7 +41,7 @@ export function* getUserPaymentAsync(action: Action<GetPaymentRequest>) {
 export function* addPaymentAsync(action: Action<AddPaymentRequest>) {
   yield put(paymentActions.onLoadingEnable());
   const { token, from, to, amount, paid_at, group, notes } = action.payload;
-  let response: Response<AddPayment> = {
+  let response: Response<Payment> = {
     success: false,
     status: -1,
   };

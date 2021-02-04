@@ -7,7 +7,6 @@ import {
   DeletePaymentRequest,
   EditPaymentRequest,
 } from "../../models/requests/axios/user";
-import { AddPayment } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
 import { Payment } from "../../models/other/axios/Payment";
@@ -56,7 +55,7 @@ export function onAddPaymentRequest(
   };
 }
 
-export function onAddPaymentResponse(response: Response<AddPayment>): Action<Response<AddPayment>> {
+export function onAddPaymentResponse(response: Response<Payment>): Action<Response<Payment>> {
   return {
     type: types.ADD_PAYMENT_RESPONSE,
     payload: {

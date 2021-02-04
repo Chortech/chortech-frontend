@@ -3,7 +3,6 @@ import { SERVER_NOTIFICATIONS_URL } from "../../../../local_env_vars";
 import { notificationApi } from "../../../models/api/axios-api/notification";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
-import { UserActivities } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
 export class NotificationAPI implements notificationApi {
@@ -23,7 +22,7 @@ export class NotificationAPI implements notificationApi {
     }
 
     async pushNotification(FCMToken: string): Promise<Response<null>> {
-        let result: Response<UserActivities> = {
+        let result: Response<null> = {
             success: false,
             status: -1,
         };
