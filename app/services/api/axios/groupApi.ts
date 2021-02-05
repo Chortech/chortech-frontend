@@ -330,13 +330,10 @@ export class GroupAPI implements groupApi {
           "Content-Encoding": "base64",
         },
       });
-      console.log("no problem in sector 1");
-      console.log(data.id)
-      let lastRes: AxiosResponse = await this.client.patch(`/${data.id}/members/`, {
+      let lastRes: AxiosResponse = await this.client.patch(`/${data.id}/`, {
         name: data.name,
         picture: response.data.key,
       });
-      console.log("no problem in sector 2");
 
 
       if (response.status == 200) {
@@ -354,7 +351,6 @@ export class GroupAPI implements groupApi {
       log("upload image api error");
       console.log(e);
       if (e.isAxiosError) {
-        console.log("11")
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
         log(error.response?.data, false);
