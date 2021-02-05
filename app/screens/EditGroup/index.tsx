@@ -50,7 +50,6 @@ const options = {
 
 const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const { groups } = useSelector((state: IState) => state.userReducer);
   const { id, groupName, ImageUrl, members } = route.params;
   const dispatch = useDispatch();
@@ -88,10 +87,6 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
         ...data,
         imageUri: uri,
       });
-      user = {
-        ...user,
-        imageUri: data.imageUri,
-      };
       if (validateToken(loggedInUser.token)) {
         dispatch(groupActions.onUploadImageRequest(loggedInUser.token, {response:response, id:id, name: groupName}));
       }
