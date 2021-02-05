@@ -9,36 +9,46 @@ import NavigationService from "../../navigation/navigationService";
 import { RegexValidator } from "../../utils/regexValidator";
 import { RootStackParamList } from "../../navigation/rootStackParams";
 import { RouteProp } from "@react-navigation/native";
+import * as paymentActions from "../../store/actions/paymentActions";
 
 type Props = {
-  // route: RouteProp<RootStackParamList, "SettleUp">;
+  route: RouteProp<RootStackParamList, "SettleUp">;
 };
 
 type IState = {
   userReducer: IUserState;
 };
 
-const SettleUp: React.FC<Props> = (): JSX.Element => {
-  // const params = route.params;
+const SettleUp: React.FC<Props> = ({ route }: Props): JSX.Element => {
+  const params = route.params;
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const { loading, payment } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  const onPressPay = () => NavigationService.navigate("Pay");
+  const onPressPay = () => {
+    dispatch(paymentActions.onAddPaymentRequest(
+      loggedInUser.token,
+      loggedInUser.id,
+      data.friendId,
+      Number(data.paymentAmount),
+      Math.floor(Date.now() / 1000),
+    ));
+    // NavigationService.navigate("Pay");
+  }  
 
-  // const [data, setData] = useState({
-  //     description: params.description != undefined ? params.description : "",
-  //     paymentAmount: params.total != undefined ? params.total : "",
-  //     isValidExpenseAmount: true,
-  // });
+  const [data, setData] = useState({
+      paymentAmount: params.paymentAmount != undefined ? params.paymentAmount : "",
+      friendId: params.friendId != undefined ? params.friendId : "",
+      isValidExpenseAmount: true,
+  });
 
-  // const setPaymentAmount = (text: string) => {
-  //     setData({
-  //         ...data,
-  //         paymentAmount: text,
-  //         isValidExpenseAmount: text == "" || RegexValidator.validateExpenseAmount(text) == true,
-  //     });
-  // };
+  const setPaymentAmount = (text: string) => {
+      setData({
+          ...data,
+          paymentAmount: text,
+          isValidExpenseAmount: text == "" || RegexValidator.validateExpenseAmount(text) == true,
+      });
+  };
 
   return (
     <>
@@ -50,11 +60,11 @@ const SettleUp: React.FC<Props> = (): JSX.Element => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="لطفاً مبلغ را وارد کنید"
-                // value={data.paymentAmount}
+                value={data.paymentAmount}
                 placeholderTextColor="#A4A4A4"
                 style={styles.textInput}
                 keyboardType="numeric"
-                // onChangeText={setPaymentAmount}
+                onChangeText={setPaymentAmount}
               />
             </View>
             <View style={styles.buttonContainer}>

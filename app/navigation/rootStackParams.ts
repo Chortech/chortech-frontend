@@ -66,4 +66,8 @@ export type RootStackParamList = {
   AddComment: {
     expenseId?: string;
   };
+  SettleUp: {
+    paymentAmount: string;
+    friendId: string;
+  };
 };

@@ -35,7 +35,7 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { loading, friends } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  const onPressSettleUp = () => NavigationService.navigate("SettleUp");
+  const onPressSettleUp = () => NavigationService.navigate("SettleUp", {friendId: id});
 
   const onPressDeleteFriend = () => {
     if (validateToken(loggedInUser.token)) {
