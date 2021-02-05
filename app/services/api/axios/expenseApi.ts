@@ -365,7 +365,7 @@ export class ExpenseAPI implements expenseApi {
         };
       }
       log("get group expenses api result");
-      log(result, false);
+      log(result, true);
     } catch (e) {
       log("get group expenses api error");
       if (e.isAxiosError) {

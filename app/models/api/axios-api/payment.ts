@@ -1,4 +1,3 @@
-import { AddPayment } from "../../responses/axios/user";
 import { Response } from "../../responses/axios/response";
 import { Payment } from "../../other/axios/Payment";
 
@@ -11,7 +10,7 @@ export interface paymentApi {
     paid_at: number,
     group?: string,
     notes?: string
-  ): Promise<Response<AddPayment>>;
+  ): Promise<Response<Payment>>;
   editPayment(
     id: string,
     amount?: number,

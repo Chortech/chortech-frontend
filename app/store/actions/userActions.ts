@@ -40,6 +40,7 @@ export function onUploadImageRequest(token: Token, response): Action<UploadImage
 export function onUploadImageResponse(
   response: Response<UploadImage>
 ): Action<Response<UploadImage>> {
+  console.log("esdagesg", response);
   return {
     type: types.UPLOAD_IMAGE_RESPONSE,
     payload: {

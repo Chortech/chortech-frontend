@@ -13,6 +13,8 @@ import { FloatingAction } from "react-native-floating-action";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";
 import LoadingIndicator from "../Loading";
+import { log } from "../../utils/logger";
+import fonts from "../../assets/resources/fonts";
 
 type IState = {
   userReducer: IUserState;
@@ -34,7 +36,6 @@ const FriendList: React.FC = (): JSX.Element => {
     }
   };
 
-  const onAddFriend = () => NavigationService.navigate("InviteFriend");
   const onPressFriendItem = (id: string, name: string, balance: number) => {
     if (validateToken(loggedInUser.token)) {
       dispatch(balanceActions.onGetFriendBalanceRequest(loggedInUser.token, id, name, balance));
@@ -46,18 +47,48 @@ const FriendList: React.FC = (): JSX.Element => {
     setRefreshing(false);
   }, [dispatch]);
 
-  const renderFriendItem: any = ({ item }) => (
-    <FriendItem
-      onPressFriendItem={() => onPressFriendItem(item.id, item.name, item.balance)}
-      Name={item.name}
-      ImageUrl={
-        item.picture != undefined
-          ? { uri: item.picture }
-          : require("../../assets/images/friend-image.jpg")
-      }
-      Balance={item.balance}
-    />
-  );
+  const renderFriendItem = ({ item }) => {
+    log(item.picture);
+    return (
+      <FriendItem
+        onPressFriendItem={() => onPressFriendItem(item.id, item.name, item.balance)}
+        Name={item.name}
+        ImageUrl={
+          item.picture != undefined
+            ? { uri: item.picture }
+            : require("../../assets/images/friend-image.jpg")
+        }
+        Balance={item.balance}
+      />
+    );
+  };
+
+  const actions: any = [
+    {
+      text: "افزودن هزینه جدید",
+      icon: <FontAwesomeIcon icon="shopping-cart" size={15} color={colors.white} />,
+      name: "addExpense",
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 1,
+      color: colors.mainColor,
+    },
+    {
+      text: "دعوت یا افزودن دوستان جدید",
+      icon: <FontAwesomeIcon icon="user-plus" size={15} color={colors.white} />,
+      name: "addFriend",
+      color: colors.mainColor,
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 2,
+    },
+  ];
 
   return (
     <>
@@ -76,11 +107,16 @@ const FriendList: React.FC = (): JSX.Element => {
             />
           </Animatable.View>
           <FloatingAction
+            actions={actions}
             color={colors.mainColor}
             position="left"
-            overlayColor="#00000000"
-            floatingIcon={<FontAwesomeIcon icon="plus" color="#fff" size={20} />}
-            onPressMain={onAddFriend}
+            onPressItem={(name) => {
+              if (name == "addExpense") {
+                NavigationService.navigate("AddExpense", { parentScreen: "FriendList", items: [] });
+              } else {
+                NavigationService.navigate("InviteFriend");
+              }
+            }}
           />
         </View>
       )}

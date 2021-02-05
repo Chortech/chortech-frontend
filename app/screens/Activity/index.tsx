@@ -1,6 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { Image, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { IUserState } from "../../models/reducers/default";
@@ -12,6 +12,12 @@ import { styles } from "./styles";
 import { Item } from "../../models/other/axios/Item";
 import { PRole } from "../../models/other/axios/Participant";
 import { validateToken } from "../../utils/tokenValidator";
+import { categories } from "../../utils/categories";
+import PopupMenu from "../../components/PopupMenu";
+import { FloatingAction } from "react-native-floating-action";
+import colors from "../../assets/resources/colors";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import fonts from "../../assets/resources/fonts";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Activity">;
@@ -23,20 +29,21 @@ type IState = {
 
 const Activity: React.FC<Props> = ({ route }: Props) => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const params = route.params;
-  const { loading, expenses, friends } = useSelector((state: IState) => state.userReducer);
+  const { id } = route.params;
+  const { loading, expenses, friends, currentExpense } = useSelector(
+    (state: IState) => state.userReducer
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(expenseActions.onGetUserExpenseRequest(loggedInUser.token, params.id));
+    dispatch(expenseActions.onGetUserExpenseRequest(loggedInUser.token, id));
   }, [dispatch]);
 
-  const onPressAddComment = () =>
-    NavigationService.navigate("AddComment", { expenseId: params.id });
+  const onPressAddComment = () => NavigationService.navigate("AddComment", { expenseId: id });
 
   const onPressDeleteActivity = () => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(expenseActions.onDeleteExpenseRequest(loggedInUser.token, params.id));
+      dispatch(expenseActions.onDeleteExpenseRequest(loggedInUser.token, id));
     } else {
       ToastAndroid.show("لطفا دوباره تلاش کنید", ToastAndroid.SHORT);
     }
@@ -44,7 +51,7 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
 
   const getItems = (): Array<Item> => {
     let items: Array<Item> = [];
-    let index = expenses.findIndex((ac) => ac.id == params.id);
+    let index = expenses.findIndex((ac) => ac.id == id);
     if (index > -1) {
       expenses[index].participants?.forEach((element) => {
         items.push({
@@ -71,16 +78,66 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
     return items;
   };
 
-  const onPressEditComment = () => {
+  const onPressEditExpense = () => {
     let items: Array<Item> = getItems();
     NavigationService.navigate("AddExpense", {
       parentScreen: "Activity",
       items: items,
-      id: params.id,
-      description: params.activityName,
-      total: params.total,
+      id: id,
+      description: currentExpense.description,
+      total: currentExpense.total,
     });
   };
+
+  const onPopupEvent = (eventName, index) => {
+    if (eventName !== "itemSelected") return;
+    if (index === 0) {
+      Alert.alert(
+        "",
+        "آیا از حذف دوست خود مطمئن هستید؟",
+        [
+          {
+            text: "لغو",
+            onPress: () => {},
+          },
+          {
+            text: "تایید",
+            onPress: onPressDeleteActivity,
+          },
+        ],
+        {
+          cancelable: true,
+        }
+      );
+    }
+  };
+
+  const actions: any = [
+    {
+      text: "ویرایش هزینه",
+      icon: <FontAwesomeIcon icon="pen" size={15} color={colors.white} />,
+      name: "editExpense",
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 1,
+      color: colors.mainColor,
+    },
+    {
+      text: "اضافه کردن یادداشت",
+      icon: <FontAwesomeIcon icon="comment" size={15} color={colors.white} />,
+      name: "addComment",
+      color: colors.mainColor,
+      textStyle: {
+        fontFamily: fonts.IranSans_Light,
+        textAlign: "center",
+        padding: 2,
+      },
+      position: 2,
+    },
+  ];
 
   return (
     <>
@@ -89,40 +146,37 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
+            <View style={styles.popupMenuContainer}>
+              <PopupMenu actions={["حذف فعالیت"]} onPress={onPopupEvent} />
+            </View>
+
             <Image
               style={styles.activityImage}
               source={require("../../assets/images/category-image.jpg")}
             />
-            <Text style={styles.activityNameText}>{params.activityName}</Text>
+            <Text style={styles.activityNameText}>{currentExpense.description}</Text>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <View style={styles.textWrapper}>
               <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{params.category}</Text>
-              </View>
-              <View style={styles.textContainerRight}>
-                <Text style={styles.textInfo}>دسته‌بندی</Text>
-              </View>
-            </View>
-            <View style={styles.textWrapper}>
-              <View style={styles.textContainerLeft}>
-                <Text style={styles.textInfo}>{params.total}</Text>
+                <Text style={styles.textInfo}>{currentExpense.total}</Text>
               </View>
               <View style={styles.textContainerRight}>
                 <Text style={styles.textInfo}>مبلغ</Text>
               </View>
             </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.addButton} onPress={onPressEditComment}>
-                <Text style={styles.addButtonText}>ویرایش هزینه</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.addButton} onPress={onPressAddComment}>
-                <Text style={styles.addButtonText}>اضافه‌کردن یادداشت</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteActivity}>
-                <Text style={styles.removeButtonText}>حذف فعالیت</Text>
-              </TouchableOpacity>
-            </View>
+            <FloatingAction
+              actions={actions}
+              color={colors.mainColor}
+              position="left"
+              onPressItem={(name) => {
+                if (name == "editExpense") {
+                  onPressEditExpense();
+                } else {
+                  onPressAddComment();
+                }
+              }}
+            />
           </Animatable.View>
         </View>
       )}

@@ -27,4 +27,8 @@ export interface IUserState {
   myCreditCards: CreditCard[];
   otherCreditCards: CreditCard[];
   imageUri: string;
+  currentGroup: Group;
+  currentFriend: Friend;
+  currentActivity: Activity;
+  currentExpense: Expense;
 }

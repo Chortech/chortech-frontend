@@ -10,9 +10,9 @@ import { accessibilityProps } from "react-native-paper/lib/typescript/src/compon
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 type Props = {
-  onPressMemberItem: (event: GestureResponderEvent) => void | undefined;
-  onPressRemoveMemberItem: (event: GestureResponderEvent) => void | undefined;
-  IconName: IconProp;
+  onPressMemberItem?: (event: GestureResponderEvent) => void | undefined;
+  onPressRemoveMemberItem?: (event: GestureResponderEvent) => void | undefined;
+  DeleteIcon: IconProp;
   Name: string;
   ImageUrl: ImageSourcePropType;
 };
@@ -20,22 +20,16 @@ type Props = {
 const MemberItem: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <View>
-      <TouchableOpacity
-        style={styles.friendContainer}
-        onPress={props.onPressMemberItem}
-        activeOpacity={0.5}>
-        <Text style={styles.friendText}>{props.Name}</Text>
-        <Image style={styles.friendImage} source={props.ImageUrl} />
+      <View style={styles.memberContainer}>
         <TouchableOpacity
-        style={styles.friendContainer}
-        onPress={props.onPressRemoveMemberItem}
-        activeOpacity={0.5}>
-          <View>
-        <FontAwesomeIcon icon={props.IconName}  size={20} />
-      </View>
+          style={styles.DeleteMemberIconContainer}
+          onPress={props.onPressRemoveMemberItem}
+          activeOpacity={0.5}>
+          <FontAwesomeIcon icon={props.DeleteIcon} size={25} style={styles.DeleteMemberIcon} />
         </TouchableOpacity>
-      </TouchableOpacity>
-      
+        <Text style={styles.memberName}>{props.Name}</Text>
+        <Image style={styles.memberImage} source={props.ImageUrl} />
+      </View>
     </View>
   );
 };

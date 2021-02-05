@@ -3,12 +3,6 @@ import colors from "../../assets/resources/colors";
 import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
-// const mainColor = "#00bb5d";
-// const borderRadius = 20;
-// const textColor = "#333333";
-// const baseFontSize = 16;
-// const grayColor = "#aaaaaa22";
-
 export const styles = StyleSheet.create({
   friendContainer: {
     marginTop: 15,

@@ -14,6 +14,7 @@ type Props = {
 };
 
 const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
+  let balance: string = props.Balance == NaN ? "-" : `${Math.abs(props.Balance)}`;
   let color = props.Balance < 0 ? colors.red : colors.mainColor;
   return (
     <View>
@@ -39,7 +40,7 @@ const FriendItem: React.FC<Props> = (props: Props): JSX.Element => {
                     ...styles.balanceNumber,
                     color: color,
                   }}>
-                  {ArabicNumbers(Math.abs(props.Balance))}
+                  {ArabicNumbers(balance)}
                 </Text>
               </View>
               <Text

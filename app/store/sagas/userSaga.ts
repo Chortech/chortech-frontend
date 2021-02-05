@@ -1,5 +1,5 @@
 import { ToastAndroid } from "react-native";
-import { put } from "redux-saga/effects";
+import { put, call } from "redux-saga/effects";
 import messages from "../../assets/resources/messages";
 import { Action } from "../../models/actions/action";
 import {
@@ -11,7 +11,11 @@ import { Response } from "../../models/responses/axios/response";
 import { EditProfile, UploadImage, UserProfile } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
+import * as friendSaga from "./friendSaga";
+import * as groupSaga from "./groupSaga";
 import * as userActions from "../actions/userActions";
+import * as friendActions from "../actions/friendActions";
+import * as groupActions from "../actions/groupActions";
 
 export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());
@@ -28,6 +32,8 @@ export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
 
   if (response.success) {
     yield put(userActions.onGetUserProfileResponse(response));
+    yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
+    yield call(groupSaga.getUserGroupsAsync, groupActions.onGetUserGroupsRequest(token));
   } else {
     if (response.status == 400) {
       ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);

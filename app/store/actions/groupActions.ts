@@ -14,6 +14,8 @@ import {
   RemoveMemberRequest,
 } from "../../models/requests/axios/user";
 import { RemoveGroupMember } from "../../models/responses/axios/user";
+import {UploadImageRequest} from "../../models/requests/axios/user";
+import { UploadImage } from "../../models/responses/axios/user";
 
 export function onGetUserGroupsRequest(token: Token): Action<GetUserGroupsRequest> {
   return {
@@ -175,6 +177,29 @@ export function onRemoveMemberResponse(
   return {
     type: types.REMOVE_MEMBER_RESPONSE,
     payload: response,
+  };
+}
+
+export function onUploadImageRequest(token: Token, response): Action<UploadImageRequest> {
+  return {
+    type: types.GROUP_UPLOAD_IMAGE_REQUEST,
+    payload: {
+      token: token,
+      data: response,
+    },
+  };
+}
+
+export function onUploadImageResponse(
+  response: Response<UploadImage>
+): Action<Response<UploadImage>> {
+  return {
+    type: types.GROUP_UPLOAD_IMAGE_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
+    },
   };
 }
 

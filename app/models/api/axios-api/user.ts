@@ -6,7 +6,7 @@ export interface userApi {
   getUserProfile(): Promise<Response<UserProfile>>;
   getUserFriends(): Promise<Response<Friend[]>>;
   editUserProfile(newName: string, picture: string): Promise<Response<EditProfile>>;
-  uploadImageRequest(image: string, data: any): Promise<Response<UploadImage>>;
+  uploadImageRequest(image: string, data: any, type: string): Promise<Response<UploadImage>>;
   addUserFriendByEmail(email: string): Promise<Response<AddFriend>>;
   addUserFriendByPhone(phone: string): Promise<Response<AddFriend>>;
   deleteFriend(friendId: string): Promise<Response<Friend[]>>;
