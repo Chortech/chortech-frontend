@@ -1,44 +1,52 @@
 import { StyleSheet, Platform } from "react-native";
+import { color } from "react-native-reanimated";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.loginLogoBackground,
   },
-  header: {
-    flex: 1,
+  headerContainer: {
+    flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
-  textHeader: {
+  logo: {
+    alignSelf: "center",
+    transform: [{ scale: 0.25 }],
+  },
+  screenTitleText: {
     textAlign: "center",
-    color: "#fff",
-    fontSize: 50,
-    writingDirection: "auto",
-    fontFamily: "Alex",
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
+    margin: 5,
   },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 3,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+  formsContainer: {
+    flex: 5,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 15,
+    elevation: 10,
+    backgroundColor: colors.white,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
-  inputContainer: {
+  textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#f2f2f2",
-    borderRadius: 5,
-    backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
+    padding: 5,
   },
   textInput: {
     flex: 10,
-    color: "#053751",
+    color: colors.textBlack,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontSize: common.baseFontSize,
+    fontFamily: fonts.IranSans_Light,
     textAlign: "right",
   },
   toggleIcon: {
@@ -46,55 +54,72 @@ export const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 15,
     alignSelf: "center",
+    alignContent: "center",
+  },
+  visiblePassword: {
+    color: colors.mainColor,
+  },
+  invisiblePassword: {
+    color: colors.gray,
   },
   validationText: {
-    color: "red",
+    color: colors.red,
     padding: 5,
-    fontFamily: "IRANSansWeb_Bold",
-    fontSize: 12,
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: common.baseFontSize - 4,
   },
   resetPasswordText: {
     margin: 10,
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    color: "#1AD927",
+    fontFamily: fonts.IranSans_Medium,
+    color: colors.mainColor,
+    fontSize: common.baseFontSize,
   },
-  buttonContainer: {
-    flex: 5,
+  buttonsContainer: {
+    flexDirection: "row",
     width: "100%",
     marginTop: 50,
-    justifyContent: "flex-start",
+    paddingHorizontal: 10,
+    justifyContent: "center",
   },
   filledButton: {
-    elevation: 5,
-    backgroundColor: "#1AD927",
-    borderRadius: 5,
+    flex: 2,
+    marginHorizontal: 10,
+    backgroundColor: colors.mainColor,
+    borderRadius: common.baseBorderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
   },
   outlinedButton: {
-    elevation: 5,
-    backgroundColor: "#fff",
-    borderRadius: 5,
+    flex: 2,
+    backgroundColor: colors.white,
+    borderRadius: common.baseBorderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    marginHorizontal: 10,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#1AD927",
+    borderColor: colors.mainColor,
   },
   filledButtonText: {
-    fontSize: 18,
+    fontSize: common.baseFontSize + 2,
     color: "#fff",
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
   },
   outlinedButtonText: {
-    fontSize: 18,
-    color: "#1AD927",
+    fontSize: common.baseFontSize + 2,
+    color: colors.mainColor,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
+  },
+  privacyText: {
+    margin: 10,
+    textAlign: "center",
+    fontFamily: fonts.IranSans_Medium,
+    color: colors.mainColor,
   },
 });

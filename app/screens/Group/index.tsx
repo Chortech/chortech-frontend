@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
@@ -7,11 +7,17 @@ import LoadingIndicator from "../Loading";
 import NavigationService from "../../navigation/navigationService";
 import { IUserState } from "../../models/reducers/default";
 import styles from "./styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import * as groupActions from "../../store/actions/groupActions";
-import FriendItem from "../../components/FriendItem";
 import { Expense } from "../../models/other/graphql/Expense";
 import ExpenseItem from "../../components/ExpenseItem";
+import { log } from "../../utils/logger";
+import { Group } from "../../models/other/axios/Group";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { ArabicNumbers } from "react-native-arabic-numbers";
+import fonts from "../../assets/resources/fonts";
+import BalanceItem from "../../components/BalanceItem";
+import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
   route: RouteProp<RootStackParamList, "Group">;
@@ -23,49 +29,52 @@ type IState = {
 
 const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [renderFlatList, setRenderFlatList] = useState(false);
-
-  const { id, groupName, ImageUrl } = route.params;
-  const { loading } = useSelector((state: IState) => state.userReducer);
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const { groupId } = route.params;
+  const { loading, currentGroup } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const onAddExpense = () => NavigationService.navigate("AddExpense");
-  const onPressDeleteGroup = () => {
-    dispatch(groupActions.onDeleteGroupRequest(id));
+  useEffect(() => {
+    fetchCurrentGroup();
+  }, [dispatch]);
+
+  const fetchCurrentGroup = () => {
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, groupId));
+    }
   };
 
-  const expenses: Array<Expense> = [
-    { id: "1", description: "گوجه", category: "سبزی", participants: [], totalPrice: "10000" },
-    { id: "2", description: "موز", category: "سبزی", participants: [], totalPrice: "12000" },
-    { id: "3", description: "خیار", category: "سبزی", participants: [], totalPrice: "13000" },
-    { id: "4", description: "آلو", category: "سبزی", participants: [], totalPrice: "1000" },
-    { id: "5", description: "هلو", category: "سبزی", participants: [], totalPrice: "4000" },
-    { id: "6", description: "گردو", category: "سبزی", participants: [], totalPrice: "50000" },
-  ];
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchCurrentGroup();
+    setRefreshing(false);
+  }, [dispatch]);
 
-  const onExpensePress = (
-    id: string,
-    name: string,
-    type: string,
-    expenseId?: string,
-    debtId?: string
-  ) => {
-    setRenderFlatList(!renderFlatList);
-    NavigationService.navigate("Activity", {
-      id: id,
-      activityName: name,
-      activityType: type,
-      expenseId: expenseId,
-      debtId: debtId,
+  const onEditGroup = () => {
+    NavigationService.navigate("EditGroup", {
+      groupId: currentGroup.id,
     });
   };
 
-  const renderExpenseItem: any = ({ item }) => (
-    <ExpenseItem
-      description={item.description}
-      price={item.totalPrice}
-      onPressExpenseItem={() => onExpensePress(item.id, item.description, "expense", "-1", "-1")}
+  const onPressSettleUp = () => NavigationService.navigate("SettleUp");
+  const onPressGroupBalances = () => {
+    if (validateToken(loggedInUser.token)) {
+      dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, groupId));
+    }
+    NavigationService.navigate("GroupBalances", { groupId: groupId });
+  };
+
+  const renderExpenseItem = ({ item }) => (
+    <BalanceItem
+      item={item}
+      onPressItem={() => {
+        log("pressed");
+      }}
     />
   );
+
+  let balance: number = currentGroup.balance != undefined ? currentGroup.balance : 0;
 
   return (
     <>
@@ -74,25 +83,61 @@ const Group: React.FC<Props> = ({ route }: Props): JSX.Element => {
       ) : (
         <View style={styles.container}>
           <View style={styles.header}>
+            <TouchableOpacity style={styles.settingIconContainer} onPress={onEditGroup}>
+              <FontAwesomeIcon icon="cog" size={30} style={styles.settingIcon} />
+            </TouchableOpacity>
             <Image
               style={styles.groupImage}
               source={require("../../assets/images/group-image.jpg")}
             />
-            <Text style={styles.textHeader}>{groupName}</Text>
+            <Text style={styles.groupName}>{currentGroup.name}</Text>
+            <View style={styles.balanceStatusContainer}>
+              {balance > 0 ? (
+                <>
+                  <Text style={styles.text}>شما </Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: fonts.IranSans_Bold,
+                      fontSize: 18,
+                    }}>
+                    {ArabicNumbers(Math.abs(balance))} تومان
+                  </Text>
+                  <Text style={styles.text}> پس می‌گیرید</Text>
+                </>
+              ) : balance < 0 ? (
+                <>
+                  <Text style={styles.text}>شما </Text>
+                  <Text
+                    style={{
+                      ...styles.text,
+                      fontFamily: fonts.IranSans_Bold,
+                      fontSize: 18,
+                    }}>
+                    {ArabicNumbers(Math.abs(balance))} تومان
+                  </Text>
+                  <Text style={styles.text}> بدهکار هستید </Text>
+                </>
+              ) : (
+                <Text style={styles.text}>شما در این گروه بی‌حساب هستید</Text>
+              )}
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.settleUpButton} onPress={onPressSettleUp}>
+                <Text style={styles.settleUpButtonText}>تسویه حساب</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.settleUpButton} onPress={onPressGroupBalances}>
+                <Text style={styles.settleUpButtonText}>حساب و کتاب‌ها</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             <FlatList
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}
-              data={expenses}
+              data={currentGroup.expenses}
               renderItem={renderExpenseItem}
               extraData={renderFlatList}
-              ListFooterComponent={
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={styles.removeButton} onPress={onPressDeleteGroup}>
-                    <Text style={styles.removeButtonText}>حذف گروه</Text>
-                  </TouchableOpacity>
-                </View>
-              }
             />
           </Animatable.View>
         </View>

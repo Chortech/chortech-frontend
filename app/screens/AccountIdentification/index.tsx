@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StatusBar, ToastAndroid } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Animatable from "react-native-animatable";
-
-import * as authActions from "../../store/actions/authActions";
 import { styles } from "./styles";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
@@ -57,12 +55,11 @@ const AccountIdentification: React.FC = () => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <StatusBar backgroundColor="#009387" barStyle="light-content" />
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Chortech</Text>
-          </View>
-          <Animatable.View animation="slideInUp" duration={1000} style={styles.footer}>
-            <View style={styles.inputContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.formsContainer}>
+            <Text style={styles.screenTitleText}>
+              ایمیل یا شماره‌موبایل موردنظر خود را وارد کنید
+            </Text>
+            <View style={styles.textInputContainer}>
               <TextInput
                 placeholder="ایمیل یا شماره موبایل"
                 style={styles.textInput}
@@ -75,8 +72,8 @@ const AccountIdentification: React.FC = () => {
               </Animatable.Text>
             ) : null}
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.verifyScreenButton} onPress={onVerify}>
-                <Text style={styles.verifyScreenButtonText}>ادامه و دریافت کد تایید</Text>
+              <TouchableOpacity style={styles.confirmButton} onPress={onVerify}>
+                <Text style={styles.confirmButtonText}>ادامه و دریافت کد تایید</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

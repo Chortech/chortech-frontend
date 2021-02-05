@@ -54,7 +54,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = data.status;
       }
       log("login api (email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("login api (email) error");
       if (e.isAxiosError) {
@@ -64,9 +64,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -102,7 +102,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = data.status;
       }
       log("login api (phone) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("login api (phone) error");
       if (e.isAxiosError) {
@@ -112,9 +112,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -151,7 +151,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("signup api (email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("signup api (email) error");
       if (e.isAxiosError) {
@@ -161,9 +161,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -200,7 +200,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("signup api (email) result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("signup api (phone) error");
       if (e.isAxiosError) {
@@ -210,9 +210,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -239,7 +239,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("reset password by email api (result)");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("reset password api (email) error");
       if (e.isAxiosError) {
@@ -253,9 +253,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -282,7 +282,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("reset password by phone api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("reset password api (phone) error");
       if (e.isAxiosError) {
@@ -296,9 +296,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -332,15 +332,15 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("change password api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("change password api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -372,7 +372,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("change email api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("change email api error");
       if (e.isAxiosError) {
@@ -385,9 +385,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 
@@ -419,7 +419,7 @@ export class AuthenticationApi implements AuthApi {
         result.status = response.status;
       }
       log("change phone api result");
-      log(result);
+      log(result, false);
     } catch (e) {
       log("change email api error");
       if (e.isAxiosError) {
@@ -432,9 +432,9 @@ export class AuthenticationApi implements AuthApi {
         } else {
           result.status = error.response?.status != undefined ? error.response?.status : -1;
         }
-        log(error.response?.data);
+        log(error.response?.data, false);
       } else {
-        log(e.response);
+        log(e.response, false);
       }
     }
 

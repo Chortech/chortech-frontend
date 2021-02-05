@@ -8,17 +8,13 @@ import {
   AddCommentRequest,
   GetExpenseCommentsRequest,
   EditExpenseRequest,
-} from "../../models/requests/axios/user";
-import {
-  UserExpenses,
-  AddExpense,
-  UserExpense,
-  ExpenseComments,
-  EditExpense,
   DeleteExpenseRequest,
-} from "../../models/responses/axios/user";
+  GetGroupExpensesRequest,
+} from "../../models/requests/axios/user";
+import { AddExpense, ExpenseComments, GroupExpenses } from "../../models/responses/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import * as types from "./types";
+import { Expense } from "../../models/other/axios/Expense";
 
 export function onGetUserExpensesRequest(token: Token): Action<GetUserExpensesRequest> {
   return {
@@ -30,25 +26,50 @@ export function onGetUserExpensesRequest(token: Token): Action<GetUserExpensesRe
 }
 
 export function onGetUserExpensesResponse(
-  response: Response<UserExpenses>
-): Action<Response<UserExpenses>> {
+  response: Response<Expense[]>
+): Action<Response<Expense[]>> {
   return {
     type: types.GET_USER_EXPENSES_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onGetUserExpenseRequest(token: Token, id: string): Action<GetExpenseRequest> {
+  return {
+    type: types.GET_USER_EXPENSE_REQUEST,
     payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
+      token: token,
+      id: id,
     },
   };
 }
 
-export function onGetUserExpensesFail(): Action<Response<UserExpenses>> {
+export function onGetUserExpenseResponse(response: Response<Expense>): Action<Response<Expense>> {
   return {
-    type: types.GET_USER_EXPENSES_FAIL,
+    type: types.GET_USER_EXPENSE_RESPONSE,
+    payload: response,
+  };
+}
+
+export function onGetExpenseCommentsRequest(
+  token: Token,
+  expenseId: string
+): Action<GetExpenseCommentsRequest> {
+  return {
+    type: types.GET_EXPENSE_COMMENTS_REQUEST,
     payload: {
-      success: false,
-      status: -1,
+      token: token,
+      expenseId: expenseId,
     },
+  };
+}
+
+export function onGetExpenseCommentsResponse(
+  response: Response<ExpenseComments>
+): Action<Response<ExpenseComments>> {
+  return {
+    type: types.GET_EXPENSE_COMMENTS_RESPONSE,
+    payload: response,
   };
 }
 
@@ -58,6 +79,7 @@ export function onAddExpenseRequest(
   total: number,
   paid_at: number,
   participants: Array<Participant>,
+  category: number,
   group?: string,
   notes?: string
 ): Action<AddExpenseRequest> {
@@ -68,9 +90,10 @@ export function onAddExpenseRequest(
       description: description,
       total: total,
       paid_at: paid_at,
+      participants: participants,
+      category: category,
       group: group,
       notes: notes,
-      participants: participants,
     },
   };
 }
@@ -78,21 +101,7 @@ export function onAddExpenseRequest(
 export function onAddExpenseResponse(response: Response<AddExpense>): Action<Response<AddExpense>> {
   return {
     type: types.ADD_EXPENSE_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onAddExpenseFail(): Action<Response<AddExpense>> {
-  return {
-    type: types.ADD_EXPENSE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
+    payload: response,
   };
 }
 
@@ -103,6 +112,7 @@ export function onEditExpenseRequest(
   total: number,
   paid_at: number,
   participants: Array<Participant>,
+  category: number,
   group?: string,
   notes?: string
 ): Action<EditExpenseRequest> {
@@ -114,9 +124,10 @@ export function onEditExpenseRequest(
       description: description,
       total: total,
       paid_at: paid_at,
+      participants: participants,
+      category: category,
       group: group,
       notes: notes,
-      participants: participants,
     },
   };
 }
@@ -124,20 +135,7 @@ export function onEditExpenseRequest(
 export function onEditExpenseResponse(response: Response<null>): Action<Response<null>> {
   return {
     type: types.EDIT_EXPENSE_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-    },
-  };
-}
-
-export function onEditExpenseFail(): Action<Response<EditExpense>> {
-  return {
-    type: types.EDIT_EXPENSE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
+    payload: response,
   };
 }
 
@@ -157,53 +155,7 @@ export function onDeleteExpenseRequest(
 export function onDeleteExpenseResponse(response: Response<null>): Action<Response<null>> {
   return {
     type: types.DELETE_EXPENSE_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-    },
-  };
-}
-
-export function onDeleteExpenseFail(): Action<Response<null>> {
-  return {
-    type: types.DELETE_EXPENSE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onGetUserExpenseRequest(token: Token, id: string): Action<GetExpenseRequest> {
-  return {
-    type: types.GET_USER_EXPENSE_REQUEST,
-    payload: {
-      token: token,
-      id: id,
-    },
-  };
-}
-
-export function onGetUserExpenseResponse(
-  response: Response<UserExpense>
-): Action<Response<UserExpense>> {
-  return {
-    type: types.GET_USER_EXPENSE_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onGetUserExpenseFail(): Action<Response<UserExpense>> {
-  return {
-    type: types.GET_USER_EXPENSE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
+    payload: response,
   };
 }
 
@@ -214,7 +166,7 @@ export function onAddCommentRequest(
   id: string
 ): Action<AddCommentRequest> {
   return {
-    type: types.ADD_COMMENT_REQUEST,
+    type: types.ADD_EXPENSE_COMMENT_REQUEST,
     payload: {
       token: token,
       text: text,
@@ -226,57 +178,30 @@ export function onAddCommentRequest(
 
 export function onAddCommentResponse(response: Response<null>): Action<Response<null>> {
   return {
-    type: types.ADD_COMMENT_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-    },
+    type: types.ADD_EXPENSE_COMMENT_RESPONSE,
+    payload: response,
   };
 }
 
-export function onAddCommentFail(): Action<Response<null>> {
-  return {
-    type: types.ADD_COMMENT_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onGetExpenseCommentsRequest(
+export function onGetGroupExpensesRequest(
   token: Token,
-  expenseId: string
-): Action<GetExpenseCommentsRequest> {
+  groupId: string
+): Action<GetGroupExpensesRequest> {
   return {
-    type: types.GET_COMMENTS_REQUEST,
+    type: types.GET_GROUP_EXPENSES_REQUEST,
     payload: {
       token: token,
-      expenseId: expenseId,
+      groupId: groupId,
     },
   };
 }
 
-export function onGetExpenseCommentsResponse(
-  response: Response<ExpenseComments>
-): Action<Response<ExpenseComments>> {
+export function onGetGroupExpensesResponse(
+  response: Response<GroupExpenses>
+): Action<Response<GroupExpenses>> {
   return {
-    type: types.GET_COMMENTS_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onGetExpenseCommentsFail(): Action<Response<ExpenseComments>> {
-  return {
-    type: types.GET_COMMENTS_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
+    type: types.GET_GROUP_EXPENSES_RESPONSE,
+    payload: response,
   };
 }
 

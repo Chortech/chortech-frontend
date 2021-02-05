@@ -1,49 +1,52 @@
 import { StyleSheet } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   customInputContainer: {
     marginTop: 15,
   },
   label: {
-    color: "#053751",
-    fontFamily: "IRANSansWeb_Bold",
+    color: colors.textBlack,
+    fontFamily: fonts.IranSans_Bold,
     textAlign: "right",
-    paddingRight: 3,
-    fontSize: 12,
+    writingDirection: "rtl",
+    paddingRight: 6,
+    fontSize: common.baseFontSize - 4,
   },
   inputContainer: {
+    flex: 4,
     flexDirection: "row",
     marginTop: 5,
-    borderWidth: 1,
-    borderColor: "#f2f2f2",
-    borderRadius: 10,
-    backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
+    justifyContent: "center",
   },
   inputContainerError: {
+    flex: 4,
     flexDirection: "row",
     marginTop: 5,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: colors.red,
     borderRadius: 10,
-    backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    backgroundColor: colors.textInputBackground,
+    justifyContent: "center",
   },
   textInput: {
     flex: 10,
-    color: "#053751",
+    color: colors.textBlack,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontFamily: fonts.IranSans_Light,
     textAlign: "right",
+    alignSelf: "center",
   },
   toggleIcon: {
     flex: 1,
     marginRight: 5,
-    marginTop: 4,
-    marginLeft: 10,
+    marginLeft: 15,
     justifyContent: "center",
     alignSelf: "center",
-    alignContent: "center",
   },
   cancelIcon: {
     flex: 1,

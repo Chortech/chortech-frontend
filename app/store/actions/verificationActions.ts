@@ -39,16 +39,6 @@ export function onGenerateCodeResponse(response: Response<null>): Action<Respons
   };
 }
 
-export function onGenerateCodeFail(): Action<Response<null>> {
-  return {
-    type: types.GENERATE_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onVerifyCodeRequest(
   name: string,
   email: string,
@@ -81,16 +71,6 @@ export function onVerifyCodeResponse(response: Response<null>): Action<Response<
   };
 }
 
-export function onVerifyCodeFail(): Action<Response<null>> {
-  return {
-    type: types.VERIFY_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onCancelCodeRequest(
   email: string,
   phone: string,
@@ -110,16 +90,6 @@ export function onCancelCodeResponse(response: Response<null>): Action<Response<
   return {
     type: types.CANCEL_CODE_RESPONSE,
     payload: response,
-  };
-}
-
-export function onCancelCodeFail(): Action<Response<null>> {
-  return {
-    type: types.CANCEL_CODE_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 

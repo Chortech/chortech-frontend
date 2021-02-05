@@ -1,4 +1,5 @@
 import { Action } from "../../models/actions/action";
+import { Friend } from "../../models/other/axios/Friend";
 import { Token } from "../../models/other/axios/Token";
 import {
   GetUserFriendsRequest,
@@ -7,7 +8,7 @@ import {
   InviteFriendsRequest,
 } from "../../models/requests/axios/user";
 import { Response } from "../../models/responses/axios/response";
-import { GetUserFriends, AddFriend, DeleteFriend } from "../../models/responses/axios/user";
+import { AddFriend } from "../../models/responses/axios/user";
 import { InputType } from "../../utils/inputTypes";
 import * as types from "./types";
 
@@ -20,25 +21,13 @@ export function onGetUserFriendsRequest(token: Token): Action<GetUserFriendsRequ
   };
 }
 
-export function onGetUserFriendsResponse(
-  response: Response<GetUserFriends>
-): Action<Response<GetUserFriends>> {
+export function onGetUserFriendsResponse(response: Response<Friend[]>): Action<Response<Friend[]>> {
   return {
     type: types.GET_USER_FRIENDS_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
       response: response.response,
-    },
-  };
-}
-
-export function onGetUserFriendsFail(): Action<Response<GetUserFriends>> {
-  return {
-    type: types.GET_USER_FRIENDS_FAIL,
-    payload: {
-      success: false,
-      status: -1,
     },
   };
 }
@@ -71,16 +60,6 @@ export function onAddFriendResponse(response: Response<AddFriend>): Action<Respo
   };
 }
 
-export function onAddFriendFail(): Action<Response<AddFriend>> {
-  return {
-    type: types.ADD_FRIEND_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onDeleteFriendRequest(token: Token, id: string): Action<DeleteFriendRequest> {
   return {
     type: types.DELETE_USER_FRIEND_REQUEST,
@@ -91,25 +70,13 @@ export function onDeleteFriendRequest(token: Token, id: string): Action<DeleteFr
   };
 }
 
-export function onDeleteFriendResponse(
-  response: Response<DeleteFriend>
-): Action<Response<DeleteFriend>> {
+export function onDeleteFriendResponse(response: Response<Friend[]>): Action<Response<Friend[]>> {
   return {
     type: types.DELETE_USER_FRIEND_RESPONSE,
     payload: {
       success: response.success,
       status: response.status,
       response: response.response,
-    },
-  };
-}
-
-export function onDeleteFriendFail(): Action<Response<DeleteFriend>> {
-  return {
-    type: types.DELETE_USER_FRIEND_FAIL,
-    payload: {
-      success: false,
-      status: -1,
     },
   };
 }
@@ -135,16 +102,6 @@ export function onInviteFriendResponse(response: Response<null>): Action<Respons
   return {
     type: types.INVITE_FRIEND_RESPONSE,
     payload: response,
-  };
-}
-
-export function onInviteFriendFail(): Action<Response<null>> {
-  return {
-    type: types.INVITE_FRIEND_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, ToastAndroid } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ToastAndroid, Image } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import * as Animatable from "react-native-animatable";
@@ -8,6 +8,8 @@ import { styles } from "./styles";
 import { IUserState } from "../../models/reducers/default";
 import * as groupActions from "../../store/actions/groupActions";
 import LoadingIndicator from "../Loading";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import colors from "../../assets/resources/colors";
 
 type IState = {
   userReducer: IUserState;
@@ -25,7 +27,13 @@ const AddGroup: React.FC = (): JSX.Element => {
     if (groupName == "") {
       ToastAndroid.show("لطفا نام گروه را وارد کنید.", ToastAndroid.SHORT);
     } else {
-      dispatch(groupActions.onAddGroupRequest(groupName, loggedInUser.id, memberIds));
+      dispatch(
+        groupActions.onAddGroupRequest(
+          loggedInUser.token,
+          groupName,
+          "../../assets/images/group-image.jpg"
+        )
+      );
     }
   };
 
@@ -42,32 +50,28 @@ const AddGroup: React.FC = (): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.groupNameContainer}>
+          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
+            <Text style={styles.screenTitleText}>افزودن گروه جدید</Text>
+            <View style={styles.groupInfoContainer}>
+              <TouchableOpacity style={styles.imageContainer}>
+                <Image
+                  source={require("../../assets/images/friend-image.jpg")}
+                  style={styles.groupImage}
+                />
+                <View style={styles.cameraIconContainer}>
+                  <FontAwesomeIcon icon="camera" size={25} style={styles.cameraIcon} />
+                </View>
+              </TouchableOpacity>
               <TextInput
                 placeholder="نام گروه"
-                placeholderTextColor="#A4A4A4"
-                style={styles.textHeader}
+                placeholderTextColor={colors.gray}
+                style={styles.groupNameTextInput}
                 onChangeText={(text) => setGroupName(text)}
               />
             </View>
-          </View>
-          <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
-            <Searchbar
-              placeholder="ایمیل یا شماره موبایل دوست خود را وارد کنید"
-              style={styles.searchBar}
-              inputStyle={styles.searchInput}
-              onChangeText={onChangeSearchQuery}
-              value={searchQuery}
-              iconColor="#1AD927"
-              onIconPress={onPressSearchButton}
-            />
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.addButton} onPress={confirm}>
-                <Text style={styles.addButtonText}>ایجاد گروه</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-                <Text style={styles.removeButtonText}>انصراف</Text>
+              <TouchableOpacity style={styles.addGroupButtonContainer} onPress={confirm}>
+                <Text style={styles.addGroupButtonText}>ایجاد گروه</Text>
               </TouchableOpacity>
             </View>
           </Animatable.View>

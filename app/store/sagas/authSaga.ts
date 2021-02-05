@@ -1,4 +1,4 @@
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import { ToastAndroid } from "react-native";
 import { Action } from "../../models/actions/action";
 import { navigationRef } from "../../navigation/navigationService";
@@ -7,6 +7,9 @@ import * as userActions from "../actions/userActions";
 import * as groupActions from "../actions/groupActions";
 import * as friendActions from "../actions/friendActions";
 import * as expenseActions from "../actions/expenseActions";
+import * as notificationActions from "../actions/notificationActions";
+import * as notificationSaga from "../sagas/notificationSaga";
+import messaging from '@react-native-firebase/messaging';
 import {
   ChangeEmailOrPhoneRequest,
   ChangePasswordRequest,
@@ -26,6 +29,7 @@ import { AuthenticationApi, AuthAPI } from "../../services/api/axios/authApi";
 import configureStore from "..";
 import { IUserState } from "../../models/reducers/default";
 import { log } from "../../utils/logger";
+import messages from "../../assets/resources/messages";
 
 export function* loginAsync(action: Action<LoginRequest>) {
   yield put(authActions.onLoadingEnable());
@@ -35,10 +39,7 @@ export function* loginAsync(action: Action<LoginRequest>) {
     status: -1,
   };
 
-  log(action.payload);
-
   if (inputType == InputType.Email) {
-    log("call");
     response = yield AuthAPI.loginByEmail(email, password);
   } else if (inputType == InputType.Phone) {
     response = yield AuthAPI.loginByPhone(phone, password);
@@ -46,19 +47,19 @@ export function* loginAsync(action: Action<LoginRequest>) {
 
   if (response.success) {
     yield put(authActions.onLoginResponse(response));
+    yield call(notificationSaga.pushNotificationAsync, notificationActions.onPushNotificationRequest(response.response!.token, yield messaging().getToken()));
     yield put(userActions.onGetUserProfileRequest(response.response!.token));
     yield put(friendActions.onGetUserFriendsRequest(response.response!.token));
     yield put(expenseActions.onGetUserExpensesRequest(response.response!.token));
   } else {
-    yield put(authActions.onLoginFail());
     if (response.status == -2) {
-      ToastAndroid.show("درخواست ورود با خطا مواجه شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.loginError, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("اطلاعات واردشده نامعتبر است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidInputInfo, ToastAndroid.SHORT);
     } else if (response.status == 401) {
-      ToastAndroid.show("اطلاعات واردشده نادرست است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.wrongInputInfo, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
   yield put(authActions.onLoadingDisable());
@@ -78,22 +79,20 @@ export function* signUpAsync(action: Action<SignUpRequest>) {
     response = yield AuthAPI.signUpByPhone(name, phone, password);
   }
 
-  yield put(authActions.onLoadingDisable());
-
   if (response.success) {
     yield put(authActions.onSignUpResponse(response));
   } else {
-    yield put(authActions.onSignUpFail());
     if (response.status == -2) {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("ایمیل یا شماره تلفن شما تایید نشده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailOrPhoneNotVerified, ToastAndroid.SHORT);
     } else if (response.status == 404) {
     } else if (response.status == 409) {
     } else {
-      ToastAndroid.show("خطا در ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
+  yield put(authActions.onLoadingDisable());
 }
 
 export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
@@ -107,54 +106,29 @@ export function* resetPasswordAsync(action: Action<ResetPasswordRequest>) {
   if (inputType == InputType.Email) {
     response = yield AuthAPI.resetPasswordByEmail(email, newPassword);
   } else if (inputType == InputType.Phone) {
-    response = yield AuthAPI.resetPasswordByEmail(phone, newPassword);
+    response = yield AuthAPI.resetPasswordByPhone(phone, newPassword);
   }
 
   yield put(authActions.onLoadingDisable());
 
   if (response.success) {
     yield put(authActions.onResetPasswordResponse(response));
+    ToastAndroid.show(messages.resetPasswordSuccess, ToastAndroid.SHORT);
     yield navigationRef.current?.reset({
       index: 0,
       routes: [{ name: "Login" }],
     });
   } else {
-    yield put(authActions.onResetPasswordFail());
     if (response.status == 400) {
-      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidInputInfo, ToastAndroid.SHORT);
     } else if (response.status == -2) {
-      ToastAndroid.show("تغییر رمز عبور با خطا مواجه شده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.changePasswordError, ToastAndroid.SHORT);
     } else if (response.status == -3) {
-      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidEmailOrPhone, ToastAndroid.SHORT);
     } else if (response.status == -4) {
-      ToastAndroid.show("ایمیل یا شماره موبایل وارد شده تایید نشده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailOrPhoneNotVerified, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("ایمیل یا شماره موبایل واردشده نامعتبر است", ToastAndroid.SHORT);
-    }
-  }
-}
-
-export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
-  const { token, newpass, oldpass, email, phone, inputType } = action.payload;
-  let response: Response<ChangePassword> = {
-    success: false,
-    status: -1,
-  };
-
-  let api: AuthenticationApi = new AuthenticationApi(token);
-  response = yield api.changePassword(oldpass, newpass);
-
-  if (response.success) {
-    yield put(authActions.onChangePasswordResponse(response));
-    ToastAndroid.show("رمز عبور با موفقیت ویرایش شد", ToastAndroid.SHORT);
-  } else {
-    yield put(authActions.onChangePasswordFail());
-    if (response.status == 401) {
-      ToastAndroid.show("ایمیل یا شماره موبایل شما تایید نشده است", ToastAndroid.SHORT);
-    } else if (response.status == 403) {
-      ToastAndroid.show("شما اجازه دسترسی به این منبع را ندارید", ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidEmailOrPhone, ToastAndroid.SHORT);
     }
   }
 }
@@ -178,25 +152,49 @@ export function* changeEmailOrPhoneAsync(action: Action<ChangeEmailOrPhoneReques
   if (response.success) {
     yield put(authActions.onChangeEmailOrPhoneResponse(response));
     if (inputType == InputType.Email) {
-      ToastAndroid.show("ایمیل شما با موفقیت ویرایش شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailEditedSuccess, ToastAndroid.SHORT);
     } else if (inputType == InputType.Phone) {
-      ToastAndroid.show("شماره موبایل شما با موفقیت ویرایش شد", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.phoneEditedSuccess, ToastAndroid.SHORT);
     }
-    yield navigationRef.current?.goBack();
+    yield navigationRef.current?.navigate("ProfileInfo");
   } else {
-    yield put(authActions.onChangeEmailOrPhoneFail());
     if (response.status == -2) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == 400) {
-      ToastAndroid.show("ایمیل یا شماره موبایل شما تایید نشده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailOrPhoneNotVerified, ToastAndroid.SHORT);
     } else if (response.status == 401) {
-      ToastAndroid.show("اطلاعات داده‌شده نامعتبر است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.invalidInputInfo, ToastAndroid.SHORT);
     } else if (response.status == 404) {
-      ToastAndroid.show("ایمیل یا شماره موبایل شما تایید نشده است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailOrPhoneNotVerified, ToastAndroid.SHORT);
     } else if (response.status == 403) {
-      ToastAndroid.show("اجازه دسترسی به سرور قطع شده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
     } else if (response.status == 409) {
-      ToastAndroid.show("ایمیل یا شماره موبایل وارد شده تکراری است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.emailOrPhoneDuplicate, ToastAndroid.SHORT);
+    }
+  }
+}
+
+export function* changePasswordAsync(action: Action<ChangePasswordRequest>) {
+  const { token, newpass, oldpass, email, phone, inputType } = action.payload;
+  let response: Response<ChangePassword> = {
+    success: false,
+    status: -1,
+  };
+
+  let api: AuthenticationApi = new AuthenticationApi(token);
+  response = yield api.changePassword(oldpass, newpass);
+
+  if (response.success) {
+    yield put(authActions.onChangePasswordResponse(response));
+    ToastAndroid.show(messages.passwordEditedSuccess, ToastAndroid.SHORT);
+    yield navigationRef.current?.navigate("ProfileInfo");
+  } else {
+    if (response.status == 401) {
+      ToastAndroid.show(messages.emailOrPhoneNotVerified, ToastAndroid.SHORT);
+    } else if (response.status == 403) {
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }

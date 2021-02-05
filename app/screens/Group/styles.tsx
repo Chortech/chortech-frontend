@@ -1,90 +1,81 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.mainColor,
   },
   header: {
-    flex: 1.5,
     alignItems: "center",
-    paddingTop: 10,
+    padding: 5,
   },
-  textHeader: {
+  settingIconContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    margin: 25,
+  },
+  settingIcon: {
+    color: colors.white,
+  },
+  groupName: {
+    fontSize: 25,
+    marginTop: 10,
+    paddingHorizontal: 10,
     textAlign: "center",
-    color: "#fff",
-    fontSize: 20,
-    padding: 10,
-    writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Bold",
+    color: colors.white,
+    alignItems: "center",
+    fontFamily: fonts.IranSans_Bold,
   },
+  groupImage: {
+    height: 80,
+    width: 80,
+    marginTop: 15,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+  balanceStatusContainer: {
+    flexDirection: "row-reverse",
+    justifyContent: "center",
+    padding: 5,
+  },
+  text: {
+    fontFamily: fonts.IranSans_Light,
+    fontSize: 14,
+    color: colors.white,
+    alignSelf: "center",
+  },
+
   infoContainer: {
-    flex: 5,
-    backgroundColor: "#fff",
+    flex: 6,
+    backgroundColor: colors.white,
     paddingHorizontal: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },
-  groupContainer: {
-    marginTop: 10,
-    padding: 10,
-    flexDirection: "row",
-    borderBottomColor: "#EBE8E8",
-    borderBottomWidth: 1,
-  },
-  groupText: {
-    flex: 5,
-    padding: 10,
-    marginTop: 10,
-    fontFamily: "IRANSansWeb_Bold",
-    fontSize: 12,
-  },
-  groupImage: {
-    height: 70,
-    width: 70,
-    borderRadius: 50,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: "#fff",
-  },
-  activityImage: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: "#1AD927",
-  },
-  text: {
-    fontSize: 20,
-    marginVertical: 8,
-    color: "#fff",
-    alignItems: "center",
-    fontFamily: "IRANSansWeb_Bold",
-  },
   buttonContainer: {
-    flex: 1,
+    flexDirection: "row",
     justifyContent: "flex-end",
-    backgroundColor: "white",
-    paddingHorizontal: 10,
   },
-  removeButton: {
-    elevation: 1,
-    backgroundColor: "#fff",
-    borderWidth: 2,
-    borderColor: "red",
-    borderRadius: 5,
-    margin: 10,
+  settleUpButton: {
+    backgroundColor: colors.white,
+    borderRadius: common.baseBorderRadius,
+    marginVertical: 5,
+    marginHorizontal: 5,
     flexDirection: "row",
     justifyContent: "center",
     padding: 10,
   },
-  removeButtonText: {
-    fontSize: 16,
-    color: "red",
+  settleUpButtonText: {
+    fontSize: common.baseFontSize - 2,
+    color: colors.mainColor,
     paddingHorizontal: 10,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Medium,
     writingDirection: "auto",
   },
 });

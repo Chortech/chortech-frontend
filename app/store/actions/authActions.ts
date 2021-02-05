@@ -15,11 +15,6 @@ import {
   SignUp,
 } from "../../models/responses/axios/auth";
 import { Response } from "../../models/responses/axios/response";
-import {
-  CancelCodeRequest,
-  GenerateCodeRequest,
-  VerifyCodeRequest,
-} from "../../models/requests/axios/verification";
 import { Token } from "../../models/other/axios/Token";
 
 export function onLoginRequest(
@@ -43,16 +38,6 @@ export function onLoginResponse(response: Response<Login>): Action<Response<Logi
   return {
     type: types.LOGIN_RESPONSE,
     payload: response,
-  };
-}
-
-export function onLoginFail(): Action<Response<Login>> {
-  return {
-    type: types.LOGIN_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 
@@ -92,16 +77,6 @@ export function onSignUpResponse(response: Response<SignUp>): Action<Response<Si
   };
 }
 
-export function onSignUpFail(): Action<Response<SignUp>> {
-  return {
-    type: types.SIGNUP_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
 export function onResetPasswordRequest(
   email: string,
   phone: string,
@@ -123,60 +98,6 @@ export function onResetPasswordResponse(response: Response<null>): Action<Respon
   return {
     type: types.RESET_PASSWORD_RESPONSE,
     payload: response,
-  };
-}
-
-export function onResetPasswordFail(): Action<Response<null>> {
-  return {
-    type: types.RESET_PASSWORD_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
-  };
-}
-
-export function onChangePasswordRequest(
-  token: Token,
-  email: string,
-  phone: string,
-  inputType: InputType,
-  newPassword: string,
-  oldPassword: string
-): Action<ChangePasswordRequest> {
-  return {
-    type: types.CHANGE_PASSWORD_REQUEST,
-    payload: {
-      token: token,
-      newpass: newPassword,
-      oldpass: oldPassword,
-      email: email,
-      phone: phone,
-      inputType: inputType,
-    },
-  };
-}
-
-export function onChangePasswordResponse(
-  response: Response<ChangePassword>
-): Action<Response<ChangePassword>> {
-  return {
-    type: types.CHANGE_PASSWORD_RESPONSE,
-    payload: {
-      success: response.success,
-      status: response.status,
-      response: response.response,
-    },
-  };
-}
-
-export function onChangePasswordFail(): Action<Response<ChangePassword>> {
-  return {
-    type: types.CHANGE_PASSWORD_FAIL,
-    payload: {
-      success: false,
-      status: -1,
-    },
   };
 }
 
@@ -212,12 +133,36 @@ export function onChangeEmailOrPhoneResponse(
   };
 }
 
-export function onChangeEmailOrPhoneFail(): Action<Response<ChangeEmailOrPhone>> {
+export function onChangePasswordRequest(
+  token: Token,
+  email: string,
+  phone: string,
+  inputType: InputType,
+  newPassword: string,
+  oldPassword: string
+): Action<ChangePasswordRequest> {
   return {
-    type: types.CHANGE_EMAIL_OR_PHONE_FAIL,
+    type: types.CHANGE_PASSWORD_REQUEST,
     payload: {
-      success: false,
-      status: -1,
+      token: token,
+      newpass: newPassword,
+      oldpass: oldPassword,
+      email: email,
+      phone: phone,
+      inputType: inputType,
+    },
+  };
+}
+
+export function onChangePasswordResponse(
+  response: Response<ChangePassword>
+): Action<Response<ChangePassword>> {
+  return {
+    type: types.CHANGE_PASSWORD_RESPONSE,
+    payload: {
+      success: response.success,
+      status: response.status,
+      response: response.response,
     },
   };
 }

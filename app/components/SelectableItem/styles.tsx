@@ -1,27 +1,35 @@
 import { StyleSheet } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   viewContainer: {
-    margin: 10,
-    flexDirection: "row-reverse",
+    marginBottom: 10,
+    padding: 10,
+    flexDirection: "row",
     justifyContent: "flex-start",
-    borderBottomColor: "#cccccc",
+    borderTopWidth: 1,
+    borderTopColor: colors.ultraLightGray,
+    borderBottomColor: colors.ultraLightGray,
+    backgroundColor: colors.ultraXLightGray,
   },
   nameText: {
     flex: 10,
-    color: "black",
+    color: colors.textBlack,
     padding: 6,
+    textAlign: "right",
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
-    fontSize: 14,
+    fontFamily: fonts.IranSans_Bold,
+    fontSize: common.baseFontSize,
   },
   textInput: {
     flex: 6,
     textAlign: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     fontSize: 14,
     borderWidth: 1,
-    borderColor: "#cccccc",
+    borderColor: colors.ultraLightGray,
     borderRadius: 10,
     alignContent: "center",
   },
@@ -33,13 +41,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   selectedItem: {
-    color: "#1AD927",
+    color: colors.mainColor,
     borderRadius: 50,
   },
   unselectedItem: {
-    color: "white",
+    color: colors.white,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: colors.black,
     borderRadius: 50,
   },
 });

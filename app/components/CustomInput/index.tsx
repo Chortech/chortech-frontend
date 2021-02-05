@@ -1,15 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useState } from "react";
-import {
-  GestureResponderEvent,
-  NativeSyntheticEvent,
-  Text,
-  TextInput,
-  TextInputChangeEventData,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { GestureResponderEvent, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
+import * as Animatable from "react-native-animatable";
+import colors from "../../assets/resources/colors";
 
 type Props = {
   placeholder?: string;
@@ -33,12 +27,12 @@ const CustomInput: React.FC<Props> = (props: Props): JSX.Element => {
       <View style={props.validInput ? styles.inputContainer : styles.inputContainerError}>
         {props.cancelIcon ? (
           <TouchableOpacity style={styles.cancelIcon} onPress={props.onPressCancelButton}>
-            <FontAwesomeIcon icon="times-circle" size={20} style={{ color: "red" }} />
+            <FontAwesomeIcon icon="times-circle" size={20} style={{ color: colors.red }} />
           </TouchableOpacity>
         ) : null}
         {props.confirmIcon ? (
           <TouchableOpacity style={styles.confirmIcon} onPress={props.onPressConfirmButton}>
-            <FontAwesomeIcon icon="check-circle" size={20} style={{ color: "#1AD927" }} />
+            <FontAwesomeIcon icon="check-circle" size={20} style={{ color: colors.gray }} />
           </TouchableOpacity>
         ) : null}
         {props.passwordInput ? (
@@ -46,9 +40,9 @@ const CustomInput: React.FC<Props> = (props: Props): JSX.Element => {
             onPress={() => setSecureTextEntry(!secureTextEntry)}
             style={styles.toggleIcon}>
             {secureTextEntry ? (
-              <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: "red" }} />
+              <FontAwesomeIcon icon="eye-slash" size={20} style={{ color: colors.red }} />
             ) : (
-              <FontAwesomeIcon icon="eye" size={20} style={{ color: "#1AD927" }} />
+              <FontAwesomeIcon icon="eye" size={20} style={{ color: colors.gray }} />
             )}
           </TouchableOpacity>
         ) : null}

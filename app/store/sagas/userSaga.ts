@@ -1,5 +1,6 @@
 import { ToastAndroid } from "react-native";
-import { put } from "redux-saga/effects";
+import { put, call } from "redux-saga/effects";
+import messages from "../../assets/resources/messages";
 import { Action } from "../../models/actions/action";
 import {
   EditProfileRequest,
@@ -8,35 +9,13 @@ import {
 } from "../../models/requests/axios/user";
 import { Response } from "../../models/responses/axios/response";
 import { EditProfile, UploadImage, UserProfile } from "../../models/responses/axios/user";
+import { navigationRef } from "../../navigation/navigationService";
 import { UserAPI } from "../../services/api/axios/userApi";
+import * as friendSaga from "./friendSaga";
+import * as groupSaga from "./groupSaga";
 import * as userActions from "../actions/userActions";
-
-// export function* EditProfileAsync(action: Action<EditProfileRequest>) {
-//   // yield put(userActions.onLoadingEnable());
-//   const token = action.payload.token;
-//   let response: Response<UploadImage> = {
-//     success: false,
-//     status: -1,
-//   };
-//   const api: UserAPI = new UserAPI(token);
-//   response = yield api.changeImage("image/jpeg");
-
-//   // yield put(userActions.onLoadingDisable());
-
-//   if (response.success) {
-//     yield put(userActions.onUploadImageResponse(response));
-//     yield put(userActions.onEditProfileRequest(response));
-//   } else {
-//     console.log("fail");
-//     yield put(userActions.onGetUserProfileFail());
-//     if (response.status == 400) {
-//       ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
-//     } else {
-//       console.log(response);
-//       ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
-//     }
-//   }
-// }
+import * as friendActions from "../actions/friendActions";
+import * as groupActions from "../actions/groupActions";
 
 export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
   yield put(userActions.onLoadingEnable());
@@ -53,12 +32,13 @@ export function* getUserProfileAsync(action: Action<GetUserProfileRequest>) {
 
   if (response.success) {
     yield put(userActions.onGetUserProfileResponse(response));
+    yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
+    yield call(groupSaga.getUserGroupsAsync, groupActions.onGetUserGroupsRequest(token));
   } else {
-    yield put(userActions.onGetUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }
@@ -72,13 +52,13 @@ export function* editUserProfileAsync(action: Action<EditProfileRequest>) {
 
   if (response.success) {
     yield put(userActions.onEditUserProfileResponse(response));
-    ToastAndroid.show("ویرایش اطلاعات شما با موفقیت انجام شد", ToastAndroid.SHORT);
+    ToastAndroid.show(messages.profileInfoEditedSucces, ToastAndroid.SHORT);
+    yield navigationRef.current?.navigate("ProfileInfo");
   } else {
-    yield put(userActions.onEditUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سیستم رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else if (response.status == 401 || response.status == 403) {
-      ToastAndroid.show("خطای اجازه دسترسی به سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.notAuthorized, ToastAndroid.SHORT);
     }
   }
 
@@ -99,16 +79,11 @@ export function* uploadImageAsync(action: Action<UploadImageRequest>) {
 
   if (response.success) {
     yield put(userActions.onUploadImageResponse(response));
-    // response = yield api.uploadImage(response);
-    // yield put(userActions.onEditProfileRequest(response));
   } else {
-    console.log("fail");
-    yield put(userActions.onGetUserProfileFail());
     if (response.status == 400) {
-      ToastAndroid.show("خطای ناشناخته در سرور رخ داده‌است", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
     } else {
-      console.log(response);
-      ToastAndroid.show("خطا در برقراری ارتباط با سرور", ToastAndroid.SHORT);
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
     }
   }
 }

@@ -1,22 +1,14 @@
 import { Comment } from "../../other/axios/Comment";
-import { Expense } from "../../other/axios/Expense";
+import { ExpenseBalance, GroupBalance, MemberBalance } from "../../other/axios/Balance";
 import { Friend } from "../../other/axios/Friend";
 import { Participant, PRole } from "../../other/axios/Participant";
-import { Token } from "../../other/axios/Token";
-
-export interface GetUserFriends {
-  friends: Array<Friend>;
-}
+import { Group } from "../../other/axios/Group";
 
 export interface AddFriend {
   id: string;
   name: string;
   email?: string;
   phone?: string;
-  friends: Array<Friend>;
-}
-
-export interface DeleteFriend {
   friends: Array<Friend>;
 }
 
@@ -42,6 +34,7 @@ export interface AddExpense {
   group?: string;
   notes?: string;
   participants: Array<Participant>;
+  category: number;
 }
 
 export interface EditExpense {
@@ -51,15 +44,8 @@ export interface EditExpense {
   paid_at?: number;
   group?: string;
   notes?: string;
+  category: number;
   participants?: Array<Participant>;
-}
-
-export interface UserExpenses {
-  expenses: Array<Expense>;
-}
-
-export interface UserExpense {
-  expense: Expense;
 }
 
 export interface FriendRelations {
@@ -83,4 +69,28 @@ export interface ExpenseComments {
 export interface UploadImage {
   key: string;
   url: string;
+}
+
+export interface FriendBalance {
+  other?: string;
+  balance?: number;
+  balances?: ExpenseBalance[];
+}
+
+export interface GetGroupInfo {
+  group?: Group;
+}
+
+export interface RemoveGroupMember {
+  group?: Group;
+}
+
+export interface GroupExpenses {
+  group: GroupBalance;
+  expenses: ExpenseBalance[];
+}
+
+export interface GroupMembersBalances {
+  groupId: string;
+  membersBalances: MemberBalance[];
 }

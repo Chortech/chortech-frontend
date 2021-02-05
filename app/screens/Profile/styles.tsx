@@ -1,95 +1,96 @@
-import { transform } from "@babel/core";
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.white,
   },
   header: {
-    flex: 2,
-    paddingTop: 10,
+    flex: 4,
   },
-  profileImage: {
-    height: 80,
-    width: 80,
-    marginTop: 10,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: "#fff",
+  imageContainer: {
+    flex: 1,
   },
-  logoutIcon: {
-    margin: 20,
-    borderWidth: 2,
-    borderColor: "#ff0000",
-    borderRadius: 10,
-    padding: 5,
+  cameraIconContainer: {
+    flex: 1,
+    backgroundColor: colors.transparentBlack,
+    padding: 10,
+    margin: 15,
+    borderWidth: 1,
     position: "absolute",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    transform: [{ rotate: "180deg" }],
+    borderColor: colors.white,
+    top: 0,
+    borderRadius: common.baseBorderRadius,
   },
-  userNameText: {
-    fontSize: 20,
-    marginTop: 5,
-    color: "#fff",
-    alignSelf: "center",
-    alignItems: "center",
-    fontFamily: "IRANSansWeb_Bold",
+  cameraIcon: {
+    color: colors.white,
   },
   infoContainer: {
     flex: 6,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    backgroundColor: colors.white,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
-  textWrapper: {
-    flexDirection: "row",
-  },
-  textContainerRight: {
-    padding: 15,
-    borderBottomColor: "#EBE8E8",
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
+    margin: 10,
+    marginHorizontal: 30,
+    paddingVertical: 10,
     borderBottomWidth: 1,
-    justifyContent: "flex-start",
-  },
-  textContainerLeft: {
-    flex: 5,
-    padding: 15,
-    borderBottomColor: "#EBE8E8",
-    borderBottomWidth: 1,
-    justifyContent: "flex-end",
-  },
-  textInfo: {
-    fontSize: 12,
-    padding: 2,
-    color: "#053751",
-    writingDirection: "auto",
-    fontFamily: "IRANSansWeb_Bold",
+    borderBottomColor: colors.textInputBackground,
   },
   buttonContainer: {
-    justifyContent: "space-between",
-    marginHorizontal: 10,
-    marginTop: 70,
+    marginVertical: 5,
+    flex: 1,
+    flexDirection: "row",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.textInputBackground,
   },
-  button: {
-    elevation: 1,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#1AD927",
-    borderRadius: 5,
+  arrowIconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 5,
+    paddingBottom: 5,
+  },
+  arrowIcon: {
+    color: colors.textBlack,
+  },
+  textContainer: {
+    flex: 6,
+    paddingHorizontal: 5,
+    justifyContent: "center",
     paddingVertical: 10,
-    paddingHorizontal: 10,
-    marginBottom: 15,
   },
-  buttonText: {
-    fontSize: 16,
-    color: "#1AD927",
-    alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+  titleText: {
+    fontSize: common.baseFontSize - 2,
+    color: colors.textBlack,
     writingDirection: "auto",
+    fontFamily: fonts.IranSans_Medium,
+  },
+  infoText: {
+    fontSize: common.baseFontSize - 2,
+    padding: 2,
+    color: colors.textBlack,
+    writingDirection: "auto",
+    alignSelf: "flex-end",
+    fontFamily: fonts.IranSans_Light,
+  },
+  logoutIconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 5,
+  },
+  logoutIcon: {
+    color: colors.red,
+    transform: [{ rotate: "180deg" }],
   },
 });

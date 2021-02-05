@@ -1,6 +1,8 @@
+import { ExpenseBalance } from "../models/other/axios/Balance";
 import { Item } from "../models/other/axios/Item";
 import { Token } from "../models/other/axios/Token";
 import { InputType } from "../utils/inputTypes";
+import { Group, Member } from "../models/other/axios/Group";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -15,7 +17,12 @@ export type RootStackParamList = {
     token?: Token;
   };
   Profile: undefined;
-  EditProfile: undefined;
+  EditProfile: {
+    name?: boolean;
+    email?: boolean;
+    phone?: boolean;
+    password?: boolean;
+  };
   ResetPassword: {
     email: string;
     phone: string;
@@ -25,28 +32,44 @@ export type RootStackParamList = {
   CreditCardList: undefined;
   Friend: {
     id: string;
-    friendName: string;
-    ImageUrl: string;
+    name: string;
+    image: string;
+    balance: number;
+    balances: ExpenseBalance[];
   };
   Group: {
-    id: string;
-    groupName: string;
-    ImageUrl: string;
+    groupId: string;
+  };
+  EditGroup: {
+    groupId: string;
+  };
+  AddMember: {
+    groupId: string;
+    members: Array<Member>;
+  };
+  GroupBalances: {
+    groupId: string;
   };
   Activity: {
     id: string;
-    activityName: string;
-    category: string;
-    total: string;
+    // activityName: string;
+    // category?: string;
+    // total?: string;
   };
   AddExpense: {
     parentScreen: string;
-    items: Array<Item>;
+    friendItems: Item[];
+    groupItems: Item[];
     id?: string;
     description?: string;
     total?: string;
+    group?: string;
   };
   AddComment: {
     expenseId?: string;
+  };
+  SettleUp: {
+    paymentAmount: string;
+    friendId: string;
   };
 };

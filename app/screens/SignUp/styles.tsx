@@ -1,51 +1,58 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.loginLogoBackground,
   },
-  header: {
-    flex: 1,
+  headerContainer: {
+    flex: 2,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
-  textHeader: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 50,
-    writingDirection: "auto",
-    fontFamily: "Alex",
+  logo: {
+    alignSelf: "center",
+    transform: [{ scale: 0.25 }],
   },
-  footer: {
-    flex: Platform.OS === "ios" ? 3 : 3,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+  formsContainer: {
+    flex: 5,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 15,
+    elevation: 10,
+    backgroundColor: colors.white,
+    borderTopRightRadius: common.baseBorderRadius,
+    borderTopLeftRadius: common.baseBorderRadius,
   },
-  inputContainer: {
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
+    margin: 5,
+  },
+  textInputContainer: {
     flexDirection: "row",
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#f2f2f2",
-    borderRadius: 5,
-    backgroundColor: "#f2f2f2",
-    paddingBottom: 5,
+    borderRadius: common.baseBorderRadius,
+    backgroundColor: colors.textInputBackground,
+    padding: 5,
   },
   textInput: {
     flex: 10,
-    color: "#053751",
+    color: colors.textBlack,
     padding: 10,
-    fontFamily: "Dirooz",
+    fontSize: common.baseFontSize,
+    fontFamily: fonts.IranSans_Light,
     textAlign: "right",
   },
   validationText: {
-    color: "red",
+    color: colors.red,
     padding: 5,
-    fontFamily: "IRANSansWeb_Bold",
-    fontSize: 12,
+    fontFamily: fonts.IranSans_Medium,
+    fontSize: common.baseFontSize - 4,
   },
   toggleIcon: {
     flex: 1,
@@ -53,24 +60,37 @@ export const styles = StyleSheet.create({
     marginLeft: 15,
     alignSelf: "center",
   },
-  buttonContainer: {
-    flex: 5,
-    width: "100%",
-    marginTop: 30,
-    justifyContent: "flex-end",
+  visiblePassword: {
+    color: colors.mainColor,
   },
-  verifyScreenButton: {
-    elevation: 10,
-    backgroundColor: "#1AD927",
-    borderRadius: 5,
+  invisiblePassword: {
+    color: colors.gray,
+  },
+  buttonsContainer: {
+    marginTop: 50,
+    justifyContent: "center",
+  },
+  codeVerificationScreenButton: {
+    width: "70%",
+    alignSelf: "center",
+    marginHorizontal: 10,
+    backgroundColor: colors.mainColor,
+    borderRadius: common.baseBorderRadius,
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
-  verifyScreenButtonText: {
-    fontSize: 18,
-    color: "#fff",
+  codeVerificationScreenButtonText: {
+    fontSize: common.baseFontSize + 2,
+    color: colors.white,
     alignSelf: "center",
-    fontFamily: "IRANSansWeb_Bold",
+    fontFamily: fonts.IranSans_Bold,
     writingDirection: "auto",
+  },
+  loggedInBeforeText: {
+    margin: 15,
+    fontSize: common.baseFontSize,
+    textAlign: "center",
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.mainColor,
   },
 });
