@@ -38,7 +38,7 @@ class GroupHandler extends Handler {
     handle(data: Activity): string {
         if (!this.canHandle(data)) return this.handler.handle(data);
 
-        switch (data.actionType) {
+        switch (data.action) {
             case Action.Created:
                 return `${data.subject.name} گروه "${data.object.name}" را ایجاد کرد.`
             case Action.Removed:
@@ -57,7 +57,7 @@ class GroupHandler extends Handler {
     }
 
     private canHandle(data: Activity): boolean {
-        if (this.actions.indexOf(data.actionType) === -1) return false;
+        if (this.actions.indexOf(data.action) === -1) return false;
         return data.parent
             ? data.parent.type === Type.Group
             : data.object.type === Type.Group;
@@ -79,7 +79,7 @@ class PaymentHandler extends Handler {
     handle(data: Activity): string {
         if (!this.canHandle(data)) return this.handler.handle(data);
 
-        switch (data.actionType) {
+        switch (data.action) {
             case Action.Paid:
                 return `${data.subject.name} ${data.data} تومان به ${data.object.name} پرداخت کرد.`;
             case Action.Updated:
@@ -94,7 +94,7 @@ class PaymentHandler extends Handler {
     }
 
     private canHandle(data: Activity): boolean {
-        if (this.actions.indexOf(data.actionType) === -1) return false;
+        if (this.actions.indexOf(data.action) === -1) return false;
         return data.parent
             ? data.parent.type === Type.Payment
             : data.object.type === Type.Payment;
@@ -118,7 +118,7 @@ class ExpenseHandler extends Handler {
     handle(data: Activity): string {
         if (!this.canHandle(data)) return this.handler.handle(data);
 
-        switch (data.actionType) {
+        switch (data.action) {
             case Action.Created:
                 return `${data.subject.name} هزینه‌ی "${data.object.name}" را ساخت.`;
             case Action.Updated:
@@ -137,7 +137,7 @@ class ExpenseHandler extends Handler {
     }
 
     private canHandle(data: Activity): boolean {
-        if (this.actions.indexOf(data.actionType) === -1) return false;
+        if (this.actions.indexOf(data.action) === -1) return false;
         return data.parent
             ? data.parent.type === Type.Expense
             : data.object.type === Type.Expense;

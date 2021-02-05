@@ -14,7 +14,7 @@ export interface Activity {
     name: string;
     type: Type;
   };
-  actionType: Action;
+  action: Action;
   involved: Array<string>;
   data?: Object;
   request?: {

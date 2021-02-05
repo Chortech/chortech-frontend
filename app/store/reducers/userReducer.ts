@@ -68,7 +68,7 @@ const initialState: IUserState = {
     id: "-1",
   },
   currentActivity: {
-    actionType: activity.Action.Added,
+    action: activity.Action.Added,
     involved: [],
     object: {
       id: "-1",
