@@ -16,6 +16,8 @@ import { Response } from "../../models/responses/axios/response";
 import { RemoveGroupMember } from "../../models/responses/axios/user";
 import { navigationRef } from "../../navigation/navigationService";
 import { GroupAPI } from "../../services/api/axios/groupApi";
+import {UploadImage} from "../../models/responses/axios/user";
+import {UploadImageRequest} from "../../models/requests/axios/user";
 import * as groupActions from "../actions/groupActions";
 import * as balanceActions from "../actions/balanceActions";
 import * as expenseActions from "../actions/expenseActions";
@@ -182,4 +184,27 @@ export function* RemoveMemberAsync(action: Action<RemoveMemberRequest>) {
     }
   }
   yield put(groupActions.onLoadingDisable());
+}
+
+export function* uploadImageAsync(action: Action<UploadImageRequest>) {
+  // yield put(userActions.onLoadingEnable());
+  const token = action.payload.token;
+  let response: Response<UploadImage> = {
+    success: false,
+    status: -1,
+  };
+  const api: GroupAPI = new GroupAPI(token);
+  response = yield api.uploadImageRequest("image/jpeg", action.payload.data);
+
+  // yield put(userActions.onLoadingDisable());
+
+  if (response.success) {
+    yield put(groupActions.onUploadImageResponse(response));
+  } else {
+    if (response.status == 400) {
+      ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(messages.serverError, ToastAndroid.SHORT);
+    }
+  }
 }

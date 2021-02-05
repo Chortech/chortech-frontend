@@ -77,16 +77,6 @@ export interface FriendBalance {
   balances?: ExpenseBalance[];
 }
 
-export interface AddPayment {
-  id: string;
-  from: string;
-  to: string;
-  amount: number;
-  paid_at: number;
-  group?: string;
-  notes?: string;
-}
-
 export interface GetGroupInfo {
   group?: Group;
 }

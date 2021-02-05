@@ -58,10 +58,6 @@ const Profile: React.FC = (): JSX.Element => {
         ...data,
         imageUri: uri,
       });
-      user = {
-        ...user,
-        imageUri: data.imageUri,
-      };
       if (validateToken(loggedInUser.token)) {
         dispatch(userActions.onUploadImageRequest(loggedInUser.token, response));
       }

@@ -9,6 +9,7 @@ import * as expenseSaga from "./expenseSaga";
 import * as balanceSaga from "./balanceSaga";
 import * as paymentSaga from "./paymentSaga";
 import * as activitySaga from "./activitySaga";
+import * as notificationSaga from "./notificationSaga";
 
 export default function* watch() {
   yield all([
@@ -46,6 +47,7 @@ export default function* watch() {
     takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.DeleteGroupAsync),
     takeLatest(types.ADD_FRIEND_TO_GROUP_REQUEST, groupSaga.AddFriendToGroupAsync),
     takeLatest(types.LEAVE_GROUP_REQUEST, groupSaga.LeaveGroupAsync),
+    takeLatest(types.GROUP_UPLOAD_IMAGE_REQUEST, groupSaga.uploadImageAsync),
     takeLatest(types.REMOVE_MEMBER_REQUEST, groupSaga.RemoveMemberAsync),
     takeLatest(types.GET_USER_PAYMENT_REQUEST, paymentSaga.getUserPaymentAsync),
     takeLatest(types.ADD_PAYMENT_REQUEST, paymentSaga.addPaymentAsync),
@@ -53,5 +55,6 @@ export default function* watch() {
     takeLatest(types.DELETE_PAYMENT_REQUEST, paymentSaga.deletePaymentAsync),
     takeLatest(types.ADD_PAYMENT_COMMENT_REQUEST, paymentSaga.addPaymentCommentAsync),
     takeLatest(types.GET_USER_ACTIVITIES_REQUEST, activitySaga.getUserActivitiesAsync),
+    takeLatest(types.PUSH_NOTIFICATION_REQUEST, notificationSaga.pushNotificationAsync),
   ]);
 }
