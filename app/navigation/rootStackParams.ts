@@ -52,9 +52,9 @@ export type RootStackParamList = {
   };
   Activity: {
     id: string;
-    activityName: string;
-    category?: string;
-    total?: string;
+    // activityName: string;
+    // category?: string;
+    // total?: string;
   };
   AddExpense: {
     parentScreen: string;

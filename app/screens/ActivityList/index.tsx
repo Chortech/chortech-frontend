@@ -1,12 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  RefreshControl,
+  ToastAndroid,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
 import { FloatingAction } from "react-native-floating-action";
 import { createIconSetFromIcoMoon } from "react-native-vector-icons";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
+import messages from "../../assets/resources/messages";
 import ActivityItem from "../../components/ActivityItem/index";
 import SelectableItem from "../../components/SelectableItem";
 import { Activity } from "../../models/other/axios/Activity";
@@ -16,6 +25,9 @@ import { IUserState } from "../../models/reducers/default";
 import navigationService from "../../navigation/navigationService";
 import NavigationService from "../../navigation/navigationService";
 import * as activityActions from "../../store/actions/activityActions";
+import * as expenseActions from "../../store/actions/expenseActions";
+import * as groupActions from "../../store/actions/groupActions";
+import * as paymentActions from "../../store/actions/paymentActions";
 import { log } from "../../utils/logger";
 import { handler } from "../../utils/textBuilder";
 import { validateToken } from "../../utils/tokenValidator";
@@ -29,26 +41,34 @@ type IState = {
 const ActivityList: React.FC = () => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const [renderFlatList, setRenderFlatList] = useState(false);
-  const { loading, activities } = useSelector((state: IState) => state.userReducer);
+  const { loading, activities, expenses } = useSelector((state: IState) => state.userReducer);
   const user = useSelector((state: IState) => state.userReducer);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
-  const onPressActivityItem = (type: Type, id: string) => {
-    if (type == "expense") {
-      NavigationService.navigate("Activity", {
-        // id: id,
-        // activityName: name,
-        // category: category,
-        // total: total.toString(),
-      });
-    } else if (type == "payment") {
+  const onPressActivityItem = (item: Activity) => {
+    const type = item.request?.type;
+    log(item);
+    if (item.object.type == "expense") {
+      // if (validateToken(loggedInUser.token)) {
+      //   dispatch(expenseActions.onGetUserExpenseRequest(loggedInUser.token, item.object.id));
+      // }
+      const index = expenses.findIndex((expense) => expense.id == item.object.id);
+      if (index > -1) {
+        NavigationService.navigate("Activity", {
+          id: item.object.id,
+        });
+      } else {
+        ToastAndroid.show(messages.noExpense, ToastAndroid.SHORT);
+      }
+    }
+    if (type == "payment") {
       // NavigationService.navigate("Activity", {
       //   id: id,
       // });
     } else if (type == "group") {
       navigationService.navigate("Group", {
-        groupId: id,
+        groupId: item.request!.id,
       });
     }
   };
@@ -87,35 +107,8 @@ const ActivityList: React.FC = () => {
     setRefreshing(false);
   }, [dispatch]);
 
-  // const renderCategory: any = ({ item }) => (
-  //   <>
-  //     <SelectableItem
-  //       id={item.id}
-  //       Name={item.name}
-  //       selected={item.selected}
-  //       onPressItem={() => {
-  //         data.categories[item.id].selected = !data.categories[item.id].selected;
-  //         setRenderFlatList(!renderFlatList);
-  //       }}
-  //     />
-  //     <FontAwesomeIcon icon={item.icon} size={20} style={{ top: 30 }} />
-  //   </>
-  // );
-
   const renderActivityItem: any = ({ item }) => {
-    // try {
-    //   let txt = handler.handle(item);
-    // } catch (e) {
-    //   log("exception");
-    //   log(e);
-    //   log(item);
-    // }
-    return (
-      <ActivityItem
-        onPressActivityItem={() => onPressActivityItem(item.requested.type, item.requested.id)}
-        Text={handler.handle(item)}
-      />
-    );
+    return <ActivityItem onPressActivityItem={() => onPressActivityItem(item)} item={item} />;
   };
 
   return (
@@ -125,6 +118,7 @@ const ActivityList: React.FC = () => {
       ) : (
         <View style={styles.container}>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+            <Text style={styles.screenTitleText}>فعالیت‌ها</Text>
             <FlatList
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}

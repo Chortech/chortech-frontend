@@ -14,7 +14,6 @@ export class ActivityAPI implements activityApi {
       baseURL: SERVER_ACTIVITY_URL,
     });
 
-<<<<<<< HEAD
     this.client.interceptors.request.use(function (config) {
       if (token != undefined && token != null) {
         config.headers["Authorization"] = `Bearer ${token.access}`;
@@ -22,21 +21,6 @@ export class ActivityAPI implements activityApi {
       return config;
     });
   }
-=======
-        this.client.interceptors.request.use(function (config) {
-            if (token != undefined && token != null) {
-                config.headers["Authorization"] = `Bearer ${token.access}`;
-            }
-            return config;
-        });
-    }
-
-    async getActivities(): Promise<Response<Activity[]>> {
-        let result: Response<Activity[]> = {
-            success: false,
-            status: -1,
-        };
->>>>>>> 46643c9437f75bf5cf722164a35102f2a4b04ee5
 
   async getActivities(): Promise<Response<Activity[]>> {
     let result: Response<Activity[]> = {
@@ -56,10 +40,10 @@ export class ActivityAPI implements activityApi {
       } else {
         result.status = response.status;
       }
-      log("get activities api result");
-      log(result);
+      log("get activities api result", false);
+      log(result, false);
     } catch (e) {
-      log("get activities api error");
+      log("get activities api error", false);
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;

@@ -1,14 +1,23 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.mainColor,
   },
   header: {
     flex: 3,
     alignItems: "center",
     padding: 5,
+  },
+  popupMenuContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    marginRight: 10,
   },
   activityImage: {
     height: 80,

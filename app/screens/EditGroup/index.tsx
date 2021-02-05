@@ -67,7 +67,6 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
   });
 
   const [refreshing, setRefreshing] = useState(false);
-  const dispatch = useDispatch();
 
   const fetchCurrentGroup = () => {
     if (validateToken(loggedInUser.token)) {
@@ -121,7 +120,13 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
         image: uri,
       });
       if (validateToken(loggedInUser.token)) {
-        dispatch(groupActions.onUploadImageRequest(loggedInUser.token, {response:response, id: groupName, name: data.name}));
+        dispatch(
+          groupActions.onUploadImageRequest(loggedInUser.token, {
+            response: response,
+            id: groupId,
+            name: data.name,
+          })
+        );
       }
     });
   };

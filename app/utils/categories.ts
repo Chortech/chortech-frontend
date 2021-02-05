@@ -15,4 +15,5 @@ export const categories: Category[] = [
   { id: "5", name: "ورزش", icon: "dumbbell" },
   { id: "6", name: "سفر", icon: "suitcase-rolling" },
   { id: "7", name: "کالای دیجیتال", icon: "laptop" },
+  { id: "8", name: "متفرقه", icon: "sticky-note" },
 ];

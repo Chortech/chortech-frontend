@@ -12,6 +12,7 @@ export interface Expense {
   comments?: Array<Comment>;
   creator?: string;
   you?: You;
+  category?: number;
 }
 
 export interface You {

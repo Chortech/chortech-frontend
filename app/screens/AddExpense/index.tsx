@@ -410,7 +410,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     </View>
   );
 
-  log(data.category);
   const renderCategoryModalList = ({ item }) => {
     return (
       <View style={styles.categoryContainer}>

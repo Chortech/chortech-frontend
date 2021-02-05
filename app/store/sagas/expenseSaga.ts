@@ -53,7 +53,7 @@ export function* getUserExpenseAsync(action: Action<GetExpenseRequest>) {
     status: -1,
   };
 
-  yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
+  // yield call(friendSaga.getUserFriendsAsync, friendActions.onGetUserFriendsRequest(token));
 
   let api: ExpenseAPI = new ExpenseAPI(token);
   response = yield api.getUserExpense(id);

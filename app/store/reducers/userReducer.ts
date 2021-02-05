@@ -49,11 +49,11 @@ const initialState: IUserState = {
     id: "",
     from: {
       id: "",
-      name: ""
+      name: "",
     },
     to: {
       id: "",
-      name: ""
+      name: "",
     },
     amount: 0,
     paid_at: 0,
@@ -151,6 +151,7 @@ export const userReducer = createReducer(initialState, {
       if (index > -1) {
         state.expenses[index].participants =
           expense?.participants != undefined ? expense.participants : [];
+        state.currentExpense = state.expenses[index];
       }
     }
     return state;
@@ -398,10 +399,7 @@ export const userReducer = createReducer(initialState, {
     }
     return state;
   },
-  [types.ADD_PAYMENT_RESPONSE](
-    state: IUserState,
-    action: Action<Response<Payment>>
-  ): IUserState {
+  [types.ADD_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<Payment>>): IUserState {
     const response = action.payload.response;
     if (response != undefined) {
       state.payment = response;
