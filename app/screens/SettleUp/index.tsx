@@ -22,7 +22,7 @@ type IState = {
 const SettleUp: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const params = route.params;
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
-  const { loading, payment } = useSelector((state: IState) => state.userReducer);
+  const { loading } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
   const onPressPay = () => {
