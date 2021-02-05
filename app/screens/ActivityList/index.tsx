@@ -50,9 +50,6 @@ const ActivityList: React.FC = () => {
     const type = item.request?.type;
     log(item);
     if (item.object.type == "expense") {
-      // if (validateToken(loggedInUser.token)) {
-      //   dispatch(expenseActions.onGetUserExpenseRequest(loggedInUser.token, item.object.id));
-      // }
       const index = expenses.findIndex((expense) => expense.id == item.object.id);
       if (index > -1) {
         NavigationService.navigate("Activity", {
@@ -63,13 +60,10 @@ const ActivityList: React.FC = () => {
       }
     }
     if (type == "payment") {
-      // NavigationService.navigate("Activity", {
-      //   id: id,
-      // });
     } else if (type == "group") {
-      navigationService.navigate("Group", {
-        groupId: item.request!.id,
-      });
+      // navigationService.navigate("Group", {
+      //   groupId: item.request!.id,
+      // });
     }
   };
 
