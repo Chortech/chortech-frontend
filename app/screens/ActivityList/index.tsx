@@ -10,11 +10,14 @@ import fonts from "../../assets/resources/fonts";
 import ActivityItem from "../../components/ActivityItem/index";
 import SelectableItem from "../../components/SelectableItem";
 import { Activity } from "../../models/other/axios/Activity";
+import { Type } from "../../models/other/axios/Activity";
 import { Item } from "../../models/other/axios/Item";
 import { IUserState } from "../../models/reducers/default";
+import navigationService from "../../navigation/navigationService";
 import NavigationService from "../../navigation/navigationService";
 import * as activityActions from "../../store/actions/activityActions";
 import { log } from "../../utils/logger";
+import { handler } from "../../utils/textBuilder";
 import { validateToken } from "../../utils/tokenValidator";
 import LoadingIndicator from "../Loading";
 import styles from "./styles";
@@ -31,13 +34,23 @@ const ActivityList: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
-  const onPressActivityItem = (item: Activity) => {
-    NavigationService.navigate("Activity", {
-      // id: item.,
-      // activityName: name,
-      // category: category,
-      // total: total.toString(),
-    });
+  const onPressActivityItem = (type: Type, id: string) => {
+    if (type == "expense") {
+      NavigationService.navigate("Activity", {
+        // id: id,
+        // activityName: name,
+        // category: category,
+        // total: total.toString(),
+      });
+    } else if (type == "payment") {
+      // NavigationService.navigate("Activity", {
+      //   id: id,
+      // });
+    } else if (type == "group") {
+      navigationService.navigate("Group", {
+        groupId: id,
+      });
+    }
   };
 
   const onAddExpense = () => {
@@ -89,9 +102,21 @@ const ActivityList: React.FC = () => {
   //   </>
   // );
 
-  const renderActivityItem: any = ({ item }) => (
-    <ActivityItem onPressActivityItem={() => onPressActivityItem(item)} Text={item.action} />
-  );
+  const renderActivityItem: any = ({ item }) => {
+    try {
+      let txt = handler.handle(item);
+    } catch (e) {
+      log("exception");
+      log(e);
+      log(item);
+    }
+    return (
+      <ActivityItem
+        onPressActivityItem={() => onPressActivityItem(item.requested.type, item.requested.id)}
+        Text="slkdfj"
+      />
+    );
+  };
 
   return (
     <>
