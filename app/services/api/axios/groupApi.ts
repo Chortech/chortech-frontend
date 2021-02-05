@@ -54,8 +54,12 @@ export class GroupAPI implements groupApi {
           status: response.status,
           response: response.data,
         };
-      } else {
-        result.status = response.status;
+      }
+      if (result.response != undefined) {
+        result.response.forEach((group) => {
+          group.balance = 0;
+          group.expenses = [];
+        });
       }
       log("get user groups api result");
       log(result, false);
@@ -89,6 +93,13 @@ export class GroupAPI implements groupApi {
           response: response.data.group,
         };
       }
+      if (result.response != undefined) {
+        result.response = {
+          ...result.response,
+          balance: 0,
+          expenses: [],
+        };
+      }
       log("group info api result");
       log(result, false);
     } catch (e) {
@@ -96,7 +107,7 @@ export class GroupAPI implements groupApi {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data, false);
+        log(error.response?.data, true);
       } else {
         log(e.response, false);
       }
@@ -124,7 +135,7 @@ export class GroupAPI implements groupApi {
       log(result, false);
     } catch (e) {
       log("create group api error");
-      console.log(e.response)
+      console.log(e.response);
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
@@ -155,8 +166,13 @@ export class GroupAPI implements groupApi {
           status: response.status,
           response: response.data,
         };
-      } else {
-        result.status = response.status;
+      }
+      if (result.response != undefined) {
+        result.response = {
+          ...result.response,
+          balance: 0,
+          expenses: [],
+        };
       }
       log("edit group api result");
       log(result, false);
@@ -222,13 +238,11 @@ export class GroupAPI implements groupApi {
           status: response.status,
           response: response.data,
         };
-      } else {
-        result.status = response.status;
       }
       log("add friend to group api result");
       log(result, false);
     } catch (e) {
-      console.log(e.response)
+      console.log(e.response);
       log("add friend to group api error");
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;

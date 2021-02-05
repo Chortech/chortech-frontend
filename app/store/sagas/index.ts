@@ -34,7 +34,7 @@ export default function* watch() {
     takeLatest(types.DELETE_EXPENSE_REQUEST, expenseSaga.deleteExpenseAsync),
     takeLatest(types.ADD_EXPENSE_COMMENT_REQUEST, expenseSaga.addExpenseCommentAsync),
     takeLatest(types.GET_EXPENSE_COMMENTS_REQUEST, expenseSaga.getExpenseCommentsAsync),
-    takeLatest(types.GET_GROUP_EXPENSES_REQUEST, expenseSaga.getGroupsExpensesAsync),
+    takeLatest(types.GET_GROUP_EXPENSES_REQUEST, expenseSaga.getGroupExpensesAsync),
     takeLatest(types.GET_FRIENDS_BALANCE_REQUEST, balanceSaga.getFriendsBalanceAsync),
     takeLatest(types.GET_FRIEND_BALANCE_REQUEST, balanceSaga.getFriendBalanceAsync),
     takeLatest(types.GET_GROUPS_BALANCES_REQUEST, balanceSaga.getGroupsBalancesAsync),

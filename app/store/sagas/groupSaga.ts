@@ -20,8 +20,13 @@ import {UploadImage} from "../../models/responses/axios/user";
 import {UploadImageRequest} from "../../models/requests/axios/user";
 import * as groupActions from "../actions/groupActions";
 import * as balanceActions from "../actions/balanceActions";
+import * as expenseActions from "../actions/expenseActions";
 import * as balanceSaga from "./balanceSaga";
+import * as expenseSaga from "./expenseSaga";
 import messages from "../../assets/resources/messages";
+import configureStore from "..";
+import { IUserState } from "../../models/reducers/default";
+import { log } from "../../utils/logger";
 
 export function* getUserGroupsAsync(action: Action<GetUserGroupsRequest>) {
   yield put(groupActions.onLoadingEnable());
@@ -53,8 +58,14 @@ export function* getGroupInfoAsync(action: Action<GetGroupInfoRequest>) {
 
   if (response.success) {
     yield put(groupActions.onGetGroupInfoResponse(response));
-
-    yield navigationRef?.current?.navigate("Group", {group: response.response})
+    yield call(
+      expenseSaga.getGroupExpensesAsync,
+      expenseActions.onGetGroupExpensesRequest(token, groupId)
+    );
+    yield call(
+      balanceSaga.getGroupMembersBalancesAsync,
+      balanceActions.onGetGroupMembersBalancesRequest(token, groupId)
+    );
   } else {
     if (response.status == 400) {
       ToastAndroid.show(messages.unkownServerError, ToastAndroid.SHORT);

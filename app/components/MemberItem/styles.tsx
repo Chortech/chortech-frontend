@@ -3,47 +3,18 @@ import colors from "../../assets/resources/colors";
 import common from "../../assets/resources/common";
 import fonts from "../../assets/resources/fonts";
 
-// const mainColor = "#00bb5d";
-// const borderRadius = 20;
-// const textColor = "#333333";
-// const baseFontSize = 16;
-// const grayColor = "#aaaaaa22";
-
 export const styles = StyleSheet.create({
-  friendContainer: {
-    marginTop: 15,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+  memberContainer: {
+    marginBottom: 5,
+    padding: 10,
     flexDirection: "row",
-    borderTopRightRadius: common.baseBorderRadius + 30,
-    borderBottomRightRadius: common.baseBorderRadius + 30,
-    borderWidth: 3,
-    borderLeftWidth: 0,
-    borderColor: colors.ultraLightGray,
     backgroundColor: colors.ultraXLightGray,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderBottomColor: colors.ultraLightGray,
+    borderTopColor: colors.ultraLightGray,
   },
-  balanceContainer: {
-    flex: 4,
-    justifyContent: "center",
-    marginLeft: 10,
-  },
-  balanceNumber: {
-    marginLeft: 3,
-    textAlign: "center",
-    fontFamily: fonts.IranSans_Medium,
-    fontSize: common.baseFontSize + 4,
-  },
-  balanceStatus: {
-    textAlign: "center",
-    fontFamily: fonts.IranSans_Light,
-    fontSize: common.baseFontSize - 2,
-  },
-  settledUp: {
-    textAlign: "center",
-    fontFamily: fonts.IranSans_Light,
-    color: colors.gray,
-  },
-  friendText: {
+  memberName: {
     flex: 5,
     paddingHorizontal: 15,
     letterSpacing: 1,
@@ -51,14 +22,27 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     color: colors.textBlack,
     textAlign: "right",
+    justifyContent: "center",
     fontFamily: fonts.IranSans_Medium,
     fontSize: common.baseFontSize - 2,
     writingDirection: "rtl",
   },
-  friendImage: {
-    height: 60,
-    width: 60,
-    borderRadius: common.baseBorderRadius + 5,
+  memberImage: {
+    height: 50,
+    width: 50,
+    borderRadius: common.baseBorderRadius,
     alignSelf: "center",
+  },
+  DeleteMemberIconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 5,
+    paddingLeft: 10,
+  },
+  DeleteMemberIcon: {
+    alignSelf: "center",
+    color: colors.red,
+    justifyContent: "center",
   },
 });

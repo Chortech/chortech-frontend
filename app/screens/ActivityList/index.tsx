@@ -5,13 +5,17 @@ import * as Animatable from "react-native-animatable";
 import { FloatingAction } from "react-native-floating-action";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import colors from "../../assets/resources/colors";
+import fonts from "../../assets/resources/fonts";
 import ActivityItem from "../../components/ActivityItem/index";
 import SelectableItem from "../../components/SelectableItem";
+import { Type } from "../../models/other/axios/Activity";
 import { Item } from "../../models/other/axios/Item";
 import { IUserState } from "../../models/reducers/default";
+import navigationService from "../../navigation/navigationService";
 import NavigationService from "../../navigation/navigationService";
 import * as activityActions from "../../store/actions/activityActions";
 import { log } from "../../utils/logger";
+import { handler } from "../../utils/textBuilder";
 import { validateToken } from "../../utils/tokenValidator";
 import LoadingIndicator from "../Loading";
 import styles from "./styles";
@@ -40,13 +44,26 @@ const ActivityList: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
-  const onPressActivityItem = () =>
-    NavigationService.navigate("Activity", {
-      // id: id,
-      // activityName: name,
-      // category: category,
-      // total: total.toString(),
-    });
+  const onPressActivityItem = (type: Type, id: string) => {
+    if (type == "expense") {
+      NavigationService.navigate("Activity", {
+        // id: id,
+        // activityName: name,
+        // category: category,
+        // total: total.toString(),
+      });
+    }
+    else if (type == "payment") {
+      // NavigationService.navigate("Activity", {
+      //   id: id,
+      // });
+    }
+    else if (type == "group") {
+      navigationService.navigate("Group", {
+        groupId: id
+      });
+    }
+  };  
 
   const onAddExpense = () => {
     let items: Array<Item> = [];
@@ -61,6 +78,8 @@ const ActivityList: React.FC = () => {
     });
     NavigationService.navigate("AddExpense", { parentScreen: "ActivityList", items: items });
   };
+
+  log(activities);
 
   const fetchActivities = (): void => {
     if (validateToken(loggedInUser.token)) {
@@ -94,59 +113,32 @@ const ActivityList: React.FC = () => {
   // );
 
   const renderActivityItem: any = ({ item }) => (
-    <ActivityItem
-      onPressActivityItem={() => onPressActivityItem()}
-      Text="hmm"
-    />
+    <ActivityItem onPressActivityItem={() => onPressActivityItem(item.requested.type, item.requested.id)} Text={handler.handle(item)} />
   );
 
   return (
     <>
-      <View style={styles.container}>
-        {/* <FlatList
-          horizontal={true}
-          data={data.categories}
-          renderItem={renderCategory}
-          extraData={renderFlatList}
-          scrollEnabled={true}
-          keyExtractor={(item) => item.id}
-          style={{
-            position: "relative",
-            backgroundColor: "white",
-            marginHorizontal: 0,
-            paddingBottom: -10,
-            marginBottom: -40,
-          }}
-        /> */}
-        <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
-          <FlatList
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            showsVerticalScrollIndicator={false}
-            data={user?.expenses}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    style={styles.activityContainer}
-                    onPress={() => onPressActivityItem(item.id, item.description, "", item.total)}>
-                    <Text style={styles.activityText}>{item.description}</Text>
-                    <Image
-                      style={styles.activityImage}
-                      source={require("../../assets/images/category-image.jpg")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <View style={styles.container}>
+          <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
+            <FlatList
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              showsVerticalScrollIndicator={false}
+              data={activities}
+              renderItem={renderActivityItem}
+            />
+          </Animatable.View>
+          <FloatingAction
+            color={colors.mainColor}
+            position="left"
+            overlayColor={colors.transparent}
+            floatingIcon={<FontAwesomeIcon icon="shopping-cart" color="#fff" size={20} />}
+            onPressMain={onAddExpense}
           />
-        </Animatable.View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onAddExpense}>
-            <Text style={styles.buttonText}>ثبت فعالیت جدید</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-
+      )}
     </>
   );
 };

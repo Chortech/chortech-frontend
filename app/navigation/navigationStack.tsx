@@ -17,8 +17,8 @@ import InviteFriend from "../screens/InviteFriend";
 import GroupList from "../screens/GroupList";
 import Group from "../screens/Group";
 import AddGroup from "../screens/AddGroup";
-import EditGroup from "../screens/EditGroup"
-import AddMember from "../screens/AddMember"
+import EditGroup from "../screens/EditGroup";
+import AddMember from "../screens/AddMember";
 import Activity from "../screens/Activity";
 import ActivityList from "../screens/ActivityList";
 import AddExpense from "../screens/AddExpense";
@@ -31,6 +31,7 @@ import { StatusBar } from "react-native";
 import { IUserState } from "../models/reducers/default";
 import colors from "../assets/resources/colors";
 import fonts from "../assets/resources/fonts";
+import GroupBalances from "../screens/GroupBalances";
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -167,8 +168,11 @@ const GroupNavigator = () => (
     <LoggedInTab.Screen name="GroupList" component={GroupList} />
     <LoggedInTab.Screen name="Group" component={Group} />
     <LoggedInTab.Screen name="AddGroup" component={AddGroup} />
-    <LoggedInTab.Screen name="EditGroup" component={EditGroup}/>
-    <LoggedInTab.Screen name="AddMember" component={AddMember}/>
+    <LoggedInTab.Screen name="EditGroup" component={EditGroup} />
+    <LoggedInTab.Screen name="AddMember" component={AddMember} />
+    <LoggedInTab.Screen name="GroupBalances" component={GroupBalances} />
+    <LoggedInTab.Screen name="SettleUp" component={SettleUp} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </GroupStack.Navigator>
 );
 
@@ -195,6 +199,7 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
     <LoggedInTab.Screen name="SettleUp" component={SettleUp} options={{ title: "تسویه حساب" }} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </FriendStack.Navigator>
 );
 

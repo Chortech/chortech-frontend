@@ -1,19 +1,29 @@
 import { StyleSheet, Platform } from "react-native";
+import colors from "../../assets/resources/colors";
+import common from "../../assets/resources/common";
+import fonts from "../../assets/resources/fonts";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1AD927",
+    backgroundColor: colors.white,
   },
-  headerContent: {
-    padding: 10,
-    alignItems: "center",
+  screenTitleText: {
+    textAlign: "center",
+    fontFamily: fonts.IranSans_Bold,
+    color: colors.textBlack,
+    fontSize: common.baseFontSize,
+    marginHorizontal: 30,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.textInputBackground,
   },
+
   infoContainer: {
     flex: 8,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
+    backgroundColor: colors.white,
     paddingBottom: 30,
+    paddingRight: 10,
   },
   avatar: {
     width: 100,

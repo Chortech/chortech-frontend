@@ -16,7 +16,7 @@ import { Friend } from "../../models/other/axios/Friend";
 import { log } from "../../utils/logger";
 import { ExpenseBalance } from "../../models/other/axios/Balance";
 import colors from "../../assets/resources/colors";
-import FriendBalanceItem from "../../components/FriendBalanceItem";
+import BalanceItem from "../../components/BalanceItem";
 import PopupMenu from "../../components/PopupMenu";
 import fonts from "../../assets/resources/fonts";
 import { ArabicNumbers } from "react-native-arabic-numbers";
@@ -35,7 +35,7 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const { loading, friends } = useSelector((state: IState) => state.userReducer);
   const dispatch = useDispatch();
 
-  const onPressSettleUp = () => NavigationService.navigate("SettleUp");
+  const onPressSettleUp = () => NavigationService.navigate("SettleUp", {friendId: id});
 
   const onPressDeleteFriend = () => {
     if (validateToken(loggedInUser.token)) {
@@ -67,7 +67,7 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
   };
 
   const renderFriendBalanceItem = ({ item }) => {
-    return <FriendBalanceItem item={item} />;
+    return <BalanceItem item={item} />;
   };
 
   return (
@@ -118,6 +118,11 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
                 <Text style={styles.text}>شما بی‌حساب هستید</Text>
               )}
             </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.settleUpButton} onPress={onPressSettleUp}>
+                <Text style={styles.settleUpButtonText}>تسویه حساب</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <Animatable.View animation="slideInUp" duration={600} style={styles.infoContainer}>
             {balances.length > 0 ? (
@@ -125,13 +130,9 @@ const Friend: React.FC<Props> = ({ route }: Props): JSX.Element => {
                 data={balances}
                 renderItem={renderFriendBalanceItem}
                 keyExtractor={(item) => item.id}
+                style={styles.flatList}
               />
             ) : null}
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.settleUpButton} onPress={onPressSettleUp}>
-                <Text style={styles.settleUpButtonText}>تسویه حساب</Text>
-              </TouchableOpacity>
-            </View>
           </Animatable.View>
         </View>
       )}
