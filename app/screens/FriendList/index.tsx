@@ -13,6 +13,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";
 import LoadingIndicator from "../Loading";
+import { log } from "../../utils/logger";
 
 type IState = {
   userReducer: IUserState;
@@ -46,19 +47,21 @@ const FriendList: React.FC = (): JSX.Element => {
     setRefreshing(false);
   }, [dispatch]);
 
-  const renderFriendItem: any = ({ item }) => (
-    <FriendItem
-      onPressFriendItem={() => onPressFriendItem(item.id, item.name, item.balance)}
-      Name={item.name}
-      ImageUrl={
-        item.picture != undefined
-          ? { uri: item.picture }
-          : require("../../assets/images/friend-image.jpg")
-      }
-      Balance={item.balance}
-    />
-  );
-
+  const renderFriendItem = ({ item }) => {
+    log(item.picture);
+    return (
+      <FriendItem
+        onPressFriendItem={() => onPressFriendItem(item.id, item.name, item.balance)}
+        Name={item.name}
+        ImageUrl={
+          item.picture != undefined
+            ? { uri: item.picture }
+            : require("../../assets/images/friend-image.jpg")
+        }
+        Balance={item.balance}
+      />
+    );
+  };
   return (
     <>
       {loading ? (

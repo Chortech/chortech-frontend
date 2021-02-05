@@ -49,15 +49,13 @@ const FriendList: React.FC<Props> = ({ route }: Props): JSX.Element => {
     let items: Item[] = [];
     friends.forEach((friend) => {
       if (members.findIndex((member) => member.id == friend.id) < 0) {
-        if (items.findIndex((item) => item.id == friend.id) < 0) {
-          let item: Item = {
-            id: friend.id,
-            name: friend.name != undefined ? friend.name : "",
-            amount: 0,
-            selected: false,
-          };
-          items.push(item);
-        }
+        let item: Item = {
+          id: friend.id,
+          name: friend.name != undefined ? friend.name : "",
+          amount: 0,
+          selected: false,
+        };
+        items.push(item);
       }
     });
 

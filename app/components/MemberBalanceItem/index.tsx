@@ -8,6 +8,12 @@ import { ArabicNumbers } from "react-native-arabic-numbers";
 import colors from "../../assets/resources/colors";
 import fonts from "../../assets/resources/fonts";
 import * as Animatable from "react-native-animatable";
+import { useDispatch, useStore } from "react-redux";
+import { IUserState } from "../../models/reducers/default";
+import { validateToken } from "../../utils/tokenValidator";
+import * as notifActions from "../../store/actions/notificationActions";
+import messages from "../../assets/resources/messages";
+import navigationService from "../../navigation/navigationService";
 
 type Props = {
   balance: GroupMemberBalanceItem;
@@ -15,12 +21,22 @@ type Props = {
 };
 
 const MemberBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
+  const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { member, selected } = props.balance;
+  const dispatch = useDispatch();
   let balance: number = member.totalBalance != undefined ? member.totalBalance : 0;
 
-  const onPressSettleUp = (itemId: string) => {};
+  const onPressSettleUp = (itemId: string) => {
+    navigationService.navigate("SettleUp");
+  };
 
-  const onPressRemind = (friendId: string) => {};
+  const onPressRemind = (friendId: string) => {
+    if (validateToken(loggedInUser.token)) {
+      dispatch(
+        notifActions.onRemindMemberRequest(loggedInUser.token, messages.reminderMessage, friendId)
+      );
+    }
+  };
 
   return (
     <>

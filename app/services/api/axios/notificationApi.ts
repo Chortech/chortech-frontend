@@ -7,55 +7,89 @@ import { UserActivities } from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 
 export class NotificationAPI implements notificationApi {
-    client: AxiosInstance;
+  client: AxiosInstance;
 
-    constructor(token: Token) {
-        this.client = axios.create({
-            baseURL: SERVER_NOTIFICATIONS_URL,
-        });
+  constructor(token: Token) {
+    this.client = axios.create({
+      baseURL: SERVER_NOTIFICATIONS_URL,
+    });
 
-        this.client.interceptors.request.use(function (config) {
-            if (token != undefined && token != null) {
-                config.headers["Authorization"] = `Bearer ${token.access}`;
-            }
-            return config;
-        });
-    }
+    this.client.interceptors.request.use(function (config) {
+      if (token != undefined && token != null) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
+      }
+      return config;
+    });
+  }
 
-    async pushNotification(FCMToken: string): Promise<Response<null>> {
-        let result: Response<UserActivities> = {
-            success: false,
-            status: -1,
+  async pushNotification(FCMToken: string): Promise<Response<null>> {
+    let result: Response<UserActivities> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.post("", {
+        token: FCMToken,
+      });
+
+      if (response.status == 204) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
         };
-
-        try {
-            let response: AxiosResponse = await this.client.post("",
-            { 
-                token: FCMToken
-            });
-
-            if (response.status == 204) {
-                result = {
-                    success: true,
-                    status: response.status,
-                    response: response.data,
-                };
-            } else {
-                result.status = response.status;
-            }
-            log("push notification api result");
-            log(result);
-        } catch (e) {
-            log("push notification api error");
-            if (e.isAxiosError) {
-                const error: AxiosError = e as AxiosError;
-                result.status = error.response?.status != undefined ? error.response?.status : -1;
-                log(error.response?.data);
-            } else {
-                log(e.response);
-            }
-        }
-
-        return result;
+      } else {
+        result.status = response.status;
+      }
+      log("push notification api result");
+      log(result);
+    } catch (e) {
+      log("push notification api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data, false);
+      } else {
+        log(e.response, false);
+      }
     }
+
+    return result;
+  }
+
+  async remindMember(message: string, contactId: string): Promise<Response<any>> {
+    let result: Response<any> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let response: AxiosResponse = await this.client.post("/remind", {
+        message: message,
+        contactId: contactId,
+      });
+
+      if (response.status == 204) {
+        result = {
+          success: true,
+          status: response.status,
+          response: null,
+        };
+      }
+      log("remind member api result");
+      log(result, false);
+    } catch (e) {
+      log("remind member api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data, false);
+      } else {
+        log(e.response, false);
+      }
+    }
+
+    return result;
+  }
 }

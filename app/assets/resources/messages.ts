@@ -35,6 +35,8 @@ class Messages {
   public wrongCode = "کد واردشده اشتباه است";
   public duplicateName = "نام وارد شده تکراری است";
   public noBodySelected = "شما کسی را انتخاب نکرده‌اید";
+  public reminderSent = "یادآوری انجام شد";
+  public reminderMessage = "یادآوری پرداخت بدهی";
 }
 
 let messages = new Messages();
