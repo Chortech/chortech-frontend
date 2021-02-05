@@ -32,9 +32,9 @@ const MemberBalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
 
   const onPressRemind = (friendId: string) => {
     if (validateToken(loggedInUser.token)) {
-      dispatch(
-        notifActions.onRemindMemberRequest(loggedInUser.token, messages.reminderMessage, friendId)
-      );
+      // dispatch(
+      //   notifActions.onRemindMemberRequest(loggedInUser.token, messages.reminderMessage, friendId)
+      // );
     }
   };
 

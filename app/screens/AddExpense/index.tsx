@@ -26,6 +26,7 @@ import { Participant, PRole } from "../../models/other/axios/Participant";
 import { Item } from "../../models/other/axios/Item";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
+import { categories } from "../../store/sagas/categories";
 
 type Props = {
   route: RouteProp<RootStackParamList, "AddExpense">;
@@ -42,16 +43,7 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     description: params.description != undefined ? params.description : "",
     expenseAmount: params.total != undefined ? params.total : "",
     isValidExpenseAmount: true,
-    categories: [
-      { id: "0", selected: false, name: "مواد غذایی", icon: "utensils" },
-      { id: "1", selected: false, name: "پوشاک", icon: "tshirt" },
-      { id: "2", selected: false, name: "هدیه", icon: "gift" },
-      { id: "3", selected: false, name: "سلامت", icon: "heartbeat" },
-      { id: "4", selected: false, name: "لوازم تحریر", icon: "pencil-ruler" },
-      { id: "5", selected: false, name: "ورزش", icon: "dumbbell" },
-      { id: "6", selected: false, name: "سفر", icon: "suitcase-rolling" },
-      { id: "7", selected: false, name: "کالای دیجیتال", icon: "laptop" },
-    ],
+    categories: categories,
   });
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
   const [items, setItems] = useState<Array<Item>>([]);
@@ -139,21 +131,7 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const fetchItems = () => {
     dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
-
-    if (params.parentScreen == "ActivityList") {
-      // let data: Array<Item> = [];
-      // friends.forEach((element) => {
-      //   data.push({ id: element.id, name: element.name, amount: 0 });
-      // });
-      // data.forEach((item) => {
-      //   if (fetchedItems.find((element) => element.id == item.id) == undefined) {
-      //     selectedItems.current.push({ id: item.id, name: item.name, amount: 0, selected: false })
-      //   }
-      // });
-
-      setFetchedItems(params.items);
-      setItems(params.items);
-    } else if (params.parentScreen == "Activity") {
+    if (params.parentScreen == "Activity") {
       params.items.forEach((item) => {
         if (item.selected) {
           if (selectedItems.current.find((selected) => selected.id == item.id) == undefined) {
@@ -184,22 +162,10 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
       setItems(items);
       setFetchedItems(items);
+    } else {
+      setFetchedItems(params.items);
+      setItems(params.items);
     }
-    // dispatch(friendActions.onGetUserFriendsRequest(loggedInUser.token));
-    // dispatch(userActions.onGetUserGroupsRequest(loggedInUserId));
-    // let items: Array<Item> = fetchedItems;
-    // friends.forEach((friend) => {
-    //   if (items.find((element) => element.id == friend.id) == undefined) {
-    //     let item: Item = {
-    //       id: friend.id,
-    //       name: friend.name,
-    //       amount: 0,
-    //     };
-    //     items.push(item);
-    //   }
-    // });
-    // setFetchedItems(items);
-    // setItems(items);
     setRenderFlatList(!renderFlatList);
   };
 

@@ -172,6 +172,7 @@ const GroupNavigator = () => (
     <LoggedInTab.Screen name="AddMember" component={AddMember} />
     <LoggedInTab.Screen name="GroupBalances" component={GroupBalances} />
     <LoggedInTab.Screen name="SettleUp" component={SettleUp} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </GroupStack.Navigator>
 );
 
@@ -198,6 +199,7 @@ const FriendNavigator = () => (
     <LoggedInTab.Screen name="Friend" component={Friend} />
     <LoggedInTab.Screen name="InviteFriend" component={InviteFriend} />
     <LoggedInTab.Screen name="SettleUp" component={SettleUp} options={{ title: "تسویه حساب" }} />
+    <LoggedInTab.Screen name="AddExpense" component={AddExpense} />
   </FriendStack.Navigator>
 );
 
