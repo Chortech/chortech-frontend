@@ -18,7 +18,7 @@ type IState = {
   userReducer: IUserState;
 };
 
-const Friend: React.FC<Props> = (): JSX.Element => {
+const SettleUp: React.FC<Props> = (): JSX.Element => {
   // const params = route.params;
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
   const { loading } = useSelector((state: IState) => state.userReducer);
@@ -69,4 +69,4 @@ const Friend: React.FC<Props> = (): JSX.Element => {
   );
 };
 
-export default Friend;
+export default SettleUp;

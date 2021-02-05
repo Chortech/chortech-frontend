@@ -2,6 +2,7 @@ import createReducer from "../../lib/createReducer";
 import * as types from "../actions/types";
 import { InputType } from "../../utils/inputTypes";
 import { Action } from "../../models/actions/action";
+import * as activity from "../../models/other/axios/Activity";
 import { IUserState } from "../../models/reducers/default";
 import { ChangePasswordRequest } from "../../models/requests/axios/auth";
 import { Response } from "../../models/responses/axios/response";
@@ -41,6 +42,37 @@ const initialState: IUserState = {
   expenses: [],
   myCreditCards: [],
   otherCreditCards: [],
+  currentGroup: {
+    id: "-1",
+    name: "",
+    creator: "",
+    createdAt: -1,
+    picture: "",
+    updatedAt: -1,
+  },
+  currentFriend: {
+    id: "-1",
+  },
+  currentActivity: {
+    actionType: activity.Action.Added,
+    involved: [],
+    object: {
+      id: "-1",
+      name: "",
+      type: activity.Type.Expense,
+    },
+    subject: {
+      id: "-1",
+      name: "",
+      type: activity.Type.Expense,
+    },
+  },
+  currentExpense: {
+    id: "-1",
+    description: "",
+    paid_at: -1,
+    total: 0,
+  },
 };
 
 export const authReducer = createReducer(initialState, {

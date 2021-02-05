@@ -27,6 +27,7 @@ const GroupList: React.FC = () => {
     if (validateToken(loggedInUser.token)) {
       dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, id));
     }
+    NavigationService.navigate("Group", { groupId: id });
   };
   const fetchGroups = (): void => {
     if (validateToken(loggedInUser.token)) {

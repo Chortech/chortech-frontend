@@ -1,13 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React from "react";
-import { Text, View } from "react-native";
+import { GestureResponderEvent, Text, View } from "react-native";
 import colors from "../../assets/resources/colors";
 import { ExpenseBalance } from "../../models/other/axios/Balance";
 import { styles } from "./styles";
 import { ArabicNumbers } from "react-native-arabic-numbers";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 type Props = {
   item: ExpenseBalance;
+  onPressItem?: (event: GestureResponderEvent) => void;
 };
 
 const BalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
@@ -20,7 +22,7 @@ const BalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
       : "";
 
   return (
-    <>
+    <TouchableOpacity onPress={props.onPressItem}>
       {props.item.type === "expense" ? (
         <View style={styles.expenseContainer}>
           <View style={styles.expenseInfoContainer}>
@@ -35,7 +37,7 @@ const BalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
               </Text>
             </View>
             <Text style={{ ...styles.expenseStatus, color: color }}>
-              {props.item.balance < 0 ? "ازش قرض گرفتی" : "بهش قرض دادی"}
+              {props.item.balance < 0 ? "قرض گرفتی" : "قرض دادی"}
             </Text>
           </View>
         </View>
@@ -51,7 +53,7 @@ const BalanceItem: React.FC<Props> = (props: Props): JSX.Element => {
           </Text>
         </View>
       )}
-    </>
+    </TouchableOpacity>
   );
 };
 

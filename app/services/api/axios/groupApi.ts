@@ -93,7 +93,7 @@ export class GroupAPI implements groupApi {
       if (e.isAxiosError) {
         const error: AxiosError = e as AxiosError;
         result.status = error.response?.status != undefined ? error.response?.status : -1;
-        log(error.response?.data, false);
+        log(error.response?.data, true);
       } else {
         log(e.response, false);
       }

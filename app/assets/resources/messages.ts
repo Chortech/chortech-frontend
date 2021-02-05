@@ -33,6 +33,8 @@ class Messages {
   public userVerified = "اطلاعات کاربر تایید شده‌است";
   public codeError = "ارسال کد تایید با خطا مواجه شد";
   public wrongCode = "کد واردشده اشتباه است";
+  public duplicateName = "نام وارد شده تکراری است";
+  public noBodySelected = "شما کسی را انتخاب نکرده‌اید";
 }
 
 let messages = new Messages();

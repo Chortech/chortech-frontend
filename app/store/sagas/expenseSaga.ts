@@ -219,7 +219,7 @@ export function* addExpenseCommentAsync(action: Action<AddCommentRequest>) {
   yield put(expenseActions.onLoadingDisable());
 }
 
-export function* getGroupsExpensesAsync(action: Action<GetGroupExpensesRequest>) {
+export function* getGroupExpensesAsync(action: Action<GetGroupExpensesRequest>) {
   yield put(expenseActions.onLoadingEnable());
   const { groupId, token } = action.payload;
   let api: ExpenseAPI = new ExpenseAPI(token);

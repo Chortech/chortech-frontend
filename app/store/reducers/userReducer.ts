@@ -1,10 +1,11 @@
 import createReducer from "../../lib/createReducer";
 import { Action } from "../../models/actions/action";
 import { Activity } from "../../models/other/axios/Activity";
+import * as activity from "../../models/other/axios/Activity";
 import { ExpenseBalance, GroupBalance } from "../../models/other/axios/Balance";
 import { Expense } from "../../models/other/axios/Expense";
 import { Friend } from "../../models/other/axios/Friend";
-import { Group } from "../../models/other/axios/Group";
+import { Group, Member } from "../../models/other/axios/Group";
 import { Payment } from "../../models/other/axios/Payment";
 import { IUserState } from "../../models/reducers/default";
 import { Response } from "../../models/responses/axios/response";
@@ -55,6 +56,37 @@ const initialState: IUserState = {
   myCreditCards: [],
   otherCreditCards: [],
   imageUri: "",
+  currentGroup: {
+    id: "-1",
+    name: "",
+    creator: "",
+    createdAt: -1,
+    picture: "",
+    updatedAt: -1,
+  },
+  currentFriend: {
+    id: "-1",
+  },
+  currentActivity: {
+    actionType: activity.Action.Added,
+    involved: [],
+    object: {
+      id: "-1",
+      name: "",
+      type: activity.Type.Expense,
+    },
+    subject: {
+      id: "-1",
+      name: "",
+      type: activity.Type.Expense,
+    },
+  },
+  currentExpense: {
+    id: "-1",
+    description: "",
+    paid_at: -1,
+    total: 0,
+  },
 };
 
 export const userReducer = createReducer(initialState, {
@@ -158,17 +190,20 @@ export const userReducer = createReducer(initialState, {
       groups: action.payload.response != undefined ? action.payload.response : [],
     };
   },
-  [types.GET_GROUP_INFO_RESPONSE](
-    state: IUserState,
-    action: Action<Response<GetGroupInfo>>
-  ): IUserState {
+  [types.GET_GROUP_INFO_RESPONSE](state: IUserState, action: Action<Response<Group>>): IUserState {
     const response = action.payload.response;
     if (response != undefined) {
-      if (response.group != undefined) {
-        let index = state.groups.findIndex((group) => group.id == response.group?.id);
-        if (index > -1) {
-          state.groups[index] = response.group;
-        }
+      let index = state.groups.findIndex((group) => group.id == response.id);
+      if (index > -1) {
+        state.groups[index] = {
+          ...state.groups[index],
+          id: response.id,
+          name: response.name,
+          picture: response.picture,
+          creator: response.creator,
+          members: response.members,
+        };
+        state.currentGroup = state.groups[index];
       }
     }
     return state;
@@ -315,8 +350,12 @@ export const userReducer = createReducer(initialState, {
       let index = state.groups.findIndex((group) => group.id == response.group.id);
       if (index > -1) {
         state.groups[index].expenses = response.expenses;
+        if (state.currentGroup != undefined) {
+          state.currentGroup.expenses = state.groups[index].expenses;
+        }
       }
     }
+
     return state;
   },
   [types.GET_GROUP_MEMBERS_BALANCES_RESPONSE](
@@ -327,12 +366,19 @@ export const userReducer = createReducer(initialState, {
     if (response != undefined) {
       let index = state.groups.findIndex((group) => group.id == response.groupId);
       if (index > -1) {
-        state.groups[index].members?.forEach((member) => {
-          let index = response.membersBalances.findIndex((balance) => balance.id == member.id);
-          if (index > -1) {
-            member.balances = response.membersBalances[index].balances;
+        state.groups[index].members?.forEach((member: Member) => {
+          let i = response.membersBalances.findIndex((balance) => balance.id == member.id);
+          if (i > -1) {
+            member.balances = response.membersBalances[i].balances;
+            member.totalBalance = 0;
+            response.membersBalances[i].balances.forEach((balance) => {
+              if (member.totalBalance != undefined) {
+                member.totalBalance += balance.balance != undefined ? balance.balance : 0;
+              }
+            });
           }
         });
+        state.currentGroup.members = state.groups[index].members;
       }
     }
     return state;

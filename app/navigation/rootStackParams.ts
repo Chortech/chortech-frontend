@@ -2,7 +2,7 @@ import { ExpenseBalance } from "../models/other/axios/Balance";
 import { Item } from "../models/other/axios/Item";
 import { Token } from "../models/other/axios/Token";
 import { InputType } from "../utils/inputTypes";
-import {Group, Member} from "../models/other/axios/Group";
+import { Group, Member } from "../models/other/axios/Group";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -38,18 +38,18 @@ export type RootStackParamList = {
     balances: ExpenseBalance[];
   };
   Group: {
-    group: Group;
+    groupId: string;
   };
   EditGroup: {
-    id: string;
-    groupName: string;
-    ImageUrl: string;
-    members: Array<Member>;
+    groupId: string;
   };
   AddMember: {
     groupId: string;
     members: Array<Member>;
-  }
+  };
+  GroupBalances: {
+    groupId: string;
+  };
   Activity: {
     id: string;
     activityName: string;
