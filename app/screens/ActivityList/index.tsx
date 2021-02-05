@@ -103,17 +103,17 @@ const ActivityList: React.FC = () => {
   // );
 
   const renderActivityItem: any = ({ item }) => {
-    try {
-      let txt = handler.handle(item);
-    } catch (e) {
-      log("exception");
-      log(e);
-      log(item);
-    }
+    // try {
+    //   let txt = handler.handle(item);
+    // } catch (e) {
+    //   log("exception");
+    //   log(e);
+    //   log(item);
+    // }
     return (
       <ActivityItem
         onPressActivityItem={() => onPressActivityItem(item.requested.type, item.requested.id)}
-        Text="slkdfj"
+        Text={handler.handle(item)}
       />
     );
   };
