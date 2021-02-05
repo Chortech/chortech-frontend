@@ -17,7 +17,6 @@ import {
   UploadImage,
   EditProfile,
   FriendBalance,
-  AddPayment,
   GetGroupInfo,
   GroupExpenses,
   GroupMembersBalances,
@@ -48,8 +47,14 @@ const initialState: IUserState = {
   expenses: [],
   payment: {
     id: "",
-    from: "",
-    to: "",
+    from: {
+      id: "",
+      name: ""
+    },
+    to: {
+      id: "",
+      name: ""
+    },
     amount: 0,
     paid_at: 0,
   },
@@ -395,20 +400,13 @@ export const userReducer = createReducer(initialState, {
   },
   [types.ADD_PAYMENT_RESPONSE](
     state: IUserState,
-    action: Action<Response<AddPayment>>
+    action: Action<Response<Payment>>
   ): IUserState {
-    return {
-      ...state,
-      payment: {
-        id: action.payload.response!.id,
-        from: action.payload.response!.from,
-        to: action.payload.response!.to,
-        amount: action.payload.response!.amount,
-        paid_at: action.payload.response!.paid_at,
-        group: action.payload.response!.group,
-        notes: action.payload.response!.notes,
-      },
-    };
+    const response = action.payload.response;
+    if (response != undefined) {
+      state.payment = response;
+    }
+    return state;
   },
   [types.EDIT_PAYMENT_RESPONSE](state: IUserState, action: Action<Response<Payment>>): IUserState {
     const response = action.payload.response;

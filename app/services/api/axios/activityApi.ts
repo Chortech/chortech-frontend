@@ -7,13 +7,22 @@ import { Response } from "../../../models/responses/axios/response";
 import { log } from "../../../utils/logger";
 
 export class ActivityAPI implements activityApi {
-    client: AxiosInstance;
+  client: AxiosInstance;
 
-    constructor(token: Token) {
-        this.client = axios.create({
-            baseURL: SERVER_ACTIVITY_URL,
-        });
+  constructor(token: Token) {
+    this.client = axios.create({
+      baseURL: SERVER_ACTIVITY_URL,
+    });
 
+<<<<<<< HEAD
+    this.client.interceptors.request.use(function (config) {
+      if (token != undefined && token != null) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
+      }
+      return config;
+    });
+  }
+=======
         this.client.interceptors.request.use(function (config) {
             if (token != undefined && token != null) {
                 config.headers["Authorization"] = `Bearer ${token.access}`;
@@ -27,32 +36,39 @@ export class ActivityAPI implements activityApi {
             success: false,
             status: -1,
         };
+>>>>>>> 46643c9437f75bf5cf722164a35102f2a4b04ee5
 
-        try {
-            let response: AxiosResponse = await this.client.get("");
+  async getActivities(): Promise<Response<Activity[]>> {
+    let result: Response<Activity[]> = {
+      success: false,
+      status: -1,
+    };
 
-            if (response.status == 200) {
-                result = {
-                    success: true,
-                    status: response.status,
-                    response: response.data,
-                };
-            } else {
-                result.status = response.status;
-            }
-            log("get activities api result");
-            log(result);
-        } catch (e) {
-            log("get activities api error");
-            if (e.isAxiosError) {
-                const error: AxiosError = e as AxiosError;
-                result.status = error.response?.status != undefined ? error.response?.status : -1;
-                log(error.response?.data);
-            } else {
-                log(e.response);
-            }
-        }
+    try {
+      let response: AxiosResponse = await this.client.get("");
 
-        return result;
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("get activities api result");
+      log(result);
+    } catch (e) {
+      log("get activities api error");
+      if (e.isAxiosError) {
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data);
+      } else {
+        log(e.response);
+      }
     }
+
+    return result;
+  }
 }

@@ -18,15 +18,21 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import LoadingIndicator from "../Loading";
 import { IUserState } from "../../models/reducers/default";
 import * as userActions from "../../store/actions/userActions";
+import * as friendActions from "../../store/actions/friendActions";
 import * as expenseActions from "../../store/actions/expenseActions";
-import { Searchbar } from "react-native-paper";
+import * as groupActions from "../../store/actions/groupActions";
+import { RadioButton, Searchbar } from "react-native-paper";
 import SelectableItem from "../../components/SelectableItem";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Participant, PRole } from "../../models/other/axios/Participant";
 import { Item } from "../../models/other/axios/Item";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/rootStackParams";
-import { categories } from "../../store/sagas/categories";
+import { categories } from "../../utils/categories";
+import colors from "../../assets/resources/colors";
+import { log } from "../../utils/logger";
+import { Group } from "../../models/other/axios/Group";
+import { validateToken } from "../../utils/tokenValidator";
 
 type Props = {
   route: RouteProp<RootStackParamList, "AddExpense">;
@@ -43,7 +49,7 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     description: params.description != undefined ? params.description : "",
     expenseAmount: params.total != undefined ? params.total : "",
     isValidExpenseAmount: true,
-    categories: categories,
+    category: 0,
   });
   const [fetchedItems, setFetchedItems] = useState<Array<Item>>([]);
   const [items, setItems] = useState<Array<Item>>([]);
@@ -53,8 +59,19 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const [refreshing, setRefreshing] = useState(false);
   const [renderFlatList, setRenderFlatList] = useState(false);
   const [modalVisible, setModalVisibility] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisibility] = useState(false);
+  const [groupsModalVisible, setGroupsModalVisibility] = useState(false);
   const [amountEqual, setDivideEqual] = useState(false);
   const [modalMode, setModalMode] = useState("Creditor");
+  const [groupMode, setExpenseMode] = useState(0);
+  const [currentGroup, setCurrentGroup] = useState<Group>({
+    id: "-1",
+    name: "",
+    createdAt: -1,
+    creator: "",
+    picture: "",
+    updatedAt: -1,
+  });
 
   const dispatch = useDispatch();
   const { loading, id, name, friends, groups } = useSelector((state: IState) => state.userReducer);
@@ -130,9 +147,11 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
   };
 
   const fetchItems = () => {
-    dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
+    if (validateToken(loggedInUser.token)) {
+      dispatch(userActions.onGetUserProfileRequest(loggedInUser.token));
+    }
     if (params.parentScreen == "Activity") {
-      params.items.forEach((item) => {
+      params.friendItems.forEach((item) => {
         if (item.selected) {
           if (selectedItems.current.find((selected) => selected.id == item.id) == undefined) {
             selectedItems.current.push(item);
@@ -149,7 +168,7 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
         }
       });
       let items: Array<Item> = [];
-      params.items.forEach((element) => {
+      params.friendItems.forEach((element) => {
         if (items.findIndex((item) => item.id == element.id) < 0) {
           items.push({
             id: element.id,
@@ -163,8 +182,8 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
       setItems(items);
       setFetchedItems(items);
     } else {
-      setFetchedItems(params.items);
-      setItems(params.items);
+      setFetchedItems(params.friendItems);
+      setItems(params.friendItems);
     }
     setRenderFlatList(!renderFlatList);
   };
@@ -213,22 +232,22 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
       />
     ) : null;
 
-  const renderFooterComponent = (): JSX.Element => {
-    return (
-      <View style={styles.footerComponent}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.addButton} onPress={confirm}>
-            <Text style={styles.addButtonText}>
-              {params.parentScreen == "ActivityList" ? "ایجاد هزینه" : "ویرایش هزینه"}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-            <Text style={styles.removeButtonText}>انصراف</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
+  // const renderFooterComponent = (): JSX.Element => {
+  //   return (
+  //     <View style={styles.footerComponent}>
+  //       <View style={styles.buttonContainer}>
+  //         <TouchableOpacity style={styles.addButton} onPress={confirm}>
+  //           <Text style={styles.addButtonText}>
+  //             {params.parentScreen == "ActivityList" ? "ایجاد هزینه" : "ویرایش هزینه"}
+  //           </Text>
+  //         </TouchableOpacity>
+  //         <TouchableOpacity style={styles.removeButton} onPress={cancel}>
+  //           <Text style={styles.removeButtonText}>انصراف</Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   const onSelectItem: any = (item: Item) => {
     item.selected = !item.selected;
@@ -283,28 +302,13 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
         Name={item.name}
         selected={item.selected}
         onPressItem={() => {
-          data.categories[item.id].selected = !data.categories[item.id].selected;
+          // data.categories[item.id].selected = !data.categories[item.id].selected;
           setRenderFlatList(!renderFlatList);
         }}
       />
       <FontAwesomeIcon icon={item.icon} size={20} style={{ position: "relative", top: 20 }} />
     </>
   );
-
-  // const renderFooterComponent = (): JSX.Element => {
-  //   return (
-  //     <>
-  //       <View style={styles.buttonContainer}>
-  //         <TouchableOpacity style={styles.addButton} onPress={confirm}>
-  //           <Text style={styles.addButtonText}>ایجاد هزینه</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity style={styles.removeButton} onPress={cancel}>
-  //           <Text style={styles.removeButtonText}>انصراف</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </>
-  //   );
-  // }
 
   const showCreditorModal = () => {
     if (Number(data.expenseAmount) > 0) {
@@ -406,6 +410,47 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
     </View>
   );
 
+  log(data.category);
+  const renderCategoryModalList = ({ item }) => {
+    return (
+      <View style={styles.categoryContainer}>
+        <RadioButton
+          value={item.id}
+          status={data.category == Number(item.id) ? "checked" : "unchecked"}
+          onPress={() => setData({ ...data, category: Number(item.id) })}
+          color={colors.mainColor}
+          uncheckedColor={colors.gray}
+        />
+        <Text style={styles.categoryName}>{item.name}</Text>
+        <View style={styles.categoryIconContainer}>
+          <FontAwesomeIcon icon={item.icon} size={20} style={styles.categoryIcon} />
+        </View>
+      </View>
+    );
+  };
+
+  const renderGroupModalList = ({ item }) => {
+    return (
+      <View style={styles.groupItemContainer}>
+        <RadioButton
+          value={item.id}
+          status={currentGroup.id == item.id ? "checked" : "unchecked"}
+          onPress={() => {
+            const index = groups.findIndex((group) => group.id == item.id);
+            if (index > -1) {
+              setCurrentGroup(groups[index]);
+            } else {
+              setCurrentGroup(currentGroup);
+            }
+          }}
+          color={colors.mainColor}
+          uncheckedColor={colors.gray}
+        />
+        <Text style={styles.groupName}>{item.name}</Text>
+      </View>
+    );
+  };
+
   const closeModal = () => {
     let sum: number = 0;
     modalMode == "Creditor"
@@ -435,25 +480,26 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
 
   const discardModalChanges = () => {
     if (modalMode == "Creditor") {
-      // creditors.current = [];
-      // selectedItems.current.forEach((element: Item) => {
-      //   let item: Item = { ...element, selected: !element.selected };
-      //   if (item.role == PRole.Creditor || item.role == undefined) {
-      //     onSelectCreditorItem(item);
-      //   }
-      // });
     } else {
-      // debtors.current = [];
-      // selectedItems.current.forEach((element: Item) => {
-      //   let item: Item = { ...element, selected: !element.selected };
-      //   if (item.role == PRole.Debtor || item.role == undefined) {
-      //     onSelectDebtorItem(item);
-      //   }
-      // });
     }
 
     setDivideEqual(false);
     setModalVisibility(false);
+  };
+
+  const closeCategoryModal = () => {
+    setCategoryModalVisibility(false);
+  };
+
+  log(currentGroup);
+
+  const closeGroupModal = () => {
+    if (currentGroup.id != "-1") {
+      if (validateToken(loggedInUser.token)) {
+        dispatch(groupActions.onGetGroupInfoRequest(loggedInUser.token, currentGroup.id));
+      }
+    }
+    setGroupsModalVisibility(false);
   };
   return (
     <>
@@ -504,24 +550,79 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               </View>
             </View>
           </Modal>
+
+          <Modal visible={categoryModalVisible} transparent animationType="slide">
+            <View style={styles.modalOutmostContainer}>
+              <View style={styles.modalContentContainer}>
+                <FlatList
+                  ListHeaderComponent={
+                    <View style={styles.modalHeaderContainer}>
+                      <Text style={styles.modalNameText}>انتخاب دسته‌بندی‌ها</Text>
+                    </View>
+                  }
+                  data={categories}
+                  renderItem={renderCategoryModalList}
+                  extraData={renderFlatList}
+                  scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
+                  ListFooterComponent={
+                    <View style={styles.splitOptionsContainer}>
+                      <TouchableOpacity onPress={closeCategoryModal} style={styles.showModalButton}>
+                        <Text style={styles.modalButtonText}>تایید</Text>
+                      </TouchableOpacity>
+                    </View>
+                  }
+                />
+              </View>
+            </View>
+          </Modal>
+
+          <Modal visible={groupsModalVisible} transparent animationType="slide">
+            <View style={styles.modalOutmostContainer}>
+              <View style={styles.modalContentContainer}>
+                <FlatList
+                  ListHeaderComponent={
+                    <View style={styles.modalHeaderContainer}>
+                      <Text style={styles.modalNameText}>انتخاب گروه‌</Text>
+                    </View>
+                  }
+                  data={groups}
+                  renderItem={renderGroupModalList}
+                  extraData={renderFlatList}
+                  scrollEnabled={true}
+                  showsVerticalScrollIndicator={false}
+                  ListFooterComponent={
+                    <View style={styles.splitOptionsContainer}>
+                      <TouchableOpacity onPress={closeCategoryModal} style={styles.showModalButton}>
+                        <Text style={styles.modalButtonText}>تایید</Text>
+                      </TouchableOpacity>
+                    </View>
+                  }
+                />
+              </View>
+            </View>
+          </Modal>
+
           <Animatable.View animation="slideInUp" duration={1000} style={styles.infoContainer}>
-            <Searchbar
-              placeholder="دوستان خود را جستجو کنید"
-              style={styles.searchBar}
-              inputStyle={styles.searchInput}
-              onChangeText={onChangeSearchQuery}
-              value={searchQuery}
-              iconColor="#1AD927"
-              onIconPress={() => onChangeSearchQuery(searchQuery)}
-            />
-            <View style={styles.inputContainer}>
-              <FlatList
-                horizontal={true}
-                data={data.categories}
-                renderItem={renderCategory}
-                extraData={renderFlatList}
-                scrollEnabled={true}
-                keyExtractor={(item) => item.id}
+            <View style={styles.screenTitleContainer}>
+              <TouchableOpacity
+                style={styles.goBackIconContainer}
+                onPress={() => NavigationService.goBack()}>
+                <FontAwesomeIcon icon="arrow-left" size={20} style={styles.goBackIcon} />
+              </TouchableOpacity>
+              <Text style={styles.screenTitleText}>
+                {params.parentScreen == "Activity" ? "ویرایش هزینه" : "افزودن هزینه جدید"}
+              </Text>
+              <TouchableOpacity style={styles.saveExpenseButtonContainer} onPress={confirm}>
+                <Text style={styles.saveExpenseButtonText}>ذخیره</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.searchInputContainer}>
+              <TextInput
+                placeholder="دوستان خود را جستجو کنید"
+                style={styles.searchBar}
+                onChangeText={onChangeSearchQuery}
+                value={searchQuery}
               />
             </View>
             <FlatList
@@ -529,13 +630,24 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               ListHeaderComponent={
                 <>
                   <View style={styles.inputContainer}>
-                    <TextInput
-                      placeholder="نام هزینه"
-                      placeholderTextColor="#A4A4A4"
-                      value={data.description}
-                      style={styles.textInput}
-                      onChangeText={setDescription}
-                    />
+                    <View style={styles.expenseDescriptionContainer}>
+                      <TouchableOpacity
+                        style={styles.expenseCategoryContainer}
+                        onPress={() => setCategoryModalVisibility(true)}>
+                        <FontAwesomeIcon
+                          icon={categories[data.category].icon}
+                          size={30}
+                          style={styles.expenseCategoryIcon}
+                        />
+                      </TouchableOpacity>
+                      <TextInput
+                        placeholder="توضیحات هزینه"
+                        placeholderTextColor="#A4A4A4"
+                        value={data.description}
+                        style={styles.textInput}
+                        onChangeText={setDescription}
+                      />
+                    </View>
                     <TextInput
                       placeholder="مبلغ کل هزینه (تومان)"
                       value={data.expenseAmount}
@@ -552,6 +664,37 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
                         <Text style={styles.modalButtonText}>چطوری تقسیم کنم؟</Text>
                       </TouchableOpacity>
                     </View>
+                    <View style={styles.radioButtonsContainer}>
+                      <View style={styles.radioButtonContainer}>
+                        <Text style={styles.radioButtonText}>هزینه گروهی</Text>
+                        <RadioButton
+                          value="group"
+                          status={groupMode == 1 ? "checked" : "unchecked"}
+                          onPress={() => setExpenseMode(1)}
+                          color={colors.mainColor}
+                          uncheckedColor={colors.gray}
+                        />
+                      </View>
+                      <View style={styles.radioButtonContainer}>
+                        <Text style={styles.radioButtonText}>هزینه غیرگروهی</Text>
+                        <RadioButton
+                          value="non-group"
+                          status={groupMode == 0 ? "checked" : "unchecked"}
+                          onPress={() => setExpenseMode(0)}
+                          color={colors.mainColor}
+                          uncheckedColor={colors.gray}
+                        />
+                      </View>
+                    </View>
+                    {groupMode ? (
+                      <TouchableOpacity
+                        style={styles.showGroupModalButtonContainer}
+                        onPress={() => setGroupsModalVisibility(true)}>
+                        <Text style={styles.showGroupModalButtonText}>
+                          گروه مدنظر را انتخاب کنید
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null}
                   </View>
                 </>
               }
@@ -559,7 +702,6 @@ const AddExpense: React.FC<Props> = ({ route }: Props): JSX.Element => {
               renderItem={renderSelectableItem}
               extraData={renderFlatList}
               scrollEnabled={true}
-              ListFooterComponent={renderFooterComponent}
             />
           </Animatable.View>
         </View>

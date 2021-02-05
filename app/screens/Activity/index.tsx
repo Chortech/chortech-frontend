@@ -71,7 +71,7 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
     return items;
   };
 
-  const onPressEditComment = () => {
+  const onPressEditExpense = () => {
     let items: Array<Item> = getItems();
     NavigationService.navigate("AddExpense", {
       parentScreen: "Activity",
@@ -113,7 +113,7 @@ const Activity: React.FC<Props> = ({ route }: Props) => {
               </View>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.addButton} onPress={onPressEditComment}>
+              <TouchableOpacity style={styles.addButton} onPress={onPressEditExpense}>
                 <Text style={styles.addButtonText}>ویرایش هزینه</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.addButton} onPress={onPressAddComment}>

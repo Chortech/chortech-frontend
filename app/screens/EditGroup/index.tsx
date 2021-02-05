@@ -31,6 +31,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../../assets/resources/colors";
 import LoadingIndicator from "../Loading";
 import * as authActions from "../../store/actions/authActions";
+import * as ImagePicker from "react-native-image-picker";
 import { RegexValidator } from "../../utils/regexValidator";
 import { InputType } from "../../utils/inputTypes";
 import messages from "../../assets/resources/messages";
@@ -44,8 +45,18 @@ type IState = {
   userReducer: IUserState;
 };
 
+const options = {
+  title: "Select Group Image",
+  storageOptions: {
+    skipBackup: true,
+    path: "images",
+  },
+  includeBase64: true,
+};
+
 const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  const dispatch = useDispatch();
   const { loading, currentGroup } = useSelector((state: IState) => state.userReducer);
   const { groupId } = route.params;
 
@@ -101,6 +112,19 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
     dispatch(groupActions.onRemoveMemberRequest(loggedInUser.token, groupId, memberId));
   };
 
+  const onPressUpdateImage = () => {
+    let uri = "../../assets/images/chortech_1.png";
+    ImagePicker.launchImageLibrary(options, (response: any) => {
+      uri = response.uri;
+      setData({
+        ...data,
+        image: uri,
+      });
+      if (validateToken(loggedInUser.token)) {
+        dispatch(groupActions.onUploadImageRequest(loggedInUser.token, {response:response, id: groupName, name: data.name}));
+      }
+    });
+  };
   const onChangeTextGroupName = (text: string) => {
     let type = RegexValidator.validateName(text);
     setData({
