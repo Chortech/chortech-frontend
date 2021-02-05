@@ -47,6 +47,7 @@ export default function* watch() {
     takeLatest(types.DELETE_GROUP_REQUEST, groupSaga.DeleteGroupAsync),
     takeLatest(types.ADD_FRIEND_TO_GROUP_REQUEST, groupSaga.AddFriendToGroupAsync),
     takeLatest(types.LEAVE_GROUP_REQUEST, groupSaga.LeaveGroupAsync),
+    takeLatest(types.GROUP_UPLOAD_IMAGE_REQUEST, groupSaga.uploadImageAsync),
     takeLatest(types.REMOVE_MEMBER_REQUEST, groupSaga.RemoveMemberAsync),
     takeLatest(types.GET_USER_PAYMENT_REQUEST, paymentSaga.getUserPaymentAsync),
     takeLatest(types.ADD_PAYMENT_REQUEST, paymentSaga.addPaymentAsync),

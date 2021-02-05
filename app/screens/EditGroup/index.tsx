@@ -27,6 +27,8 @@ import colors from "../../assets/resources/colors";
 import LoadingIndicator from "../Loading";
 import * as authActions from "../../store/actions/authActions";
 import { Modal, ModalFooter, ModalButton, ModalContent } from 'react-native-modals';
+import * as ImagePicker from "react-native-image-picker";
+
 
 
 type Props = {
@@ -37,12 +39,25 @@ type IState = {
   userReducer: IUserState;
 };
 
+const options = {
+  title: "Select Group Image",
+  storageOptions: {
+    skipBackup: true,
+    path: "images",
+  },
+  includeBase64: true,
+};
+
 const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
   const loggedInUser: IUserState = useStore().getState()["authReducer"];
+  let user: IUserState = useSelector((state: IState) => state.userReducer);
   const { groups } = useSelector((state: IState) => state.userReducer);
   const { id, groupName, ImageUrl, members } = route.params;
   const dispatch = useDispatch();
   const { loading } = useSelector((state: IState) => state.userReducer);
+  const [data, setData] = useState({
+    imageUri: "../../assets/images/chortech_1.png", groupId: id, groupName: groupName
+  });
   const [refreshing, setRefreshing] = useState(false);
   const [
     defaultAnimationDialog, setDefaultAnimationDialog
@@ -65,6 +80,23 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
     dispatch(groupActions.onEditGroupRequest(loggedInUser.token, id, text, ImageUrl))
   };
 
+  const onPressUpdateImage = () => {
+    let uri = "../../assets/images/chortech_1.png";
+    ImagePicker.launchImageLibrary(options, (response: any) => {
+      uri = response.uri;
+      setData({
+        ...data,
+        imageUri: uri,
+      });
+      user = {
+        ...user,
+        imageUri: data.imageUri,
+      };
+      if (validateToken(loggedInUser.token)) {
+        dispatch(groupActions.onUploadImageRequest(loggedInUser.token, {response:response, id:id, name: groupName}));
+      }
+    });
+  };
 
   const renderMemberItem: any = ({ item }) => (
     <MemberItem
@@ -86,11 +118,12 @@ const EditGroup: React.FC<Props> = ({ route }: Props): JSX.Element => {
         <LoadingIndicator />
       ) : (
         <View style={styles.container}>
-              <Image
+          <TouchableOpacity onPress={onPressUpdateImage}>
+                <Image
                   style={styles.friendImage}
                   source={require("../../assets/images/group-image.jpg")}
                 />
-              {/* <Text style={styles.screenTitleText}>{groupName}</Text> */}
+              </TouchableOpacity>
               <ScrollView showsVerticalScrollIndicator={false}>
               <CustomInput 
                   label="نام گروه"

@@ -1,22 +1,36 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { SERVER_GROUP_URL } from "../../../../local_env_vars";
+import { SERVER_GROUP_URL, SERVER_USER_URL } from "../../../../local_env_vars";
 import { groupApi } from "../../../models/api/axios-api/group";
 import { Token } from "../../../models/other/axios/Token";
 import { Response } from "../../../models/responses/axios/response";
+import {UploadImage} from "../../../models/responses/axios/user";
 import { log } from "../../../utils/logger";
 import { validateToken } from "../../../utils/tokenValidator";
 import { Group } from "../../../models/other/axios/Group";
 import { RemoveGroupMember } from "../../../models/responses/axios/user";
+import { Buffer } from "buffer";
 
 export class GroupAPI implements groupApi {
   client: AxiosInstance;
+  clientImage: AxiosInstance;
 
   constructor(token: Token) {
     this.client = axios.create({
       baseURL: SERVER_GROUP_URL,
     });
 
+    this.clientImage = axios.create({
+      baseURL: SERVER_USER_URL,
+    });
+
     this.client.interceptors.request.use(function (config) {
+      if (validateToken(token)) {
+        config.headers["Authorization"] = `Bearer ${token.access}`;
+      }
+      return config;
+    });
+
+    this.clientImage.interceptors.request.use(function (config) {
       if (validateToken(token)) {
         config.headers["Authorization"] = `Bearer ${token.access}`;
       }
@@ -130,7 +144,7 @@ export class GroupAPI implements groupApi {
     };
 
     try {
-      let response: AxiosResponse = await this.client.patch(`/${groupId}`, {
+      let response: AxiosResponse = await this.client.patch(`/${groupId}/members/`, {
         name: name,
         picture: picture,
       });
@@ -291,6 +305,63 @@ export class GroupAPI implements groupApi {
       }
     }
 
+    return result;
+  }
+
+  async uploadImageRequest(image: string, data: any): Promise<Response<UploadImage>> {
+    let result: Response<UploadImage> = {
+      success: false,
+      status: -1,
+    };
+
+    try {
+      let contentType: String = image;
+      let response: AxiosResponse = await this.clientImage.get("/image/upload", {
+        headers: {
+          "X-Content-Type": contentType,
+        },
+      });
+      const buff = Buffer.from(data.response.base64, "base64");
+      let res = await axios.put(response.data.url, buff, {
+        headers: {
+          "x-amz-acl": "public-read",
+          "Content-Length": data.response.base64.length,
+          "Content-Type": data.response.type,
+          "Content-Encoding": "base64",
+        },
+      });
+      console.log("no problem in sector 1");
+      console.log(data.id)
+      let lastRes: AxiosResponse = await this.client.patch(`/${data.id}/members/`, {
+        name: data.name,
+        picture: response.data.key,
+      });
+      console.log("no problem in sector 2");
+
+
+      if (response.status == 200) {
+        result = {
+          success: true,
+          status: response.status,
+          response: response.data,
+        };
+      } else {
+        result.status = response.status;
+      }
+      log("upload image api result");
+      log(result, false);
+    } catch (e) {
+      log("upload image api error");
+      console.log(e);
+      if (e.isAxiosError) {
+        console.log("11")
+        const error: AxiosError = e as AxiosError;
+        result.status = error.response?.status != undefined ? error.response?.status : -1;
+        log(error.response?.data, false);
+      } else {
+        log(e.response, false);
+      }
+    }
     return result;
   }
 }
